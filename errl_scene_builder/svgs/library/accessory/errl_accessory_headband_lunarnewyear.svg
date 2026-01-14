@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_accessory" data-cat="wearable" data-name="errl_accessory_headband_lunarnewyear">
+  <rect width="64" height="64" rx="12" fill="none"/>
+  <path d="M12 28c4-8 10-12 20-12s16 4 20 12" fill="none" stroke="#dc2626" stroke-width="3" stroke-linecap="round"/>
+  <path d="M14 32c3-6 10-8 18-8s15 2 18 8" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="16" cy="30" r="4" fill="#dc2626" stroke="#fbbf24" stroke-width="2"/>
+  <circle cx="48" cy="30" r="4" fill="#dc2626" stroke="#fbbf24" stroke-width="2"/>
+  <path d="M20 26l2-8" stroke="#fbbf24" stroke-width="2" stroke-linecap="round"/>
+  <path d="M44 26l-2-8" stroke="#fbbf24" stroke-width="2" stroke-linecap="round"/>
+</svg>

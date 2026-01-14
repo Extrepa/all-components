@@ -1,0 +1,9 @@
+<!-- Example 123 | errl_fest_stage_front_rail_01 (env/prop) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="env" data-name="errl_fest_stage_front_rail_01">
+  <g fill="none">
+    <rect x="14" y="36" width="36" height="4" rx="2" fill="#111827"/>
+    <path d="M18 34 V36 M24 34 V36 M30 34 V36 M36 34 V36 M42 34 V36 M48 34 V36"
+      stroke="#4b5563" stroke-width="1.2" stroke-linecap="round"/>
+  </g>
+</svg>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <g id="group_canvas" fill="#ffd166" stroke="#101020" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M160 320c80 60 180 60 260 0 80-60 180-60 260 0 80 60 180 60 260 0v80H160z" />
+  </g>
+  <g id="group_flags" fill="#ff7ad1" stroke="#101020" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M220 280l0 40 36-20z" />
+    <path d="M420 280l0 40 36-20z" />
+    <path d="M620 280l0 40 36-20z" />
+    <path d="M820 280l0 40 36-20z" />
+  </g>
+</svg>

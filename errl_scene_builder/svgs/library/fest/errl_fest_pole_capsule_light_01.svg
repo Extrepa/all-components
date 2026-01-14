@@ -1,0 +1,9 @@
+<!-- Example 133 | errl_fest_pole_capsule_light_01 (fx/prop) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="fx" data-name="errl_fest_pole_capsule_light_01">
+  <g fill="none">
+    <rect x="30" y="26" width="4" height="18" rx="2" fill="#0f172a"/>
+    <rect x="29" y="22" width="6" height="6" rx="3" fill="#22d3ee" opacity="0.9"/>
+    <rect x="29.8" y="23" width="4.4" height="3.6" rx="1.8" fill="#e0f2fe" opacity="0.9"/>
+  </g>
+</svg>

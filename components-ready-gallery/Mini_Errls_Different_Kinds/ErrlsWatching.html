@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Blob</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background-color: #f0f2f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: system-ui, -apple-system, sans-serif;
+            overflow: hidden;
+        }
+
+        #stage {
+            width: 100%;
+            max-width: 800px;
+            aspect-ratio: 4/3;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(46, 35, 108, 0.1);
+            overflow: hidden;
+        }
+
+        /* The Character Container */
+        .blob-wrapper {
+            width: 300px;
+            height: 400px;
+            position: relative;
+            filter: drop-shadow(0px 15px 25px rgba(46, 35, 108, 0.25));
+            transform-origin: bottom center;
+            transition: transform 0.1s ease-out;
+            cursor: pointer;
+            /* Idle Float Animation */
+            animation: float 4s ease-in-out infinite;
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
+        /* Colors */
+        :root {
+            --blob-color: #2E236C;
+            --face-color: #FFFFFF;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            25% { transform: translateY(-10px) rotate(1deg); }
+            75% { transform: translateY(5px) rotate(-1deg); }
+        }
+
+        /* Drip Animations for legs/arms */
+        @keyframes drip-stretch {
+            0%, 100% { height: 160px; transform: translateY(0); }
+            50% { height: 175px; transform: translateY(5px); }
+        }
+        @keyframes drip-stretch-reverse {
+            0%, 100% { height: 150px; transform: translateY(0); }
+            50% { height: 170px; transform: translateY(5px); }
+        }
+        @keyframes drip-small {
+            0%, 100% { height: 90px; }
+            50% { height: 105px; }
+        }
+
+        .leg-left { animation: drip-stretch 3s ease-in-out infinite; }
+        .leg-right { animation: drip-stretch-reverse 3.5s ease-in-out infinite; }
+        .arm-left { animation: drip-small 4s ease-in-out infinite alternate; }
+        .arm-right { animation: drip-small 4.5s ease-in-out infinite alternate-reverse; }
+
+        /* Interactive Reactions */
+        .squish {
+            animation: squish-effect 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes squish-effect {
+            0% { transform: scale(1, 1); }
+            40% { transform: scale(1.25, 0.75); }
+            80% { transform: scale(0.9, 1.1); }
+            100% { transform: scale(1, 1); }
+        }
+
+        .blink {
+            transform-origin: center;
+            animation: blink-anim 0.15s ease-in-out;
+        }
+
+        @keyframes blink-anim {
+            0%, 100% { transform: scaleY(1); }
+            50% { transform: scaleY(0.1); }
+        }
+
+        /* UI Elements */
+        .controls {
+            position: absolute;
+            bottom: 30px;
+            color: var(--blob-color);
+            opacity: 0.4;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+            font-size: 12px;
+            pointer-events: none;
+            user-select: none;
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="stage">
+    <div class="blob-wrapper" id="blob">
+        <svg viewBox="0 0 300 400">
+            <defs>
+                <!-- Reusable shapes if needed -->
+            </defs>
+
+            <!-- Main Body Group -->
+            <g id="body" fill="#2E236C">
+                <!-- Head Circle -->
+                <circle cx="150" cy="140" r="115" />
+                
+                <!-- Filler to connect head to legs smoothly -->
+                <rect x="40" y="140" width="220" height="60" />
+
+                <!-- Drips (Animated via CSS classes on rects) -->
+                <!-- Left Arm -->
+                <rect class="arm-left" x="25" y="140" width="35" height="90" rx="17.5" />
+                <!-- Right Arm -->
+                <rect class="arm-right" x="240" y="140" width="35" height="90" rx="17.5" />
+                <!-- Left Leg -->
+                <rect class="leg-left" x="80" y="140" width="55" height="160" rx="27.5" />
+                <!-- Right Leg -->
+                <rect class="leg-right" x="165" y="140" width="55" height="160" rx="27.5" />
+            </g>
+
+            <!-- Face Group (Target for Mouse Tracking) -->
+            <g id="face">
+                <!-- White Face Background -->
+                <!-- Offset slightly left to match character style -->
+                <circle cx="135" cy="140" r="88" fill="#FFFFFF" />
+
+                <!-- Eyes Container (Parallax layer) -->
+                <g id="eyes" fill="#2E236C">
+                    <!-- Left Eye -->
+                    <ellipse class="eye" cx="95" cy="130" rx="20" ry="32" />
+                    <!-- Right Eye -->
+                    <ellipse class="eye" cx="175" cy="130" rx="20" ry="32" />
+                </g>
+
+                <!-- Mouth -->
+                <ellipse id="mouth" cx="135" cy="195" rx="28" ry="14" fill="#2E236C" />
+            </g>
+        </svg>
+    </div>
+    <div class="controls">Move Cursor &bull; Click to Squish</div>
+</div>
+
+<script>
+    // Selection
+    const stage = document.getElementById('stage');
+    const blob = document.getElementById('blob');
+    const face = document.getElementById('face');
+    const eyesGroup = document.getElementById('eyes');
+    const eyes = document.querySelectorAll('.eye');
+    const mouth = document.getElementById('mouth');
+
+    // Configuration
+    const config = {
+        faceMove: 15,    // Max pixels face moves
+        eyeMove: 25,     // Max pixels eyes move (parallax)
+        blinkMin: 2000,
+        blinkMax: 5000
+    };
+
+    // Mouse Tracking Logic
+    document.addEventListener('mousemove', (e) => {
+        const rect = stage.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+
+        // Calculate normalized position (-1 to 1)
+        // Clamping values to stay within the stage logic roughly
+        let dx = (e.clientX - centerX) / (window.innerWidth / 2);
+        let dy = (e.clientY - centerY) / (window.innerHeight / 2);
+        
+        // Clamp
+        dx = Math.max(-1, Math.min(1, dx));
+        dy = Math.max(-1, Math.min(1, dy));
+
+        // Apply transforms
+        const faceX = dx * config.faceMove;
+        const faceY = dy * config.faceMove;
+        
+        const eyeX = dx * config.eyeMove;
+        const eyeY = dy * config.eyeMove;
+
+        face.style.transform = `translate(${faceX}px, ${faceY}px)`;
+        eyesGroup.style.transform = `translate(${eyeX}px, ${eyeY}px)`;
+    });
+
+    // Click Interaction
+    stage.addEventListener('mousedown', () => {
+        // Trigger Squish Animation
+        blob.classList.remove('squish');
+        void blob.offsetWidth; // force reflow
+        blob.classList.add('squish');
+
+        // Change mouth shape temporarily
+        mouth.setAttribute('ry', '6'); // Surprise/squish
+        setTimeout(() => {
+            mouth.setAttribute('ry', '14');
+        }, 400);
+
+        // Force blink
+        triggerBlink();
+    });
+
+    // Blinking Logic
+    function triggerBlink() {
+        eyes.forEach(eye => {
+            eye.classList.remove('blink');
+            void eye.offsetWidth;
+            eye.classList.add('blink');
+        });
+    }
+
+    function randomBlinkLoop() {
+        const delay = Math.random() * (config.blinkMax - config.blinkMin) + config.blinkMin;
+        setTimeout(() => {
+            triggerBlink();
+            randomBlinkLoop();
+        }, delay);
+    }
+
+    // Start loops
+    randomBlinkLoop();
+
+</script>
+
+</body>
+</html>

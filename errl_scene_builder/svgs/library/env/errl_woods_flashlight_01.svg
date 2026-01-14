@@ -1,0 +1,13 @@
+<!-- 71) errl_woods_flashlight_01 – flashlight w/ beam (prop/fx) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="prop" data-name="errl_woods_flashlight_01">
+  <g fill="none">
+    <!-- body -->
+    <rect x="28" y="30" width="8" height="10" rx="2" fill="#111827"/>
+    <rect x="29" y="32" width="6" height="6" rx="1.5" fill="#020617"/>
+    <!-- head -->
+    <rect x="26" y="28" width="12" height="4" rx="2" fill="#0f172a"/>
+    <!-- beam -->
+    <path d="M32 28 L48 22 L48 38 Z" fill="#facc15" opacity="0.2"/>
+  </g>
+</svg>

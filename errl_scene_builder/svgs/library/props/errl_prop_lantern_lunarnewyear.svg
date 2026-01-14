@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_prop" data-cat="prop" data-name="errl_prop_lantern_lunarnewyear">
+  <rect width="64" height="64" rx="12" fill="none"/>
+  <path d="M32 12c10 0 18 8 18 18s-8 18-18 18-18-8-18-18 8-18 18-18z" fill="#dc2626" stroke="#991b1b" stroke-width="2"/>
+  <path d="M22 22c4 4 8 6 10 6s6-2 10-6" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round"/>
+  <rect x="30" y="48" width="4" height="10" fill="#fbbf24"/>
+  <circle cx="32" cy="60" r="2" fill="#fbbf24"/>
+  <rect x="28" y="8" width="8" height="4" rx="1" fill="#fbbf24"/>
+  <path d="M32 12v4" stroke="#fbbf24" stroke-width="2" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,376 @@
+Nice. Time to slap a sticker on this spaceship and call it Errl OS Alpha. 🚀🫠
+
+I’ll “package” it as if you’re making a GitHub release + Obsidian doc + local folder structure.
+
+Below is a single markdown file you can drop straight into Obsidian as:
+
+Errl-OS-Alpha-Release.md
+
+Inside it, I define:
+	•	The project name + version
+	•	Folder structure
+	•	Which file should contain your big app (the monster index.html we’ve been building)
+	•	Release notes, features, and future roadmap
+
+You can also use this as your GitHub README if you want, or split bits off later.
+
+⸻
+
+
+# Errl OS Alpha – FX Lab & Animation Forge
+
+**Codename:** Errl OS – Alpha  
+**Version:** `v0.1.0-alpha`  
+**Core File:** `index.html` (single-file app, lives in `/app/`)  
+
+Errl OS Alpha is a self-contained, browser-based workstation for turning an Errl SVG into:
+
+- Live FX labs (p5.js, HTML FX, voxels, 3D wireframes)
+- Audio-reactive animations
+- Captured frame galleries + VS Mode
+- Spritesheets, timelines, and game-ready animation packs
+- Multi-project save slots
+- AI handoff prompts and full session snapshots
+
+All running from a single HTML file, no backend.
+
+---
+
+## 1. Folder & File Layout
+
+Create this minimal structure:
+
+```text
+errl-os-alpha/
+├── app/
+│   └── index.html          # The full Errl OS Alpha app (the big file we've been building)
+├── docs/
+│   ├── Errl-OS-Alpha-Release.md  # This file
+│   └── Errl-OS-Roadmap.md        # Future feature list (optional)
+├── assets/
+│   ├── icons/              # Any PNG/SVG icons you add later
+│   └── errl/               # Reference SVGs, poses, etc.
+├── README.md
+├── LICENSE (optional)
+└── CHANGELOG.md
+
+Where to put the big app code
+	•	Take the latest full index.html version we’ve been building together.
+	•	Save it as:
+
+errl-os-alpha/app/index.html
+
+
+
+Open that file in a browser (via file:// or a tiny local server) and you’re in Errl OS Alpha.
+
+⸻
+
+2. Running Errl OS Alpha
+
+Option A – Double-click (no server)
+	•	Just open app/index.html in Chrome/Brave/Edge.
+	•	Most features (p5, Three.js, audio, localStorage) will work fine.
+	•	Some browsers may restrict local file access for iframe/audio; if anything feels weird, use a tiny server.
+
+Option B – Tiny local server
+
+From errl-os-alpha/app/:
+
+# Python 3
+python -m http.server 8000
+
+# or Node's serve (if installed)
+npx serve .
+
+Then visit:
+
+http://localhost:8000/index.html
+
+You now have Errl OS Alpha running like a mini desktop app in your browser.
+
+⸻
+
+3. Core Features (What’s in Alpha)
+
+3.1 Tabs & FX Engines
+	•	SVG Preview Tab
+	•	Shows the uploaded Errl SVG exactly.
+	•	Validates that your master silhouette renders correctly.
+	•	p5 FX Lab Tab
+	•	Wobble amplitude & speed
+	•	Scene zoom
+	•	Glow strength
+	•	Background hue
+	•	Audio-reactive wobble & glow
+	•	Preset system (save/load named FX presets)
+	•	HTML FX Tab
+	•	CSS filter stack (blur, contrast, hue-rotate, etc.)
+	•	Preset selector
+	•	Editable filter string + sandbox snippet for standalone embedding
+	•	3D Wire / 3D Voxels Tab
+	•	Three.js-based faux 3D view
+	•	Wireframe mode & voxel-extrude mode
+	•	Audio-reactive spin rate
+	•	2D Voxels Tab
+	•	Pixelated / mosaic style rendering of Errl
+	•	Adjustable resolution / cell size
+
+⸻
+
+3.2 Capture Engine, Gallery & VS Mode
+	•	Frame Capture
+	•	Capture from any active tab (p5, HTML, 3D, 2D voxels)
+	•	Keyboard shortcut: C
+	•	Captures saved as PNG data URLs in memory & gallery
+	•	Gallery
+	•	Thumbnail grid with:
+	•	Click → preview / download
+	•	Star (★) → mark as favorite
+	•	Right-click → assign tag (idle, walk, jump, fx, etc.)
+	•	Live counts and tag summaries
+	•	VS Mode
+	•	Choose two captured frames as “Left” and “Right”
+	•	Compare / export as a “versus card”
+	•	Supports choosing from favorites quickly
+
+⸻
+
+3.3 Spritesheets, Timelines & Animation Packs
+	•	Spritesheet Export
+	•	Combine captured frames into a single PNG sheet
+	•	Configurable max columns
+	•	Choose source:
+	•	All frames
+	•	Favorites only
+	•	Optional tag filter (e.g. “idle” only)
+	•	Generates:
+	•	errl-spritesheet-...png
+	•	JSON manifest with:
+	•	frame size
+	•	grid dimensions
+	•	for each frame: id, source, modeLabel, favorite, tag, col, row, x, y
+	•	Animation Timeline
+	•	Builds a loop from captured frames
+	•	Filters:
+	•	Use favorites only (optional)
+	•	Tag filter (idle / walk / jump / fx)
+	•	FPS setting (e.g. 8 FPS)
+	•	Small preview canvas that loops the animation
+	•	Exports JSON describing:
+	•	fps
+	•	frameCount
+	•	list of frames with id and tag
+	•	Animation Pack Export
+	•	Uses latest spritesheet manifest
+	•	Groups frames into named clips by tag (idle, walk, jump, fx, etc.)
+	•	Produces a single game-ready pack:
+
+{
+  "type": "errl-animation-pack",
+  "version": "1.0.0",
+  "sheet": {
+    "file": "errl-spritesheet.png",
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "columns": 4,
+    "rows": 4
+  },
+  "animations": {
+    "idle": { "frameCount": 8, "frames": [ ... ] },
+    "walk": { "frameCount": 8, "frames": [ ... ] }
+  }
+}
+
+
+
+This pack is designed to feed into ErrlStory, Phaser, Pixi, or any custom engine.
+
+⸻
+
+3.4 Projects, Sessions & AI Handoff
+	•	Projects (Profiles)
+	•	Named save slots stored in localStorage
+	•	Each project includes:
+	•	FX config & presets
+	•	All captured frames + tags + favorites
+	•	VS mode selection
+	•	Last spritesheet manifest
+	•	Last timeline snapshot
+	•	Last animation pack
+	•	Actions:
+	•	Save
+	•	Load
+	•	Overwrite
+	•	Delete
+	•	Session Snapshot
+	•	One-click JSON of the entire current state
+	•	Copy to clipboard or download as .json
+	•	Use for debugging, archival, or feeding into another AI
+	•	AI Handoff Prompt
+	•	Build a markdown prompt from current session:
+	•	UI state (active tab, 3D mode)
+	•	p5 & HTML FX parameters
+	•	Frame counts, tags, favorites
+	•	Spritesheet / timeline / animation pack summaries
+	•	Targets:
+	•	Generic AI
+	•	Game engine
+	•	Video editor
+	•	Obsidian documentation
+	•	Code assistant
+	•	One-click: copy to clipboard and paste into ChatGPT, Gemini, Warp, etc.
+
+⸻
+
+3.5 Command Palette, Help, Quick Start, Diagnostics
+	•	Command Palette (Ctrl+K / ⌘K)
+	•	Type to fuzzy-find commands:
+	•	Switch tabs (SVG, p5, HTML FX, 3D, 2D voxels)
+	•	Capture frame
+	•	Open Gallery / VS Mode
+	•	Export spritesheet, timeline, animation pack
+	•	Toggle audio reactive
+	•	Save project, build AI prompt, open help, clear app, etc.
+	•	Help / Keymap Overlay
+	•	Lists:
+	•	All tabs + hotkeys
+	•	Capture, favorites, VS
+	•	Audio-reactive flow
+	•	Sandbox & session usage
+	•	Accessible via:
+	•	H key
+	•	“Help / Keys” button in header
+	•	Quick Start Overlay
+	•	Short guided overview:
+	•	Load SVG → Explore tabs → Add FX → Capture → Tag → Export spritesheet + pack
+	•	Auto-opens on first visit (no SVG yet), or via “Quick Start” button.
+	•	Diagnostics Panel
+	•	Approx FPS (p5, 3D, timeline)
+	•	Captured frames:
+	•	total count
+	•	favorites count
+	•	tags breakdown
+	•	Rough memory estimate:
+	•	“Captures: ~X MB”
+
+⸻
+
+4. How to Use in Practice (Suggested Workflow)
+	1.	Load SVG
+	•	Drop in a canonical Errl SVG (front-facing idle or special pose).
+	2.	Dial FX
+	•	Use p5 tab for wobble/glow motion.
+	•	Use HTML FX tab to color-grade.
+	•	Optionally add 3D or voxel variants.
+	3.	Capture & Tag
+	•	Hit C to capture 6–12 frames from a loop.
+	•	Right-click thumbnails to tag:
+	•	idle, walk, jump, fx, etc.
+	•	Star the strongest frames as favorites.
+	4.	Export Assets
+	•	Use Spritesheet panel for PNG + manifest:
+	•	All frames or favorites
+	•	Per-tag group (e.g. idle-only sheet)
+	•	Use Timeline for visual verification.
+	•	Use Animation Pack for game-engine-friendly JSON.
+	5.	Save Project
+	•	Give the current experiment a name in Projects, e.g.:
+	•	Errl Idle – Portal Theme
+	•	Errl Walk – Club Sim
+	•	Save and move on to the next vibe.
+	6.	Hand Off to Other Tools
+	•	Build the AI Handoff Prompt.
+	•	Paste into another AI or dev environment to:
+	•	Generate engine-specific code
+	•	Bake sprite logic into games
+	•	Document everything in Obsidian
+
+⸻
+
+5. Known Limitations in Alpha
+	•	All state is stored in localStorage and in-memory:
+	•	Clearing browser storage will lose projects.
+	•	Captured frames are base64 PNGs:
+	•	Very high resolution + huge frame counts can consume a lot of RAM.
+	•	No explicit “file import” for external JSON packs yet:
+	•	Timeline / pack import would be a nice future feature.
+	•	The app assumes modern desktop browser:
+	•	Mobile is not a supported primary target (yet).
+
+⸻
+
+6. Roadmap – Toward Beta
+
+Some obvious next steps beyond Alpha:
+	•	Importers
+	•	Load existing spritesheet manifests & animation packs.
+	•	Map external sprite sheets onto Errl OS timelines.
+	•	Better Audio Tools
+	•	Per-band reactive controls (bass vs mids vs highs).
+	•	Record “automation curves” from audio for later playback without sound.
+	•	Advanced Rigging
+	•	Multiple SVG layers (face, limbs, accessories) with per-part wobble controls.
+	•	Multi-Errl Scenes
+	•	Compose scenes with multiple Errls using different presets and timelines.
+	•	Export Helpers
+	•	One-click Phaser/Pixi snippets using the animation pack.
+	•	Export .zip bundles with:
+	•	spritesheet.png
+	•	animation-pack.json
+	•	engine template code
+
+⸻
+
+7. README.md (repo-facing version)
+
+You can use a trimmed-down version of this release doc as README.md at the repo root:
+
+# Errl OS Alpha (FX Lab & Animation Forge)
+
+Errl OS Alpha is a single-file web app that turns an Errl SVG into:
+- Audio-reactive FX labs (p5 / HTML / 3D / voxel)
+- Captured frame galleries + favorites + tags
+- Spritesheets, timelines, and game-ready animation packs
+- Project profiles, session snapshots, AI handoff prompts, and a command palette
+
+## Quickstart
+
+1. Clone or download this repo.
+2. Open `app/index.html` in a modern browser.
+   - Or run `python -m http.server 8000` inside `app/` and visit `http://localhost:8000`.
+3. Load your Errl SVG and start experimenting.
+
+See `docs/Errl-OS-Alpha-Release.md` for full feature breakdown and roadmap.
+
+
+⸻
+
+8. CHANGELOG.md (initial entry)
+
+# Changelog
+
+## v0.1.0-alpha
+
+- Initial public Alpha of Errl OS FX Lab.
+- Single-file app with:
+  - SVG upload & multi-tab FX system (p5, HTML FX, 3D wire, 3D voxels, 2D voxels)
+  - Audio-reactive modulation for p5 & 3D views
+  - Capture engine with gallery, favorites, and tags
+  - VS Mode for image battles & comparisons
+  - Spritesheet exporter (PNG + JSON manifest)
+  - Animation timeline builder & JSON export
+  - Animation pack exporter (named clips per tag)
+  - Project profiles saved to localStorage
+  - Session snapshot JSON export
+  - AI handoff prompt generator (markdown)
+  - Command palette (Ctrl+K / ⌘K)
+  - Help / Keymap overlay, Quick Start overlay
+  - Diagnostics panel with basic FPS & memory estimates
+
+
+⸻
+
+That’s your Errl OS Alpha package.
+	•	You already have the core index.html app from our build.
+	•	Drop it into /app/index.html, add these docs, and you’ve got a named, versioned release that’s ready for GitHub, Obsidian, and future-you.

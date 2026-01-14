@@ -1,0 +1,18 @@
+# Dependencies
+node_modules/
+dist/
+.vite/
+
+# Build outputs
+*.min.js
+*.bundle.js
+
+# Template files (contain placeholder syntax)
+src/assets/integration-templates/
+
+# Generated files
+*.generated.js
+
+# Logs
+*.log
+

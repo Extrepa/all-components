@@ -1,0 +1,80 @@
+:root {
+  color-scheme: dark;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  background: radial-gradient(circle at top, #141432 0, #050510 55%);
+  color: #f9f5ff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  overflow: hidden; /* Prevent default scroll when using ScrollControls */
+}
+
+html {
+  overflow: hidden;
+}
+
+.landing-root {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.landing-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.2fr);
+  gap: 2.5rem;
+  max-width: 1100px;
+  width: 100%;
+  align-items: center;
+}
+
+.landing-copy h1 {
+  font-size: clamp(2.8rem, 4vw, 3.6rem);
+  margin: 0 0 0.75rem;
+}
+
+.landing-copy p {
+  margin: 0 0 1.5rem;
+  opacity: 0.8;
+}
+
+.trigger-button {
+  padding: 0.7rem 1.6rem;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(135deg, #ff7af5, #7b5cff);
+  color: #050510;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+}
+
+.landing-hero-3d {
+  height: 360px;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+}
+
+.landing-hero-3d canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+@media (max-width: 800px) {
+  .landing-hero {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .landing-hero-3d {
+    order: -1;
+  }
+}

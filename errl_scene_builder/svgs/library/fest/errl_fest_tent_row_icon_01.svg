@@ -1,0 +1,9 @@
+<!-- Example 186 | errl_fest_tent_row_icon_01 (ui/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="ui" data-name="errl_fest_tent_row_icon_01">
+  <g fill="none">
+    <rect x="20" y="28" width="24" height="10" rx="2" fill="#0f172a"/>
+    <path d="M21 38 L26 30 31 38 Z" fill="#22d3ee"/>
+    <path d="M33 38 L38 30 43 38 Z" fill="#fb7185"/>
+  </g>
+</svg>

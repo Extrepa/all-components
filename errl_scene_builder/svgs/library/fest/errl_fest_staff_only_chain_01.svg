@@ -1,0 +1,10 @@
+<!-- Example 192 | errl_fest_staff_only_chain_01 (ui/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="ui" data-name="errl_fest_staff_only_chain_01">
+  <g fill="none">
+    <rect x="18" y="30" width="3" height="12" rx="1.4" fill="#e5e7eb"/>
+    <rect x="43" y="30" width="3" height="12" rx="1.4" fill="#e5e7eb"/>
+    <path d="M21 34 C26 32 35 32 43 34"
+      stroke="#fb7185" stroke-width="1.6" stroke-linecap="round"/>
+  </g>
+</svg>

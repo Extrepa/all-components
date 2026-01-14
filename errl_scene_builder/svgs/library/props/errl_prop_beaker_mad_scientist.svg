@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_prop" data-cat="prop" data-name="errl_prop_beaker_mad_scientist">
+  <rect width="64" height="64" rx="12" fill="none"/>
+  <path d="M26 12h12v6l10 26c1.5 4-1.2 8-5.4 8H21.4c-4.2 0-7-4-5.4-8l10-26v-6z" fill="rgba(52,225,255,0.12)" stroke="#34e1ff" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M21 34h22l2 6H19z" fill="#34e1ff" opacity="0.35"/>
+  <circle cx="28" cy="40" r="2" fill="#9af4ff"/>
+  <circle cx="36" cy="44" r="2.2" fill="#9af4ff"/>
+  <path d="M29 18h6" stroke="#34e1ff" stroke-width="2" stroke-linecap="round"/>
+</svg>

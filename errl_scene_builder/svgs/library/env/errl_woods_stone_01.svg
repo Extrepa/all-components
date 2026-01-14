@@ -1,0 +1,8 @@
+<!-- 45) errl_woods_stone_01 – single rock (prop) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="prop" data-name="errl_woods_stone_01">
+  <g fill="none">
+    <path d="M22 44 L30 40 38 42 40 48 26 50 Z" fill="#64748b"/>
+    <path d="M28 42 L34 42 36 46 30 47 Z" fill="#94a3b8" opacity="0.9"/>
+  </g>
+</svg>

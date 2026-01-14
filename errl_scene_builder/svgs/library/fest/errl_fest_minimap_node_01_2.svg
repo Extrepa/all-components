@@ -1,0 +1,186 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" id="icon-kskw3tviy"><!-- Example 181 | errl_fest_minimap_node_01 (ui) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="ui" data-name="errl_fest_minimap_node_01">
+  <g fill="none">
+    <circle cx="32" cy="32" r="5" fill="#0f172a"/>
+    <circle cx="32" cy="32" r="3" fill="#22d3ee"/>
+  </g>
+</svg>
+
+<!-- Example 182 | errl_fest_minimap_node_vip_01 (ui) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="ui" data-name="errl_fest_minimap_node_vip_01">
+  <g fill="none">
+    <circle cx="32" cy="32" r="5" fill="#0f172a"/>
+    <circle cx="32" cy="32" r="3" fill="#fb7185"/>
+    <path d="M32 28 L33 30 L35 30.2 L33.7 31.4 L34 33 L32 32.1 L30 33 L30.3 31.4 29 30.2 31 30z" fill="#facc15"/>
+  </g>
+</svg>
+
+<!-- Example 183 | errl_fest_tent_icon_chill_01 (ui/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="ui" data-name="errl_fest_tent_icon_chill_01">
+  <g fill="none">
+    <rect x="24" y="26" width="16" height="14" rx="3" fill="#0f172a"/>
+    <path d="M26 38 L32 30 38 38 Z" fill="#22d3ee"/>
+    <ellipse cx="32" cy="40" rx="8" ry="2.4" fill="#020617" opacity="0.45"/>
+  </g>
+</svg>
+
+<!-- Example 184 | errl_fest_chair_icon_01 (ui/prop) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="ui" data-name="errl_fest_chair_icon_01">
+  <g fill="none">
+    <rect x="26" y="30" width="12" height="6" rx="2" fill="#111827"/>
+    <rect x="27" y="28" width="10" height="2" rx="1" fill="#0f172a"/>
+    <path d="M28 36 L26 40 M36 36 L38 40" stroke="#e5e7eb" stroke-width="1.4" stroke-linecap="round"/>
+  </g>
+</svg>
+
+<!-- Example 185 | errl_fest_fire_circle_icon_01 (ui/fx) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="ui" data-name="errl_fest_fire_circle_icon_01">
+  <g fill="none">
+    <circle cx="32" cy="32" r="8" fill="#020617"/>
+    <path d="M32 28 C30 30 30 32.5 31 34.5s1.5 2.5 2 3.5c0.7-1 1.5-2 2-3.5s1-3.5-1-5.5-4-1.5-4-1.5z" fill="#f97316"/>
+    <path d="M32 29.4 C30.9 30.7 30.9 32 31.3 33s0.8 1.5 1.1 2c0.6-0.8 1.1-1.4 1.4-2.4s0.2-2-0.5-2.8z" fill="#facc15"/>
+  </g>
+</svg>
+
+<!-- Example 186 | errl_fest_tent_row_icon_01 (ui/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="ui" data-name="errl_fest_tent_row_icon_01">
+  <g fill="none">
+    <rect x="20" y="28" width="24" height="10" rx="2" fill="#0f172a"/>
+    <path d="M21 38 L26 30 31 38 Z" fill="#22d3ee"/>
+    <path d="M33 38 L38 30 43 38 Z" fill="#fb7185"/>
+  </g>
+</svg>
+
+<!-- Example 187 | errl_fest_crowd_gate_bar_01 (env/ui) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="env" data-name="errl_fest_crowd_gate_bar_01">
+  <g fill="none">
+    <rect x="14" y="38" width="36" height="4" rx="2" fill="#111827"/>
+    <rect x="16" y="36" width="4" height="8" rx="2" fill="#4b5563"/>
+    <rect x="30" y="36" width="4" height="8" rx="2" fill="#4b5563"/>
+    <rect x="40" y="36" width="4" height="8" rx="2" fill="#4b5563"/>
+  </g>
+</svg>
+
+<!-- Example 188 | errl_fest_safety_notice_sign_01 (ui/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="ui" data-name="errl_fest_safety_notice_sign_01">
+  <g fill="none">
+    <rect x="22" y="22" width="20" height="14" rx="2" fill="#111827"/>
+    <rect x="24" y="24" width="16" height="3" rx="1.5" fill="#f97316"/>
+    <path d="M24 29 H38 M24 32 H34" stroke="#e5e7eb" stroke-width="1.2" stroke-linecap="round" opacity="0.8"/>
+  </g>
+</svg>
+
+<!-- Example 189 | errl_fest_barrel_trash_pair_01 (prop/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="prop" data-name="errl_fest_barrel_trash_pair_01">
+  <g fill="none">
+    <!-- left -->
+    <ellipse cx="24" cy="34" rx="6" ry="2.2" fill="#0f172a"/>
+    <rect x="20" y="34" width="8" height="8" rx="3" fill="#111827"/>
+    <!-- right -->
+    <ellipse cx="40" cy="36" rx="6" ry="2.2" fill="#0f172a"/>
+    <rect x="36" y="36" width="8" height="8" rx="3" fill="#111827"/>
+  </g>
+</svg>
+
+<!-- Example 190 | errl_fest_fire_lane_marker_01 (ui/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="ui" data-name="errl_fest_fire_lane_marker_01">
+  <g fill="none">
+    <rect x="18" y="40" width="28" height="4" rx="2" fill="#7f1d1d"/>
+    <path d="M20 42 H24 M26 42 H30 M32 42 H36 M38 42 H42" stroke="#fecaca" stroke-width="1.2" stroke-linecap="round"/>
+  </g>
+</svg>
+
+<!-- Example 191 | errl_fest_restock_cart_01 (prop/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="prop" data-name="errl_fest_restock_cart_01">
+  <g fill="none">
+    <rect x="18" y="30" width="24" height="10" rx="2" fill="#111827"/>
+    <rect x="18" y="28" width="10" height="3" rx="1.5" fill="#0f172a"/>
+    <!-- wheels -->
+    <circle cx="22" cy="42" r="2.3" fill="#020617"/>
+    <circle cx="22" cy="42" r="1.2" fill="#e5e7eb"/>
+    <circle cx="38" cy="42" r="2.3" fill="#020617"/>
+    <circle cx="38" cy="42" r="1.2" fill="#e5e7eb"/>
+  </g>
+</svg>
+
+<!-- Example 192 | errl_fest_staff_only_chain_01 (ui/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="ui" data-name="errl_fest_staff_only_chain_01">
+  <g fill="none">
+    <rect x="18" y="30" width="3" height="12" rx="1.4" fill="#e5e7eb"/>
+    <rect x="43" y="30" width="3" height="12" rx="1.4" fill="#e5e7eb"/>
+    <path d="M21 34 C26 32 35 32 43 34" stroke="#fb7185" stroke-width="1.6" stroke-linecap="round"/>
+  </g>
+</svg>
+
+<!-- Example 193 | errl_fest_tent_icon_food_01 (ui/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="ui" data-name="errl_fest_tent_icon_food_01">
+  <g fill="none">
+    <rect x="24" y="26" width="16" height="14" rx="3" fill="#0f172a"/>
+    <path d="M26 38 L32 28 38 38 Z" fill="#a855f7"/>
+    <!-- little tray / food glyph -->
+    <rect x="28" y="34" width="8" height="2" rx="1" fill="#facc15"/>
+  </g>
+</svg>
+
+<!-- Example 194 | errl_fest_orb_line_path_01 (fx/ui) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="fx" data-name="errl_fest_orb_line_path_01">
+  <g fill="none">
+    <path d="M16 34 H48" stroke="#0f172a" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="20" cy="34" r="2" fill="#22d3ee"/>
+    <circle cx="28" cy="34" r="2" fill="#fb7185"/>
+    <circle cx="36" cy="34" r="2" fill="#facc15"/>
+    <circle cx="44" cy="34" r="2" fill="#22d3ee"/>
+  </g>
+</svg>
+
+<!-- Example 195 | errl_fest_stage_edge_flags_01 (fx/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="fx" data-name="errl_fest_stage_edge_flags_01">
+  <g fill="none">
+    <rect x="14" y="40" width="36" height="3" rx="1.5" fill="#0f172a"/>
+    <path d="M16 40 L20 44 L24 40 Z" fill="#22d3ee"/>
+    <path d="M26 40 L30 44 L34 40 Z" fill="#fb7185"/>
+    <path d="M36 40 L40 44 L44 40 Z" fill="#facc15"/>
+  </g>
+</svg>
+
+<!-- Example 196 | errl_fest_gate_post_pair_01 (env/prop) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="env" data-name="errl_fest_gate_post_pair_01">
+  <g fill="none">
+    <rect x="18" y="28" width="4" height="20" rx="2" fill="#111827"/>
+    <rect x="42" y="28" width="4" height="20" rx="2" fill="#111827"/>
+    <circle cx="20" cy="28" r="1.6" fill="#22d3ee"/>
+    <circle cx="44" cy="28" r="1.6" fill="#facc15"/>
+  </g>
+</svg>
+
+<!-- Example 197 | errl_fest_gate_link_chain_01 (fx/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="fx" data-name="errl_fest_gate_link_chain_01">
+  <g fill="none">
+    <path d="M22 36 C26 34 30 34 34 36 C38 38 42 38 46 36" stroke="#4b5563" stroke-width="1.8" stroke-linecap="round"/>
+  </g>
+</svg>
+
+<!-- Example 198 | errl_fest_waypoint_ring_01 (ui/fx) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="ui" data-name="errl_fest_waypoint_ring_01">
+  <g fill="none">
+    <circle cx="32" cy="36" r="6" fill="#0f172a"/>
+    <circle cx="32" cy="36" r="3.5" fill="#22d3ee"/>
+    <circle cx="32" cy="36" r="8" stroke="#22d3ee" stroke-width="1.4" opacity="0.4"/>
+  </g>
+</svg>
+
+<!-- Example 199 | errl_fest_waypoint_pin_01 (ui) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="ui" data-name="errl_fest_waypoint_pin_01">
+  <g fill="none">
+    <path d="M32 24 C28 24 26 27 26 30c0 4 4 7 6 10 2-3 6-6 6-10 0-3-2-6-6-6z" fill="#22d3ee"/>
+    <circle cx="32" cy="30" r="2" fill="#0f172a"/>
+  </g>
+</svg>
+
+<!-- Example 200 | errl_fest_waypoint_pin_vip_01 (ui) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="ui" data-name="errl_fest_waypoint_pin_vip_01">
+  <g fill="none">
+    <path d="M32 24 C28 24 26 27 26 30c0 4 4 7 6 10 2-3 6-6 6-10 0-3-2-6-6-6z" fill="#fb7185"/>
+    <path d="M32 26 L33 28 L35 28.2 L33.7 29.4 L34 31 L32 30.1 L30 31 L30.3 29.4 29 28.2 31 28z" fill="#facc15"/>
+  </g>
+</svg></svg>

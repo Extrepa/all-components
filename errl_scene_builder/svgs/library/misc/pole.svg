@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" id="icon-6nhqavdpe">
+  <g xmlns="http://www.w3.org/2000/svg" fill="none">
+    <!-- pole -->
+    <rect x="30" y="24" width="4" height="22" rx="1.5" fill="#78350f"/>
+    <!-- sign plate -->
+    <rect x="24" y="20" width="16" height="8" rx="3" fill="#111827"/>
+    <!-- tiny errl blob -->
+    <path d="M32 22 C29 22 27 24 27 26s2 4 5 4 5-2 5-4-2-4-5-4z" fill="#22d3ee"/>
+    <ellipse cx="32" cy="48" rx="8" ry="2.5" fill="#020617" opacity="0.45"/>
+  </g>
+</svg>

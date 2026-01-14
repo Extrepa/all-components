@@ -1,0 +1,145 @@
+# Developer Guide
+
+**Project:** [Project Name]  
+**Last Updated:** [Date]
+
+## Development Setup
+
+### Prerequisites
+
+- Node.js [version]
+- npm [version] or yarn [version]
+- [Other prerequisites]
+
+### Installation
+
+```bash
+# Clone repository
+git clone [repository-url]
+
+# Install dependencies
+npm install
+```
+
+### Development Server
+
+```bash
+# Start development server
+npm run dev
+```
+
+## Project Structure
+
+See [Project Structure](project-structure.md) for detailed file organization.
+
+## Development Workflow
+
+### Making Changes
+
+1. Create feature branch
+2. Make changes
+3. Write tests
+4. Run tests
+5. Submit pull request
+
+### Code Style
+
+- [Code style guidelines]
+- [Linting rules]
+- [Formatting rules]
+
+## Architecture
+
+See [Architecture Documentation](architecture.md) for system design.
+
+## Testing
+
+### Running Tests
+
+```bash
+# Run all tests
+npm test
+
+# Run tests in watch mode
+npm test -- --watch
+
+# Run tests with coverage
+npm run test:coverage
+```
+
+### Writing Tests
+
+- [Test file structure]
+- [Test patterns]
+- [Mocking guidelines]
+
+## Building
+
+### Development Build
+
+```bash
+npm run build:dev
+```
+
+### Production Build
+
+```bash
+npm run build
+```
+
+## Debugging
+
+### Development Tools
+
+- [Debugging tools]
+- [Browser DevTools]
+- [VS Code debugging]
+
+### Common Issues
+
+**Issue:** [Problem]  
+**Solution:** [Fix]
+
+## Contributing
+
+### Code Contribution
+
+1. Fork repository
+2. Create feature branch
+3. Make changes
+4. Write tests
+5. Submit pull request
+
+### Pull Request Guidelines
+
+- [PR requirements]
+- [Review process]
+- [Merge criteria]
+
+## API Reference
+
+### [API Endpoint/Function]
+
+**Description:** [What it does]  
+**Parameters:** [Input parameters]  
+**Returns:** [Return value]  
+**Example:**
+```typescript
+// Example usage
+```
+
+## Dependencies
+
+### Core Dependencies
+
+- **[Package]** - [Purpose]
+
+### Development Dependencies
+
+- **[Package]** - [Purpose]
+
+## Related Documentation
+
+- [Architecture](architecture.md)
+- [Project Structure](project-structure.md)
+- [User Guide](user-guide.md.template)

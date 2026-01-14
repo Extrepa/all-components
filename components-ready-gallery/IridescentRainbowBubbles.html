@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Iridescent Popping Bubbles</title>
+    <style>
+        body { margin: 0; overflow: hidden; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    <script type="module">
+        import * as THREE from 'https://esm.run/three';
+        import { OrbitControls } from 'https://esm.run/three/examples/jsm/controls/OrbitControls.js';
+
+        // SCENE SETUP
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x050515);
+        
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 25;
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(2);
+        document.body.appendChild(renderer.domElement);
+
+        // CONTROLS
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.minDistance = 10;
+        controls.maxDistance = 50;
+
+        // LIGHTING
+        scene.add(new THREE.AmbientLight(0xffffff, 0.3));
+        const light1 = new THREE.DirectionalLight(0xffffff, 1.0);
+        light1.position.set(5, 10, 7.5);
+        scene.add(light1);
+        const light2 = new THREE.DirectionalLight(0x88aaff, 0.5);
+        light2.position.set(-5, -10, -7.5);
+        scene.add(light2);
+
+        // SHADERS for Iridescence
+        const vertexShader = `
+            varying vec3 vNormal;
+            varying vec3 vViewVector;
+            void main() {
+                vec4 worldPosition = modelMatrix * vec4(position, 1.0);
+                vViewVector = normalize(cameraPosition - worldPosition.xyz);
+                vNormal = normalize(normalMatrix * normal);
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+            }
+        `;
+
+        const fragmentShader = `
+            varying vec3 vNormal;
+            varying vec3 vViewVector;
+            
+            float fresnel(vec3 normal, vec3 viewVec, float power) {
+                return pow(1.0 - dot(normal, viewVec), power);
+            }
+
+            vec3 hsv2rgb(vec3 c) {
+                vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+                vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
+                return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+            }
+
+            void main() {
+                float fresnelFactor = fresnel(vNormal, vViewVector, 2.0);
+                
+                float hue = vNormal.y * 0.2 + fresnelFactor * 0.5;
+                vec3 iridescentColor = hsv2rgb(vec3(hue, 0.7, 1.0));
+                
+                float alpha = fresnelFactor * 0.6 + 0.3;
+
+                gl_FragColor = vec4(iridescentColor, alpha);
+            }
+        `;
+
+        // BUBBLES
+        const bubbles = [];
+        const BUBBLE_COUNT = 60;
+        const SPAWN_AREA = 25;
+        const bubbleGeometry = new THREE.SphereGeometry(1, 32, 32);
+        const bubbleMaterial = new THREE.ShaderMaterial({
+            vertexShader,
+            fragmentShader,
+            transparent: true,
+            side: THREE.FrontSide,
+            blending: THREE.AdditiveBlending,
+        });
+
+        function createBubble() {
+            const size = Math.random() * 1.5 + 0.5;
+            const bubble = new THREE.Mesh(bubbleGeometry, bubbleMaterial);
+            bubble.scale.set(size, size, size);
+
+            bubble.position.x = (Math.random() - 0.5) * SPAWN_AREA;
+            bubble.position.y = -SPAWN_AREA / 2 - Math.random() * 10;
+            bubble.position.z = (Math.random() - 0.5) * SPAWN_AREA;
+
+            bubble.userData.speed = Math.random() * 0.02 + 0.01;
+            bubble.userData.wobbleSpeed = Math.random() * 2 + 1;
+            bubble.userData.wobbleAmount = Math.random() * 0.02;
+
+            scene.add(bubble);
+            bubbles.push(bubble);
+        }
+
+        for (let i = 0; i < BUBBLE_COUNT; i++) {
+            createBubble();
+        }
+
+        // INTERACTION & SOUND
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+        let audioContext;
+
+        function playPopSound() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            const now = audioContext.currentTime;
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(600 + Math.random() * 400, now);
+            gainNode.gain.setValueAtTime(0.5, now);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+            
+            oscillator.start(now);
+            oscillator.stop(now + 0.1);
+        }
+
+        function onMouseClick(event) {
+            if (audioContext && audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObjects(bubbles);
+
+            if (intersects.length > 0) {
+                const poppedBubble = intersects[0].object;
+                
+                playPopSound();
+
+                scene.remove(poppedBubble);
+                bubbles.splice(bubbles.indexOf(poppedBubble), 1);
+                
+                // Replace the popped bubble
+                setTimeout(createBubble, Math.random() * 1000);
+            }
+        }
+        window.addEventListener('click', onMouseClick);
+
+        // RESIZE HANDLER
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+        window.addEventListener('resize', onWindowResize);
+
+        // ANIMATION LOOP
+        const clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const elapsedTime = clock.getElapsedTime();
+
+            bubbles.forEach(bubble => {
+                bubble.position.y += bubble.userData.speed;
+                bubble.position.x += Math.sin(elapsedTime * bubble.userData.wobbleSpeed) * bubble.userData.wobbleAmount;
+                
+                // Reset bubble if it goes off-screen
+                if (bubble.position.y > SPAWN_AREA / 2 + 5) {
+                    bubble.position.y = -SPAWN_AREA / 2 - 5;
+                    bubble.position.x = (Math.random() - 0.5) * SPAWN_AREA;
+                    bubble.position.z = (Math.random() - 0.5) * SPAWN_AREA;
+                }
+            });
+
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        animate();
+    </script>
+</body>
+</html>

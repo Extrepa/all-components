@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virus Overload</title>
+    <style>
+        body { margin: 0; overflow: hidden; background-color: #000; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    <script type="module">
+        import * as THREE from 'https://esm.run/three';
+        import { OrbitControls } from 'https://esm.run/three/examples/jsm/controls/OrbitControls.js';
+        import { EffectComposer } from 'https://esm.run/three/examples/jsm/postprocessing/EffectComposer.js';
+        import { RenderPass } from 'https://esm.run/three/examples/jsm/postprocessing/RenderPass.js';
+        import { UnrealBloomPass } from 'https://esm.run/three/examples/jsm/postprocessing/UnrealBloomPass.js';
+        import { FilmPass } from 'https://esm.run/three/examples/jsm/postprocessing/FilmPass.js';
+
+        // Scene setup
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 25;
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        document.body.appendChild(renderer.domElement);
+
+        // Controls
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+
+        // Clock
+        const clock = new THREE.Clock();
+
+        // --- Shaders for Drippy Popups ---
+        const vertexShader = `
+            uniform float uTime;
+            uniform float uFrequency;
+            varying vec2 vUv;
+
+            void main() {
+                vUv = uv;
+                vec3 pos = position;
+                float drip = sin(pos.x * uFrequency + uTime * 2.0) * pow(1.0 - uv.y, 3.0) * 0.5;
+                drip += sin(pos.y * uFrequency * 0.5 + uTime * 1.5) * pow(1.0 - uv.y, 3.5) * 0.3;
+                pos.z += drip;
+                pos.y -= pow(1.0 - uv.y, 2.0) * (sin(uTime) * 0.1 + 0.1);
+
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+            }
+        `;
+
+        const fragmentShader = `
+            uniform float uTime;
+            uniform sampler2D uTexture;
+            varying vec2 vUv;
+            
+            // Function to convert RGB to HSL
+            vec3 rgb2hsl(vec3 color) {
+                float maxC = max(color.r, max(color.g, color.b));
+                float minC = min(color.r, min(color.g, color.b));
+                float h = 0.0, s = 0.0, l = (maxC + minC) / 2.0;
+                if (maxC == minC) {
+                    h = s = 0.0; // achromatic
+                } else {
+                    float d = maxC - minC;
+                    s = l > 0.5 ? d / (2.0 - maxC - minC) : d / (maxC + minC);
+                    if (maxC == color.r) h = (color.g - color.b) / d + (color.g < color.b ? 6.0 : 0.0);
+                    else if (maxC == color.g) h = (color.b - color.r) / d + 2.0;
+                    else h = (color.r - color.g) / d + 4.0;
+                    h /= 6.0;
+                }
+                return vec3(h, s, l);
+            }
+
+            // Function to convert HSL to RGB
+            vec3 hsl2rgb(vec3 hsl) {
+                float h = hsl.x, s = hsl.y, l = hsl.z;
+                vec3 rgb;
+                if (s == 0.0) {
+                    rgb = vec3(l); // achromatic
+                } else {
+                    auto q = l < 0.5 ? l * (1.0 + s) : l + s - l * s;
+                    auto p = 2.0 * l - q;
+                    rgb.r = hue2rgb(p, q, h + 1.0/3.0);
+                    rgb.g = hue2rgb(p, q, h);
+                    rgb.b = hue2rgb(p, q, h - 1.0/3.0);
+                }
+                return rgb;
+            }
+
+            float hue2rgb(float p, float q, float t) {
+                if(t < 0.0) t += 1.0;
+                if(t > 1.0) t -= 1.0;
+                if(t < 1.0/6.0) return p + (q - p) * 6.0 * t;
+                if(t < 1.0/2.0) return q;
+                if(t < 2.0/3.0) return p + (q - p) * (2.0/3.0 - t) * 6.0;
+                return p;
+            }
+
+
+            void main() {
+                vec2 distortedUv = vUv;
+                distortedUv.y += sin(distortedUv.x * 20.0 + uTime * 3.0) * 0.01;
+                distortedUv.x += sin(distortedUv.y * 25.0 + uTime * 2.0) * 0.01;
+
+                vec4 texColor = texture2D(uTexture, distortedUv);
+
+                vec3 hsl = rgb2hsl(texColor.rgb);
+                hsl.x = mod(hsl.x + uTime * 0.1, 1.0); // Hue shift
+                hsl.y = 1.0; // Saturate
+                
+                vec3 finalColor = hsl2rgb(hsl);
+                
+                gl_FragColor = vec4(finalColor, texColor.a);
+            }
+        `;
+
+        // --- Virus Popups ---
+        const popups = [];
+        const MAX_POPUPS = 50;
+
+        const errorMessages = [
+            "FATAL ERROR", "VIRUS DETECTED", "ACCESS DENIED",
+            "SYSTEM 32 DELETED", "WARNING!", "ILLEGAL OPERATION",
+            "0xDEADBEEF", "KERNEL PANIC", "MEMORY LEAK", "STACK OVERFLOW"
+        ];
+        
+        function createPopupTexture() {
+            const canvas = document.createElement('canvas');
+            const width = 256;
+            const height = 128;
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+
+            // Window background
+            ctx.fillStyle = '#C0C0C0';
+            ctx.fillRect(0, 0, width, height);
+
+            // Title bar
+            ctx.fillStyle = `hsl(${Math.random() * 360}, 100%, 30%)`;
+            ctx.fillRect(0, 0, width, 20);
+
+            // Title text
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = 'bold 12px monospace';
+            const title = errorMessages[Math.floor(Math.random() * errorMessages.length)];
+            ctx.fillText(title, 5, 15);
+
+            // Close button
+            ctx.fillStyle = '#C0C0C0';
+            ctx.fillRect(width - 18, 2, 16, 16);
+            ctx.fillStyle = '#000000';
+            ctx.font = 'bold 12px monospace';
+            ctx.fillText('X', width - 14, 14);
+
+            // Window content
+            ctx.fillStyle = '#000000';
+            ctx.font = '14px monospace';
+            ctx.fillText("An error has occurred.", 10, 50);
+            ctx.fillText("To continue:", 10, 70);
+            ctx.fillText("> Press any key to", 10, 90);
+            ctx.fillText("  crash your system.", 10, 105);
+
+            return new THREE.CanvasTexture(canvas);
+        }
+
+        function createPopup() {
+            const texture = createPopupTexture();
+            const material = new THREE.ShaderMaterial({
+                vertexShader,
+                fragmentShader,
+                uniforms: {
+                    uTime: { value: 0 },
+                    uFrequency: { value: Math.random() * 10 + 5 },
+                    uTexture: { value: texture }
+                },
+                side: THREE.DoubleSide
+            });
+
+            const geometry = new THREE.PlaneGeometry(10, 5);
+            const popup = new THREE.Mesh(geometry, material);
+
+            popup.position.set(
+                (Math.random() - 0.5) * 50,
+                (Math.random() - 0.5) * 50,
+                (Math.random() - 0.5) * 50
+            );
+            popup.rotation.set(
+                Math.random() * Math.PI,
+                Math.random() * Math.PI,
+                Math.random() * Math.PI
+            );
+            
+            popup.userData.life = Math.random() * 5 + 5; // Life in seconds
+            popup.userData.velocity = new THREE.Vector3(
+                (Math.random() - 0.5) * 0.1,
+                (Math.random() - 0.5) * 0.1,
+                (Math.random() - 0.5) * 0.1,
+            );
+
+            scene.add(popup);
+            popups.push(popup);
+        }
+
+        // --- Particle System ---
+        const particleCount = 20000;
+        const positions = new Float32Array(particleCount * 3);
+        const colors = new Float32Array(particleCount * 3);
+        const sizes = new Float32Array(particleCount);
+
+        for (let i = 0; i < particleCount; i++) {
+            positions[i * 3] = (Math.random() - 0.5) * 100;
+            positions[i * 3 + 1] = (Math.random() - 0.5) * 100;
+            positions[i * 3 + 2] = (Math.random() - 0.5) * 100;
+
+            const color = new THREE.Color();
+            color.setHSL(Math.random(), 1.0, 0.5);
+            colors[i * 3] = color.r;
+            colors[i * 3 + 1] = color.g;
+            colors[i * 3 + 2] = color.b;
+            
+            sizes[i] = Math.random() * 1.5 + 0.5;
+        }
+
+        const particleGeometry = new THREE.BufferGeometry();
+        particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        particleGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+        
+        const particleMaterial = new THREE.PointsMaterial({
+            size: 0.2,
+            vertexColors: true,
+            blending: THREE.AdditiveBlending,
+            transparent: true,
+            depthWrite: false,
+        });
+
+        const particles = new THREE.Points(particleGeometry, particleMaterial);
+        scene.add(particles);
+
+
+        // --- Post Processing ---
+        const composer = new EffectComposer(renderer);
+        composer.addPass(new RenderPass(scene, camera));
+
+        const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
+        bloomPass.threshold = 0;
+        bloomPass.strength = 1.0;
+        bloomPass.radius = 0.5;
+        composer.addPass(bloomPass);
+
+        const filmPass = new FilmPass(0.35, 0.5, 2048, false);
+        composer.addPass(filmPass);
+
+
+        // --- Resize Handler ---
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            composer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        });
+
+        // --- Animation Loop ---
+        let lastPopupTime = 0;
+        
+        function animate() {
+            requestAnimationFrame(animate);
+            const elapsedTime = clock.getElapsedTime();
+            const deltaTime = clock.getDelta();
+
+            // Create new popups periodically
+            if (elapsedTime - lastPopupTime > 0.1 && popups.length < MAX_POPUPS) {
+                createPopup();
+                lastPopupTime = elapsedTime;
+            }
+            
+            // Update popups
+            for (let i = popups.length - 1; i >= 0; i--) {
+                const popup = popups[i];
+                popup.material.uniforms.uTime.value = elapsedTime;
+                popup.userData.life -= deltaTime;
+
+                // Animate position and rotation
+                popup.position.add(popup.userData.velocity);
+                popup.rotation.x += 0.001;
+                popup.rotation.y += 0.002;
+
+                if (popup.userData.life <= 0) {
+                    scene.remove(popup);
+                    popup.geometry.dispose();
+                    popup.material.dispose();
+                    popups.splice(i, 1);
+                }
+            }
+            
+            // Update particles
+            const positions = particles.geometry.attributes.position.array;
+            for (let i = 0; i < particleCount; i++) {
+                const i3 = i * 3;
+                const x = positions[i3];
+                positions[i3 + 1] += Math.sin(elapsedTime + x) * 0.01;
+            }
+            particles.geometry.attributes.position.needsUpdate = true;
+            particles.rotation.y = elapsedTime * 0.05;
+
+            controls.update();
+            composer.render();
+        }
+
+        animate();
+    </script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<!-- 94) errl_woods_moon_through_trees_01 – moon + branch frame (fx/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="fx" data-name="errl_woods_moon_through_trees_01">
+  <g fill="none">
+    <rect x="8" y="8" width="48" height="48" rx="10" fill="#020617"/>
+    <!-- moon -->
+    <circle cx="38" cy="20" r="6" fill="#e5e7eb"/>
+    <circle cx="40" cy="18" r="5" fill="#0f172a"/>
+    <!-- branches -->
+    <path d="M14 40 C20 36 24 32 28 30"
+      stroke="#111827" stroke-width="2" stroke-linecap="round"/>
+    <path d="M20 44 C26 38 34 32 44 28"
+      stroke="#111827" stroke-width="2" stroke-linecap="round"/>
+  </g>
+</svg>

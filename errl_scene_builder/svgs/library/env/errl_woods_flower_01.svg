@@ -1,0 +1,12 @@
+<!-- 29) errl_woods_flower_01 – tiny wildflower (prop) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="prop" data-name="errl_woods_flower_01">
+  <g fill="none">
+    <path d="M32 48 V36" stroke="#166534" stroke-width="1.5" stroke-linecap="round"/>
+    <circle cx="32" cy="34" r="1.2" fill="#facc15"/>
+    <circle cx="30.4" cy="33" r="1.2" fill="#fb7185"/>
+    <circle cx="33.6" cy="33" r="1.2" fill="#22d3ee"/>
+    <circle cx="31" cy="35.4" r="1.1" fill="#a855f7"/>
+    <circle cx="33" cy="35.4" r="1.1" fill="#f97316"/>
+  </g>
+</svg>

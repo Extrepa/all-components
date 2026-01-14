@@ -1,0 +1,12 @@
+<!-- 77) errl_woods_firefly_cluster_02 – vertical streak fireflies (fx) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="fx" data-name="errl_woods_firefly_cluster_02">
+  <g fill="none">
+    <circle cx="26" cy="22" r="1.2" fill="#facc15"/>
+    <circle cx="28" cy="28" r="1.4" fill="#facc15"/>
+    <circle cx="30" cy="34" r="1.2" fill="#facc15"/>
+    <circle cx="38" cy="24" r="1.2" fill="#facc15"/>
+    <circle cx="40" cy="30" r="1.4" fill="#facc15"/>
+    <circle cx="42" cy="36" r="1.2" fill="#facc15"/>
+  </g>
+</svg>

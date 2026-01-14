@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>An interactive overhead projector where you drop oil and water in different colors and then it shines on the wall - P5.js Sketch</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0a0a0a;
+      color: #fff;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .header {
+      padding: 1.5rem 2rem;
+      background: #1a1a1a;
+      border-bottom: 1px solid #333;
+    }
+    .header h1 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .header p {
+      color: #b0b0b0;
+      font-size: 0.875rem;
+    }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 1rem;
+      color: #6366f1;
+      text-decoration: none;
+      font-size: 0.875rem;
+    }
+    .back-link:hover {
+      text-decoration: underline;
+    }
+    #p5-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background: #0a0a0a;
+    }
+    .info {
+      padding: 1.5rem 2rem;
+      background: #1a1a1a;
+      border-top: 1px solid #333;
+      font-size: 0.875rem;
+    }
+    .info-item {
+      margin-bottom: 0.5rem;
+      display: flex;
+    }
+    .info-label {
+      width: 120px;
+      color: #b0b0b0;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="../index.html" class="back-link">← Back to Gallery</a>
+      <h1>An interactive overhead projector where you drop oil and water in different colors and then it shines on the wall</h1>
+      <p>P5.js Interactive Sketch</p>
+    </div>
+    <div id="p5-container"></div>
+    <div class="info">
+      <div class="info-item">
+        <span class="info-label">Prompt:</span>
+        <span>An interactive overhead projector where you drop oil and water in different colors and then it shines on the wall</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Model:</span>
+        <span>threePro</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Generation Time:</span>
+        <span>57.8s</span>
+      </div>
+    </div>
+  </div>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+  <script>
+    const container = document.getElementById('p5-container');
+    const sketchCode = "let drops = [];\nlet colors;\nlet projectorMask;\n\nfunction setup() {\n  createCanvas(800, 600);\n  \n  // Define a palette of overhead transparency ink colors\n  colors = [\n    color(255, 0, 100, 200),   // Magenta\n    color(0, 200, 255, 200),   // Cyan\n    color(255, 220, 0, 200),   // Yellow\n    color(100, 0, 255, 200),   // Purple\n    color(0, 255, 100, 200),   // Lime\n    color(20, 20, 20, 220)     // Black Oil\n  ];\n\n  // Create the vignette mask for the projector look\n  projectorMask = createGraphics(width, height);\n  projectorMask.background(0);\n  projectorMask.erase();\n  projectorMask.noStroke();\n  // Draw a soft circular opening\n  let maxR = height * 0.9;\n  for (let r = maxR; r > 0; r -= 2) {\n    let alpha = map(r, 0, maxR, 255, 0);\n    projectorMask.fill(0, 0, 0, alpha);\n    projectorMask.ellipse(width / 2, height / 2, r * 1.3, r);\n  }\n  projectorMask.noErase();\n}\n\nfunction draw() {\n  // 1. The Wall (Background)\n  background(245, 245, 240);\n  \n  // 2. Projector Light Grain\n  loadPixels();\n  for (let i = 0; i < pixels.length; i += 4) {\n    // Add subtle noise to simulate wall texture/analog projection grain\n    if (random(1) > 0.5) {\n      let noiseVal = random(-5, 5);\n      pixels[i] = constrain(pixels[i] + noiseVal, 0, 255);\n      pixels[i+1] = constrain(pixels[i+1] + noiseVal, 0, 255);\n      pixels[i+2] = constrain(pixels[i+2] + noiseVal, 0, 255);\n    }\n  }\n  updatePixels();\n\n  // 3. Draw the Fluids\n  // We use MULTIPLY blend mode to simulate transparent inks layering over light\n  blendMode(MULTIPLY);\n  \n  for (let i = drops.length - 1; i >= 0; i--) {\n    let d = drops[i];\n    d.update();\n    d.display();\n    \n    // Remove drops that drift too far or get too small\n    if (d.isDead()) {\n      drops.splice(i, 1);\n    }\n  }\n\n  // 4. Apply Projector Vignette (Mask)\n  // Switch back to blend to draw the darkness around the light\n  blendMode(BLEND);\n  image(projectorMask, 0, 0);\n\n  // 5. Instructions\n  fill(150);\n  noStroke();\n  textSize(12);\n  textAlign(LEFT, BOTTOM);\n  text(\"CLICK & DRAG to drop fluids. KEYS 1-6 to change colors.\", 20, height - 20);\n  \n  // Simluated dust motes in the projector light\n  drawDust();\n}\n\nfunction mouseDragged() {\n  // Rate limiter for spawning\n  if (frameCount % 3 === 0) {\n    addDrop();\n  }\n}\n\nfunction mousePressed() {\n  addDrop();\n}\n\nfunction addDrop() {\n  // Pick color based on some randomness but favored by selection logic could go here\n  // For now, random from palette or specific logic\n  let colIdx = floor(random(colors.length));\n  \n  // If holding keys 1-6, force color\n  if (keyIsDown(49)) colIdx = 0; // 1\n  if (keyIsDown(50)) colIdx = 1; // 2\n  if (keyIsDown(51)) colIdx = 2; // 3\n  if (keyIsDown(52)) colIdx = 3; // 4\n  if (keyIsDown(53)) colIdx = 4; // 5\n  if (keyIsDown(54)) colIdx = 5; // 6 - Oil\n\n  let isOil = (colIdx === 5); // The black/dark one behaves like oil\n  \n  drops.push(new FluidDrop(mouseX, mouseY, colors[colIdx], isOil));\n}\n\nfunction drawDust() {\n  stroke(255, 50);\n  strokeWeight(1);\n  for(let i=0; i<5; i++) {\n    let x = random(width);\n    let y = random(height);\n    // Only draw if inside the light roughly\n    let d = dist(x, y, width/2, height/2);\n    if(d < height/2) {\n      point(x, y);\n    }\n  }\n}\n\nclass FluidDrop {\n  constructor(x, y, col, isOil) {\n    this.pos = createVector(x, y);\n    this.isOil = isOil;\n    \n    // Oil moves slower, expands less. Water spreads out.\n    this.vel = p5.Vector.random2D().mult(random(0.2, 0.5));\n    this.radius = 1; \n    this.maxRadius = random(30, 80);\n    if (this.isOil) this.maxRadius = random(10, 40);\n    \n    this.col = col;\n    this.noiseOffset = random(1000);\n    this.noiseStep = random(0.005, 0.02);\n    this.life = 255;\n    this.age = 0;\n  }\n\n  update() {\n    this.age++;\n    \n    // Grow logic\n    if (this.radius < this.maxRadius) {\n      this.radius += (this.isOil ? 0.5 : 1.5);\n    }\n\n    // Movement: Slowly drift and follow a flow field based on Perlin noise\n    let angle = noise(this.pos.x * 0.002, this.pos.y * 0.002, frameCount * 0.001) * TWO_PI * 2;\n    let flow = p5.Vector.fromAngle(angle);\n    flow.mult(this.isOil ? 0.2 : 0.5); // Water flows faster\n    \n    this.pos.add(this.vel);\n    this.pos.add(flow);\n    \n    // Slowly rot\n    this.noiseOffset += this.noiseStep;\n    \n    // Heat effect: everything slowly rises or spreads out\n    // Real projectors get hot, causing convection\n    this.pos.y -= 0.1;\n  }\n\n  display() {\n    noStroke();\n    fill(this.col);\n    \n    push();\n    translate(this.pos.x, this.pos.y);\n    \n    beginShape();\n    // Draw a blob using noise\n    let resolution = 30; // vertices per shape\n    for (let i = 0; i <= resolution; i++) {\n      let angle = map(i, 0, resolution, 0, TWO_PI);\n      \n      // Noise creates the wobbly \"liquid\" edge\n      // We map the noise to the radius\n      let xoff = map(cos(angle), -1, 1, 0, 2);\n      let yoff = map(sin(angle), -1, 1, 0, 2);\n      \n      // Time affects the wobble\n      let n = noise(xoff + this.noiseOffset, yoff + this.noiseOffset, frameCount * 0.01);\n      \n      // Oil keeps its shape more (less wobble), water distorts more\n      let distortion = this.isOil ? 10 : 30; \n      let r = this.radius + map(n, 0, 1, -distortion, distortion);\n      \n      // Calculate vertex\n      let x = r * cos(angle);\n      let y = r * sin(angle);\n      \n      curveVertex(x, y);\n    }\n    endShape(CLOSE);\n    \n    // Specular highlight for oil to make it look shiny/viscous\n    if (this.isOil) {\n      fill(255, 100);\n      ellipse(-this.radius/3, -this.radius/3, this.radius/2, this.radius/3);\n    }\n    \n    pop();\n  }\n\n  isDead() {\n    // Kill if way off screen\n    return (this.pos.x < -100 || this.pos.x > width + 100 || \n            this.pos.y < -100 || this.pos.y > height + 100);\n  }\n}";
+    
+    const sketch = function(p) {
+      let drops = [];
+let colors;
+let projectorMask;
+
+function setup() {
+  createCanvas(800, 600);
+  
+  // Define a palette of overhead transparency ink colors
+  colors = [
+    color(255, 0, 100, 200),   // Magenta
+    color(0, 200, 255, 200),   // Cyan
+    color(255, 220, 0, 200),   // Yellow
+    color(100, 0, 255, 200),   // Purple
+    color(0, 255, 100, 200),   // Lime
+    color(20, 20, 20, 220)     // Black Oil
+  ];
+
+  // Create the vignette mask for the projector look
+  projectorMask = createGraphics(width, height);
+  projectorMask.background(0);
+  projectorMask.erase();
+  projectorMask.noStroke();
+  // Draw a soft circular opening
+  let maxR = height * 0.9;
+  for (let r = maxR; r > 0; r -= 2) {
+    let alpha = map(r, 0, maxR, 255, 0);
+    projectorMask.fill(0, 0, 0, alpha);
+    projectorMask.ellipse(width / 2, height / 2, r * 1.3, r);
+  }
+  projectorMask.noErase();
+}
+
+function draw() {
+  // 1. The Wall (Background)
+  background(245, 245, 240);
+  
+  // 2. Projector Light Grain
+  loadPixels();
+  for (let i = 0; i < pixels.length; i += 4) {
+    // Add subtle noise to simulate wall texture/analog projection grain
+    if (random(1) > 0.5) {
+      let noiseVal = random(-5, 5);
+      pixels[i] = constrain(pixels[i] + noiseVal, 0, 255);
+      pixels[i+1] = constrain(pixels[i+1] + noiseVal, 0, 255);
+      pixels[i+2] = constrain(pixels[i+2] + noiseVal, 0, 255);
+    }
+  }
+  updatePixels();
+
+  // 3. Draw the Fluids
+  // We use MULTIPLY blend mode to simulate transparent inks layering over light
+  blendMode(MULTIPLY);
+  
+  for (let i = drops.length - 1; i >= 0; i--) {
+    let d = drops[i];
+    d.update();
+    d.display();
+    
+    // Remove drops that drift too far or get too small
+    if (d.isDead()) {
+      drops.splice(i, 1);
+    }
+  }
+
+  // 4. Apply Projector Vignette (Mask)
+  // Switch back to blend to draw the darkness around the light
+  blendMode(BLEND);
+  image(projectorMask, 0, 0);
+
+  // 5. Instructions
+  fill(150);
+  noStroke();
+  textSize(12);
+  textAlign(LEFT, BOTTOM);
+  text("CLICK & DRAG to drop fluids. KEYS 1-6 to change colors.", 20, height - 20);
+  
+  // Simluated dust motes in the projector light
+  drawDust();
+}
+
+function mouseDragged() {
+  // Rate limiter for spawning
+  if (frameCount % 3 === 0) {
+    addDrop();
+  }
+}
+
+function mousePressed() {
+  addDrop();
+}
+
+function addDrop() {
+  // Pick color based on some randomness but favored by selection logic could go here
+  // For now, random from palette or specific logic
+  let colIdx = floor(random(colors.length));
+  
+  // If holding keys 1-6, force color
+  if (keyIsDown(49)) colIdx = 0; // 1
+  if (keyIsDown(50)) colIdx = 1; // 2
+  if (keyIsDown(51)) colIdx = 2; // 3
+  if (keyIsDown(52)) colIdx = 3; // 4
+  if (keyIsDown(53)) colIdx = 4; // 5
+  if (keyIsDown(54)) colIdx = 5; // 6 - Oil
+
+  let isOil = (colIdx === 5); // The black/dark one behaves like oil
+  
+  drops.push(new FluidDrop(mouseX, mouseY, colors[colIdx], isOil));
+}
+
+function drawDust() {
+  stroke(255, 50);
+  strokeWeight(1);
+  for(let i=0; i<5; i++) {
+    let x = random(width);
+    let y = random(height);
+    // Only draw if inside the light roughly
+    let d = dist(x, y, width/2, height/2);
+    if(d < height/2) {
+      point(x, y);
+    }
+  }
+}
+
+class FluidDrop {
+  constructor(x, y, col, isOil) {
+    this.pos = createVector(x, y);
+    this.isOil = isOil;
+    
+    // Oil moves slower, expands less. Water spreads out.
+    this.vel = p5.Vector.random2D().mult(random(0.2, 0.5));
+    this.radius = 1; 
+    this.maxRadius = random(30, 80);
+    if (this.isOil) this.maxRadius = random(10, 40);
+    
+    this.col = col;
+    this.noiseOffset = random(1000);
+    this.noiseStep = random(0.005, 0.02);
+    this.life = 255;
+    this.age = 0;
+  }
+
+  update() {
+    this.age++;
+    
+    // Grow logic
+    if (this.radius < this.maxRadius) {
+      this.radius += (this.isOil ? 0.5 : 1.5);
+    }
+
+    // Movement: Slowly drift and follow a flow field based on Perlin noise
+    let angle = noise(this.pos.x * 0.002, this.pos.y * 0.002, frameCount * 0.001) * TWO_PI * 2;
+    let flow = p5.Vector.fromAngle(angle);
+    flow.mult(this.isOil ? 0.2 : 0.5); // Water flows faster
+    
+    this.pos.add(this.vel);
+    this.pos.add(flow);
+    
+    // Slowly rot
+    this.noiseOffset += this.noiseStep;
+    
+    // Heat effect: everything slowly rises or spreads out
+    // Real projectors get hot, causing convection
+    this.pos.y -= 0.1;
+  }
+
+  display() {
+    noStroke();
+    fill(this.col);
+    
+    push();
+    translate(this.pos.x, this.pos.y);
+    
+    beginShape();
+    // Draw a blob using noise
+    let resolution = 30; // vertices per shape
+    for (let i = 0; i <= resolution; i++) {
+      let angle = map(i, 0, resolution, 0, TWO_PI);
+      
+      // Noise creates the wobbly "liquid" edge
+      // We map the noise to the radius
+      let xoff = map(cos(angle), -1, 1, 0, 2);
+      let yoff = map(sin(angle), -1, 1, 0, 2);
+      
+      // Time affects the wobble
+      let n = noise(xoff + this.noiseOffset, yoff + this.noiseOffset, frameCount * 0.01);
+      
+      // Oil keeps its shape more (less wobble), water distorts more
+      let distortion = this.isOil ? 10 : 30; 
+      let r = this.radius + map(n, 0, 1, -distortion, distortion);
+      
+      // Calculate vertex
+      let x = r * cos(angle);
+      let y = r * sin(angle);
+      
+      curveVertex(x, y);
+    }
+    endShape(CLOSE);
+    
+    // Specular highlight for oil to make it look shiny/viscous
+    if (this.isOil) {
+      fill(255, 100);
+      ellipse(-this.radius/3, -this.radius/3, this.radius/2, this.radius/3);
+    }
+    
+    pop();
+  }
+
+  isDead() {
+    // Kill if way off screen
+    return (this.pos.x < -100 || this.pos.x > width + 100 || 
+            this.pos.y < -100 || this.pos.y > height + 100);
+  }
+}
+    };
+    
+    new p5(sketch, container);
+  </script>
+</body>
+</html>

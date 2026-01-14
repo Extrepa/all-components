@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_accessory" data-cat="wearable" data-name="errl_accessory_crown_diamuertos">
+  <rect width="64" height="64" rx="12" fill="none"/>
+  <path d="M10 24c6-6 16-10 22-10s16 4 22 10l-6 12H16z" fill="#fbbf24" stroke="#b45309" stroke-width="2" stroke-linejoin="round"/>
+  <circle cx="16" cy="26" r="3" fill="#f97316"/>
+  <circle cx="48" cy="26" r="3" fill="#f97316"/>
+  <circle cx="32" cy="20" r="3.5" fill="#f97316"/>
+  <path d="M18 32c8-3 20-3 28 0" fill="none" stroke="#fde68a" stroke-width="2" stroke-linecap="round"/>
+</svg>

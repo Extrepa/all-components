@@ -1,0 +1,11 @@
+<!-- 53) errl_woods_tent_01 – simple A-frame tent (env/prop) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="env" data-name="errl_woods_tent_01">
+  <g fill="none">
+    <path d="M16 46 L32 22 48 46 Z" fill="#0f766e"/>
+    <path d="M32 22 L32 46"
+      stroke="#0f172a" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+    <path d="M26 46 L32 32 38 46 Z" fill="#134e4a" opacity="0.85"/>
+    <ellipse cx="32" cy="48" rx="14" ry="2.4" fill="#14532d" opacity="0.35"/>
+  </g>
+</svg>

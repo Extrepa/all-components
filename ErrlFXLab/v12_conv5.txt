@@ -1,0 +1,468 @@
+Alright, battle goo time.
+Let’s wire up VS Mode v1 + an actual shareable VS image so Errl can fight… Errl. ⚔️🫠⚔️
+
+I’ll assume you’re on the version with:
+	•	p5 FX
+	•	HTML FX
+	•	Sandbox snippet
+	•	3D Wire
+	•	Voxels
+	•	Captured frames + favorites
+
+I’ll give patch-style edits again so you can slot them into your existing index.html.
+
+⸻
+
+1. Add a VS Mode section in the right column
+
+Find the Captured frames section in the right-hand <section class="w-80 ...">:
+
+      <!-- Captured frames (p5 only for now) -->
+      <div class="border-t border-slate-800/70 px-3 py-2 text-[10px] text-slate-200">
+        <div class="flex items-center justify-between mb-1">
+          <span class="font-semibold text-slate-100 text-[11px]">Captured frames (p5)</span>
+          <span id="thumbCount" class="text-slate-500">0</span>
+        </div>
+        <div
+          id="thumbGallery"
+          class="grid grid-cols-3 gap-1 max-h-24 overflow-auto scrollbar-thin"
+        ></div>
+      </div>
+
+Right after that block, insert this new VS Mode block:
+
+      <!-- VS Mode -->
+      <div class="border-t border-slate-800/70 px-3 py-2 text-[11px] text-slate-200">
+        <div class="flex items-center justify-between mb-1">
+          <span class="font-semibold text-slate-100">VS Mode</span>
+          <span id="vsStatus" class="text-[10px] text-slate-500">
+            Shift-click thumb = Left · Alt-click = Right
+          </span>
+        </div>
+
+        <div class="flex items-center gap-2 mb-2">
+          <button
+            id="vsUseFavoritesBtn"
+            class="px-2 py-1 rounded-md border border-amber-400/80 text-amber-200 text-[10px] hover:bg-amber-500/15"
+          >
+            Use first 2 favorites
+          </button>
+          <button
+            id="vsClearBtn"
+            class="px-2 py-1 rounded-md border border-slate-600 text-slate-200 text-[10px] hover:bg-slate-800/80"
+          >
+            Clear slots
+          </button>
+          <button
+            id="vsDownloadBtn"
+            class="px-2 py-1 rounded-md border border-cyan-500 text-cyan-200 text-[10px] hover:bg-cyan-500/15"
+          >
+            Download VS image
+          </button>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div
+            id="vsLeftSlot"
+            class="relative aspect-[4/3] rounded-xl border border-slate-700/80 bg-slate-950/80 flex items-center justify-center overflow-hidden"
+          >
+            <span class="absolute top-1 left-1 text-[10px] px-1.5 py-0.5 rounded-full bg-slate-950/90 border border-slate-600 text-slate-200">
+              LEFT
+            </span>
+            <span class="text-[10px] text-slate-500 px-2 text-center">
+              Shift-click a thumbnail<br />to set Left.
+            </span>
+            <img
+              id="vsLeftImg"
+              class="hidden w-full h-full object-cover"
+              alt="VS left"
+            />
+          </div>
+
+          <div
+            id="vsRightSlot"
+            class="relative aspect-[4/3] rounded-xl border border-slate-700/80 bg-slate-950/80 flex items-center justify-center overflow-hidden"
+          >
+            <span class="absolute top-1 right-1 text-[10px] px-1.5 py-0.5 rounded-full bg-slate-950/90 border border-slate-600 text-slate-200">
+              RIGHT
+            </span>
+            <span class="text-[10px] text-slate-500 px-2 text-center">
+              Alt-click a thumbnail<br />to set Right.
+            </span>
+            <img
+              id="vsRightImg"
+              class="hidden w-full h-full object-cover"
+              alt="VS right"
+            />
+          </div>
+        </div>
+      </div>
+
+This gives you:
+	•	Left & right “slots”.
+	•	Buttons for:
+	•	Filling from favorites
+	•	Clearing
+	•	Downloading a combined VS image
+
+⸻
+
+2. Hook up VS DOM refs + globals
+
+In the <script> where you grab DOM elements (around where thumbGallery and thumbCount are grabbed), add:
+
+    const thumbGallery = document.getElementById("thumbGallery");
+    const thumbCountEl = document.getElementById("thumbCount");
+
+    // VS mode elements
+    const vsStatusEl = document.getElementById("vsStatus");
+    const vsLeftSlot = document.getElementById("vsLeftSlot");
+    const vsRightSlot = document.getElementById("vsRightSlot");
+    const vsLeftImg = document.getElementById("vsLeftImg");
+    const vsRightImg = document.getElementById("vsRightImg");
+    const vsUseFavoritesBtn = document.getElementById("vsUseFavoritesBtn");
+    const vsClearBtn = document.getElementById("vsClearBtn");
+    const vsDownloadBtn = document.getElementById("vsDownloadBtn");
+
+In your globals area (near let capturedFrames = []; that we added for thumbnails), extend it:
+
+    // ---- Captured frames + favorites ----
+    let capturedFrames = [];
+
+    // VS mode
+    let vsLeftFrame = null;
+    let vsRightFrame = null;
+
+
+⸻
+
+3. Upgrade thumbnail click behavior for VS assignment
+
+We previously replaced captureCurrentFrameToGallery() with a version that:
+	•	Adds a frame object to capturedFrames
+	•	Builds a thumbnail wrapper
+	•	Adds star/favorite button
+
+We now tweak the img.addEventListener("click"... inside that function to support:
+	•	Normal click → download
+	•	Shift-click → assign to VS Left
+	•	Alt/Option-click → assign to VS Right
+
+Find this part in captureCurrentFrameToGallery():
+
+        const img = new Image();
+        img.src = dataUrl;
+        img.className =
+          "w-full h-full object-cover cursor-pointer group-hover:opacity-90 transition";
+        img.title = "Click to download";
+        img.addEventListener("click", () => {
+          const a = document.createElement("a");
+          a.href = dataUrl;
+          a.download = "errl-fx-frame.png";
+          a.click();
+        });
+
+Replace the addEventListener with:
+
+        img.title = "Click = download · Shift-click = VS Left · Alt-click = VS Right";
+        img.addEventListener("click", (e) => {
+          if (e.shiftKey) {
+            assignVsSlot(frame, "left");
+            return;
+          }
+          if (e.altKey) {
+            assignVsSlot(frame, "right");
+            return;
+          }
+          // Default: download
+          const a = document.createElement("a");
+          a.href = dataUrl;
+          a.download = "errl-fx-frame.png";
+          a.click();
+        });
+
+So now you get two extra behaviors with no extra UI clutter.
+
+⸻
+
+4. VS slot helpers (assign + render)
+
+Below the thumbnail helpers (after captureCurrentFrameToGallery()), add:
+
+    // ---- VS Mode helpers ----
+    function renderVsSlots() {
+      // Left
+      if (vsLeftFrame && vsLeftImg) {
+        vsLeftImg.src = vsLeftFrame.url;
+        vsLeftImg.classList.remove("hidden");
+        // Hide placeholder text
+        const placeholders = vsLeftSlot.querySelectorAll("span.text-[10px].text-slate-500");
+        placeholders.forEach((el) => el.classList.add("hidden"));
+      } else if (vsLeftSlot && vsLeftImg) {
+        vsLeftImg.src = "";
+        vsLeftImg.classList.add("hidden");
+        const placeholders = vsLeftSlot.querySelectorAll("span.text-[10px].text-slate-500");
+        placeholders.forEach((el) => el.classList.remove("hidden"));
+      }
+
+      // Right
+      if (vsRightFrame && vsRightImg) {
+        vsRightImg.src = vsRightFrame.url;
+        vsRightImg.classList.remove("hidden");
+        const placeholders = vsRightSlot.querySelectorAll("span.text-[10px].text-slate-500");
+        placeholders.forEach((el) => el.classList.add("hidden"));
+      } else if (vsRightSlot && vsRightImg) {
+        vsRightImg.src = "";
+        vsRightImg.classList.add("hidden");
+        const placeholders = vsRightSlot.querySelectorAll("span.text-[10px].text-slate-500");
+        placeholders.forEach((el) => el.classList.remove("hidden"));
+      }
+    }
+
+    function assignVsSlot(frame, side) {
+      if (!frame) return;
+      if (side === "left") {
+        vsLeftFrame = frame;
+        renderVsSlots();
+        vsStatusEl.textContent = "Left slot set from thumbnail.";
+        flashStatus("VS Left set ✅");
+        playBeep(640, 0.08, "triangle");
+      } else if (side === "right") {
+        vsRightFrame = frame;
+        renderVsSlots();
+        vsStatusEl.textContent = "Right slot set from thumbnail.";
+        flashStatus("VS Right set ✅");
+        playBeep(760, 0.08, "triangle");
+      }
+    }
+
+    function clearVsSlots() {
+      vsLeftFrame = null;
+      vsRightFrame = null;
+      renderVsSlots();
+      vsStatusEl.textContent = "VS slots cleared.";
+      playBeep(260, 0.08, "square");
+    }
+
+
+⸻
+
+5. “Use first 2 favorites” button
+
+Right after the helper above, wire the buttons:
+
+    vsUseFavoritesBtn.addEventListener("click", () => {
+      const favs = capturedFrames.filter((f) => f.favorite);
+      if (favs.length < 2) {
+        vsStatusEl.textContent = "Need at least 2 favorite frames.";
+        flashStatus("Mark at least two frames as ★ favorites first.", "error");
+        playBeep(200, 0.1, "square");
+        return;
+      }
+      vsLeftFrame = favs[0];
+      vsRightFrame = favs[1];
+      renderVsSlots();
+      vsStatusEl.textContent = "Loaded from first two ★ favorites.";
+      flashStatus("VS Mode: favorites loaded ⚔️");
+      playBeep(720, 0.08, "triangle");
+    });
+
+    vsClearBtn.addEventListener("click", () => {
+      clearVsSlots();
+    });
+
+Now:
+	•	Star two frames
+	•	Click “Use first 2 favorites”
+	•	VS slots fill automatically
+
+⸻
+
+6. Download combined VS image
+
+This is the “shareable artifact” part.
+We’ll composite the left and right frames into one side-by-side PNG and download it.
+
+Add:
+
+    vsDownloadBtn.addEventListener("click", () => {
+      if (!vsLeftFrame || !vsRightFrame) {
+        vsStatusEl.textContent = "Set both Left and Right before downloading.";
+        flashStatus("VS needs both sides filled.", "error");
+        playBeep(200, 0.1, "square");
+        return;
+      }
+
+      const canvas = document.createElement("canvas");
+      const width = 900;
+      const height = 450;
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) {
+        vsStatusEl.textContent = "Canvas not supported for VS export.";
+        return;
+      }
+
+      ctx.fillStyle = "#02070a";
+      ctx.fillRect(0, 0, width, height);
+
+      const leftImg = new Image();
+      const rightImg = new Image();
+
+      let loaded = 0;
+      function onLoaded() {
+        loaded++;
+        if (loaded < 2) return;
+
+        // Draw "cards"
+        const padding = 20;
+        const cardWidth = (width - padding * 3) / 2;
+        const cardHeight = height - padding * 2;
+
+        function drawCard(img, x) {
+          // Frame
+          ctx.save();
+          const radius = 24;
+          const y = padding;
+
+          // Card background with gradient
+          const grad = ctx.createLinearGradient(x, y, x + cardWidth, y + cardHeight);
+          grad.addColorStop(0, "#071b25");
+          grad.addColorStop(1, "#02070a");
+
+          // Rounded rect
+          ctx.beginPath();
+          ctx.moveTo(x + radius, y);
+          ctx.lineTo(x + cardWidth - radius, y);
+          ctx.quadraticCurveTo(x + cardWidth, y, x + cardWidth, y + radius);
+          ctx.lineTo(x + cardWidth, y + cardHeight - radius);
+          ctx.quadraticCurveTo(
+            x + cardWidth,
+            y + cardHeight,
+            x + cardWidth - radius,
+            y + cardHeight
+          );
+          ctx.lineTo(x + radius, y + cardHeight);
+          ctx.quadraticCurveTo(x, y + cardHeight, x, y + cardHeight - radius);
+          ctx.lineTo(x, y + radius);
+          ctx.quadraticCurveTo(x, y, x + radius, y);
+          ctx.closePath();
+
+          ctx.fillStyle = grad;
+          ctx.fill();
+
+          ctx.strokeStyle = "#34e1ff";
+          ctx.lineWidth = 2;
+          ctx.stroke();
+
+          // Inner image, contained
+          const innerPadding = 16;
+          const innerX = x + innerPadding;
+          const innerY = y + innerPadding;
+          const innerW = cardWidth - innerPadding * 2;
+          const innerH = cardHeight - innerPadding * 2;
+
+          const imgRatio = img.width / img.height;
+          const boxRatio = innerW / innerH;
+
+          let drawW, drawH;
+          if (imgRatio > boxRatio) {
+            drawW = innerW;
+            drawH = innerW / imgRatio;
+          } else {
+            drawH = innerH;
+            drawW = innerH * imgRatio;
+          }
+
+          const dx = innerX + (innerW - drawW) / 2;
+          const dy = innerY + (innerH - drawH) / 2;
+
+          ctx.drawImage(img, dx, dy, drawW, drawH);
+          ctx.restore();
+        }
+
+        // Left and right cards
+        drawCard(leftImg, padding);
+        drawCard(rightImg, padding * 2 + cardWidth);
+
+        // Center VS label
+        ctx.fillStyle = "#ecf9ff";
+        ctx.font = "bold 32px system-ui, -apple-system, BlinkMacSystemFont, sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText("VS", width / 2, height / 2);
+
+        ctx.font = "12px system-ui, -apple-system, BlinkMacSystemFont, sans-serif";
+        ctx.fillStyle = "#8eb7c7";
+        ctx.fillText("Errl FX VS export", width / 2, height - 18);
+
+        const dataUrl = canvas.toDataURL("image/png");
+        const a = document.createElement("a");
+        a.href = dataUrl;
+        a.download = "errl-fx-vs.png";
+        a.click();
+
+        vsStatusEl.textContent = "VS image exported.";
+        flashStatus("VS image downloaded ⚔️");
+        playBeep(840, 0.1, "triangle");
+      }
+
+      leftImg.onload = onLoaded;
+      rightImg.onload = onLoaded;
+      leftImg.onerror = () => {
+        vsStatusEl.textContent = "Failed to load left frame for VS export.";
+      };
+      rightImg.onerror = () => {
+        vsStatusEl.textContent = "Failed to load right frame for VS export.";
+      };
+
+      leftImg.src = vsLeftFrame.url;
+      rightImg.src = vsRightFrame.url;
+    });
+
+Now:
+	•	Fill VS slots (Shift/Alt-click thumbnails or use favorites).
+	•	Click Download VS image.
+	•	Get a side-by-side PNG, ready to share anywhere.
+
+⸻
+
+7. Clear VS on global Clear
+
+In your clearBtn.addEventListener("click", ...) handler, after you clear thumbnails:
+
+      thumbGallery.innerHTML = "";
+      thumbCountEl.textContent = "0";
+
+Add:
+
+      capturedFrames = [];
+      clearVsSlots();
+      if (vsStatusEl) {
+        vsStatusEl.textContent = "Shift-click thumb = Left · Alt-click = Right";
+      }
+
+That keeps VS mode from pointing at ghost frames after reset.
+
+⸻
+
+What this buys you
+
+You now have a mini Errl Visual OS that can:
+	•	Upload 1 Errl SVG
+	•	Generate:
+	•	p5 wobble loops (with presets, batch capture, audio, shortcuts)
+	•	HTML/CSS FX with copyable filter:
+	•	Three.js 3D Wire box
+	•	Voxel mosaic view
+	•	Sandbox .html for embeds / iframes
+	•	Capture frames, star favorites, and now:
+	•	Assign frames into VS Mode
+	•	Export a battle-card style VS PNG (shareable anywhere)
+
+From your original wish list:
+
+upload SVG → p5.js shaders → 3D wireframes → 3D voxels → batch generate → keyboard shortcuts → downloads → audio feedback → favorites → sharing → VS mode
+
+…you’re basically there, all inside one HTML file.

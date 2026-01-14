@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <g id="bg_wall">
+    <rect x="0" y="0" width="1024" height="1024" fill="#887043" />
+    <rect x="0" y="0" width="1024" height="1024" fill="url(#wallGradient)" opacity="0.6" />
+    <g id="panel_lines" stroke="#add8b2" stroke-width="4" opacity="0.24">
+      <path d="M0 300h1024" />
+      <path d="M0 620h1024" />
+      <path d="M256 0v1024" />
+      <path d="M768 0v1024" />
+    </g>
+  </g>
+  <g id="distant_shelves" fill="#fae0b2" opacity="0.18">
+    <rect x="140" y="200" width="240" height="28" rx="12" />
+    <rect x="644" y="420" width="240" height="28" rx="12" />
+  </g>
+  <defs>
+    <linearGradient id="wallGradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#8c764a" />
+      <stop offset="100%" stop-color="#86703f" />
+    </linearGradient>
+  </defs>
+</svg>

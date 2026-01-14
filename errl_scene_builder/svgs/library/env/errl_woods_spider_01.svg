@@ -1,0 +1,16 @@
+<!-- 85) errl_woods_spider_01 – spider + tiny web (prop/fx) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="fx" data-name="errl_woods_spider_01">
+  <g fill="none">
+    <!-- web corner -->
+    <path d="M18 16 H26 V24"
+      stroke="#e5e7eb" stroke-width="1" stroke-linecap="round"/>
+    <path d="M18 16 L26 24" stroke="#e5e7eb" stroke-width="1" opacity="0.8"/>
+    <!-- spider -->
+    <circle cx="30" cy="30" r="2" fill="#020617"/>
+    <circle cx="30" cy="32.5" r="2.5" fill="#020617"/>
+    <path d="M28 30 L26 29 M32 30 L34 29
+             M28 33 L26 34 M32 33 L34 34"
+      stroke="#020617" stroke-width="1" stroke-linecap="round"/>
+  </g>
+</svg>

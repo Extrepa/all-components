@@ -1,0 +1,8 @@
+<!-- errl_weather_wind_swirl_01 – single swirl (fx) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_weather" data-cat="fx" data-name="errl_weather_wind_swirl_01">
+  <g fill="none">
+    <path d="M14 32 H34a4 4 0 1 0-4-4"
+      stroke="#e5e7eb" stroke-width="1.8" stroke-linecap="round"/>
+  </g>
+</svg>

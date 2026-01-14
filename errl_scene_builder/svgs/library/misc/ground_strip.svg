@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" id="icon-ija5gobix">
+  <g xmlns="http://www.w3.org/2000/svg" fill="none">
+    <!-- ground strip -->
+    <rect x="10" y="40" width="44" height="3" rx="1.5" fill="#022c22" opacity="0.9"/>
+    <!-- back wall / canopy -->
+    <path d="M14 28 L50 28 48 40 16 40 Z" fill="#020617"/>
+    <!-- roof -->
+    <path d="M12 28 L32 18 52 28 Z" fill="#22d3ee"/>
+    <!-- center gradient-ish stripe -->
+    <path d="M28 19 L36 19 46 28 18 28 Z" fill="#fb7185" opacity="0.85"/>
+    <!-- open front flap -->
+    <path d="M18 28 L22 40 18 40 Z" fill="#0f172a"/>
+    <path d="M46 28 L42 40 46 40 Z" fill="#0f172a"/>
+    <!-- floor rug -->
+    <rect x="20" y="36" width="24" height="3" rx="1.2" fill="#4b5563"/>
+    <!-- soft shadow -->
+    <ellipse cx="32" cy="49" rx="20" ry="3.2" fill="#020617" opacity="0.45"/>
+  </g>
+</svg>

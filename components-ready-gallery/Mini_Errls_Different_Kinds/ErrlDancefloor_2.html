@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERRL Voxel Dance Floor</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #111;
+        }
+        canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <script type="module">
+        import * as THREE from 'https://esm.run/three';
+        import { OrbitControls } from 'https://esm.run/three/examples/jsm/controls/OrbitControls.js';
+
+        // --- Scene Setup ---
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x100010);
+        scene.fog = new THREE.FogExp2(0x100010, 0.03);
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 15, 25);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(2);
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        document.body.appendChild(renderer.domElement);
+
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.autoRotate = true;
+        controls.autoRotateSpeed = 2.0;
+        controls.maxPolarAngle = Math.PI / 2 - 0.1; // Keep camera above floor
+
+        // --- Voxel Geometry & Materials ---
+        const boxGeo = new THREE.BoxGeometry(0.95, 0.95, 0.95); // Slightly smaller for voxel grid look
+        
+        // Define voxel letter shapes (5 high)
+        const fontMap = {
+            E: [
+                [1,1,1,1],
+                [1,0,0,0],
+                [1,1,1,0],
+                [1,0,0,0],
+                [1,1,1,1]
+            ],
+            R: [
+                [1,1,1,0],
+                [1,0,0,1],
+                [1,1,1,0],
+                [1,0,1,0],
+                [1,0,0,1]
+            ],
+            L: [
+                [1,0,0,0],
+                [1,0,0,0],
+                [1,0,0,0],
+                [1,0,0,0],
+                [1,1,1,1]
+            ]
+        };
+
+        const word = "ERRL";
+        const letterColors = [0x00ffff, 0xff00ff, 0xffff00, 0x00ff00]; // Cyan, Magenta, Yellow, Green
+        const letterVoxels = []; // To store meshes for animation
+
+        // --- Build the Word ---
+        let currentX = 0;
+        const letterSpacing = 1;
+        
+        // Calculate total width to center
+        let totalWidth = 0;
+        for(let char of word) {
+            totalWidth += 4; // Width of letter
+        }
+        totalWidth += (word.length - 1) * letterSpacing;
+        let startX = -totalWidth / 2;
+
+        word.split('').forEach((char, index) => {
+            const map = fontMap[char];
+            const color = letterColors[index % letterColors.length];
+            const material = new THREE.MeshStandardMaterial({ 
+                color: color,
+                roughness: 0.2,
+                metalness: 0.1,
+                emissive: color,
+                emissiveIntensity: 0.2
+            });
+
+            // Map coordinates: row 0 is top, row 4 is bottom.
+            // World coordinates: y increases upwards.
+            for (let row = 0; row < 5; row++) {
+                for (let col = 0; col < 4; col++) {
+                    if (map[row][col] === 1) {
+                        const mesh = new THREE.Mesh(boxGeo, material);
+                        
+                        // Position
+                        // x: startX + current char offset + col
+                        // y: (4 - row) to flip logic so row 0 is top (y=4)
+                        const px = startX + currentX + col;
+                        const py = (4 - row) + 1.5; // Lift off floor slightly
+                        const pz = 0;
+
+                        mesh.position.set(px, py, pz);
+                        mesh.castShadow = true;
+                        mesh.receiveShadow = true;
+                        
+                        // Store initial Y for bouncing animation
+                        mesh.userData = { initialY: py, offset: px * 0.5 }; 
+                        
+                        scene.add(mesh);
+                        letterVoxels.push(mesh);
+                    }
+                }
+            }
+            currentX += 4 + letterSpacing;
+        });
+
+        // --- Build the Dance Floor ---
+        const floorVoxels = [];
+        const floorSize = 20;
+        const floorPalette = [0xFF0055, 0x0033FF, 0xCC00FF, 0x00FF99, 0xFFFFFF];
+        
+        for (let x = -floorSize/2; x < floorSize/2; x++) {
+            for (let z = -floorSize/2; z < floorSize/2; z++) {
+                const mat = new THREE.MeshStandardMaterial({
+                    color: floorPalette[Math.floor(Math.random() * floorPalette.length)],
+                    roughness: 0.1,
+                    metalness: 0.3
+                });
+                const mesh = new THREE.Mesh(boxGeo, mat);
+                mesh.position.set(x + 0.5, 0, z + 0.5);
+                mesh.receiveShadow = true;
+                scene.add(mesh);
+                floorVoxels.push(mesh);
+            }
+        }
+
+        // --- Lighting ---
+        const ambientLight = new THREE.AmbientLight(0x222222);
+        scene.add(ambientLight);
+
+        // Disco Lights
+        const light1 = new THREE.PointLight(0xff0000, 2, 20);
+        light1.castShadow = true;
+        scene.add(light1);
+
+        const light2 = new THREE.PointLight(0x0000ff, 2, 20);
+        light2.castShadow = true;
+        scene.add(light2);
+
+        const light3 = new THREE.PointLight(0x00ff00, 1, 20);
+        scene.add(light3);
+
+        const spotLight = new THREE.SpotLight(0xffffff, 1);
+        spotLight.position.set(0, 20, 0);
+        spotLight.angle = Math.PI / 4;
+        spotLight.penumbra = 0.5;
+        spotLight.castShadow = true;
+        scene.add(spotLight);
+
+        // --- Animation Loop ---
+        const clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const time = clock.getElapsedTime();
+
+            // Bounce Letters
+            letterVoxels.forEach(voxel => {
+                // Sine wave bounce based on time and x-position
+                voxel.position.y = voxel.userData.initialY + Math.sin(time * 4 + voxel.userData.offset) * 0.5;
+                // Slight rotation for groove
+                voxel.rotation.y = Math.sin(time * 2) * 0.1;
+            });
+
+            // Animate Floor Colors (Randomly update a few blocks per frame)
+            for(let i=0; i<5; i++) {
+                const randomVoxel = floorVoxels[Math.floor(Math.random() * floorVoxels.length)];
+                randomVoxel.material.color.setHex(floorPalette[Math.floor(Math.random() * floorPalette.length)]);
+            }
+
+            // Move Disco Lights
+            light1.position.set(Math.sin(time * 2) * 10, 8, Math.cos(time * 2) * 10);
+            light2.position.set(Math.sin(time * 2 + 2) * 10, 8, Math.cos(time * 2 + 2) * 10);
+            light3.position.set(Math.sin(time * 1.5 + 4) * 8, 12, Math.cos(time * 1.5 + 4) * 8);
+
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        // --- Resize Handler ---
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        animate();
+    </script>
+</body>
+</html>

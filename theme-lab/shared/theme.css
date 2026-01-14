@@ -1,0 +1,613 @@
+/**
+ * Theme Lab - Design Token System
+ * /shared/theme.css
+ * 
+ * This file contains all design tokens (CSS custom properties) for Theme Lab.
+ * It includes:
+ * - Base tokens (shape, timing, shadows) - shared across all themes
+ * - Layout tokens - control spacing and density
+ * - 25 theme definitions - each overriding color tokens
+ * 
+ * Usage:
+ *   Set theme via: <html data-theme="errl-core">
+ *   Access tokens: var(--accent), var(--text), etc.
+ */
+
+/* ==========================================================================
+   BASE DESIGN TOKENS
+   ========================================================================== */
+/* These tokens are shared across all themes and define the fundamental
+   shape, timing, and structural properties of the design system. */
+
+:root {
+  /* Border Radius Scale
+     Used for buttons, cards, inputs, and other rounded elements */
+  --radius-sm: 0.4rem;    /* Small elements (badges, small buttons) */
+  --radius-md: 0.8rem;    /* Medium elements (inputs, toggles) */
+  --radius-lg: 1.2rem;    /* Large elements (cards, modals) */
+  
+  /* Shadow Definitions
+     Creates depth and elevation hierarchy */
+  --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.45);   /* Subtle elevation */
+  --shadow-strong: 0 20px 55px rgba(0, 0, 0, 0.7);  /* Strong elevation (modals) */
+  
+  /* Transition Timings
+     Controls animation speed and feel */
+  --transition-fast: 150ms ease-out;  /* Quick interactions (hover, focus) */
+  --transition-med: 220ms ease-out;   /* Standard transitions */
+  
+  /* Structural Properties */
+  --border-width: 1px;                /* Standard border thickness */
+  --border-radius-card: 1.2rem;      /* Default card corner radius */
+  
+  /* ========================================================================
+     LAYOUT TOKENS
+     ======================================================================== */
+  /* These tokens control spacing, density, and layout behavior.
+     They can be overridden via data-* attributes for layout modes. */
+  
+  /* Density Mode: Controls overall spacing and compactness
+     Values: compact | cozy | spacious
+     Controlled by: data-density attribute on <html> */
+  --layout-density: cozy;
+  
+  /* Sidebar Dimensions */
+  --layout-sidebar-width: 280px;     /* Sidebar column width */
+  --layout-sidebar-padding: 1rem;     /* Internal sidebar padding */
+  
+  /* Preview Area Spacing */
+  --layout-preview-padding: 1.5rem;  /* Main content area padding */
+  --layout-preview-gap: 1.25rem;     /* Gap between preview cards */
+  
+  /* Card Internal Spacing */
+  --layout-card-padding-x: 1rem;      /* Horizontal card padding */
+  --layout-card-padding-y: 0.8rem;   /* Vertical card padding */
+  --layout-card-gap: 0.7rem;         /* Gap between card content items */
+  
+  /* Visual Feature Toggles
+     These are controlled via data-* attributes, not CSS variables */
+  --layout-borders: on;              /* Show/hide borders (data-borders) */
+  --layout-shadows: on;              /* Show/hide shadows (data-shadows) */
+  --layout-sidebar-bg: gradient;     /* Sidebar style (data-sidebar-bg) */
+  --layout-header: show;              /* Header visibility (data-header) */
+}
+
+/* ==========================================================================
+   THEME DEFINITIONS
+   ========================================================================== */
+/* Each theme block overrides the color tokens while inheriting base tokens.
+   To add a new theme:
+   1. Copy a theme block below
+   2. Change the data-theme value
+   3. Update all color values
+   4. Add to THEMES array in index.html */
+
+/* --------------------------------------------------------------------------
+   Default Theme (Fallback)
+   -------------------------------------------------------------------------- */
+/* This is the default theme that loads when no data-theme is set.
+   Also serves as the "Errl Core" theme - dark with cyan/pink accents. */
+:root,
+:root[data-theme="errl-core"] {
+  /* Background Colors
+     Creates depth through layered backgrounds */
+  --bg: #02070a;           /* Deepest background (page background) */
+  --bg-alt: #041017;       /* Alternate background (subtle variations) */
+  
+  /* Surface Colors
+     Used for cards, panels, elevated elements */
+  --surface: #071b25;      /* Primary surface (cards, inputs) */
+  --surface-alt: #092231;  /* Elevated surface (modals, dropdowns) */
+  
+  /* Border Colors
+     Defines edges and separators */
+  --border: #163a4a;       /* Primary border (visible edges) */
+  --border-soft: #0c2732;  /* Subtle border (dividers, soft edges) */
+  
+  /* Gradient Colors
+     Used for gradient borders and accents */
+  --border-gradient-from: #34e1ff;  /* Gradient start (cyan) */
+  --border-gradient-to: #ff34f5;   /* Gradient end (pink) */
+  
+  /* Accent Colors
+     Primary brand/action colors */
+  --accent: #34e1ff;       /* Primary accent (buttons, links) */
+  --accent-soft: #0d3344;  /* Subtle accent background */
+  --accent-alt: #ff34f5;   /* Secondary accent (gradients) */
+  --accent-boost: #f5ffb7; /* High-contrast accent text */
+  
+  /* Semantic Colors
+     Status and feedback colors */
+  --danger: #ff4b6a;       /* Error, destructive actions */
+  --success: #5af29c;      /* Success, positive feedback */
+  
+  /* Text Colors
+     Typography hierarchy */
+  --text: #ecf9ff;         /* Primary text (headings, body) */
+  --muted: #8eb7c7;        /* Secondary text (labels, hints) */
+  
+  /* Theme-Specific Shadows
+     Can override base shadows for theme-specific depth */
+  --shadow-soft: 0 10px 30px rgba(1, 12, 22, 0.9);
+  --shadow-strong: 0 25px 60px rgba(0, 0, 0, 0.9);
+}
+
+/* 1: Deep Sea */
+:root[data-theme="errl-deepsea"] {
+  --bg: #01040a;
+  --bg-alt: #02101c;
+  --surface: #031b28;
+  --surface-alt: #052538;
+  --border: #0e3a4f;
+  --border-soft: #082635;
+  --border-gradient-from: #00f0ff;
+  --border-gradient-to: #0066ff;
+  --accent: #00f0ff;
+  --accent-soft: #053b45;
+  --accent-alt: #5cffc9;
+  --accent-boost: #e1fff9;
+  --danger: #ff3478;
+  --success: #59ffb9;
+  --text: #e8faff;
+  --muted: #7bb2c8;
+}
+
+/* 2: Sunset Fade */
+:root[data-theme="errl-sunset"] {
+  --bg: #13040b;
+  --bg-alt: #210812;
+  --surface: #2b0d18;
+  --surface-alt: #3a1523;
+  --border: #6b243f;
+  --border-soft: #451322;
+  --border-gradient-from: #ff8a3c;
+  --border-gradient-to: #ff34a8;
+  --accent: #ff8a3c;
+  --accent-soft: #3c1e16;
+  --accent-alt: #ff34a8;
+  --accent-boost: #ffe8c9;
+  --danger: #ff4f68;
+  --success: #8cf598;
+  --text: #ffeaf5;
+  --muted: #f3a1c0;
+}
+
+/* 3: Forest Glow */
+:root[data-theme="errl-forest"] {
+  --bg: #020806;
+  --bg-alt: #03100a;
+  --surface: #04170d;
+  --surface-alt: #062013;
+  --border: #0a3a22;
+  --border-soft: #062816;
+  --border-gradient-from: #28ff8f;
+  --border-gradient-to: #17c18f;
+  --accent: #28ff8f;
+  --accent-soft: #063321;
+  --accent-alt: #7dff46;
+  --accent-boost: #e7ffd1;
+  --danger: #ff476a;
+  --success: #75ffa1;
+  --text: #e7ffee;
+  --muted: #8dd0a6;
+}
+
+/* 4: Night Sky */
+:root[data-theme="errl-night-sky"] {
+  --bg: #020316;
+  --bg-alt: #05072a;
+  --surface: #080b3a;
+  --surface-alt: #0b104b;
+  --border: #252b7a;
+  --border-soft: #14164a;
+  --border-gradient-from: #7a5cff;
+  --border-gradient-to: #34e1ff;
+  --accent: #7a5cff;
+  --accent-soft: #1b1740;
+  --accent-alt: #34e1ff;
+  --accent-boost: #fff5cc;
+  --danger: #ff4a88;
+  --success: #7af7d1;
+  --text: #f0f1ff;
+  --muted: #a3a4d8;
+}
+
+/* 5: Neon Dream */
+:root[data-theme="errl-neon-dream"] {
+  --bg: #05010b;
+  --bg-alt: #080115;
+  --surface: #100525;
+  --surface-alt: #170733;
+  --border: #3f195a;
+  --border-soft: #1f0b33;
+  --border-gradient-from: #ff34f5;
+  --border-gradient-to: #34ffbf;
+  --accent: #ff34f5;
+  --accent-soft: #2c1034;
+  --accent-alt: #34ffbf;
+  --accent-boost: #fef3ff;
+  --danger: #ff5f9d;
+  --success: #80ffd5;
+  --text: #ffeaff;
+  --muted: #f39bea;
+}
+
+/* 6: Void Core */
+:root[data-theme="errl-void"] {
+  --bg: #000000;
+  --bg-alt: #050507;
+  --surface: #070910;
+  --surface-alt: #0c1018;
+  --border: #272b36;
+  --border-soft: #151720;
+  --border-gradient-from: #7f7f7f;
+  --border-gradient-to: #ffffff;
+  --accent: #ffffff;
+  --accent-soft: #181818;
+  --accent-alt: #c7f284;
+  --accent-boost: #f5ffcf;
+  --danger: #ff5976;
+  --success: #7dfaa5;
+  --text: #f8f8ff;
+  --muted: #a6abbf;
+}
+
+/* 7: Cotton Candy */
+:root[data-theme="errl-cotton-candy"] {
+  --bg: #120818;
+  --bg-alt: #1a0d22;
+  --surface: #25112e;
+  --surface-alt: #30163a;
+  --border: #5b2b78;
+  --border-soft: #3c1c53;
+  --border-gradient-from: #ff8ae3;
+  --border-gradient-to: #8ae9ff;
+  --accent: #ff8ae3;
+  --accent-soft: #37203f;
+  --accent-alt: #8ae9ff;
+  --accent-boost: #fff1ff;
+  --danger: #ff4f82;
+  --success: #92f5d4;
+  --text: #ffe8ff;
+  --muted: #f5b7f0;
+}
+
+/* 8: Gold Flux */
+:root[data-theme="errl-gold"] {
+  --bg: #120b02;
+  --bg-alt: #1b1205;
+  --surface: #251806;
+  --surface-alt: #30200b;
+  --border: #5a3c14;
+  --border-soft: #3a260b;
+  --border-gradient-from: #ffcf4a;
+  --border-gradient-to: #ff8a34;
+  --accent: #ffcf4a;
+  --accent-soft: #3b2a10;
+  --accent-alt: #ff8a34;
+  --accent-boost: #fff6d6;
+  --danger: #ff5460;
+  --success: #8df587;
+  --text: #fff3dc;
+  --muted: #f1c78a;
+}
+
+/* 9: Holographic */
+:root[data-theme="errl-holographic"] {
+  --bg: #060610;
+  --bg-alt: #09091b;
+  --surface: #101025;
+  --surface-alt: #161632;
+  --border: #313451;
+  --border-soft: #202338;
+  --border-gradient-from: #b3fffd;
+  --border-gradient-to: #ffb3ff;
+  --accent: #b3fffd;
+  --accent-soft: #202635;
+  --accent-alt: #ffb3ff;
+  --accent-boost: #ffffff;
+  --danger: #ff5c7d;
+  --success: #b2ffb4;
+  --text: #f7fbff;
+  --muted: #c2c8ff;
+}
+
+/* 10: Lava Lamp */
+:root[data-theme="errl-lava-lamp"] {
+  --bg: #14060b;
+  --bg-alt: #1c070f;
+  --surface: #260b15;
+  --surface-alt: #330f1c;
+  --border: #5b1b32;
+  --border-soft: #3a1222;
+  --border-gradient-from: #ff5941;
+  --border-gradient-to: #ffcc3b;
+  --accent: #ff5941;
+  --accent-soft: #3b1513;
+  --accent-alt: #ffcc3b;
+  --accent-boost: #fff0cb;
+  --danger: #ff4961;
+  --success: #98f57a;
+  --text: #ffe9e4;
+  --muted: #f3a796;
+}
+
+/* 11: Crystal Cave */
+:root[data-theme="errl-crystal-cave"] {
+  --bg: #050812;
+  --bg-alt: #070d19;
+  --surface: #0b1223;
+  --surface-alt: #101a30;
+  --border: #27365d;
+  --border-soft: #18223d;
+  --border-gradient-from: #6dd0ff;
+  --border-gradient-to: #b890ff;
+  --accent: #6dd0ff;
+  --accent-soft: #122232;
+  --accent-alt: #b890ff;
+  --accent-boost: #f2f4ff;
+  --danger: #ff5f7e;
+  --success: #7cf7c3;
+  --text: #edf6ff;
+  --muted: #a4c0e3;
+}
+
+/* 12: Pastel Gloom */
+:root[data-theme="errl-pastel-gloom"] {
+  --bg: #0b090e;
+  --bg-alt: #110f15;
+  --surface: #17141f;
+  --surface-alt: #201c2a;
+  --border: #494156;
+  --border-soft: #2a2534;
+  --border-gradient-from: #f2a5ff;
+  --border-gradient-to: #9bd0ff;
+  --accent: #f2a5ff;
+  --accent-soft: #292032;
+  --accent-alt: #9bd0ff;
+  --accent-boost: #fff5ff;
+  --danger: #ff6780;
+  --success: #9cf2b2;
+  --text: #f3ecff;
+  --muted: #c2b4dd;
+}
+
+/* 13: Aurora Veil */
+:root[data-theme="errl-aurora"] {
+  --bg: #020711;
+  --bg-alt: #040d1a;
+  --surface: #071427;
+  --surface-alt: #0a1b34;
+  --border: #1b385c;
+  --border-soft: #10223b;
+  --border-gradient-from: #43ffcb;
+  --border-gradient-to: #5f7bff;
+  --accent: #43ffcb;
+  --accent-soft: #082729;
+  --accent-alt: #5f7bff;
+  --accent-boost: #efffff;
+  --danger: #ff4f76;
+  --success: #7ef5aa;
+  --text: #ecfbff;
+  --muted: #9fd2dd;
+}
+
+/* 14: Terminal Green */
+:root[data-theme="errl-terminal"] {
+  --bg: #020402;
+  --bg-alt: #050807;
+  --surface: #050a05;
+  --surface-alt: #071008;
+  --border: #10431d;
+  --border-soft: #082811;
+  --border-gradient-from: #35ff75;
+  --border-gradient-to: #afff2f;
+  --accent: #35ff75;
+  --accent-soft: #042b13;
+  --accent-alt: #afff2f;
+  --accent-boost: #f3ffd7;
+  --danger: #ff5151;
+  --success: #63ff72;
+  --text: #ddffdf;
+  --muted: #8adf96;
+}
+
+/* 15: Acid Rain */
+:root[data-theme="errl-acid-rain"] {
+  --bg: #050608;
+  --bg-alt: #091012;
+  --surface: #0c1518;
+  --surface-alt: #101c20;
+  --border: #29454c;
+  --border-soft: #17282c;
+  --border-gradient-from: #b2ff2f;
+  --border-gradient-to: #2fffff;
+  --accent: #b2ff2f;
+  --accent-soft: #1a2611;
+  --accent-alt: #2fffff;
+  --accent-boost: #f5ffe2;
+  --danger: #ff5460;
+  --success: #92ff8a;
+  --text: #ecfff5;
+  --muted: #a4d9b2;
+}
+
+/* 16: Bubblegum */
+:root[data-theme="errl-bubblegum"] {
+  --bg: #180910;
+  --bg-alt: #220d18;
+  --surface: #2a111f;
+  --surface-alt: #351427;
+  --border: #5e2441;
+  --border-soft: #3b1829;
+  --border-gradient-from: #ff72a1;
+  --border-gradient-to: #ffd472;
+  --accent: #ff72a1;
+  --accent-soft: #3a1e2a;
+  --accent-alt: #ffd472;
+  --accent-boost: #fff0f3;
+  --danger: #ff4769;
+  --success: #92f592;
+  --text: #ffe7f0;
+  --muted: #f1b4cd;
+}
+
+/* 17: Midnight Ocean */
+:root[data-theme="errl-midnight-ocean"] {
+  --bg: #02050a;
+  --bg-alt: #040914;
+  --surface: #060e1c;
+  --surface-alt: #091525;
+  --border: #17304c;
+  --border-soft: #0e1f33;
+  --border-gradient-from: #4491ff;
+  --border-gradient-to: #34ffd8;
+  --accent: #4491ff;
+  --accent-soft: #0b1830;
+  --accent-alt: #34ffd8;
+  --accent-boost: #e8f4ff;
+  --danger: #ff4f7c;
+  --success: #7effc4;
+  --text: #e8f3ff;
+  --muted: #91b4de;
+}
+
+/* 18: Desert Dusk */
+:root[data-theme="errl-desert-dusk"] {
+  --bg: #130c08;
+  --bg-alt: #1c110b;
+  --surface: #25160c;
+  --surface-alt: #301c10;
+  --border: #5e3820;
+  --border-soft: #3a2314;
+  --border-gradient-from: #ffb46a;
+  --border-gradient-to: #e45d92;
+  --accent: #ffb46a;
+  --accent-soft: #3c2516;
+  --accent-alt: #e45d92;
+  --accent-boost: #ffe9cf;
+  --danger: #ff5f5a;
+  --success: #98f58c;
+  --text: #ffe9da;
+  --muted: #f0be96;
+}
+
+/* 19: Mint Choc */
+:root[data-theme="errl-mint-choc"] {
+  --bg: #080504;
+  --bg-alt: #120a07;
+  --surface: #1a0f0a;
+  --surface-alt: #24150f;
+  --border: #4b2a1d;
+  --border-soft: #301b12;
+  --border-gradient-from: #82ffd1;
+  --border-gradient-to: #f2ffb2;
+  --accent: #82ffd1;
+  --accent-soft: #14241f;
+  --accent-alt: #f2ffb2;
+  --accent-boost: #f7fff1;
+  --danger: #ff5a6a;
+  --success: #9ff5aa;
+  --text: #ffefe0;
+  --muted: #d7c0a5;
+}
+
+/* 20: Plasma */
+:root[data-theme="errl-plasma"] {
+  --bg: #050112;
+  --bg-alt: #09021a;
+  --surface: #12042b;
+  --surface-alt: #190638;
+  --border: #3e1764;
+  --border-soft: #261040;
+  --border-gradient-from: #c833ff;
+  --border-gradient-to: #33fff0;
+  --accent: #c833ff;
+  --accent-soft: #2a1640;
+  --accent-alt: #33fff0;
+  --accent-boost: #fff0ff;
+  --danger: #ff4f7d;
+  --success: #77ffd2;
+  --text: #fbe5ff;
+  --muted: #e3b4ff;
+}
+
+/* 21: Rainbow Orb */
+:root[data-theme="errl-rainbow-orb"] {
+  --bg: #070412;
+  --bg-alt: #0c071b;
+  --surface: #120d25;
+  --surface-alt: #191432;
+  --border: #3a3259;
+  --border-soft: #241e3b;
+  --border-gradient-from: #ff6ad5;
+  --border-gradient-to: #6afcff;
+  --accent: #ff6ad5;
+  --accent-soft: #311c3e;
+  --accent-alt: #6afcff;
+  --accent-boost: #fff4ff;
+  --danger: #ff5c6c;
+  --success: #8df8c5;
+  --text: #f7ecff;
+  --muted: #d0b8ff;
+}
+
+/* 22: Ice Shard */
+:root[data-theme="errl-ice"] {
+  --bg: #02060a;
+  --bg-alt: #040b12;
+  --surface: #07111d;
+  --surface-alt: #091726;
+  --border: #224059;
+  --border-soft: #152638;
+  --border-gradient-from: #7be3ff;
+  --border-gradient-to: #d5f4ff;
+  --accent: #7be3ff;
+  --accent-soft: #112635;
+  --accent-alt: #d5f4ff;
+  --accent-boost: #ffffff;
+  --danger: #ff5673;
+  --success: #8bf5c7;
+  --text: #edf7ff;
+  --muted: #a6c6dd;
+}
+
+/* 23: Bruised Peach */
+:root[data-theme="errl-bruised-peach"] {
+  --bg: #140910;
+  --bg-alt: #1b0c17;
+  --surface: #25101f;
+  --surface-alt: #311428;
+  --border: #5f2440;
+  --border-soft: #3a162a;
+  --border-gradient-from: #ff9f8f;
+  --border-gradient-to: #c26bff;
+  --accent: #ff9f8f;
+  --accent-soft: #3b2124;
+  --accent-alt: #c26bff;
+  --accent-boost: #ffece7;
+  --danger: #ff5564;
+  --success: #9ef2a9;
+  --text: #ffe6df;
+  --muted: #f0b9b1;
+}
+
+/* 24: Mono Minimal */
+:root[data-theme="errl-mono"] {
+  --bg: #050506;
+  --bg-alt: #09090b;
+  --surface: #111114;
+  --surface-alt: #18181c;
+  --border: #3a3a40;
+  --border-soft: #26262b;
+  --border-gradient-from: #ffffff;
+  --border-gradient-to: #c0c0c0;
+  --accent: #ffffff;
+  --accent-soft: #17171a;
+  --accent-alt: #c0c0c0;
+  --accent-boost: #ffffff;
+  --danger: #ff5a7c;
+  --success: #9af2b4;
+  --text: #f5f5ff;
+  --muted: #b3b3c2;
+}

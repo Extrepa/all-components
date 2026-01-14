@@ -1,0 +1,9 @@
+<!-- errl_weather_rain_cell_small_01 – tiny rain cell (fx) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_weather" data-cat="fx" data-name="errl_weather_rain_cell_small_01">
+  <g fill="none">
+    <circle cx="30" cy="24" r="4.5" fill="#e5e7eb"/>
+    <rect x="26" y="24" width="8" height="3.5" rx="1.7" fill="#e5e7eb"/>
+    <path d="M30 28 V34" stroke="#38bdf8" stroke-width="1.4" stroke-linecap="round"/>
+  </g>
+</svg>

@@ -1,0 +1,9 @@
+<!-- Example 223 | errl_fest_stage_ceiling_grid_01 (fx/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="fx" data-name="errl_fest_stage_ceiling_grid_01">
+  <g fill="none">
+    <rect x="14" y="16" width="36" height="10" rx="2" fill="#020617"/>
+    <path d="M16 18 H48 M16 22 H48 M22 16 V26 M30 16 V26 M38 16 V26 M46 16 V26"
+      stroke="#111827" stroke-width="1.2" stroke-linecap="round"/>
+  </g>
+</svg>

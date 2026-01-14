@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>An interactive overhead projector where you drop oil and water in different colors and then it shines on the wall - P5.js Sketch</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0a0a0a;
+      color: #fff;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .header {
+      padding: 1.5rem 2rem;
+      background: #1a1a1a;
+      border-bottom: 1px solid #333;
+    }
+    .header h1 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .header p {
+      color: #b0b0b0;
+      font-size: 0.875rem;
+    }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 1rem;
+      color: #6366f1;
+      text-decoration: none;
+      font-size: 0.875rem;
+    }
+    .back-link:hover {
+      text-decoration: underline;
+    }
+    #p5-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background: #0a0a0a;
+    }
+    .info {
+      padding: 1.5rem 2rem;
+      background: #1a1a1a;
+      border-top: 1px solid #333;
+      font-size: 0.875rem;
+    }
+    .info-item {
+      margin-bottom: 0.5rem;
+      display: flex;
+    }
+    .info-label {
+      width: 120px;
+      color: #b0b0b0;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="../index.html" class="back-link">← Back to Gallery</a>
+      <h1>An interactive overhead projector where you drop oil and water in different colors and then it shines on the wall</h1>
+      <p>P5.js Interactive Sketch</p>
+    </div>
+    <div id="p5-container"></div>
+    <div class="info">
+      <div class="info-item">
+        <span class="info-label">Prompt:</span>
+        <span>An interactive overhead projector where you drop oil and water in different colors and then it shines on the wall</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Model:</span>
+        <span>threePro</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Generation Time:</span>
+        <span>42.5s</span>
+      </div>
+    </div>
+  </div>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+  <script>
+    const container = document.getElementById('p5-container');
+    const sketchCode = "function setup() {\n  createCanvas(800, 600);\n  pixelDensity(1);\n  \n  // Pre-generate a noise texture for the \"wall\" grain\n  noiseLayer = createGraphics(width, height);\n  noiseLayer.noStroke();\n  noiseLayer.loadPixels();\n  for (let i = 0; i < noiseLayer.pixels.length; i += 4) {\n    let val = random(200, 255);\n    noiseLayer.pixels[i] = val;\n    noiseLayer.pixels[i + 1] = val;\n    noiseLayer.pixels[i + 2] = val;\n    noiseLayer.pixels[i + 3] = 30; // Low alpha\n  }\n  noiseLayer.updatePixels();\n}\n\nlet drops = [];\nlet noiseLayer;\nlet colorPalette = [];\n\nfunction draw() {\n  // 1. Projector Light Background (Hotspot center, vignette edges)\n  background(240, 238, 230);\n  \n  // Draw the light focus\n  noStroke();\n  let ctx = drawingContext;\n  let grad = ctx.createRadialGradient(width / 2, height / 2, 100, width / 2, height / 2, 500);\n  grad.addColorStop(0, 'rgba(255, 255, 255, 1)');\n  grad.addColorStop(0.6, 'rgba(240, 240, 235, 0.5)');\n  grad.addColorStop(1, 'rgba(100, 100, 100, 0.2)');\n  ctx.fillStyle = grad;\n  rect(0, 0, width, height);\n\n  // 2. Interaction: Add Drops\n  if (mouseIsPressed) {\n    if (frameCount % 5 === 0) { // Limit spawn rate\n      let type = (mouseButton === right) ? 'oil' : 'ink';\n      // Vibrant transparency colors\n      let c;\n      if (type === 'oil') {\n        // Oil: Yellows, Golds, Darks\n        let r = random(1);\n        if (r < 0.6) c = color(220, 180, 20, 200);\n        else if (r < 0.9) c = color(100, 80, 10, 220);\n        else c = color(50, 20, 60, 180);\n      } else {\n        // Ink/Water: Cyan, Magenta, Blue\n        let timeHue = (frameCount * 2) % 360;\n        colorMode(HSB);\n        c = color(timeHue, 80, 90, 0.8); // High saturation, transparency handles alpha later\n        colorMode(RGB);\n      }\n      \n      drops.push(new Drop(mouseX, mouseY, c, type));\n    }\n  }\n\n  // 3. Update and Draw Drops\n  // Use MULTIPLY blend mode to simulate transparency sheets/liquid mixing\n  blendMode(MULTIPLY);\n  \n  for (let i = drops.length - 1; i >= 0; i--) {\n    let d = drops[i];\n    d.update();\n    d.interact(drops);\n    d.display();\n    \n    // Remove drops that drift too far\n    if (d.pos.x < -100 || d.pos.x > width + 100 || d.pos.y < -100 || d.pos.y > height + 100) {\n      drops.splice(i, 1);\n    }\n  }\n  \n  // 4. Post-Processing\n  blendMode(BLEND);\n  \n  // Apply the wall grain texture\n  image(noiseLayer, 0, 0);\n  \n  // Simulation of the \"Lens\" focus ring and dust\n  drawLensEffects();\n}\n\nclass Drop {\n  constructor(x, y, col, type) {\n    this.pos = createVector(x, y);\n    this.vel = p5.Vector.random2D().mult(0.5); // Initial spread\n    this.acc = createVector(0, 0);\n    this.maxSize = random(30, 90);\n    this.r = 1; // Start small\n    this.col = col;\n    this.type = type; // 'oil' or 'ink'\n    this.noiseOffset = random(1000);\n    this.wobble = random(0.05, 0.1);\n  }\n\n  update() {\n    // Grow\n    if (this.r < this.maxSize) {\n      this.r = lerp(this.r, this.maxSize, 0.05);\n    }\n\n    // Thermal convection / drift\n    // Oil moves differently than water\n    let speed = (this.type === 'oil') ? 0.002 : 0.005;\n    let angle = noise(this.pos.x * 0.005, this.pos.y * 0.005, frameCount * speed) * TWO_PI * 2;\n    let flow = p5.Vector.fromAngle(angle).mult(0.2);\n    \n    // Add heat rising effect\n    flow.add(createVector(0, -0.05));\n    \n    this.vel.add(flow);\n    this.vel.limit(1); // Terminal velocity\n    this.pos.add(this.vel);\n    \n    this.noiseOffset += 0.01;\n  }\n\n  interact(others) {\n    // Simple separation logic (Surface tension)\n    for (let other of others) {\n      if (other !== this) {\n        let d = dist(this.pos.x, this.pos.y, other.pos.x, other.pos.y);\n        let minDist = (this.r + other.r) * 0.6; // Allow some overlap for blending\n        \n        if (d < minDist && d > 0) {\n          let pushVec = p5.Vector.sub(this.pos, other.pos);\n          pushVec.normalize();\n          \n          // Oil and water repel more strongly\n          let force = (this.type !== other.type) ? 0.1 : 0.02; \n          \n          // Inverse square dropoff\n          pushVec.mult(force * (minDist - d));\n          this.pos.add(pushVec);\n        }\n      }\n    }\n  }\n\n  display() {\n    push();\n    translate(this.pos.x, this.pos.y);\n    \n    // Create gradient for 3D liquid look\n    let ctx = drawingContext;\n    let gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, this.r);\n    \n    // Convert P5 color to RGBA string for gradient\n    let c = this.col;\n    let r = red(c);\n    let g = green(c);\n    let b = blue(c);\n    \n    // Center is lighter (light passing through thickest part of convex lens shape)\n    gradient.addColorStop(0, `rgba(${r}, ${g}, ${b}, 0.2)`); \n    gradient.addColorStop(0.5, `rgba(${r}, ${g}, ${b}, 0.6)`);\n    // Edges are darker (refraction/meniscus)\n    gradient.addColorStop(1, `rgba(${r*0.6}, ${g*0.6}, ${b*0.6}, 0.9)`);\n    \n    ctx.fillStyle = gradient;\n    noStroke();\n\n    // Draw organic shape\n    beginShape();\n    for (let a = 0; a < TWO_PI; a += 0.2) {\n      let offset = map(noise(cos(a) + 1, sin(a) + 1, this.noiseOffset), 0, 1, -this.r * this.wobble, this.r * this.wobble);\n      let r = this.r + offset;\n      let x = r * cos(a);\n      let y = r * sin(a);\n      vertex(x, y);\n    }\n    endShape(CLOSE);\n    \n    // Add a tiny specular highlight (reflection of the bulb)\n    fill(255, 255, 255, 150);\n    circle(-this.r * 0.3, -this.r * 0.3, this.r * 0.2);\n    \n    pop();\n  }\n}\n\nfunction drawLensEffects() {\n  // Chromatic aberration on the edges (Projector lens quality)\n  push();\n  noFill();\n  strokeWeight(400);\n  stroke(0, 0, 0, 20);\n  ellipse(width/2, height/2, width * 1.8, height * 1.8);\n  pop();\n  \n  // Text\n  fill(80);\n  noStroke();\n  textAlign(LEFT, TOP);\n  textSize(14);\n  text(\"OVERHEAD PROJECTOR SIM\", 20, 20);\n  textSize(10);\n  text(\"Left Click: Colored Ink | Right Click: Oil\", 20, 40);\n}\n\n// Handle right click preventing context menu\ndocument.oncontextmenu = function() { return false; }";
+    
+    const sketch = function(p) {
+      function setup() {
+  createCanvas(800, 600);
+  pixelDensity(1);
+  
+  // Pre-generate a noise texture for the "wall" grain
+  noiseLayer = createGraphics(width, height);
+  noiseLayer.noStroke();
+  noiseLayer.loadPixels();
+  for (let i = 0; i < noiseLayer.pixels.length; i += 4) {
+    let val = random(200, 255);
+    noiseLayer.pixels[i] = val;
+    noiseLayer.pixels[i + 1] = val;
+    noiseLayer.pixels[i + 2] = val;
+    noiseLayer.pixels[i + 3] = 30; // Low alpha
+  }
+  noiseLayer.updatePixels();
+}
+
+let drops = [];
+let noiseLayer;
+let colorPalette = [];
+
+function draw() {
+  // 1. Projector Light Background (Hotspot center, vignette edges)
+  background(240, 238, 230);
+  
+  // Draw the light focus
+  noStroke();
+  let ctx = drawingContext;
+  let grad = ctx.createRadialGradient(width / 2, height / 2, 100, width / 2, height / 2, 500);
+  grad.addColorStop(0, 'rgba(255, 255, 255, 1)');
+  grad.addColorStop(0.6, 'rgba(240, 240, 235, 0.5)');
+  grad.addColorStop(1, 'rgba(100, 100, 100, 0.2)');
+  ctx.fillStyle = grad;
+  rect(0, 0, width, height);
+
+  // 2. Interaction: Add Drops
+  if (mouseIsPressed) {
+    if (frameCount % 5 === 0) { // Limit spawn rate
+      let type = (mouseButton === right) ? 'oil' : 'ink';
+      // Vibrant transparency colors
+      let c;
+      if (type === 'oil') {
+        // Oil: Yellows, Golds, Darks
+        let r = random(1);
+        if (r < 0.6) c = color(220, 180, 20, 200);
+        else if (r < 0.9) c = color(100, 80, 10, 220);
+        else c = color(50, 20, 60, 180);
+      } else {
+        // Ink/Water: Cyan, Magenta, Blue
+        let timeHue = (frameCount * 2) % 360;
+        colorMode(HSB);
+        c = color(timeHue, 80, 90, 0.8); // High saturation, transparency handles alpha later
+        colorMode(RGB);
+      }
+      
+      drops.push(new Drop(mouseX, mouseY, c, type));
+    }
+  }
+
+  // 3. Update and Draw Drops
+  // Use MULTIPLY blend mode to simulate transparency sheets/liquid mixing
+  blendMode(MULTIPLY);
+  
+  for (let i = drops.length - 1; i >= 0; i--) {
+    let d = drops[i];
+    d.update();
+    d.interact(drops);
+    d.display();
+    
+    // Remove drops that drift too far
+    if (d.pos.x < -100 || d.pos.x > width + 100 || d.pos.y < -100 || d.pos.y > height + 100) {
+      drops.splice(i, 1);
+    }
+  }
+  
+  // 4. Post-Processing
+  blendMode(BLEND);
+  
+  // Apply the wall grain texture
+  image(noiseLayer, 0, 0);
+  
+  // Simulation of the "Lens" focus ring and dust
+  drawLensEffects();
+}
+
+class Drop {
+  constructor(x, y, col, type) {
+    this.pos = createVector(x, y);
+    this.vel = p5.Vector.random2D().mult(0.5); // Initial spread
+    this.acc = createVector(0, 0);
+    this.maxSize = random(30, 90);
+    this.r = 1; // Start small
+    this.col = col;
+    this.type = type; // 'oil' or 'ink'
+    this.noiseOffset = random(1000);
+    this.wobble = random(0.05, 0.1);
+  }
+
+  update() {
+    // Grow
+    if (this.r < this.maxSize) {
+      this.r = lerp(this.r, this.maxSize, 0.05);
+    }
+
+    // Thermal convection / drift
+    // Oil moves differently than water
+    let speed = (this.type === 'oil') ? 0.002 : 0.005;
+    let angle = noise(this.pos.x * 0.005, this.pos.y * 0.005, frameCount * speed) * TWO_PI * 2;
+    let flow = p5.Vector.fromAngle(angle).mult(0.2);
+    
+    // Add heat rising effect
+    flow.add(createVector(0, -0.05));
+    
+    this.vel.add(flow);
+    this.vel.limit(1); // Terminal velocity
+    this.pos.add(this.vel);
+    
+    this.noiseOffset += 0.01;
+  }
+
+  interact(others) {
+    // Simple separation logic (Surface tension)
+    for (let other of others) {
+      if (other !== this) {
+        let d = dist(this.pos.x, this.pos.y, other.pos.x, other.pos.y);
+        let minDist = (this.r + other.r) * 0.6; // Allow some overlap for blending
+        
+        if (d < minDist && d > 0) {
+          let pushVec = p5.Vector.sub(this.pos, other.pos);
+          pushVec.normalize();
+          
+          // Oil and water repel more strongly
+          let force = (this.type !== other.type) ? 0.1 : 0.02; 
+          
+          // Inverse square dropoff
+          pushVec.mult(force * (minDist - d));
+          this.pos.add(pushVec);
+        }
+      }
+    }
+  }
+
+  display() {
+    push();
+    translate(this.pos.x, this.pos.y);
+    
+    // Create gradient for 3D liquid look
+    let ctx = drawingContext;
+    let gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, this.r);
+    
+    // Convert P5 color to RGBA string for gradient
+    let c = this.col;
+    let r = red(c);
+    let g = green(c);
+    let b = blue(c);
+    
+    // Center is lighter (light passing through thickest part of convex lens shape)
+    gradient.addColorStop(0, `rgba(${r}, ${g}, ${b}, 0.2)`); 
+    gradient.addColorStop(0.5, `rgba(${r}, ${g}, ${b}, 0.6)`);
+    // Edges are darker (refraction/meniscus)
+    gradient.addColorStop(1, `rgba(${r*0.6}, ${g*0.6}, ${b*0.6}, 0.9)`);
+    
+    ctx.fillStyle = gradient;
+    noStroke();
+
+    // Draw organic shape
+    beginShape();
+    for (let a = 0; a < TWO_PI; a += 0.2) {
+      let offset = map(noise(cos(a) + 1, sin(a) + 1, this.noiseOffset), 0, 1, -this.r * this.wobble, this.r * this.wobble);
+      let r = this.r + offset;
+      let x = r * cos(a);
+      let y = r * sin(a);
+      vertex(x, y);
+    }
+    endShape(CLOSE);
+    
+    // Add a tiny specular highlight (reflection of the bulb)
+    fill(255, 255, 255, 150);
+    circle(-this.r * 0.3, -this.r * 0.3, this.r * 0.2);
+    
+    pop();
+  }
+}
+
+function drawLensEffects() {
+  // Chromatic aberration on the edges (Projector lens quality)
+  push();
+  noFill();
+  strokeWeight(400);
+  stroke(0, 0, 0, 20);
+  ellipse(width/2, height/2, width * 1.8, height * 1.8);
+  pop();
+  
+  // Text
+  fill(80);
+  noStroke();
+  textAlign(LEFT, TOP);
+  textSize(14);
+  text("OVERHEAD PROJECTOR SIM", 20, 20);
+  textSize(10);
+  text("Left Click: Colored Ink | Right Click: Oil", 20, 40);
+}
+
+// Handle right click preventing context menu
+document.oncontextmenu = function() { return false; }
+    };
+    
+    new p5(sketch, container);
+  </script>
+</body>
+</html>

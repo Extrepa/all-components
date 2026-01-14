@@ -1,0 +1,3135 @@
+Yesss, festival pack grind continues. 🎪
+You’ve already got 1–20 for errl_fest_* in examples3b.txt. Let’s add 21–40 so the festival tab actually feels full when Errl shows up.
+
+Same rules as before:
+	•	viewBox="0 0 64 64"
+	•	data-pack="errl_fest"
+	•	data-cat="env" | "prop" | "fx" | "ui"
+	•	Flat, 3–10 shapes per asset, works at small thumbnail size.
+
+You can paste these directly under the last snippet in examples3b.txt.
+
+⸻
+
+21) errl_fest_flag_single_01 – tall single flag (env/prop)
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="prop" data-name="errl_fest_flag_single_01">
+  <g fill="none">
+    <!-- pole -->
+    <rect x="30" y="14" width="2.5" height="32" rx="1" fill="#e5e7eb"/>
+    <!-- flag -->
+    <path d="M32.5 16 L44 20 L32.5 24 Z" fill="#fb7185"/>
+    <!-- base -->
+    <rect x="28" y="46" width="7" height="3" rx="1.5" fill="#020617"/>
+    <ellipse cx="31.5" cy="50" rx="7.5" ry="2.4" fill="#020617" opacity="0.45"/>
+  </g>
+</svg>
+
+
+⸻
+
+22) errl_fest_flag_trio_01 – three festival flags (env/prop)
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="prop" data-name="errl_fest_flag_trio_01">
+  <g fill="none">
+    <!-- poles -->
+    <rect x="18" y="20" width="2" height="26" rx="1" fill="#e5e7eb"/>
+    <rect x="30" y="18" width="2" height="28" rx="1" fill="#e5e7eb"/>
+    <rect x="42" y="22" width="2" height="24" rx="1" fill="#e5e7eb"/>
+    <!-- flags -->
+    <path d="M20 22 L26 25 L20 28 Z" fill="#22d3ee"/>
+    <path d="M32 20 L39 23 L32 26 Z" fill="#fb7185"/>
+    <path d="M44 24 L51 27 L44 30 Z" fill="#facc15"/>
+    <!-- ground -->
+    <ellipse cx="32" cy="50" rx="18" ry="3" fill="#020617" opacity="0.4"/>
+  </g>
+</svg>
+
+
+⸻
+
+23) errl_fest_banner_arc_01 – curved banner (fx/ui/env)
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="fx" data-name="errl_fest_banner_arc_01">
+  <g fill="none">
+    <path d="M12 26 C22 18 42 18 52 26"
+      fill="#22d3ee"/>
+    <path d="M14 26 C22 20 42 20 50 26"
+      fill="#0f172a" opacity="0.25"/>
+    <!-- optional edge lines -->
+    <path d="M12 26 C22 18 42 18 52 26"
+      stroke="#0f172a" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+  </g>
+</svg>
+
+
+⸻
+
+24) errl_fest_bunting_circle_01 – circular bunting ring (fx/prop)
+
+Good as a halo behind Errl or over domes.
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="fx" data-name="errl_fest_bunting_circle_01">
+  <g fill="none">
+    <circle cx="32" cy="32" r="16" stroke="#e5e7eb" stroke-width="1.3" stroke-dasharray="3 3"/>
+    <!-- small triangles around -->
+    <path d="M32 16 L34 20 L30 20 Z" fill="#fb7185"/>
+    <path d="M44 24 L40 26 L42 22 Z" fill="#22d3ee"/>
+    <path d="M20 24 L22 28 L18 26 Z" fill="#facc15"/>
+    <path d="M42 40 L38 38 L42 36 Z" fill="#a855f7"/>
+    <path d="M22 40 L20 36 L24 38 Z" fill="#fb7185"/>
+  </g>
+</svg>
+
+
+⸻
+
+25) errl_fest_ground_pattern_02 – second rug / pattern (env/prop)
+
+More geometric version to mix with 01.
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="env" data-name="errl_fest_ground_pattern_02">
+  <g fill="none">
+    <ellipse cx="32" cy="44" rx="16" ry="6" fill="#020617"/>
+    <rect x="20" y="40" width="24" height="8" rx="4" fill="#111827"/>
+    <rect x="22" y="42" width="20" height="4" rx="2" fill="#22d3ee" opacity="0.85"/>
+    <circle cx="26" cy="44" r="1.5" fill="#fb7185"/>
+    <circle cx="38" cy="44" r="1.5" fill="#facc15"/>
+  </g>
+</svg>
+
+
+⸻
+
+26) errl_fest_light_pillar_01 – vertical light column (fx/env)
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="fx" data-name="errl_fest_light_pillar_01">
+  <g fill="none">
+    <!-- base -->
+    <rect x="28" y="40" width="8" height="4" rx="1.5" fill="#020617"/>
+    <!-- glowing column -->
+    <rect x="29" y="22" width="6" height="18" rx="3" fill="#22d3ee" opacity="0.9"/>
+    <rect x="30" y="24" width="4" height="14" rx="2" fill="#e0f2fe" opacity="0.9"/>
+    <ellipse cx="32" cy="50" rx="9" ry="2.6" fill="#020617" opacity="0.5"/>
+  </g>
+</svg>
+
+
+⸻
+
+27) errl_fest_neon_arc_01 – neon half-arch (fx/env)
+
+Nice behind a stage, dome, or gate for that “Errl rave” feel.
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="fx" data-name="errl_fest_neon_arc_01">
+  <g fill="none">
+    <path d="M14 40 C18 28 24 22 32 22s14 6 18 18"
+      stroke="#22d3ee" stroke-width="3.2" stroke-linecap="round" opacity="0.8"/>
+    <path d="M18 40 C21.5 30 26 26 32 26s10.5 4 14 14"
+      stroke="#a855f7" stroke-width="2" stroke-linecap="round" opacity="0.9"/>
+  </g>
+</svg>
+
+
+⸻
+
+28) errl_fest_laser_beam_01 – single diagonal beam (fx)
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="fx" data-name="errl_fest_laser_beam_01">
+  <g fill="none">
+    <path d="M14 46 L50 18"
+      stroke="#22d3ee" stroke-width="2.4" stroke-linecap="round" opacity="0.9"/>
+    <path d="M18 44 L48 20"
+      stroke="#e0f2fe" stroke-width="1.4" stroke-linecap="round" opacity="0.85"/>
+  </g>
+</svg>
+
+
+⸻
+
+29) errl_fest_laser_fan_01 – fan of beams (fx)
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="fx" data-name="errl_fest_laser_fan_01">
+  <g fill="none">
+    <!-- origin at bottom center -->
+    <path d="M32 46 L12 24" stroke="#22d3ee" stroke-width="2" stroke-linecap="round" opacity="0.85"/>
+    <path d="M32 46 L22 22" stroke="#a855f7" stroke-width="2" stroke-linecap="round" opacity="0.85"/>
+    <path d="M32 46 L32 20" stroke="#facc15" stroke-width="2" stroke-linecap="round" opacity="0.85"/>
+    <path d="M32 46 L42 22" stroke="#22d3ee" stroke-width="2" stroke-linecap="round" opacity="0.85"/>
+    <path d="M32 46 L52 24" stroke="#fb7185" stroke-width="2" stroke-linecap="round" opacity="0.85"/>
+  </g>
+</svg>
+
+
+⸻
+
+30) errl_fest_entrance_sign_01 – horizontal sign bar (env/ui)
+
+Works above the gate or standalone as a UI-ish element in the scene.
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="env" data-name="errl_fest_entrance_sign_01">
+  <g fill="none">
+    <!-- bar -->
+    <rect x="14" y="22" width="36" height="8" rx="4" fill="#111827"/>
+    <!-- glowing band -->
+    <rect x="16" y="24" width="32" height="4" rx="2" fill="#22d3ee"/>
+    <!-- little notches / “fake text” -->
+    <rect x="18" y="25" width="6" height="2" rx="1" fill="#0f172a" opacity="0.7"/>
+    <rect x="27" y="25" width="6" height="2" rx="1" fill="#0f172a" opacity="0.7"/>
+    <rect x="36" y="25" width="6" height="2" rx="1" fill="#0f172a" opacity="0.7"/>
+  </g>
+</svg>
+
+
+⸻
+
+31) errl_fest_crowd_blob_01 – front-row crowd (env/fx)
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="env" data-name="errl_fest_crowd_blob_01">
+  <g fill="none">
+    <path d="M10 42 C14 36 20 34 26 34s12 2 16 2 10-1 12-2c2 3 4 6 4 10H10z"
+      fill="#020617"/>
+    <!-- subtle highlights -->
+    <path d="M14 42 C18 38 22 37 26 37
+             M26 42 C30 38 34 37 38 37"
+      stroke="#111827" stroke-width="1.4" stroke-linecap="round"/>
+  </g>
+</svg>
+
+
+⸻
+
+32) errl_fest_crowd_blob_02 – distant crowd band (env/fx)
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="env" data-name="errl_fest_crowd_blob_02">
+  <g fill="none">
+    <path d="M8 36 C12 32 18 30 26 30s14 2 18 2 9-1 12-2c1.5 2 2.5 4 3 6H8z"
+      fill="#020617" opacity="0.85"/>
+    <path d="M10 36 C14 33 20 32 26 32
+             M26 36 C30 33 36 32 42 32"
+      stroke="#111827" stroke-width="1.2" stroke-linecap="round"/>
+  </g>
+</svg>
+
+
+⸻
+
+33) errl_fest_person_dancer_01 – dancing blob figure (char/prop)
+
+Tiny silhouette that will read okay at thumbnail size.
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="char" data-name="errl_fest_person_dancer_01">
+  <g fill="none">
+    <!-- head -->
+    <circle cx="32" cy="24" r="3" fill="#e5e7eb"/>
+    <!-- body -->
+    <path d="M30 27 C28 30 28 34 28 38
+             M34 27 C36 30 36 34 36 38"
+      stroke="#e5e7eb" stroke-width="2" stroke-linecap="round"/>
+    <!-- arms -->
+    <path d="M28 30 L22 28" stroke="#e5e7eb" stroke-width="2" stroke-linecap="round"/>
+    <path d="M36 30 L42 26" stroke="#e5e7eb" stroke-width="2" stroke-linecap="round"/>
+    <!-- legs -->
+    <path d="M28 38 L26 44" stroke="#e5e7eb" stroke-width="2" stroke-linecap="round"/>
+    <path d="M36 38 L38 44" stroke="#e5e7eb" stroke-width="2" stroke-linecap="round"/>
+  </g>
+</svg>
+
+
+⸻
+
+34) errl_fest_camp_chair_01 – foldable festival chair (prop)
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="prop" data-name="errl_fest_camp_chair_01">
+  <g fill="none">
+    <!-- seat -->
+    <path d="M22 34 L42 34 38 40 26 40 Z" fill="#111827"/>
+    <!-- back -->
+    <rect x="24" y="28" width="16" height="5" rx="2" fill="#0f172a"/>
+    <!-- legs -->
+    <path d="M26 40 L22 48" stroke="#e5e7eb" stroke-width="1.8" stroke-linecap="round"/>
+    <path d="M38 40 L42 48" stroke="#e5e7eb" stroke-width="1.8" stroke-linecap="round"/>
+    <path d="M26 40 L38 48" stroke="#e5e7eb" stroke-width="1.2" stroke-linecap="round" opacity="0.9"/>
+    <path d="M38 40 L26 48" stroke="#e5e7eb" stroke-width="1.2" stroke-linecap="round" opacity="0.9"/>
+  </g>
+</svg>
+
+
+⸻
+
+35) errl_fest_cooler_box_01 – cooler (prop)
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="prop" data-name="errl_fest_cooler_box_01">
+  <g fill="none">
+    <rect x="20" y="32" width="24" height="12" rx="3" fill="#22d3ee"/>
+    <rect x="20" y="30" width="24" height="4" rx="2" fill="#e5e7eb"/>
+    <rect x="24" y="34" width="4" height="2" rx="1" fill="#0f172a" opacity="0.7"/>
+    <rect x="36" y="34" width="4" height="2" rx="1" fill="#0f172a" opacity="0.7"/>
+    <ellipse cx="32" cy="46" rx="14" ry="2.8" fill="#020617" opacity="0.4"/>
+  </g>
+</svg>
+
+
+⸻
+
+36) errl_fest_totem_errl_01 – Errl head totem sign (prop/ui)
+
+Mini totem with Errl silhouette for on-theme signage.
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="prop" data-name="errl_fest_totem_errl_01">
+  <g fill="none">
+    <!-- pole -->
+    <rect x="30" y="24" width="4" height="22" rx="1.5" fill="#78350f"/>
+    <!-- sign plate -->
+    <rect x="24" y="20" width="16" height="8" rx="3" fill="#111827"/>
+    <!-- tiny errl blob -->
+    <path d="M32 22 C29 22 27 24 27 26s2 4 5 4 5-2 5-4-2-4-5-4z"
+      fill="#22d3ee"/>
+    <ellipse cx="32" cy="48" rx="8" ry="2.5" fill="#020617" opacity="0.45"/>
+  </g>
+</svg>
+
+
+⸻
+
+37) errl_fest_waterstation_01 – water refill stand (prop/env)
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="prop" data-name="errl_fest_waterstation_01">
+  <g fill="none">
+    <!-- stand -->
+    <rect x="20" y="32" width="24" height="12" rx="3" fill="#0f172a"/>
+    <!-- jug -->
+    <rect x="26" y="26" width="12" height="10" rx="3" fill="#22d3ee" opacity="0.9"/>
+    <rect x="28" y="28" width="8" height="6" rx="2" fill="#e0f2fe" opacity="0.9"/>
+    <!-- droplet icon -->
+    <path d="M32 27 C30.8 28.5 30 30 30 31a2 2 0 0 0 4 0c0-1-0.8-2.5-2-4z"
+      fill="#0ea5e9"/>
+    <ellipse cx="32" cy="46" rx="14" ry="2.6" fill="#020617" opacity="0.45"/>
+  </g>
+</svg>
+
+
+⸻
+
+38) errl_fest_ticket_01 – stylized ticket (ui/prop)
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="ui" data-name="errl_fest_ticket_01">
+  <g fill="none">
+    <path d="M18 28 h28 a2 2 0 0 1 2 2 v3
+             a3 3 0 0 0 -3 3 3 3 0 0 0 3 3 v3
+             a2 2 0 0 1 -2 2 h-28
+             a2 2 0 0 1 -2 -2 v-3
+             a3 3 0 0 0 3 -3 3 3 0 0 0 -3 -3 v-3
+             a2 2 0 0 1 2 -2 z"
+      fill="#f97316"/>
+    <!-- fake barcode -->
+    <rect x="38" y="30" width="6" height="12" fill="#0f172a" opacity="0.7"/>
+    <rect x="39" y="31" width="1" height="10" fill="#e5e7eb"/>
+    <rect x="41" y="31" width="1" height="10" fill="#e5e7eb" opacity="0.8"/>
+    <!-- star -->
+    <path d="M26 34 L27 36 L29 36.2 L27.6 37.5 L28 39.5 L26 38.6 L24 39.5 L24.4 37.5 23 36.2 25 36z"
+      fill="#facc15"/>
+  </g>
+</svg>
+
+
+⸻
+
+39) errl_fest_wristband_01 – festival wristband (ui/prop)
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="ui" data-name="errl_fest_wristband_01">
+  <g fill="none">
+    <path d="M16 32 C24 30 40 30 48 32
+             C40 34 24 34 16 32 Z"
+      fill="#22d3ee"/>
+    <circle cx="24" cy="32" r="2" fill="#0f172a" opacity="0.8"/>
+    <circle cx="40" cy="32" r="2" fill="#0f172a" opacity="0.8"/>
+    <rect x="28" y="31" width="8" height="2" rx="1" fill="#facc15"/>
+  </g>
+</svg>
+
+
+⸻
+
+40) errl_fest_badge_vip_01 – VIP badge (ui/prop)
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="ui" data-name="errl_fest_badge_vip_01">
+  <g fill="none">
+    <!-- lanyard -->
+    <path d="M24 14 L32 24 L40 14"
+      stroke="#e5e7eb" stroke-width="1.6" stroke-linecap="round"/>
+    <!-- badge body -->
+    <rect x="26" y="24" width="12" height="16" rx="2" fill="#111827"/>
+    <rect x="28" y="26" width="8" height="10" rx="1.5" fill="#22d3ee"/>
+    <!-- star icon -->
+    <path d="M32 29 L33 31 L35 31.2 L33.7 32.4 L34 34 L32 33.1 L30 34 L30.3 32.4 29 31.2 31 31z"
+      fill="#facc15"/>
+  </g>
+</svg>
+
+
+⸻
+
+You can now:
+	•	Paste these directly after asset 20 in examples3b.txt, no extra explanation text needed if you want it clean.
+	•	Point Codex at examples3b.txt as the festival style guide so it can crank out any missing errl_fest_* IDs using the same structure.
+
+From here, next big moves:
+	•	Start the concert pack (errl_concert_*) with a similar “first 20 SVGs chunk”, or
+	•	Jump to weather/backgrounds so Errl can have rainbows, storms, and weird auroras behind all of this.
+
+Either way, we’re well on our way to the 400-asset Errl Toybox.<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="env" data-name="errl_fest_hammock_01">
+  <g fill="none">
+    <!-- left post -->
+    <rect x="14" y="20" width="4" height="26" rx="1.5" fill="#166534"/>
+    <!-- right post -->
+    <rect x="46" y="20" width="4" height="26" rx="1.5" fill="#166534"/>
+    <!-- hammock fabric -->
+    <path d="M18 26 C24 38 40 38 46 26" fill="#22d3ee"/>
+    <!-- inner stripe -->
+    <path d="M20 27 C25 35 39 35 44 27" fill="#fb7185" opacity="0.85"/>
+    <!-- ropes -->
+    <path d="M18 26 L22 24" stroke="#e5e7eb" stroke-width="1.2" stroke-linecap="round"/>
+    <path d="M46 26 L42 24" stroke="#e5e7eb" stroke-width="1.2" stroke-linecap="round"/>
+    <!-- subtle ground -->
+    <ellipse cx="32" cy="49" rx="20" ry="3.2" fill="#020617" opacity="0.5"/>
+  </g>
+</svg>Nice, we officially have a 400-asset Errl Scene Bible now. 🧪🌲🎪🎶
+Let’s treat what you already wrote in Examples_1.txt as the canonical manifest for all 400 assets (woods, fest, concert, etc.).  
+
+To “work together to complete all 400”, the smartest path is:
+	1.	Use Examples_1.txt as the master list of IDs + descriptions.
+	2.	Use your existing woods SVGs (examples_2.txt, Examples_2a.txt, examples_2b.txt) as style reference.
+	3.	Fill in the missing themes (Festival, Concert, Weather, Backgrounds) with SVGs that follow the same constraints:
+	•	viewBox="0 0 64 64"
+	•	data-pack="errl_fest" / "errl_concert" / etc.
+	•	data-cat="env" | "prop" | "fx" | "ui" | "char"
+	•	Flat colors, 3–10 shapes each.
+
+You’ve already got a ton of woods coverage implemented (trees, leaves, bushes, vines, moss, stones, rings, etc.), so I’m going to push us into the next theme: Festival and start knocking those down as real SVGs.
+
+⸻
+
+Phase 2: Start implementing FESTIVAL pack SVGs
+
+From the manifest, Festival is errl_fest_* with tents, stages, string lights, banners, art structures, etc.  
+
+I’ll give you a first batch of concrete SVGs in that style. You can paste these straight into your combined txt file under a // FESTIVAL SVGs section.
+
+Palette (from your spec, plus matching woods vibe):
+	•	Warm lights: #facc15, #f97316
+	•	Tents: #fb7185, #22d3ee, #a855f7
+	•	Night/ground: #020617, #0f172a, #166534, #4b5563
+
+⸻
+
+1) errl_fest_tent_big_top_01 – big circus-style tent (env)
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="env" data-name="errl_fest_tent_big_top_01">
+  <g fill="none">
+    <!-- base -->
+    <path d="M10 42 L54 42 50 50 14 50 Z" fill="#0f172a"/>
+    <!-- main tent body -->
+    <path d="M12 42 L32 16 52 42 Z" fill="#fb7185"/>
+    <!-- central stripe -->
+    <path d="M30 18 L34 18 46 42 18 42 Z" fill="#f97316" opacity="0.85"/>
+    <!-- tiny flag -->
+    <path d="M32 14 L32 10" stroke="#facc15" stroke-width="1.4" stroke-linecap="round"/>
+    <path d="M32 10 L36 11.5 32 13 Z" fill="#22d3ee"/>
+    <!-- ground shadow -->
+    <ellipse cx="32" cy="52" rx="20" ry="3" fill="#111827" opacity="0.35"/>
+  </g>
+</svg>
+
+
+⸻
+
+2) errl_fest_tent_small_01 – small merch tent (env/prop)
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="env" data-name="errl_fest_tent_small_01">
+  <g fill="none">
+    <!-- roof -->
+    <path d="M16 34 L32 22 48 34 Z" fill="#22d3ee"/>
+    <!-- scalloped front edge -->
+    <path d="M16 34 C20 38 24 38 28 34 32 38 36 38 40 34 44 38 48 38 52 34"
+      stroke="#0f172a" stroke-width="1.2" fill="none"/>
+    <!-- front wall -->
+    <rect x="18" y="34" width="28" height="11" rx="2" fill="#020617" opacity="0.9"/>
+    <!-- counter -->
+    <rect x="20" y="38" width="24" height="4" rx="1" fill="#f97316"/>
+    <ellipse cx="32" cy="48" rx="16" ry="3" fill="#111827" opacity="0.35"/>
+  </g>
+</svg>
+
+
+⸻
+
+3) errl_fest_tent_food_01 – food stall tent (env/prop)
+
+Goes with food icons later (you can slap little burger/taco glyphs on the front in your app or in a variant).
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="env" data-name="errl_fest_tent_food_01">
+  <g fill="none">
+    <!-- roof -->
+    <path d="M14 32 L32 20 50 32 Z" fill="#a855f7"/>
+    <!-- stripes -->
+    <path d="M18 32 L24 20 M24 32 L30 20 M30 32 L36 20 M36 32 L42 20 M42 32 L46 22"
+      stroke="#f9a8ff" stroke-width="1.2" stroke-linecap="round" opacity="0.9"/>
+    <!-- stall body -->
+    <rect x="16" y="32" width="32" height="12" rx="2" fill="#020617"/>
+    <!-- serving window -->
+    <rect x="18.5" y="34.5" width="27" height="5.5" rx="1.5" fill="#111827"/>
+    <!-- small sign panel -->
+    <rect x="26" y="29" width="12" height="3" rx="1" fill="#facc15"/>
+    <ellipse cx="32" cy="48" rx="17" ry="3" fill="#111827" opacity="0.35"/>
+  </g>
+</svg>
+
+
+⸻
+
+4) errl_fest_stage_main_01 – main stage platform (env)
+
+Straight front, good as the anchor for concert/fest mashups.
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="env" data-name="errl_fest_stage_main_01">
+  <g fill="none">
+    <!-- stage deck -->
+    <rect x="10" y="36" width="44" height="6" rx="2" fill="#020617"/>
+    <!-- front face -->
+    <rect x="10" y="42" width="44" height="6" rx="1.5" fill="#0f172a"/>
+    <!-- little lights along front -->
+    <circle cx="16" cy="45" r="0.9" fill="#22d3ee"/>
+    <circle cx="22" cy="45" r="0.9" fill="#a855f7"/>
+    <circle cx="28" cy="45" r="0.9" fill="#facc15"/>
+    <circle cx="34" cy="45" r="0.9" fill="#22d3ee"/>
+    <circle cx="40" cy="45" r="0.9" fill="#a855f7"/>
+    <circle cx="46" cy="45" r="0.9" fill="#facc15"/>
+    <!-- backdrop frame -->
+    <rect x="14" y="18" width="36" height="16" rx="2" fill="#020617"/>
+    <!-- minimal “screen” -->
+    <rect x="16" y="20" width="32" height="12" rx="1.5" fill="#111827"/>
+    <ellipse cx="32" cy="50" rx="22" ry="3.2" fill="#020617" opacity="0.45"/>
+  </g>
+</svg>
+
+
+⸻
+
+5) errl_fest_stage_side_01 – small side stage (env/prop)
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="env" data-name="errl_fest_stage_side_01">
+  <g fill="none">
+    <!-- deck -->
+    <rect x="14" y="38" width="32" height="5" rx="2" fill="#020617"/>
+    <!-- front -->
+    <rect x="14" y="43" width="32" height="5" rx="1.5" fill="#0f172a"/>
+    <!-- two posts -->
+    <rect x="18" y="24" width="3" height="14" rx="1" fill="#111827"/>
+    <rect x="39" y="24" width="3" height="14" rx="1" fill="#111827"/>
+    <!-- small banner between posts -->
+    <path d="M21 26 Q29 30 37 26 L37 30 Q29 34 21 30 Z" fill="#22d3ee"/>
+    <ellipse cx="30" cy="50" rx="18" ry="2.8" fill="#020617" opacity="0.4"/>
+  </g>
+</svg>
+
+
+⸻
+
+6) errl_fest_dome_01 – geodesic dome silhouette (env)
+
+This can double as a chill dome or weird art structure depending on color tint.
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="env" data-name="errl_fest_dome_01">
+  <g fill="none">
+    <!-- dome base -->
+    <ellipse cx="32" cy="40" rx="18" ry="10" fill="#0f172a"/>
+    <!-- highlight front -->
+    <ellipse cx="32" cy="40" rx="14" ry="7.5" fill="#111827"/>
+    <!-- geodesic lines -->
+    <path d="M18 40 H46" stroke="#22d3ee" stroke-width="1" opacity="0.6"/>
+    <path d="M22 34 L32 40 42 34" stroke="#a855f7" stroke-width="1" opacity="0.7" fill="none"/>
+    <path d="M26 32 L32 36 38 32" stroke="#facc15" stroke-width="1" opacity="0.7" fill="none"/>
+    <ellipse cx="32" cy="50" rx="19" ry="3" fill="#020617" opacity="0.5"/>
+  </g>
+</svg>
+
+
+⸻
+
+7) errl_fest_gate_01 – festival entrance arch (env/ui-ish)
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="env" data-name="errl_fest_gate_01">
+  <g fill="none">
+    <!-- posts -->
+    <rect x="14" y="26" width="5" height="22" rx="2" fill="#0f172a"/>
+    <rect x="45" y="26" width="5" height="22" rx="2" fill="#0f172a"/>
+    <!-- arch -->
+    <path d="M16.5 26 C20 18 26 14 32 14s12 4 15.5 12"
+      stroke="#facc15" stroke-width="3" stroke-linecap="round" fill="none"/>
+    <!-- banner slab -->
+    <rect x="20" y="22" width="24" height="6" rx="3" fill="#fb7185"/>
+    <!-- tiny sparkle -->
+    <circle cx="32" cy="20" r="1.2" fill="#22d3ee"/>
+    <ellipse cx="32" cy="50" rx="18" ry="3" fill="#020617" opacity="0.45"/>
+  </g>
+</svg>
+
+
+⸻
+
+8) errl_fest_tower_light_01 – light tower structure (prop/env)
+
+Useful to flank stages or gates.
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="prop" data-name="errl_fest_tower_light_01">
+  <g fill="none">
+    <!-- truss tower -->
+    <rect x="28" y="20" width="8" height="24" rx="2" fill="#111827"/>
+    <path d="M30 22 L34 26 M30 26 L34 30 M30 30 L34 34 M30 34 L34 38"
+      stroke="#22d3ee" stroke-width="1" opacity="0.7"/>
+    <!-- light head -->
+    <rect x="26" y="16" width="12" height="4" rx="1.5" fill="#020617"/>
+    <circle cx="29" cy="18" r="1.3" fill="#22d3ee"/>
+    <circle cx="32" cy="18" r="1.3" fill="#a855f7"/>
+    <circle cx="35" cy="18" r="1.3" fill="#facc15"/>
+    <!-- base -->
+    <rect x="26" y="44" width="12" height="4" rx="1.5" fill="#020617"/>
+    <ellipse cx="32" cy="50" rx="10" ry="2.6" fill="#020617" opacity="0.45"/>
+  </g>
+</svg>
+
+
+⸻
+
+9) errl_fest_string_lights_01 – gentle arc of lights (fx/prop)
+
+Good to hang between trees, tents, or towers.
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="fx" data-name="errl_fest_string_lights_01">
+  <g fill="none">
+    <path d="M10 22 C22 32 42 32 54 22"
+      stroke="#e5e7eb" stroke-width="1.4" stroke-linecap="round"/>
+    <circle cx="14" cy="24" r="1.3" fill="#facc15"/>
+    <circle cx="20" cy="27" r="1.3" fill="#22d3ee"/>
+    <circle cx="26" cy="29" r="1.3" fill="#a855f7"/>
+    <circle cx="32" cy="30" r="1.3" fill="#f97316"/>
+    <circle cx="38" cy="29" r="1.3" fill="#22d3ee"/>
+    <circle cx="44" cy="27" r="1.3" fill="#a855f7"/>
+    <circle cx="50" cy="24" r="1.3" fill="#facc15"/>
+  </g>
+</svg>
+
+
+⸻
+
+10) errl_fest_flags_line_01 – triangle pennant string (fx/prop/ui)
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="fx" data-name="errl_fest_flags_line_01">
+  <g fill="none">
+    <path d="M8 20 C20 26 44 26 56 20"
+      stroke="#e5e7eb" stroke-width="1.2" stroke-linecap="round"/>
+    <!-- triangles -->
+    <path d="M12 21 L16 25 L20 21 Z" fill="#fb7185"/>
+    <path d="M20 23 L24 27 L28 23 Z" fill="#22d3ee"/>
+    <path d="M28 24 L32 28 L36 24 Z" fill="#facc15"/>
+    <path d="M36 23 L40 27 L44 23 Z" fill="#a855f7"/>
+    <path d="M44 21 L48 25 L52 21 Z" fill="#fb7185"/>
+  </g>
+</svg>
+
+
+⸻
+
+How this gets us to “complete all 400”
+
+We now have:
+	•	A full manifest for all 400 assets across Woods, Festival, Concert, etc.  
+	•	A big chunk of Woods already implemented as SVGs spread across examples_2.txt, Examples_2a.txt, examples_2b.txt.
+	•	A seed batch of Festival SVGs (IDs 1–10 from the Festival list) in proper format, which Codex can copy the style from for the remaining errl_fest_* items.
+
+Next moves that fit nicely into your workflow:
+	1.	Paste these errl_fest_* snippets into your combined .txt file under a clearly labeled FESTIVAL section.
+	2.	Use Codex with a prompt like:
+“Using these festival SVG examples and the manifest in Examples_1.txt, generate matching SVGs for errl_fest_tent_chill_01 through errl_fest_hammock_01 with the same visual style and attributes.”
+	3.	After Festival is filled out, repeat the exact pattern for:
+	•	errl_concert_* (concert gear, crowd, UI)
+	•	errl_weather_* (rain, clouds, snow, sunbeams, storms)
+	•	errl_bg_* (skies, horizons, gradient panels, parallax cards)
+
+In other words: you now have a canonical list + working style samples for each theme. That’s the hard design work. The rest is letting your AI helpers pump out the remaining variations using the same rules, so the scene builder ends up with a ridiculously deep asset library for Errl to wander around in.
+
+Here’s a first follow‑up batch of FESTIVAL SVGs, matching the style and constraints you set (64×64, flat colors, same palette, minimal shapes).
+
+You can drop these under a `// FESTIVAL SVGs` section right after the first 10.
+
+---
+
+### 11) `errl_fest_tent_chill_01` – low chill tent with open front (env)
+
+```xml
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="env" data-name="errl_fest_tent_chill_01">
+  <g fill="none">
+    <!-- ground strip -->
+    <rect x="10" y="40" width="44" height="3" rx="1.5" fill="#022c22" opacity="0.9"/>
+    <!-- back wall / canopy -->
+    <path d="M14 28 L50 28 48 40 16 40 Z" fill="#020617"/>
+    <!-- roof -->
+    <path d="M12 28 L32 18 52 28 Z" fill="#22d3ee"/>
+    <!-- center gradient-ish stripe -->
+    <path d="M28 19 L36 19 46 28 18 28 Z" fill="#fb7185" opacity="0.85"/>
+    <!-- open front flap -->
+    <path d="M18 28 L22 40 18 40 Z" fill="#0f172a"/>
+    <path d="M46 28 L42 40 46 40 Z" fill="#0f172a"/>
+    <!-- floor rug -->
+    <rect x="20" y="36" width="24" height="3" rx="1.2" fill="#4b5563"/>
+    <!-- soft shadow -->
+    <ellipse cx="32" cy="49" rx="20" ry="3.2" fill="#020617" opacity="0.45"/>
+  </g>
+</svg>
+```
+---
+
+### 12) `errl_fest_tent_chill_02` – triangular chill canopy with pillows (env/prop)
+
+```xml
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="env" data-name="errl_fest_tent_chill_02">
+  <g fill="none">
+    <!-- support poles -->
+    <rect x="18" y="26" width="3" height="16" rx="1.2" fill="#0f172a"/>
+    <rect x="43" y="26" width="3" height="16" rx="1.2" fill="#0f172a"/>
+    <!-- canopy -->
+    <path d="M16 26 L32 16 48 26 Z" fill="#a855f7"/>
+    <!-- inner lighter panel -->
+    <path d="M20 26 L32 18 44 26 Z" fill="#22d3ee" opacity="0.9"/>
+    <!-- hanging tassel -->
+    <circle cx="32" cy="20.5" r="1.3" fill="#facc15"/>
+    <!-- floor mat -->
+    <rect x="18" y="38" width="26" height="4" rx="1.5" fill="#166534"/>
+    <!-- two pillows -->
+    <rect x="22" y="36" width="6" height="3" rx="1.5" fill="#fb7185"/>
+    <rect x="34" y="36" width="6" height="3" rx="1.5" fill="#f97316"/>
+    <!-- shadow -->
+    <ellipse cx="32" cy="49" rx="18" ry="3" fill="#020617" opacity="0.45"/>
+  </g>
+</svg>
+```
+---
+
+### 13) `errl_fest_chill_circle_01` – low seating circle / rug cluster (env/prop)
+
+```xml
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="env" data-name="errl_fest_chill_circle_01">
+  <g fill="none">
+    <!-- main rug -->
+    <ellipse cx="32" cy="38" rx="18" ry="8" fill="#111827"/>
+    <!-- inner ring -->
+    <ellipse cx="32" cy="38" rx="13" ry="5.5" fill="#020617"/>
+    <!-- small cushions -->
+    <circle cx="20" cy="36" r="2.4" fill="#fb7185"/>
+    <circle cx="26" cy="32" r="2.2" fill="#22d3ee"/>
+    <circle cx="38" cy="32" r="2.3" fill="#a855f7"/>
+    <circle cx="44" cy="36" r="2.4" fill="#f97316"/>
+    <!-- lantern in center -->
+    <rect x="30" y="34" width="4" height="5" rx="1.3" fill="#020617"/>
+    <circle cx="32" cy="35.5" r="1.4" fill="#facc15"/>
+    <!-- shadow -->
+    <ellipse cx="32" cy="48" rx="17" ry="3" fill="#020617" opacity="0.5"/>
+  </g>
+</svg>
+```
+---
+
+### 14) `errl_fest_hammock_01` – tree‑to‑tree hammock (env/prop)
+
+```xml
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="env" data-name="errl_fest_hammock_01">
+  <g fill="none">
+    <!-- left post -->
+    <rect x="14" y="20" width="4" height="26" rx="1.5" fill="#166534"/>
+    <!-- right post -->
+    <rect x="46" y="20" width="4" height="26" rx="1.5" fill="#166534"/>
+    <!-- hammock fabric -->
+    <path d="M18 26 C24 38 40 38 46 26" fill="#22d3ee"/>
+    <!-- inner stripe -->
+    <path d="M20 27 C25 35 39 35 44 27" fill="#fb7185" opacity="0.85"/>
+    <!-- ropes -->
+    <path d="M18 26 L22 24" stroke="#e5e7eb" stroke-width="1.2" stroke-linecap="round"/>
+    <path d="M46 26 L42 24" stroke="#e5e7eb" stroke-width="1.2" stroke-linecap="round"/>
+    <!-- subtle ground -->
+    <ellipse cx="32" cy="49" rx="20" ry="3.2" fill="#020617" opacity="0.5"/>
+  </g>
+</svg>
+```
+---
+
+If you paste me the exact FESTIVAL slice from `Examples_1.txt` (names/order from `errl_fest_*` 1–N), I can systematically go down that list and generate the rest in batches that match your manifest exactly.Nice, woods pack is looking chunky. 🌲 Your examples_2b.txt is now a legit “forest micro-library” of vines, roots, moss, stones, campfire, tent, lantern, signpost, etc. Time to actually do what that Warp tab says and proceed to the next theme.
+
+I’ll continue with the FESTIVAL pack, picking up from the earlier batch where we already made:
+	1.	errl_fest_tent_big_top_01
+	2.	errl_fest_tent_small_01
+	3.	errl_fest_tent_food_01
+	4.	errl_fest_stage_main_01
+	5.	errl_fest_stage_side_01
+	6.	errl_fest_dome_01
+	7.	errl_fest_gate_01
+	8.	errl_fest_tower_light_01
+	9.	errl_fest_string_lights_01
+	10.	errl_fest_flags_line_01
+
+Now I’ll add festival assets 11–20 in the same visual style. You can drop these into a new examples_fest.txt or into your big combined file under a // FESTIVAL header.
+
+Same conventions:
+	•	viewBox="0 0 64 64"
+	•	data-pack="errl_fest"
+	•	data-cat="env" | "prop" | "fx" | "ui"
+	•	Flat colors, 3–10 shapes each.
+
+⸻
+
+11) errl_fest_lantern_cluster_01 – 3 hanging lanterns (fx/prop)
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="fx" data-name="errl_fest_lantern_cluster_01">
+  <g fill="none">
+    <!-- cords -->
+    <line x1="20" y1="10" x2="20" y2="18" stroke="#e5e7eb" stroke-width="1.4" stroke-linecap="round"/>
+    <line x1="32" y1="8" x2="32" y2="18" stroke="#e5e7eb" stroke-width="1.4" stroke-linecap="round"/>
+    <line x1="44" y1="11" x2="44" y2="18" stroke="#e5e7eb" stroke-width="1.4" stroke-linecap="round"/>
+    <!-- lanterns -->
+    <rect x="16" y="18" width="8" height="10" rx="2" fill="#020617"/>
+    <rect x="18" y="20" width="4" height="6" rx="1.5" fill="#facc15" opacity="0.9"/>
+
+    <rect x="28" y="18" width="8" height="12" rx="2.2" fill="#020617"/>
+    <rect x="30" y="20" width="4" height="8" rx="1.6" fill="#22d3ee" opacity="0.9"/>
+
+    <rect x="40" y="18" width="8" height="10" rx="2" fill="#020617"/>
+    <rect x="42" y="20" width="4" height="6" rx="1.5" fill="#fb7185" opacity="0.9"/>
+  </g>
+</svg>
+
+
+⸻
+
+12) errl_fest_balloon_cluster_01 – bunch of balloons (prop/fx)
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="prop" data-name="errl_fest_balloon_cluster_01">
+  <g fill="none">
+    <!-- strings -->
+    <path d="M26 30 C24 36 24 42 26 48" stroke="#e5e7eb" stroke-width="1" stroke-linecap="round"/>
+    <path d="M32 28 C31 35 31 42 32 48" stroke="#e5e7eb" stroke-width="1" stroke-linecap="round"/>
+    <path d="M38 30 C40 36 40 42 38 48" stroke="#e5e7eb" stroke-width="1" stroke-linecap="round"/>
+    <!-- balloons -->
+    <ellipse cx="26" cy="26" rx="4" ry="5.5" fill="#fb7185"/>
+    <ellipse cx="32" cy="24" rx="4.5" ry="6" fill="#22d3ee"/>
+    <ellipse cx="38" cy="26" rx="4" ry="5.5" fill="#facc15"/>
+  </g>
+</svg>
+
+
+⸻
+
+13) errl_fest_wall_banner_01 – big vertical banner (env/ui)
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="env" data-name="errl_fest_wall_banner_01">
+  <g fill="none">
+    <rect x="24" y="10" width="16" height="34" rx="2" fill="#111827"/>
+    <path d="M26 12 H38 V38 L32 42 L26 38 Z" fill="#a855f7"/>
+    <!-- simple symbol placeholder -->
+    <circle cx="32" cy="20" r="4" fill="#facc15" opacity="0.9"/>
+  </g>
+</svg>
+
+
+⸻
+
+14) errl_fest_totem_pole_01 – decorative pole (env/prop)
+
+Totem-style structure you can drop near tents/stages.
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="prop" data-name="errl_fest_totem_pole_01">
+  <g fill="none">
+    <!-- pole -->
+    <rect x="30" y="18" width="4" height="28" rx="1.5" fill="#78350f"/>
+    <!-- stacked faces/panels -->
+    <rect x="26" y="18" width="12" height="6" rx="2" fill="#22d3ee" opacity="0.9"/>
+    <rect x="26" y="26" width="12" height="6" rx="2" fill="#a855f7" opacity="0.9"/>
+    <rect x="26" y="34" width="12" height="6" rx="2" fill="#f97316" opacity="0.9"/>
+    <!-- small “wings” -->
+    <path d="M26 22 L18 20 26 24 Z" fill="#22d3ee"/>
+    <path d="M38 22 L46 20 38 24 Z" fill="#22d3ee"/>
+    <ellipse cx="32" cy="48" rx="8" ry="2.6" fill="#111827" opacity="0.4"/>
+  </g>
+</svg>
+
+
+⸻
+
+15) errl_fest_art_structure_01 – weird abstract sculpture (env/prop)
+
+Good “art car / installation” placeholder.
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="env" data-name="errl_fest_art_structure_01">
+  <g fill="none">
+    <!-- base -->
+    <rect x="18" y="42" width="28" height="4" rx="2" fill="#020617"/>
+    <!-- curved form -->
+    <path d="M22 42 C24 32 30 24 38 22 C42 21 46 22 48 24
+             C44 26 42 30 41 34 C40 38 38 41 34 42 Z"
+      fill="#22d3ee"/>
+    <!-- inner accent -->
+    <path d="M30 40 C32 32 36 28 40 26 C38.5 28.5 37.5 31 37 34
+             C36.5 37 35.5 39 34 40 Z"
+      fill="#a855f7" opacity="0.85"/>
+  </g>
+</svg>
+
+
+⸻
+
+16) errl_fest_ground_pattern_01 – rug/mandala (env/prop)
+
+Perfect for Errl to sit on in camp scenes at festivals or woods.
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="env" data-name="errl_fest_ground_pattern_01">
+  <g fill="none">
+    <ellipse cx="32" cy="44" rx="16" ry="6" fill="#0f172a"/>
+    <ellipse cx="32" cy="44" rx="13" ry="4.5" fill="#111827"/>
+    <circle cx="32" cy="44" r="3" fill="#22d3ee"/>
+    <path d="M32 38 L34 40 L32 42 L30 40 Z" fill="#fb7185"/>
+    <path d="M26 44 L28 42 L30 44 L28 46 Z" fill="#facc15"/>
+    <path d="M38 44 L36 42 L34 44 L36 46 Z" fill="#a855f7"/>
+  </g>
+</svg>
+
+
+⸻
+
+17) errl_fest_confetti_01 – general confetti burst (fx)
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="fx" data-name="errl_fest_confetti_01">
+  <g fill="none">
+    <rect x="18" y="26" width="2" height="5" rx="1" fill="#fb7185"/>
+    <rect x="24" y="20" width="2" height="5" rx="1" fill="#22d3ee"/>
+    <rect x="30" y="24" width="2" height="5" rx="1" fill="#facc15"/>
+    <rect x="36" y="18" width="2" height="5" rx="1" fill="#a855f7"/>
+    <rect x="42" y="24" width="2" height="5" rx="1" fill="#fb7185"/>
+
+    <circle cx="22" cy="32" r="1" fill="#22d3ee"/>
+    <circle cx="28" cy="30" r="1" fill="#f97316"/>
+    <circle cx="34" cy="32" r="1" fill="#a855f7"/>
+    <circle cx="40" cy="30" r="1" fill="#facc15"/>
+  </g>
+</svg>
+
+
+⸻
+
+18) errl_fest_confetti_02 – falling confetti strip (fx)
+
+Good as a vertical overlay on one side of the scene.
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="fx" data-name="errl_fest_confetti_02">
+  <g fill="none">
+    <rect x="20" y="10" width="2" height="4" rx="1" fill="#fb7185"/>
+    <rect x="24" y="16" width="2" height="4" rx="1" fill="#22d3ee"/>
+    <rect x="18" y="22" width="2" height="4" rx="1" fill="#a855f7"/>
+    <rect x="26" y="28" width="2" height="4" rx="1" fill="#facc15"/>
+    <rect x="20" y="34" width="2" height="4" rx="1" fill="#f97316"/>
+    <rect x="24" y="40" width="2" height="4" rx="1" fill="#22d3ee"/>
+    <circle cx="22" cy="18" r="1" fill="#facc15"/>
+    <circle cx="26" cy="24" r="1" fill="#a855f7"/>
+    <circle cx="20" cy="30" r="1" fill="#22d3ee"/>
+    <circle cx="24" cy="36" r="1" fill="#fb7185"/>
+  </g>
+</svg>
+
+
+⸻
+
+19) errl_fest_projection_screen_01 – simple screen (env/prop)
+
+You can drop videos/animations onto this in the scene builder later if you want.
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="env" data-name="errl_fest_projection_screen_01">
+  <g fill="none">
+    <!-- frame -->
+    <rect x="12" y="18" width="40" height="22" rx="2" fill="#020617"/>
+    <!-- screen -->
+    <rect x="14" y="20" width="36" height="18" rx="1.5" fill="#111827"/>
+    <!-- subtle gradient-ish blocks -->
+    <rect x="14" y="20" width="18" height="18" fill="#1e293b" opacity="0.7"/>
+    <rect x="32" y="20" width="18" height="18" fill="#0f172a" opacity="0.8"/>
+    <!-- stand -->
+    <rect x="30" y="40" width="4" height="8" rx="1.5" fill="#020617"/>
+    <rect x="24" y="48" width="16" height="3" rx="1.5" fill="#020617"/>
+  </g>
+</svg>
+
+
+⸻
+
+20) errl_fest_projection_art_01 – trippy projected art frame (fx/env)
+
+Use this as a more stylized alternative or overlay on top of the screen above.
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="fx" data-name="errl_fest_projection_art_01">
+  <g fill="none">
+    <rect x="14" y="20" width="36" height="18" rx="2" fill="#0f172a"/>
+    <!-- abstract shapes -->
+    <circle cx="24" cy="29" r="5" fill="#22d3ee"/>
+    <circle cx="40" cy="27" r="4" fill="#fb7185"/>
+    <path d="M28 32 C32 36 36 36 42 34" stroke="#facc15" stroke-width="2" stroke-linecap="round"/>
+  </g>
+</svg>
+
+
+⸻
+
+How to use this with your project
+	•	Make a new file like:
+examples_fest.txt
+and start it with a comment like // FESTIVAL PACK SVGs (errl_fest_*).
+	•	Paste the 1–20 errl_fest_* snippets (including the first 10 I gave earlier + these 10).
+	•	Your scene builder can then:
+	•	Load all SVGs in /svgs/fest/ or from your combined txt,
+	•	Parse data-pack="errl_fest" to group in the Assets → Festival accordion,
+	•	Use data-cat to sort into “Environment / Props / FX / UI”.
+
+When you’re ready, we can keep going with fest 21–40 (more lights, decor, crowd/camping stuff), or hop to errl_concert_* if you want to start wiring up the stage-heavy assets next.Nice, we officially have a 400-asset Errl Scene Bible now. 🧪🌲🎪🎶
+Let’s treat what you already wrote in Examples_1.txt as the canonical manifest for all 400 assets (woods, fest, concert, etc.).  
+
+To “work together to complete all 400”, the smartest path is:
+	1.	Use Examples_1.txt as the master list of IDs + descriptions.
+	2.	Use your existing woods SVGs (examples_2.txt, Examples_2a.txt, examples_2b.txt) as style reference.
+	3.	Fill in the missing themes (Festival, Concert, Weather, Backgrounds) with SVGs that follow the same constraints:
+	•	viewBox="0 0 64 64"
+	•	data-pack="errl_fest" / "errl_concert" / etc.
+	•	data-cat="env" | "prop" | "fx" | "ui" | "char"
+	•	Flat colors, 3–10 shapes each.
+
+You’ve already got a ton of woods coverage implemented (trees, leaves, bushes, vines, moss, stones, rings, etc.), so I’m going to push us into the next theme: Festival and start knocking those down as real SVGs.
+
+⸻
+
+Phase 2: Start implementing FESTIVAL pack SVGs
+
+From the manifest, Festival is errl_fest_* with tents, stages, string lights, banners, art structures, etc.  
+
+I’ll give you a first batch of concrete SVGs in that style. You can paste these straight into your combined txt file under a // FESTIVAL SVGs section.
+
+Palette (from your spec, plus matching woods vibe):
+	•	Warm lights: #facc15, #f97316
+	•	Tents: #fb7185, #22d3ee, #a855f7
+	•	Night/ground: #020617, #0f172a, #166534, #4b5563
+
+⸻
+
+1) errl_fest_tent_big_top_01 – big circus-style tent (env)
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="env" data-name="errl_fest_tent_big_top_01">
+  <g fill="none">
+    <!-- base -->
+    <path d="M10 42 L54 42 50 50 14 50 Z" fill="#0f172a"/>
+    <!-- main tent body -->
+    <path d="M12 42 L32 16 52 42 Z" fill="#fb7185"/>
+    <!-- central stripe -->
+    <path d="M30 18 L34 18 46 42 18 42 Z" fill="#f97316" opacity="0.85"/>
+    <!-- tiny flag -->
+    <path d="M32 14 L32 10" stroke="#facc15" stroke-width="1.4" stroke-linecap="round"/>
+    <path d="M32 10 L36 11.5 32 13 Z" fill="#22d3ee"/>
+    <!-- ground shadow -->
+    <ellipse cx="32" cy="52" rx="20" ry="3" fill="#111827" opacity="0.35"/>
+  </g>
+</svg>
+
+
+⸻
+
+2) errl_fest_tent_small_01 – small merch tent (env/prop)
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="env" data-name="errl_fest_tent_small_01">
+  <g fill="none">
+    <!-- roof -->
+    <path d="M16 34 L32 22 48 34 Z" fill="#22d3ee"/>
+    <!-- scalloped front edge -->
+    <path d="M16 34 C20 38 24 38 28 34 32 38 36 38 40 34 44 38 48 38 52 34"
+      stroke="#0f172a" stroke-width="1.2" fill="none"/>
+    <!-- front wall -->
+    <rect x="18" y="34" width="28" height="11" rx="2" fill="#020617" opacity="0.9"/>
+    <!-- counter -->
+    <rect x="20" y="38" width="24" height="4" rx="1" fill="#f97316"/>
+    <ellipse cx="32" cy="48" rx="16" ry="3" fill="#111827" opacity="0.35"/>
+  </g>
+</svg>
+
+
+⸻
+
+3) errl_fest_tent_food_01 – food stall tent (env/prop)
+
+Goes with food icons later (you can slap little burger/taco glyphs on the front in your app or in a variant).
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="env" data-name="errl_fest_tent_food_01">
+  <g fill="none">
+    <!-- roof -->
+    <path d="M14 32 L32 20 50 32 Z" fill="#a855f7"/>
+    <!-- stripes -->
+    <path d="M18 32 L24 20 M24 32 L30 20 M30 32 L36 20 M36 32 L42 20 M42 32 L46 22"
+      stroke="#f9a8ff" stroke-width="1.2" stroke-linecap="round" opacity="0.9"/>
+    <!-- stall body -->
+    <rect x="16" y="32" width="32" height="12" rx="2" fill="#020617"/>
+    <!-- serving window -->
+    <rect x="18.5" y="34.5" width="27" height="5.5" rx="1.5" fill="#111827"/>
+    <!-- small sign panel -->
+    <rect x="26" y="29" width="12" height="3" rx="1" fill="#facc15"/>
+    <ellipse cx="32" cy="48" rx="17" ry="3" fill="#111827" opacity="0.35"/>
+  </g>
+</svg>
+
+
+⸻
+
+4) errl_fest_stage_main_01 – main stage platform (env)
+
+Straight front, good as the anchor for concert/fest mashups.
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="env" data-name="errl_fest_stage_main_01">
+  <g fill="none">
+    <!-- stage deck -->
+    <rect x="10" y="36" width="44" height="6" rx="2" fill="#020617"/>
+    <!-- front face -->
+    <rect x="10" y="42" width="44" height="6" rx="1.5" fill="#0f172a"/>
+    <!-- little lights along front -->
+    <circle cx="16" cy="45" r="0.9" fill="#22d3ee"/>
+    <circle cx="22" cy="45" r="0.9" fill="#a855f7"/>
+    <circle cx="28" cy="45" r="0.9" fill="#facc15"/>
+    <circle cx="34" cy="45" r="0.9" fill="#22d3ee"/>
+    <circle cx="40" cy="45" r="0.9" fill="#a855f7"/>
+    <circle cx="46" cy="45" r="0.9" fill="#facc15"/>
+    <!-- backdrop frame -->
+    <rect x="14" y="18" width="36" height="16" rx="2" fill="#020617"/>
+    <!-- minimal “screen” -->
+    <rect x="16" y="20" width="32" height="12" rx="1.5" fill="#111827"/>
+    <ellipse cx="32" cy="50" rx="22" ry="3.2" fill="#020617" opacity="0.45"/>
+  </g>
+</svg>
+
+
+⸻
+
+5) errl_fest_stage_side_01 – small side stage (env/prop)
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="env" data-name="errl_fest_stage_side_01">
+  <g fill="none">
+    <!-- deck -->
+    <rect x="14" y="38" width="32" height="5" rx="2" fill="#020617"/>
+    <!-- front -->
+    <rect x="14" y="43" width="32" height="5" rx="1.5" fill="#0f172a"/>
+    <!-- two posts -->
+    <rect x="18" y="24" width="3" height="14" rx="1" fill="#111827"/>
+    <rect x="39" y="24" width="3" height="14" rx="1" fill="#111827"/>
+    <!-- small banner between posts -->
+    <path d="M21 26 Q29 30 37 26 L37 30 Q29 34 21 30 Z" fill="#22d3ee"/>
+    <ellipse cx="30" cy="50" rx="18" ry="2.8" fill="#020617" opacity="0.4"/>
+  </g>
+</svg>
+
+
+⸻
+
+6) errl_fest_dome_01 – geodesic dome silhouette (env)
+
+This can double as a chill dome or weird art structure depending on color tint.
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="env" data-name="errl_fest_dome_01">
+  <g fill="none">
+    <!-- dome base -->
+    <ellipse cx="32" cy="40" rx="18" ry="10" fill="#0f172a"/>
+    <!-- highlight front -->
+    <ellipse cx="32" cy="40" rx="14" ry="7.5" fill="#111827"/>
+    <!-- geodesic lines -->
+    <path d="M18 40 H46" stroke="#22d3ee" stroke-width="1" opacity="0.6"/>
+    <path d="M22 34 L32 40 42 34" stroke="#a855f7" stroke-width="1" opacity="0.7" fill="none"/>
+    <path d="M26 32 L32 36 38 32" stroke="#facc15" stroke-width="1" opacity="0.7" fill="none"/>
+    <ellipse cx="32" cy="50" rx="19" ry="3" fill="#020617" opacity="0.5"/>
+  </g>
+</svg>
+
+
+⸻
+
+7) errl_fest_gate_01 – festival entrance arch (env/ui-ish)
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="env" data-name="errl_fest_gate_01">
+  <g fill="none">
+    <!-- posts -->
+    <rect x="14" y="26" width="5" height="22" rx="2" fill="#0f172a"/>
+    <rect x="45" y="26" width="5" height="22" rx="2" fill="#0f172a"/>
+    <!-- arch -->
+    <path d="M16.5 26 C20 18 26 14 32 14s12 4 15.5 12"
+      stroke="#facc15" stroke-width="3" stroke-linecap="round" fill="none"/>
+    <!-- banner slab -->
+    <rect x="20" y="22" width="24" height="6" rx="3" fill="#fb7185"/>
+    <!-- tiny sparkle -->
+    <circle cx="32" cy="20" r="1.2" fill="#22d3ee"/>
+    <ellipse cx="32" cy="50" rx="18" ry="3" fill="#020617" opacity="0.45"/>
+  </g>
+</svg>
+
+
+⸻
+
+8) errl_fest_tower_light_01 – light tower structure (prop/env)
+
+Useful to flank stages or gates.
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="prop" data-name="errl_fest_tower_light_01">
+  <g fill="none">
+    <!-- truss tower -->
+    <rect x="28" y="20" width="8" height="24" rx="2" fill="#111827"/>
+    <path d="M30 22 L34 26 M30 26 L34 30 M30 30 L34 34 M30 34 L34 38"
+      stroke="#22d3ee" stroke-width="1" opacity="0.7"/>
+    <!-- light head -->
+    <rect x="26" y="16" width="12" height="4" rx="1.5" fill="#020617"/>
+    <circle cx="29" cy="18" r="1.3" fill="#22d3ee"/>
+    <circle cx="32" cy="18" r="1.3" fill="#a855f7"/>
+    <circle cx="35" cy="18" r="1.3" fill="#facc15"/>
+    <!-- base -->
+    <rect x="26" y="44" width="12" height="4" rx="1.5" fill="#020617"/>
+    <ellipse cx="32" cy="50" rx="10" ry="2.6" fill="#020617" opacity="0.45"/>
+  </g>
+</svg>
+
+
+⸻
+
+9) errl_fest_string_lights_01 – gentle arc of lights (fx/prop)
+
+Good to hang between trees, tents, or towers.
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="fx" data-name="errl_fest_string_lights_01">
+  <g fill="none">
+    <path d="M10 22 C22 32 42 32 54 22"
+      stroke="#e5e7eb" stroke-width="1.4" stroke-linecap="round"/>
+    <circle cx="14" cy="24" r="1.3" fill="#facc15"/>
+    <circle cx="20" cy="27" r="1.3" fill="#22d3ee"/>
+    <circle cx="26" cy="29" r="1.3" fill="#a855f7"/>
+    <circle cx="32" cy="30" r="1.3" fill="#f97316"/>
+    <circle cx="38" cy="29" r="1.3" fill="#22d3ee"/>
+    <circle cx="44" cy="27" r="1.3" fill="#a855f7"/>
+    <circle cx="50" cy="24" r="1.3" fill="#facc15"/>
+  </g>
+</svg>
+
+
+⸻
+
+10) errl_fest_flags_line_01 – triangle pennant string (fx/prop/ui)
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="fx" data-name="errl_fest_flags_line_01">
+  <g fill="none">
+    <path d="M8 20 C20 26 44 26 56 20"
+      stroke="#e5e7eb" stroke-width="1.2" stroke-linecap="round"/>
+    <!-- triangles -->
+    <path d="M12 21 L16 25 L20 21 Z" fill="#fb7185"/>
+    <path d="M20 23 L24 27 L28 23 Z" fill="#22d3ee"/>
+    <path d="M28 24 L32 28 L36 24 Z" fill="#facc15"/>
+    <path d="M36 23 L40 27 L44 23 Z" fill="#a855f7"/>
+    <path d="M44 21 L48 25 L52 21 Z" fill="#fb7185"/>
+  </g>
+</svg>
+
+
+⸻
+
+How this gets us to “complete all 400”
+
+We now have:
+	•	A full manifest for all 400 assets across Woods, Festival, Concert, etc.  
+	•	A big chunk of Woods already implemented as SVGs spread across examples_2.txt, Examples_2a.txt, examples_2b.txt.
+	•	A seed batch of Festival SVGs (IDs 1–10 from the Festival list) in proper format, which Codex can copy the style from for the remaining errl_fest_* items.
+
+Next moves that fit nicely into your workflow:
+	1.	Paste these errl_fest_* snippets into your combined .txt file under a clearly labeled FESTIVAL section.
+	2.	Use Codex with a prompt like:
+“Using these festival SVG examples and the manifest in Examples_1.txt, generate matching SVGs for errl_fest_tent_chill_01 through errl_fest_hammock_01 with the same visual style and attributes.”
+	3.	After Festival is filled out, repeat the exact pattern for:
+	•	errl_concert_* (concert gear, crowd, UI)
+	•	errl_weather_* (rain, clouds, snow, sunbeams, storms)
+	•	errl_bg_* (skies, horizons, gradient panels, parallax cards)
+
+In other words: you now have a canonical list + working style samples for each theme. That’s the hard design work. The rest is letting your AI helpers pump out the remaining variations using the same rules, so the scene builder ends up with a ridiculously deep asset library for Errl to wander around in.keep it up
+
+Rolling into vines, roots, moss, rocks, logs, and path rings. Same conventions: viewBox 0 0 64 64, simple flat shapes, data attributes.
+
+errl_woods_vine_01 – dangling vine (prop/fx)
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+ data-pack="errl_woods" data-cat="prop" data-name="errl_woods_vine_01">
+  <g fill="none">
+    <path d="M48 6 C40 10 38 16 40 24c2 8-2 12-8 12s-12 4-12 10"
+      stroke="#166534" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+    <path d="M44 10 L48 14 L42 14 Z" fill="#22c55e"/>
+    <path d="M36 26 L40 30 L34 30 Z" fill="#22c55e"/>
+    <path d="M24 46 L28 50 L22 50 Z" fill="#4ade80"/>
+  </g>
+</svg>
+```
+errl_woods_vine_02 – ground creeper vine (prop)
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+ data-pack="errl_woods" data-cat="prop" data-name="errl_woods_vine_02">
+  <g fill="none">
+    <path d="M8 46 C16 44 22 44 30 46c8 2 14 2 26-2"
+      stroke="#166534" stroke-width="2" stroke-linecap="round" fill="none"/>
+    <path d="M16 44 L18 48 L14 48 Z" fill="#22c55e"/>
+    <path d="M28 45 L30 49 L26 49 Z" fill="#22c55e"/>
+    <path d="M44 44 L46 48 L42 48 Z" fill="#4ade80"/>
+  </g>
+</svg>
+```
+errl_woods_roots_01 – exposed roots pattern (prop/env)
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+ data-pack="errl_woods" data-cat="prop" data-name="errl_woods_roots_01">
+  <g fill="none">
+    <path d="M14 38 c6 2 10 6 10 10 M24 42 c4 2 6 5 6 8 M34 40 c8 3 12 6 12 10 M18 40 c-2 2-4 4-6 6"
+      stroke="#78350f" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+  </g>
+</svg>
+```
+errl_woods_moss_patch_01 – blob of moss (prop/env)
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+ data-pack="errl_woods" data-cat="prop" data-name="errl_woods_moss_patch_01">
+  <g fill="none">
+    <path d="M16 44c2-5 6-7 12-7s10 2 12 7c-2 4-7 6-12 6s-10-2-12-6z" fill="#22c55e"/>
+    <path d="M18 44c2-3 5-4 10-4s8 1 10 4" stroke="#4ade80" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>
+```
+errl_woods_moss_trail_01 – moss along ground (prop/env)
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+ data-pack="errl_woods" data-cat="prop" data-name="errl_woods_moss_trail_01">
+  <g fill="none">
+    <path d="M8 50c4-4 10-6 16-6s14 2 20 0 12-6 12-6"
+      stroke="#22c55e" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.9"/>
+    <path d="M10 50c3-2 8-4 14-4s12 1.5 18 0 10-4 10-4"
+      stroke="#4ade80" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.9"/>
+  </g>
+</svg>
+```
+errl_woods_stone_01 – single rock (prop)
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+ data-pack="errl_woods" data-cat="prop" data-name="errl_woods_stone_01">
+  <g fill="none">
+    <path d="M22 44 L30 40 38 42 40 48 26 50 Z" fill="#64748b"/>
+    <path d="M28 42 L34 42 36 46 30 47 Z" fill="#94a3b8" opacity="0.9"/>
+  </g>
+</svg>
+```
+errl_woods_log_slice_01 – cross-section log slice (prop)
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+ data-pack="errl_woods" data-cat="prop" data-name="errl_woods_log_slice_01">
+  <g fill="none">
+    <circle cx="32" cy="40" r="10" fill="#a16207"/>
+    <circle cx="32" cy="40" r="7" fill="#92400e"/>
+    <circle cx="32" cy="40" r="3.5" fill="#78350f" opacity="0.5"/>
+  </g>
+</svg>
+```
+errl_woods_mushroom_ring_01 – fairy ring circle outline (fx/env)
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+ data-pack="errl_woods" data-cat="fx" data-name="errl_woods_mushroom_ring_01">
+  <g fill="none">
+    <circle cx="32" cy="40" r="14" stroke="#22c55e" stroke-width="1.4" stroke-dasharray="2 3" opacity="0.9"/>
+    <circle cx="18" cy="40" r="1.2" fill="#ef4444"/>
+    <circle cx="46" cy="40" r="1.2" fill="#fb7185"/>
+    <circle cx="32" cy="26" r="1.2" fill="#ef4444"/>
+    <circle cx="32" cy="54" r="1.2" fill="#fb7185"/>
+  </g>
+</svg>
+```
+errl_woods_grass_ring_01 – circular grass patch (env/prop)
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+ data-pack="errl_woods" data-cat="env" data-name="errl_woods_grass_ring_01">
+  <g fill="none">
+    <circle cx="32" cy="42" r="14" fill="#22c55e" opacity="0.7"/>
+    <circle cx="32" cy="42" r="9" fill="#166534" opacity="0.25"/>
+  </g>
+</svg>
+```
+errl_woods_ground_patch_01 – generic ground texture (env/prop)
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+ data-pack="errl_woods" data-cat="env" data-name="errl_woods_ground_patch_01">
+  <g fill="none">
+    <ellipse cx="32" cy="48" rx="18" ry="5" fill="#a16207" opacity="0.9"/>
+    <ellipse cx="24" cy="48" rx="5" ry="1.4" fill="#92400e"/>
+    <ellipse cx="40" cy="48" rx="6" ry="1.6" fill="#92400e"/>
+  </g>
+</svg>
+```
+errl_woods_branches_01 – bare branch (prop)
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+ data-pack="errl_woods" data-cat="prop" data-name="errl_woods_branches_01">
+  <g fill="none">
+    <path d="M12 44 C22 40 30 36 40 30 M28 36 L26 30 M34 34 L36 28 M20 40 L18 34"
+      stroke="#78350f" stroke-width="2" stroke-linecap="round" fill="none"/>
+  </g>
+</svg>
+```
+errl_woods_branches_02 – leafy branch (prop)
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+ data-pack="errl_woods" data-cat="prop" data-name="errl_woods_branches_02">
+  <g fill="none">
+    <path d="M12 44 C22 40 30 36 40 30" stroke="#92400e" stroke-width="2" stroke-linecap="round" fill="none"/>
+    <path d="M26 32 L22 36 L27 37 Z" fill="#22c55e"/>
+    <path d="M34 30 L30 34 L35 35 Z" fill="#22c55e"/>
+    <path d="M20 38 L16 42 L21 43 Z" fill="#4ade80"/>
+  </g>
+</svg>
+```
+errl_woods_mushroom_glow_cluster_02 – dense glowy patch (fx/prop)
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+ data-pack="errl_woods" data-cat="fx" data-name="errl_woods_mushroom_glow_cluster_02">
+  <g fill="none">
+    <path d="M18 36c0-3 3-5 6-5s6 2 6 5H18z" fill="#22d3ee"/>
+    <rect x="22" y="36" width="3" height="7" rx="1.3" fill="#e0f2fe"/>
+    <path d="M30 34c0-3 3-5 6-5s6 2 6 5H30z" fill="#a855f7"/>
+    <rect x="34" y="34" width="3" height="7" rx="1.3" fill="#ede9fe"/>
+    <circle cx="24" cy="52" r="8" fill="#22d3ee" opacity="0.12"/>
+    <circle cx="40" cy="50" r="9" fill="#a855f7" opacity="0.1"/>
+  </g>
+</svg>
+```
+errl_woods_glow_spores_01 – ground spores (fx)
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+ data-pack="errl_woods" data-cat="fx" data-name="errl_woods_glow_spores_01">
+  <g fill="none">
+    <circle cx="18" cy="46" r="1.2" fill="#22d3ee"/>
+    <circle cx="24" cy="44" r="1" fill="#a855f7"/>
+    <circle cx="30" cy="47" r="1.2" fill="#22d3ee"/>
+    <circle cx="38" cy="45" r="1" fill="#a855f7"/>
+    <circle cx="46" cy="46" r="1.2" fill="#22d3ee"/>
+    <ellipse cx="32" cy="48" rx="18" ry="4" fill="#22d3ee" opacity="0.06"/>
+  </g>
+</svg>
+```
+
+errl_woods_stone_cluster_03 – cluster of rocks (prop)
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+ data-pack="errl_woods" data-cat="prop" data-name="errl_woods_stone_cluster_03">
+  <g fill="none">
+    <path d="M16 46 C18 41 21 39 24 39s5 2 6 5-2 5-6 5-6-2-8-5z" fill="#4b5563"/>
+    <path d="M28 44 C29 40.5 31.5 39 34 39s5 1.5 6 4.5-2 4.5-6 4.5-6-1.5-6-4.5z" fill="#6b7280"/>
+    <path d="M38 45 C39 41.5 41 40 43 40s3.5 1.3 4 3.5-1.2 3.5-4 3.5-4-1.2-5-3z" fill="#9ca3af"/>
+  </g>
+</svg>
+```
+errl_woods_vine_03 – alternate dangling vine (prop/fx)
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+ data-pack="errl_woods" data-cat="prop" data-name="errl_woods_vine_03">
+  <g fill="none">
+    <path d="M20 4 C22 10 26 14 30 18c4 4 6 8 5 12-0.8 3.5-3 6-6 7.5S22 40 20 46"
+      stroke="#166534" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M24 10 L28 12 L23 14 Z" fill="#22c55e"/>
+    <path d="M32 20 L36 22 L31 24 Z" fill="#22c55e"/>
+    <path d="M26 30 L30 32 L25 34 Z" fill="#4ade80"/>
+  </g>
+</svg>
+```
+errl_woods_roots_02 – dense exposed roots (prop/env)
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+ data-pack="errl_woods" data-cat="prop" data-name="errl_woods_roots_02">
+  <g fill="none">
+    <path d="M16 36 C22 38 26 42 26 46
+             M24 38 C28 40 32 44 32 48
+             M32 38 C38 40 42 44 42 48
+             M20 38 C18 40 16 42 14 44
+             M40 38 C44 40 48 44 50 48"
+      stroke="#78350f" stroke-width="1.7" stroke-linecap="round"/>
+  </g>
+</svg>
+```
+errl_woods_campfire_01 – simple campfire (prop/fx)
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+ data-pack="errl_woods" data-cat="prop" data-name="errl_woods_campfire_01">
+  <g fill="none">
+    <path d="M22 46 L34 40 36 42 24 48 Z" fill="#78350f"/>
+    <path d="M30 46 L42 40 44 42 32 48 Z" fill="#92400e"/>
+    <path d="M32 30 C28 34 28 38 30 41s3 4 4 6c1-2 2-3 4-6s2-7-2-11-6-3-6-3z"
+      fill="#f97316"/>
+    <path d="M32 32 C30 35 30 38 31 40s2 3 2.5 4c0.8-1.2 1.6-2 2.1-4s0.4-4-1-6-3-2-3-2z"
+      fill="#fde68a"/>
+    <ellipse cx="32" cy="50" rx="10" ry="2.6" fill="#111827" opacity="0.4"/>
+  </g>
+</svg>
+```
+errl_woods_tent_01 – small A-frame tent (prop/env)
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+ data-pack="errl_woods" data-cat="env" data-name="errl_woods_tent_01">
+  <g fill="none">
+    <path d="M16 46 L32 22 48 46 Z" fill="#0f766e"/>
+    <path d="M32 22 L32 46" stroke="#0f172a" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+    <path d="M26 46 L32 32 38 46 Z" fill="#134e4a" opacity="0.85"/>
+    <ellipse cx="32" cy="48" rx="14" ry="2.4" fill="#14532d" opacity="0.35"/>
+  </g>
+</svg>
+```
+errl_woods_lantern_01 – hanging lantern (prop/fx)
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+ data-pack="errl_woods" data-cat="prop" data-name="errl_woods_lantern_01">
+  <g fill="none">
+    <line x1="32" y1="10" x2="32" y2="18" stroke="#e5e7eb" stroke-width="1.6" stroke-linecap="round"/>
+    <rect x="26" y="18" width="12" height="18" rx="3" fill="#020617"/>
+    <rect x="28" y="20" width="8" height="14" rx="2" fill="#facc15" opacity="0.9"/>
+    <path d="M28 40h8" stroke="#e5e7eb" stroke-width="1.4" stroke-linecap="round"/>
+    <polygon points="24,40 40,40 32,46" fill="#facc15" opacity="0.18"/>
+  </g>
+</svg>
+```
+errl_woods_sign_post_01 – wooden signpost (prop)
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+ data-pack="errl_woods" data-cat="prop" data-name="errl_woods_sign_post_01">
+  <g fill="none">
+    <rect x="30" y="24" width="4" height="24" rx="1.5" fill="#78350f"/>
+    <path d="M20 26 L34 22 40 26 26 30 Z" fill="#a16207"/>
+    <path d="M22 27.5 L32 25.2" stroke="#92400e" stroke-width="1.2" stroke-linecap="round" opacity="0.8"/>
+    <ellipse cx="32" cy="50" rx="8" ry="2.4" fill="#14532d" opacity="0.3"/>
+  </g>
+</svg>
+```continue
+
+Continuing the Errl Woods pack with more env + plant assets.
+
+---
+
+### errl_woods_hill_02 – small foreground bump hill (env)
+
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="env" data-name="errl_woods_hill_02">
+  <g fill="none">
+    <path d="M10 48 C16 40 24 36 32 36s16 4 22 12v6H10z"
+      fill="#166534"/>
+    <path d="M14 48 C19 41 25 39 32 39s13 2 18 9v3H14z"
+      fill="#22c55e" opacity="0.9"/>
+  </g>
+</svg>
+```
+---
+
+### errl_woods_path_02 – stepping stones path (env/prop)
+
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="env" data-name="errl_woods_path_02">
+  <g fill="none">
+    <ellipse cx="22" cy="46" rx="6" ry="2.4" fill="#a16207" opacity="0.9"/>
+    <ellipse cx="32" cy="40" rx="6.5" ry="2.6" fill="#92400e" opacity="0.9"/>
+    <ellipse cx="42" cy="34" rx="7" ry="2.8" fill="#a16207" opacity="0.9"/>
+    <ellipse cx="30" cy="52" rx="12" ry="3" fill="#166534" opacity="0.2"/>
+  </g>
+</svg>
+```
+---
+
+### errl_woods_cliff_01 – small rock face (env)
+
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="env" data-name="errl_woods_cliff_01">
+  <g fill="none">
+    <path d="M16 18 L40 16 50 22 48 50 18 50 14 36 Z"
+      fill="#475569"/>
+    <path d="M24 22 L36 20 42 24 40 34 26 32 Z"
+      fill="#64748b"/>
+    <path d="M20 34 L30 32 34 38 24 40 Z"
+      fill="#94a3b8" opacity="0.8"/>
+  </g>
+</svg>
+```
+---
+
+### errl_woods_bridge_log_01 – log bridge (env/prop)
+
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="env" data-name="errl_woods_bridge_log_01">
+  <g fill="none">
+    <rect x="10" y="32" width="44" height="7" rx="3.5"
+      fill="#78350f"/>
+    <circle cx="14" cy="35.5" r="3.4" fill="#a16207"/>
+    <circle cx="14" cy="35.5" r="1.7" fill="#92400e"/>
+    <rect x="16" y="30" width="2" height="10" rx="1"
+      fill="#166534"/>
+    <rect x="46" y="30" width="2" height="10" rx="1"
+      fill="#166534"/>
+  </g>
+</svg>
+```
+---
+
+### errl_woods_arch_tree_01 – two trees forming arch (env)
+
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="env" data-name="errl_woods_arch_tree_01">
+  <g fill="none">
+    <rect x="14" y="32" width="5" height="16" rx="2" fill="#78350f"/>
+    <rect x="45" y="32" width="5" height="16" rx="2" fill="#78350f"/>
+    <path d="M16.5 30 C18 22 24 16 32 16s14 6 15.5 14"
+      stroke="#166534" stroke-width="6" stroke-linecap="round" fill="none"/>
+    <path d="M18 28 C19 22 25 18 32 18s13 4 14 10"
+      stroke="#22c55e" stroke-width="4" stroke-linecap="round" fill="none"/>
+  </g>
+</svg>
+```
+---
+
+### errl_woods_mushroom_02 – tall thin mushroom (prop)
+
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="prop" data-name="errl_woods_mushroom_02">
+  <g fill="none">
+    <path d="M26 28c0-5 4-9 9-9s9 4 9 9H26z" fill="#fb7185"/>
+    <rect x="32" y="28" width="4" height="16" rx="1.8"
+      fill="#fef3c7"/>
+    <circle cx="31" cy="25" r="1.2" fill="#fff"/>
+    <circle cx="37" cy="24" r="1.4" fill="#fff"/>
+    <ellipse cx="34" cy="48" rx="7" ry="2.2" fill="#166534" opacity="0.25"/>
+  </g>
+</svg>
+```
+---
+
+### errl_woods_fern_01 – curled fern (prop)
+
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="prop" data-name="errl_woods_fern_01">
+  <g fill="none">
+    <path d="M30 50 C30 40 36 36 40 34c3-1.5 5-3.5 5-6 0-3-2-5-5-5-2.5 0-4.5 1.2-6 3"
+      stroke="#22c55e" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M32 44 L26 40 M34 40 L28 36 M36 36 L30 32"
+      stroke="#4ade80" stroke-width="1.6" stroke-linecap="round"/>
+  </g>
+</svg>
+```
+---
+
+### errl_woods_fern_02 – spread fern leaves (prop)
+
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="prop" data-name="errl_woods_fern_02">
+  <g fill="none">
+    <path d="M20 50 C26 42 32 40 40 40"
+      stroke="#166534" stroke-width="2" stroke-linecap="round" fill="none"/>
+    <path d="M24 46 L18 42 M27 44 L20 38 M30 43 L24 36 M33 42 L28 35 M36 42 L32 35"
+      stroke="#22c55e" stroke-width="1.6" stroke-linecap="round"/>
+  </g>
+</svg>
+```
+---
+
+### errl_woods_flower_01 – tiny wildflower (prop)
+
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="prop" data-name="errl_woods_flower_01">
+  <g fill="none">
+    <path d="M32 48 V36" stroke="#166534" stroke-width="1.5" stroke-linecap="round"/>
+    <circle cx="32" cy="34" r="1.2" fill="#facc15"/>
+    <circle cx="30.4" cy="33" r="1.2" fill="#fb7185"/>
+    <circle cx="33.6" cy="33" r="1.2" fill="#22d3ee"/>
+    <circle cx="31" cy="35.4" r="1.1" fill="#a855f7"/>
+    <circle cx="33" cy="35.4" r="1.1" fill="#f97316"/>
+  </g>
+</svg>
+```
+---
+
+### errl_woods_flower_02 – tall wildflower stalk (prop)
+
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="prop" data-name="errl_woods_flower_02">
+  <g fill="none">
+    <path d="M28 50 C29 44 30 40 32 36 C34 32 36 30 38 29"
+      stroke="#166534" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+    <circle cx="39" cy="28" r="1.8" fill="#fb7185"/>
+    <circle cx="37" cy="30.5" r="1.2" fill="#facc15"/>
+    <circle cx="41" cy="30.5" r="1.2" fill="#22d3ee"/>
+  </g>
+</svg>
+```
+---
+
+### errl_woods_leaf_01 – single leaf (prop/fx)
+
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="prop" data-name="errl_woods_leaf_01">
+  <g fill="none">
+    <path d="M18 40 C24 34 30 32 38 32 36 40 32 46 24 48 Z"
+      fill="#22c55e"/>
+    <path d="M20 44 C26 38 31 35 36 34"
+      stroke="#166534" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+  </g>
+</svg>
+```
+---
+
+### errl_woods_leaf_02 – maple-ish leaf (prop/fx)
+
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="prop" data-name="errl_woods_leaf_02">
+  <g fill="none">
+    <path d="M32 20 L36 26 42 24 40 30 46 32 40 34 42 40 36 38 32 44 28 38 22 40 24 34 18 32 24 30 22 24 28 26 Z"
+      fill="#22c55e"/>
+    <path d="M32 22 L32 40"
+      stroke="#166534" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+  </g>
+</svg>
+```
+---
+
+### errl_woods_leaf_pile_01 – small pile (prop)
+
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="prop" data-name="errl_woods_leaf_pile_01">
+  <g fill="none">
+    <path d="M18 46 C20 40 24 36 30 36s10 4 12 10H18z"
+      fill="#22c55e"/>
+    <path d="M22 44 C24 40 27 38 30 38s6 2 8 6"
+      stroke="#166534" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+  </g>
+</svg>
+```
+---
+
+### errl_woods_leaf_pile_02 – bigger pile (prop, stand-in-able)
+
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="prop" data-name="errl_woods_leaf_pile_02">
+  <g fill="none">
+    <path d="M10 46 C13 38 20 32 32 32s19 6 22 14H10z"
+      fill="#22c55e"/>
+    <path d="M14 44 C18 37 24 34 32 34s14 3 18 10"
+      stroke="#166534" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+  </g>
+</svg>
+```
+---
+
+### errl_woods_bush_01 – rounded bush (prop/env)
+
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="prop" data-name="errl_woods_bush_01">
+  <g fill="none">
+    <ellipse cx="24" cy="40" rx="8" ry="6" fill="#166534"/>
+    <ellipse cx="34" cy="40" rx="9" ry="7" fill="#22c55e"/>
+    <ellipse cx="44" cy="41" rx="7" ry="5.5" fill="#166534"/>
+  </g>
+</svg>
+```
+---
+
+### errl_woods_bush_berry_01 – bush with berries (prop/env)
+
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="prop" data-name="errl_woods_bush_berry_01">
+  <g fill="none">
+    <ellipse cx="24" cy="40" rx="8" ry="6" fill="#166534"/>
+    <ellipse cx="34" cy="40" rx="9" ry="7" fill="#22c55e"/>
+    <ellipse cx="44" cy="41" rx="7" ry="5.5" fill="#166534"/>
+    <circle cx="28" cy="39" r="1.2" fill="#fb7185"/>
+    <circle cx="34" cy="42" r="1.2" fill="#f97316"/>
+    <circle cx="40" cy="38" r="1.2" fill="#a855f7"/>
+  </g>
+</svg>
+```
+---
+
+If this batch still lines up with your tint/motion systems, next I can hit vines/roots/moss/rocks and then move into campsite props.Continue
+
+Here’s a next batch of Errl Woods SVGs, same conventions:
+
+- `viewBox="0 0 64 64"`
+- Simple shapes, flat colors
+- `data-pack="errl_woods"` + `data-cat` + `data-name`
+
+---
+
+### 2) errl_woods_tree_02 – round leafy tree (env)
+
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="env" data-name="errl_woods_tree_02">
+  <g fill="none">
+    <rect x="29" y="34" width="6" height="16" rx="2" fill="#78350f"/>
+    <circle cx="32" cy="26" r="14" fill="#166534"/>
+    <circle cx="38" cy="22" r="9" fill="#22c55e"/>
+    <circle cx="26" cy="30" r="7" fill="#4ade80" opacity="0.8"/>
+  </g>
+</svg>
+```
+---
+
+### 3) errl_woods_tree_03 – crooked spooky tree (env)
+
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="env" data-name="errl_woods_tree_03">
+  <g fill="none">
+    <path d="M30 54 L26 34 L20 30 L22 27 L27 30 L25 20 L19 17 L21 14 L27 17 L28 10 L32 8 L36 10 37 18 43 14 45 17 38 22 39 30 45 27 47 30 40 34 36 54 Z"
+      fill="#78350f"/>
+    <circle cx="29" cy="24" r="1.2" fill="#facc15"/>
+    <circle cx="35" cy="24" r="1.2" fill="#facc15"/>
+  </g>
+</svg>
+```
+---
+
+### 4) errl_woods_tree_04 – double-trunk tree (env)
+
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="env" data-name="errl_woods_tree_04">
+  <g fill="none">
+    <rect x="23" y="34" width="6" height="16" rx="2" fill="#92400e"/>
+    <rect x="35" y="34" width="6" height="16" rx="2" fill="#78350f"/>
+    <ellipse cx="31" cy="24" rx="15" ry="11" fill="#166534"/>
+    <ellipse cx="37" cy="20" rx="9" ry="8" fill="#22c55e" opacity="0.95"/>
+  </g>
+</svg>
+```
+---
+
+### 5) errl_woods_tree_05 – tiny sapling (env)
+
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="env" data-name="errl_woods_tree_05">
+  <g fill="none">
+    <rect x="30.5" y="36" width="3" height="10" rx="1.2" fill="#78350f"/>
+    <path d="M32 24 C28 23 25 22 22 20 C25 25 27 27 30 29 Z" fill="#22c55e"/>
+    <path d="M32 24 C36 23 39 22 42 20 C39 25 37 27 34 29 Z" fill="#4ade80"/>
+    <ellipse cx="32" cy="48" rx="7" ry="2.2" fill="#166534" opacity="0.25"/>
+  </g>
+</svg>
+```
+---
+
+### 7) errl_woods_tree_07 – stump with mushroom (env/prop)
+
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="env" data-name="errl_woods_tree_07">
+  <g fill="none">
+    <rect x="18" y="40" width="26" height="13" rx="4" fill="#92400e"/>
+    <ellipse cx="31" cy="40" rx="13" ry="6" fill="#a16207"/>
+    <ellipse cx="31" cy="38.5" rx="9" ry="3.3" fill="#78350f" opacity="0.4"/>
+    <path d="M40 37c0-2.8 2.6-5 5.5-5s5.5 2.2 5.5 5H40z" fill="#ef4444"/>
+    <rect x="44" y="37" width="3.2" height="5.5" rx="1.4" fill="#fde68a"/>
+    <circle cx="45" cy="34.5" r="1" fill="#fff"/>
+  </g>
+</svg>
+```
+---
+
+### 8) errl_woods_tree_08 – hollow stump (env)
+
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="env" data-name="errl_woods_tree_08">
+  <g fill="none">
+    <rect x="18" y="38" width="28" height="16" rx="5" fill="#92400e"/>
+    <ellipse cx="32" cy="38" rx="14" ry="6" fill="#a16207"/>
+    <ellipse cx="32" cy="36.8" rx="9" ry="3" fill="#78350f"/>
+    <ellipse cx="32" cy="38" rx="5" ry="2" fill="#020617"/>
+  </g>
+</svg>
+```
+---
+
+### 10) errl_woods_tree_10 – fallen log (env/prop)
+
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="env" data-name="errl_woods_tree_10">
+  <g fill="none">
+    <rect x="10" y="38" width="44" height="9" rx="4.5" fill="#78350f"/>
+    <circle cx="14" cy="42.5" r="4" fill="#a16207"/>
+    <circle cx="14" cy="42.5" r="2.2" fill="#92400e"/>
+    <ellipse cx="32" cy="48" rx="16" ry="3" fill="#166534" opacity="0.25"/>
+  </g>
+</svg>
+```
+---
+
+### 11) errl_woods_tree_cluster_01 – 3 pines cluster (env)
+
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="env" data-name="errl_woods_tree_cluster_01">
+  <g fill="none">
+    <path d="M18 46 L12 36 H16 L10 28 H22 L16 20 H28 L22 12 L30 12 L38 26 Z" fill="#166534"/>
+    <path d="M32 46 L26 34 H30 L24 26 H36 L30 16 H42 L36 8 L44 8 L52 24 Z" fill="#22c55e"/>
+    <path d="M26 48h20c-2 4-6 6-10 6s-8-2-10-6z" fill="#14532d"/>
+  </g>
+</svg>
+```
+---
+
+### 12) errl_woods_tree_cluster_02 – mixed trees cluster (env)
+
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="env" data-name="errl_woods_tree_cluster_02">
+  <g fill="none">
+    <circle cx="20" cy="24" r="9" fill="#166534"/>
+    <rect x="18" y="28" width="4" height="12" rx="1.5" fill="#92400e"/>
+    <path d="M34 46 L27 32 H31 L26 24 H38 L33 16 H45 L40 8 L48 8 L56 24 Z" fill="#22c55e"/>
+    <rect x="34" y="32" width="5" height="13" rx="2" fill="#78350f"/>
+  </g>
+</svg>
+```
+---
+
+### 13) errl_woods_clearing_01 – grass clearing blob (env)
+
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="env" data-name="errl_woods_clearing_01">
+  <g fill="none">
+    <path d="M10 42 C14 34 22 30 32 30s18 4 22 12c-3 7-11 10-22 10S13 49 10 42z"
+      fill="#22c55e"/>
+    <ellipse cx="32" cy="44" rx="16" ry="6" fill="#4ade80" opacity="0.7"/>
+  </g>
+</svg>
+```
+---
+
+### 14) errl_woods_hill_01 – rolling hill silhouette (env)
+
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="env" data-name="errl_woods_hill_01">
+  <g fill="none">
+    <path d="M4 44 C12 30 22 24 32 24s20 6 28 20v8H4z"
+      fill="#166534"/>
+    <path d="M10 44 C17 33 24 30 32 30s15 3 22 14v4H10z"
+      fill="#22c55e" opacity="0.9"/>
+  </g>
+</svg>
+```
+---
+
+### 16) errl_woods_path_01 – curving dirt path (env/prop)
+
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="env" data-name="errl_woods_path_01">
+  <g fill="none">
+    <path d="M26 56 C18 50 16 44 18 40c2-4 6-5 9-8 3-3 3-6 2-8-2-4-5-6-5-10 0-2 1-4 2-6
+             4 1 7 4 9 8 2 4 1 8-1 11-2 3-4 4-6 6-3 3-3 5-2 7 2 3 6 6 10 10z"
+      fill="#a16207" opacity="0.95"/>
+  </g>
+</svg>
+```
+---
+
+### 24) errl_woods_mushroom_cluster_01 – 3 mushrooms (prop)
+
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="prop" data-name="errl_woods_mushroom_cluster_01">
+  <g fill="none">
+    <path d="M14 34c0-4 4-7 8-7s8 3 8 7H14z" fill="#ef4444"/>
+    <rect x="19" y="34" width="4" height="9" rx="1.8" fill="#fde68a"/>
+    <path d="M28 30c0-3.5 3.5-6 7-6s7 2.5 7 6H28z" fill="#fb7185"/>
+    <rect x="33" y="30" width="4.2" height="8.5" rx="1.8" fill="#fef9c3"/>
+    <path d="M10 32c0-2.2 2.2-4 4.5-4s4.5 1.8 4.5 4H10z" fill="#ef4444"/>
+    <rect x="13" y="32" width="2.6" height="6.5" rx="1.3" fill="#fef3c7"/>
+    <circle cx="18" cy="30" r="1.1" fill="#fff"/>
+    <circle cx="22" cy="29" r="1.3" fill="#fff"/>
+    <circle cx="34" cy="27.5" r="1.2" fill="#fff"/>
+  </g>
+</svg>
+```
+---
+
+### 26) errl_woods_grass_tuft_02 – larger patch (prop)
+
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="prop" data-name="errl_woods_grass_tuft_02">
+  <g fill="none">
+    <path d="M8 46c3-7 6-7 9 0 3-9 7-9 11 0 3-8 7-8 11 0 3-7 6-7 9 0-3 6-13 10-29 10S11 52 8 46z"
+      fill="#22c55e"/>
+    <path d="M14 44c2-4 3-5 5-1 3-6 5-5 7 0 2-5 4-5 6 0 2-4 4-4 6 0"
+      stroke="#4ade80" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+  </g>
+</svg>
+```
+---
+
+### 31) errl_woods_flower_patch_01 – patch of flowers (prop)
+
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="prop" data-name="errl_woods_flower_patch_01">
+  <g fill="none">
+    <ellipse cx="32" cy="47" rx="14" ry="3.5" fill="#22c55e" opacity="0.5"/>
+    <path d="M24 44 V32" stroke="#166534" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M32 45 V30" stroke="#166534" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M40 44 V33" stroke="#166534" stroke-width="1.5" stroke-linecap="round"/>
+    <circle cx="24" cy="30" r="2.2" fill="#f97316"/>
+    <circle cx="32" cy="28" r="2.5" fill="#fb7185"/>
+    <circle cx="40" cy="31" r="2.2" fill="#22d3ee"/>
+    <circle cx="24" cy="30" r="0.8" fill="#fefce8"/>
+    <circle cx="32" cy="28" r="0.9" fill="#fefce8"/>
+    <circle cx="40" cy="31" r="0.8" fill="#fefce8"/>
+  </g>
+</svg>
+```
+---
+
+If this style is reading correctly in your pipeline, I can:
+
+- Finish the remaining Woods set in 2–3 more batches, then
+- Move on to Festival and Concert with matching structure (`data-pack`, `data-cat`, low path counts).All of these assume:
+	•	viewBox="0 0 64 64"
+	•	Simple geometric shapes, flat colors, small details
+	•	Compatible with the existing Errl sprite pack (so you can reuse tint/motion systems)
+
+⸻
+
+Global conventions for the next 400
+
+Use this naming scheme:
+	•	errl_woods_*
+	•	errl_fest_*
+	•	errl_concert_*
+	•	errl_weather_*
+	•	errl_bg_*
+
+And keep everything slotted into categories:
+	•	env – large/background elements
+	•	prop – placeable objects
+	•	fx – particles, light beams, etc.
+	•	ui – stickers, badges, banners
+	•	char – optional tiny NPC/buddy blobs
+
+Each asset should be drawable in ~3–10 paths/rects/circles max.
+
+⸻
+
+1️⃣ 100 Assets – WOODS THEME (errl_woods_*)
+
+Vibe: cozy, slightly magical forest. Soft blues/greens, glowy mushrooms, tree stumps for Errl to sit on.
+
+Palette notes:
+	•	Greens: #166534, #22c55e, #4ade80
+	•	Browns: #78350f, #92400e, #a16207
+	•	Accent glows: #22d3ee, #a855f7
+
+A. Trees & Big Environment (20)
+	1.	errl_woods_tree_01 – single stylized pine
+	2.	errl_woods_tree_02 – round leafy tree
+	3.	errl_woods_tree_03 – crooked spooky tree silhouette
+	4.	errl_woods_tree_04 – double-trunk tree
+	5.	errl_woods_tree_05 – tiny sapling
+	6.	errl_woods_tree_06 – stump with rings
+	7.	errl_woods_tree_07 – stump with mushroom growing
+	8.	errl_woods_tree_08 – hollow stump (Errl can hide in)
+	9.	errl_woods_tree_09 – tree with a little door (fairy house)
+	10.	errl_woods_tree_10 – fallen log (side view)
+	11.	errl_woods_tree_cluster_01 – 3 pines as one “cluster”
+	12.	errl_woods_tree_cluster_02 – mixed trees cluster
+	13.	errl_woods_clearing_01 – simple grass clearing shape
+	14.	errl_woods_hill_01 – rolling hill silhouette
+	15.	errl_woods_hill_02 – small bump hill (foreground)
+	16.	errl_woods_path_01 – curving dirt path shape
+	17.	errl_woods_path_02 – stepping stones path
+	18.	errl_woods_cliff_01 – small vertical rock face
+	19.	errl_woods_bridge_log_01 – log bridge over imaginary gap
+	20.	errl_woods_arch_tree_01 – two trees forming arch
+
+B. Plants, Mushrooms, Ground Bits (30)
+	21.	errl_woods_mushroom_01 – classic red cap mushroom
+	22.	errl_woods_mushroom_02 – tall thin mushroom
+	23.	errl_woods_mushroom_03 – glowy bioluminescent shroom
+	24.	errl_woods_mushroom_cluster_01 – 3 small mushrooms together
+	25.	errl_woods_grass_tuft_01 – simple grass clump
+	26.	errl_woods_grass_tuft_02 – larger grass patch
+	27.	errl_woods_fern_01 – single curled fern
+	28.	errl_woods_fern_02 – spread fern leaves
+	29.	errl_woods_flower_01 – tiny wildflower
+	30.	errl_woods_flower_02 – tall wildflower stalk
+	31.	errl_woods_flower_patch_01 – patch of 3–4 flowers
+	32.	errl_woods_leaf_01 – single leaf
+	33.	errl_woods_leaf_02 – maple-ish leaf
+	34.	errl_woods_leaf_pile_01 – small pile
+	35.	errl_woods_leaf_pile_02 – bigger pile (Errl can stand in)
+	36.	errl_woods_branches_01 – bare branch
+	37.	errl_woods_branches_02 – leafy branch
+	38.	errl_woods_bush_01 – rounded bush
+	39.	errl_woods_bush_berry_01 – bush with berries
+	40.	errl_woods_vine_01 – dangling vine
+	41.	errl_woods_vine_02 – ground creeper vine
+	42.	errl_woods_roots_01 – exposed tree roots pattern
+	43.	errl_woods_moss_patch_01 – blob of moss
+	44.	errl_woods_moss_trail_01 – moss along ground
+	45.	errl_woods_stone_01 – single rock
+	46.	errl_woods_stone_02 – three rocks cluster
+	47.	errl_woods_log_slice_01 – cross-section log slice
+	48.	errl_woods_mushroom_ring_01 – fairy ring circle outline
+	49.	errl_woods_grass_ring_01 – circular grass patch
+	50.	errl_woods_ground_patch_01 – generic ground texture patch
+
+C. Campsite / Woodland Props (25)
+	51.	errl_woods_campfire_01 – logs + little flame
+	52.	errl_woods_campfire_02 – low flame / embers
+	53.	errl_woods_tent_01 – simple A-frame tent
+	54.	errl_woods_tent_02 – round cozy tent
+	55.	errl_woods_lantern_01 – hanging lantern
+	56.	errl_woods_lantern_02 – lantern on ground
+	57.	errl_woods_sign_post_01 – wooden sign pointing right
+	58.	errl_woods_sign_post_02 – double sign arrows
+	59.	errl_woods_log_seat_01 – log slice stool
+	60.	errl_woods_log_bench_01 – long bench log
+	61.	errl_woods_backpack_01 – forest backpack prop
+	62.	errl_woods_mug_camp_01 – enamel mug variant
+	63.	errl_woods_can_01 – little can (for silly litter scenes)
+	64.	errl_woods_bin_01 – small trash can
+	65.	errl_woods_crate_food_01 – food crate
+	66.	errl_woods_picnic_blanket_01 – checkered blanket
+	67.	errl_woods_thermos_01 – thermos bottle
+	68.	errl_woods_walking_stick_01 – staff prop
+	69.	errl_woods_rope_01 – coiled rope
+	70.	errl_woods_cooler_01 – tiny cooler box
+	71.	errl_woods_flashlight_01 – flashlight w/ beam
+	72.	errl_woods_binoculars_01 – perched on stump
+	73.	errl_woods_camp_chair_01 – foldable chair
+	74.	errl_woods_trail_marker_01 – tree-tag marker
+	75.	errl_woods_map_01 – folded map prop
+
+D. Creatures & FX (25)
+	76.	errl_woods_firefly_cluster_01 – 5 glowy dots
+	77.	errl_woods_firefly_cluster_02 – vertical streak fireflies
+	78.	errl_woods_bird_01 – tiny bird silhouette
+	79.	errl_woods_bird_02 – perched bird on branch
+	80.	errl_woods_owl_01 – round owl on stump
+	81.	errl_woods_bunny_01 – stylized bunny silhouette
+	82.	errl_woods_fox_01 – curled fox blob
+	83.	errl_woods_deer_01 – minimal deer silhouette
+	84.	errl_woods_bug_01 – beetle / ladybug
+	85.	errl_woods_spider_01 – spider + tiny web
+	86.	errl_woods_web_corner_01 – web for tree corners
+	87.	errl_woods_glow_spores_01 – particles around ground
+	88.	errl_woods_mist_01 – low ground fog band
+	89.	errl_woods_mist_02 – vertical fog column
+	90.	errl_woods_particles_01 – dust motes in sunbeam
+	91.	errl_woods_sunbeam_01 – diagonal soft beam shape
+	92.	errl_woods_sparkle_leaf_01 – single glowing leaf
+	93.	errl_woods_eyes_in_dark_01 – two glowing eyes cluster
+	94.	errl_woods_moon_through_trees_01 – moon + branch frame
+	95.	errl_woods_star_cluster_01 – treetop stars
+	96.	errl_woods_mushroom_glow_cluster_02 – more dense patch
+	97.	errl_woods_goo_puddle_woods_01 – forest-colored goo puddle
+	98.	errl_woods_goo_drip_tree_01 – goo dripping from branch
+	99.	errl_woods_errl_totem_01 – small wooden Errl totem
+	100.	errl_woods_errl_footprints_01 – 3 goo footprints in dirt
+
+⸻
+
+2️⃣ 100 Assets – FESTIVAL THEME (errl_fest_*)
+
+Vibe: outdoor festival / fair. String lights, banners, tents, weird art installations, food stands.
+
+Palette:
+	•	Warm lights: #facc15, #f97316
+	•	Tents: #fb7185, #22d3ee, #a855f7
+	•	Ground: muted greens/browns, night sky options.
+
+A. Tents, Stages, Structures (25)
+	1.	errl_fest_tent_big_top_01 – big circus-style tent
+	2.	errl_fest_tent_small_01 – small merch tent
+	3.	errl_fest_tent_food_01 – food stall tent
+	4.	errl_fest_tent_chill_01 – open chill-out canopy
+	5.	errl_fest_stage_main_01 – main stage platform
+	6.	errl_fest_stage_side_01 – small side stage
+	7.	errl_fest_dome_01 – geodesic dome silhouette
+	8.	errl_fest_tower_light_01 – light tower structure
+	9.	errl_fest_gate_01 – festival entrance arch
+	10.	errl_fest_gate_flag_01 – arch with flags
+	11.	errl_fest_scaffolding_01 – simple scaffold
+	12.	errl_fest_wall_banner_01 – big vertical banner
+	13.	errl_fest_totem_pole_01 – decorative pole
+	14.	errl_fest_art_structure_01 – strange abstract sculpture
+	15.	errl_fest_art_structure_02 – tall spiral sculpture
+	16.	errl_fest_flag_trio_01 – 3 flag poles
+	17.	errl_fest_stage_riser_01 – small riser platform
+	18.	errl_fest_info_booth_01 – info kiosk
+	19.	errl_fest_ticket_booth_01 – ticket stall
+	20.	errl_fest_merch_booth_01 – merch stall front
+	21.	errl_fest_bar_01 – simple bar counter
+	22.	errl_fest_bar_sign_01 – “BAR” style light sign (no text, just frame)
+	23.	errl_fest_security_gate_01 – little barrier gate
+	24.	errl_fest_shade_structure_01 – shade sails overhead
+	25.	errl_fest_hammock_01 – hammock between posts
+
+B. Lights, Banners, Decor (35)
+	26.	errl_fest_string_lights_01 – gentle arc of lights
+	27.	errl_fest_string_lights_02 – zigzag string
+	28.	errl_fest_flags_line_01 – triangle pennant string
+	29.	errl_fest_flags_line_02 – rectangular flags
+	30.	errl_fest_lantern_paper_01 – hanging paper lantern
+	31.	errl_fest_lantern_cluster_01 – 3 lanterns
+	32.	errl_fest_balloon_01 – single balloon
+	33.	errl_fest_balloon_cluster_01 – bunch of balloons
+	34.	errl_fest_banner_arc_01 – curved banner
+	35.	errl_fest_confetti_01 – confetti particle cluster
+	36.	errl_fest_confetti_02 – falling confetti strip
+	37.	errl_fest_glow_orb_01 – large decorative orb
+	38.	errl_fest_glow_orb_cluster_01 – 3 orbs
+	39.	errl_fest_torch_01 – small torch with flame
+	40.	errl_fest_fire_bowl_01 – communal fire bowl
+	41.	errl_fest_flag_single_01 – big tall flag
+	42.	errl_fest_pinwheel_01 – spinny decoration
+	43.	errl_fest_ribbon_pole_01 – ribbons on pole
+	44.	errl_fest_ground_lights_01 – row of floor LEDs
+	45.	errl_fest_laser_beam_01 – diagonal beam
+	46.	errl_fest_laser_fan_01 – fan of beams from one point
+	47.	errl_fest_projection_screen_01 – simple rectangular screen
+	48.	errl_fest_projection_art_01 – projected art frame
+	49.	errl_fest_entrance_sign_01 – horizontal sign bar
+	50.	errl_fest_bunting_circle_01 – circular bunting
+	51.	errl_fest_ground_pattern_01 – rug/mandala on ground
+	52.	errl_fest_ground_pattern_02 – second pattern variant
+	53.	errl_fest_light_pillar_01 – vertical light column
+	54.	errl_fest_neon_arc_01 – neon arch element
+	55.	errl_fest_beam_cross_01 – X of lights above
+
+C. People-ish & Crowd / Camping Props (20)
+	56.	errl_fest_crowd_blob_01 – generic crowd silhouette
+	57.	errl_fest_crowd_blob_02 – shorter/wider silhouette
+	58.	errl_fest_person_dancer_01 – dancing blob figure
+	59.	errl_fest_person_dancer_02 – arms-up dancer
+	60.	errl_fest_person_chair_01 – person sitting silhouette
+	61.	errl_fest_camp_chair_01 – festival chair
+	62.	errl_fest_camp_table_01 – folding festival table
+	63.	errl_fest_cooler_box_01 – cooler variant
+	64.	errl_fest_can_stack_01 – stacked cans
+	65.	errl_fest_bottle_cluster_01 – clustered bottles
+	66.	errl_fest_trashbag_01 – trash bag silhouette
+	67.	errl_fest_totem_sign_01 – hand-held totem sign shape
+	68.	errl_fest_totem_errl_01 – Errl head on a pole
+	69.	errl_fest_blanket_circle_01 – big sit circle
+	70.	errl_fest_camp_flag_01 – flag near tent
+	71.	errl_fest_camp_light_01 – ground lantern
+	72.	errl_fest_shoes_pile_01 – pile of shoes
+	73.	errl_fest_bike_01 – simple bike silhouette
+	74.	errl_fest_cart_01 – utility cart
+	75.	errl_fest_waterstation_01 – water jug stand
+
+D. UI / Tokens / FX (20)
+	76.	errl_fest_ticket_01 – ticket shape
+	77.	errl_fest_wristband_01 – wristband icon
+	78.	errl_fest_schedule_card_01 – small card frame
+	79.	errl_fest_map_pin_01 – map pin icon
+	80.	errl_fest_heart_glow_01 – glowing heart for festival love
+	81.	errl_fest_music_note_01 – music note icon
+	82.	errl_fest_starburst_01 – highlight burst
+	83.	errl_fest_badge_vip_01 – circular badge
+	84.	errl_fest_badge_staff_01 – rectangular badge
+	85.	errl_fest_cloud_of_dust_01 – dust at feet
+	86.	errl_fest_fog_machine_01 – machine with plume
+	87.	errl_fest_rainbow_arc_01 – decorative rainbow
+	88.	errl_fest_errl_tag_01 – tag with Errl silhouette
+	89.	errl_fest_sparkles_01 – generic sparkle cluster
+	90.	errl_fest_particle_swirl_01 – swirl of particles
+	91.	errl_fest_bass_wave_01 – bass wave lines
+	92.	errl_fest_soundwave_01 – horizontal waveform
+	93.	errl_fest_glitter_fall_01 – glitter column
+	94.	errl_fest_trail_light_01 – dotted trail path
+	95.	errl_fest_errl_print_01 – mini Errl head sticker
+	96.	errl_fest_nav_arrow_01 – bright arrow icon
+	97.	errl_fest_weather_flagcalm_01 – flag slightly waving
+	98.	errl_fest_weather_flagwindy_01 – strong curve
+	99.	errl_fest_lost_and_found_01 – small box w/ glow
+	100.	errl_fest_errl_portal_01 – mini wiggly portal on ground
+
+⸻
+
+3️⃣ 100 Assets – CONCERT THEME (errl_concert_*)
+
+Vibe: indoors or outdoors stage, big sound system, instruments, lasers, crowd details.
+
+Palette:
+	•	Stage: #020617, #0f172a
+	•	Lights: #22d3ee, #a855f7, #fbbf24
+	•	Metal bits: #64748b, #94a3b8
+
+A. Stages, Trusses, Speakers (30)
+	1.	errl_concert_stage_front_01 – straight-front stage
+	2.	errl_concert_stage_side_01 – side view stage
+	3.	errl_concert_stage_riser_01 – drum riser
+	4.	errl_concert_stage_catwalk_01 – catwalk extension
+	5.	errl_concert_truss_top_01 – top truss bar
+	6.	errl_concert_truss_side_01 – vertical truss
+	7.	errl_concert_truss_triangle_01 – triangular rig
+	8.	errl_concert_speaker_stack_01 – tall speaker tower
+	9.	errl_concert_speaker_stack_02 – horizontally stacked
+	10.	errl_concert_speaker_single_01 – single speaker
+	11.	errl_concert_subwoofer_01 – big square sub
+	12.	errl_concert_monitor_floor_01 – wedge monitor
+	13.	errl_concert_light_bar_01 – bar of spotlights
+	14.	errl_concert_light_can_01 – individual can light
+	15.	errl_concert_screen_backdrop_01 – big LED screen
+	16.	errl_concert_banner_backdrop_01 – cloth backdrop
+	17.	errl_concert_rigging_cable_01 – simple cable arcs
+	18.	errl_concert_spotlight_floor_01 – spotlight on ground
+	19.	errl_concert_spotlight_ceiling_01 – overhead
+	20.	errl_concert_beam_cone_01 – single light cone
+	21.	errl_concert_beam_fan_01 – multiple beams fan
+	22.	errl_concert_stand_mic_01 – mic on stand
+	23.	errl_concert_stand_mic_double_01 – two mics
+	24.	errl_concert_speaker_grid_01 – grid of small speakers
+	25.	errl_concert_stage_sidewing_01 – side wing stage piece
+	26.	errl_concert_barrier_front_01 – crowd barrier
+	27.	errl_concert_side_wall_foam_01 – acoustic panel
+	28.	errl_concert_mixer_rack_01 – rack unit silhouette
+	29.	errl_concert_lighting_tree_01 – stand with lights
+	30.	errl_concert_truss_circle_01 – circular truss
+
+B. Instruments & Gear (30)
+	31.	errl_concert_guitar_01 – electric guitar
+	32.	errl_concert_bass_01 – bass guitar
+	33.	errl_concert_keyboard_01 – synth keyboard
+	34.	errl_concert_drumkit_01 – full kit silhouette
+	35.	errl_concert_drumkit_min_01 – minimal kit
+	36.	errl_concert_drum_single_01 – single drum
+	37.	errl_concert_cymbal_stand_01 – cymbal on stand
+	38.	errl_concert_turntable_01 – DJ deck platters
+	39.	errl_concert_mixer_dj_01 – DJ mixer
+	40.	errl_concert_headphones_01 – big DJ headset
+	41.	errl_concert_laptop_01 – laptop on stand
+	42.	errl_concert_mic_hand_01 – handheld mic
+	43.	errl_concert_pedalboard_01 – pedals on board
+	44.	errl_concert_cable_snake_01 – coil of cable
+	45.	errl_concert_amp_head_01 – amp head
+	46.	errl_concert_amp_cab_01 – cabinet
+	47.	errl_concert_violin_01 – stylized violin
+	48.	errl_concert_horn_01 – brass horn
+	49.	errl_concert_sax_01 – simple sax
+	50.	errl_concert_microphone_vintage_01 – retro mic
+	51.	errl_concert_sampler_pad_01 – pad grid
+	52.	errl_concert_monitor_screen_01 – stage teleprompter
+	53.	errl_concert_tuning_fork_01 – tiny icon
+	54.	errl_concert_sheet_music_01 – music stand
+	55.	errl_concert_riser_block_01 – generic riser
+	56.	errl_concert_case_road_01 – road case
+	57.	errl_concert_case_stack_01 – stacked road cases
+	58.	errl_concert_laser_unit_01 – dedicated laser box
+	59.	errl_concert_fogger_01 – fog machine
+	60.	errl_concert_fog_cloud_01 – low fog patch
+
+C. Crowd, Hands, Atmosphere (25)
+	61.	errl_concert_crowd_front_01 – low wide silhouette
+	62.	errl_concert_crowd_mid_01 – medium distance blob
+	63.	errl_concert_crowd_back_01 – far background crowd
+	64.	errl_concert_hand_up_01 – single raised hand
+	65.	errl_concert_hand_pair_01 – two hands up
+	66.	errl_concert_phone_glow_01 – phone screen in crowd
+	67.	errl_concert_phone_cluster_01 – cluster of 3
+	68.	errl_concert_mosh_blob_01 – chaotic blob
+	69.	errl_concert_confetti_burst_01 – overhead burst
+	70.	errl_concert_confetti_ground_01 – floor confetti
+	71.	errl_concert_laser_cross_01 – crossing beams
+	72.	errl_concert_laser_ceiling_01 – horizontal beam
+	73.	errl_concert_sparkler_01 – hand sparkler
+	74.	errl_concert_firejet_01 – small pyro burst
+	75.	errl_concert_bubble_cluster_01 – bubbles
+	76.	errl_concert_streamer_01 – streamer arcs
+	77.	errl_concert_spot_flare_01 – flare behind performer
+	78.	errl_concert_backlight_aura_01 – aura behind Errl
+	79.	errl_concert_errl_pit_01 – tiny Errl in crowd
+	80.	errl_concert_smoke_column_01 – vertical smoke
+	81.	errl_concert_smoke_diagonal_01 – angled smoke
+	82.	errl_concert_beat_wave_01 – pulsing bass rings
+	83.	errl_concert_light_dotfield_01 – dot matrix background
+	84.	errl_concert_glitter_rain_01 – glitter downward
+	85.	errl_concert_stage_star_01 – star under performer
+
+D. UI / Labels / Tokens (15)
+	86.	errl_concert_ticket_01 – concert ticket icon
+	87.	errl_concert_poster_01 – gig poster frame
+	88.	errl_concert_badge_backstage_01 – pass icon
+	89.	errl_concert_logo_plate_01 – blank logo plate
+	90.	errl_concert_timer_01 – countdown circle
+	91.	errl_concert_setlist_card_01 – setlist sheet
+	92.	errl_concert_waveform_ui_01 – stylized waveform strip
+	93.	errl_concert_volume_knob_01 – knob icon
+	94.	errl_concert_eq_bars_01 – EQ bar icon
+	95.	errl_concert_sound_icon_01 – speaker symbol
+	96.	errl_concert_pause_icon_01 – pause button
+	97.	errl_concert_play_icon_02 – alt play button
+	98.	errl_concert_record_icon_01 – record dot
+	99.	errl_concert_logo_errl_01 – Errl head as stage logo
+	100.	errl_concert_errl_spot_silhouette_01 – tiny Errl under light cone<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+
+  <!-- ========== PALETTE REFERENCE (NOT RENDERED) ==========
+    teal:   #22d3ee
+    violet: #a855f7
+    pink:   #fb7185
+    lime:   #bef264
+    amber:  #fbbf24
+    slate:  #0f172a
+    gray:   #64748b
+  ======================================================= -->
+
+  <!-- ========== 1–10: SMALL FURNITURE / SURFACES ========== -->
+
+  <!-- 1: Tiny table -->
+  <symbol id="errl_prop_table_01" viewBox="0 0 64 64">
+    <rect x="10" y="22" width="44" height="8" rx="3" fill="#0f172a"/>
+    <rect x="16" y="30" width="4" height="16" rx="1" fill="#334155"/>
+    <rect x="30" y="30" width="4" height="16" rx="1" fill="#334155"/>
+    <rect x="44" y="30" width="4" height="16" rx="1" fill="#334155"/>
+  </symbol>
+
+  <!-- 2: Low platform -->
+  <symbol id="errl_prop_platform_01" viewBox="0 0 64 64">
+    <rect x="8" y="34" width="48" height="10" rx="3" fill="#020617"/>
+    <rect x="10" y="32" width="44" height="6" rx="2" fill="#1e293b"/>
+  </symbol>
+
+  <!-- 3: Round rug -->
+  <symbol id="errl_env_rug_round_01" viewBox="0 0 64 64">
+    <ellipse cx="32" cy="40" rx="22" ry="10" fill="#0f172a"/>
+    <ellipse cx="32" cy="40" rx="18" ry="8" fill="#1e293b"/>
+    <ellipse cx="32" cy="40" rx="12" ry="5" fill="#22d3ee" opacity="0.3"/>
+  </symbol>
+
+  <!-- 4: Beanbag -->
+  <symbol id="errl_prop_beanbag_01" viewBox="0 0 64 64">
+    <path d="M14 40q2-12 10-18t16-2q8 4 10 20-2 6-8 8H22q-8-2-8-8z" fill="#a855f7"/>
+    <path d="M18 38q2-8 8-12t12-1" fill="none" stroke="#c4b5fd" stroke-width="2" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- 5: Crate -->
+  <symbol id="errl_prop_crate_01" viewBox="0 0 64 64">
+    <rect x="14" y="24" width="36" height="24" rx="2" fill="#0f172a"/>
+    <rect x="16" y="26" width="32" height="20" rx="1" fill="#1e293b"/>
+    <path d="M16 32h32M16 38h32" stroke="#334155" stroke-width="2"/>
+  </symbol>
+
+  <!-- 6: Tiny shelf -->
+  <symbol id="errl_prop_shelf_01" viewBox="0 0 64 64">
+    <rect x="10" y="22" width="44" height="4" rx="1" fill="#020617"/>
+    <rect x="10" y="32" width="44" height="4" rx="1" fill="#020617"/>
+    <rect x="10" y="42" width="44" height="4" rx="1" fill="#020617"/>
+    <rect x="12" y="22" width="2" height="24" fill="#1e293b"/>
+    <rect x="50" y="22" width="2" height="24" fill="#1e293b"/>
+  </symbol>
+
+  <!-- 7: Step block -->
+  <symbol id="errl_prop_block_01" viewBox="0 0 64 64">
+    <rect x="12" y="32" width="20" height="12" fill="#0f172a"/>
+    <rect x="24" y="26" width="20" height="10" fill="#1e293b"/>
+  </symbol>
+
+  <!-- 8: Tiny podium -->
+  <symbol id="errl_prop_podium_01" viewBox="0 0 64 64">
+    <rect x="20" y="30" width="24" height="16" rx="2" fill="#0f172a"/>
+    <rect x="22" y="28" width="20" height="4" rx="2" fill="#22d3ee"/>
+  </symbol>
+
+  <!-- 9: Couch blob -->
+  <symbol id="errl_prop_couch_01" viewBox="0 0 64 64">
+    <path d="M10 36q0-8 8-8h28q8 0 8 8v6q0 4-4 4H14q-4 0-4-4z" fill="#334155"/>
+    <path d="M14 30q0-6 6-6M44 30q0-6-6-6" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- 10: Tiny side table -->
+  <symbol id="errl_prop_side_table_01" viewBox="0 0 64 64">
+    <rect x="24" y="26" width="16" height="4" rx="1" fill="#0f172a"/>
+    <rect x="26" y="30" width="2" height="12" fill="#1e293b"/>
+    <rect x="36" y="30" width="2" height="12" fill="#1e293b"/>
+  </symbol>
+
+
+  <!-- ========== 11–20: SCREENS, PROJECTORS, TVS ========== -->
+
+  <!-- 11: CRT TV -->
+  <symbol id="errl_screen_tv_01" viewBox="0 0 64 64">
+    <rect x="10" y="18" width="44" height="28" rx="4" fill="#020617"/>
+    <rect x="14" y="22" width="30" height="20" rx="2" fill="#0b1120"/>
+    <rect x="46" y="22" width="6" height="6" rx="2" fill="#1e293b"/>
+    <circle cx="49" cy="34" r="2" fill="#22d3ee"/>
+    <path d="M16 24h26" stroke="#22d3ee" stroke-width="1" opacity="0.4"/>
+  </symbol>
+
+  <!-- 12: Rounded TV -->
+  <symbol id="errl_screen_tv_02" viewBox="0 0 64 64">
+    <rect x="12" y="20" width="40" height="26" rx="10" fill="#020617"/>
+    <rect x="16" y="24" width="32" height="18" rx="8" fill="#0b1120"/>
+  </symbol>
+
+  <!-- 13: Overhead projector -->
+  <symbol id="errl_prop_projector_01" viewBox="0 0 64 64">
+    <rect x="18" y="32" width="28" height="10" rx="2" fill="#020617"/>
+    <rect x="24" y="26" width="16" height="8" rx="2" fill="#1e293b"/>
+    <rect x="30" y="18" width="4" height="10" fill="#1e293b"/>
+    <rect x="28" y="14" width="8" height="4" rx="1" fill="#22d3ee"/>
+    <polygon points="46,34 60,40 46,46" fill="#22d3ee" opacity="0.3"/>
+  </symbol>
+
+  <!-- 14: Tiny projector box -->
+  <symbol id="errl_prop_projector_02" viewBox="0 0 64 64">
+    <rect x="18" y="30" width="26" height="12" rx="3" fill="#020617"/>
+    <circle cx="24" cy="36" r="3" fill="#22d3ee"/>
+    <rect x="32" y="34" width="6" height="4" rx="1" fill="#1e293b"/>
+    <polygon points="44,36 56,32 56,40" fill="#22d3ee" opacity="0.25"/>
+  </symbol>
+
+  <!-- 15: Hanging screen -->
+  <symbol id="errl_screen_hanging_01" viewBox="0 0 64 64">
+    <line x1="16" y1="16" x2="48" y2="16" stroke="#64748b" stroke-width="2"/>
+    <rect x="12" y="18" width="40" height="24" rx="2" fill="#0b1120"/>
+    <line x1="12" y1="18" x2="32" y2="10" stroke="#334155" stroke-width="1"/>
+    <line x1="52" y1="18" x2="32" y2="10" stroke="#334155" stroke-width="1"/>
+  </symbol>
+
+  <!-- 16: Tablet -->
+  <symbol id="errl_screen_tablet_01" viewBox="0 0 64 64">
+    <rect x="16" y="18" width="32" height="28" rx="4" fill="#020617"/>
+    <rect x="18" y="20" width="28" height="24" rx="3" fill="#0b1120"/>
+    <circle cx="32" cy="46" r="1" fill="#1e293b"/>
+  </symbol>
+
+  <!-- 17: Monitor on stand -->
+  <symbol id="errl_screen_monitor_01" viewBox="0 0 64 64">
+    <rect x="14" y="18" width="36" height="22" rx="3" fill="#020617"/>
+    <rect x="16" y="20" width="32" height="18" rx="2" fill="#0b1120"/>
+    <rect x="28" y="40" width="8" height="4" fill="#1e293b"/>
+    <rect x="24" y="44" width="16" height="2" rx="1" fill="#1e293b"/>
+  </symbol>
+
+  <!-- 18: Tiny projector ceiling mount -->
+  <symbol id="errl_prop_projector_ceiling_01" viewBox="0 0 64 64">
+    <rect x="28" y="10" width="8" height="8" rx="2" fill="#1e293b"/>
+    <rect x="22" y="20" width="20" height="10" rx="2" fill="#020617"/>
+    <circle cx="28" cy="25" r="2" fill="#22d3ee"/>
+    <polygon points="42,24 56,30 42,36" fill="#22d3ee" opacity="0.25"/>
+  </symbol>
+
+  <!-- 19: Tiny VHS player -->
+  <symbol id="errl_prop_vhs_01" viewBox="0 0 64 64">
+    <rect x="18" y="30" width="28" height="10" rx="2" fill="#020617"/>
+    <rect x="20" y="32" width="10" height="6" fill="#0b1120"/>
+    <rect x="32" y="32" width="12" height="3" fill="#1e293b"/>
+  </symbol>
+
+  <!-- 20: Polaroid frame -->
+  <symbol id="errl_frame_polaroid_01" viewBox="0 0 64 64">
+    <rect x="14" y="14" width="36" height="36" rx="2" fill="#0f172a"/>
+    <rect x="16" y="16" width="32" height="26" fill="#020617"/>
+    <rect x="16" y="42" width="32" height="6" fill="#111827"/>
+  </symbol>
+
+
+  <!-- ========== 21–30: CUPS, SNACKS, LITTLE OBJECTS ========== -->
+
+  <!-- 21: Mug -->
+  <symbol id="errl_prop_mug_01" viewBox="0 0 64 64">
+    <rect x="20" y="26" width="16" height="16" rx="3" fill="#0f172a"/>
+    <rect x="34" y="30" width="6" height="8" rx="3" fill="#1e293b"/>
+    <path d="M24 24c0-2 2-3 4-3s4 1 4 3" stroke="#a855f7" stroke-width="2" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- 22: Takeout cup -->
+  <symbol id="errl_prop_cup_01" viewBox="0 0 64 64">
+    <polygon points="26,22 38,22 36,44 28,44" fill="#0f172a"/>
+    <rect x="24" y="18" width="16" height="4" rx="1" fill="#1e293b"/>
+    <rect x="30" y="14" width="2" height="4" fill="#22d3ee"/>
+  </symbol>
+
+  <!-- 23: Plate with blob -->
+  <symbol id="errl_prop_plate_blob_01" viewBox="0 0 64 64">
+    <ellipse cx="32" cy="38" rx="18" ry="6" fill="#0f172a"/>
+    <path d="M24 34q4-6 10-4t6 6-4 6-8 0-4-8z" fill="#fb7185"/>
+  </symbol>
+
+  <!-- 24: Slice of pizza -->
+  <symbol id="errl_prop_pizza_01" viewBox="0 0 64 64">
+    <polygon points="20,20 44,20 32,44" fill="#fbbf24"/>
+    <path d="M20 20h24" stroke="#92400e" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="28" cy="26" r="2" fill="#b91c1c"/>
+    <circle cx="36" cy="30" r="2" fill="#b91c1c"/>
+  </symbol>
+
+  <!-- 25: Cookie -->
+  <symbol id="errl_prop_cookie_01" viewBox="0 0 64 64">
+    <circle cx="32" cy="34" r="10" fill="#92400e"/>
+    <circle cx="28" cy="30" r="1.5" fill="#020617"/>
+    <circle cx="36" cy="32" r="1.5" fill="#020617"/>
+    <circle cx="30" cy="38" r="1.5" fill="#020617"/>
+  </symbol>
+
+  <!-- 26: Candy wrapper -->
+  <symbol id="errl_prop_candy_01" viewBox="0 0 64 64">
+    <rect x="24" y="28" width="16" height="8" rx="3" fill="#a855f7"/>
+    <polygon points="24,32 18,28 18,36" fill="#fb7185"/>
+    <polygon points="40,32 46,28 46,36" fill="#22d3ee"/>
+  </symbol>
+
+  <!-- 27: Bottle -->
+  <symbol id="errl_prop_bottle_01" viewBox="0 0 64 64">
+    <rect x="30" y="16" width="4" height="6" rx="1" fill="#1e293b"/>
+    <rect x="26" y="22" width="12" height="18" rx="4" fill="#0f172a"/>
+    <rect x="28" y="24" width="8" height="12" rx="3" fill="#22d3ee" opacity="0.5"/>
+  </symbol>
+
+  <!-- 28: Little box -->
+  <symbol id="errl_prop_box_01" viewBox="0 0 64 64">
+    <rect x="22" y="26" width="20" height="16" rx="2" fill="#0f172a"/>
+    <path d="M22 30h20" stroke="#1e293b" stroke-width="2"/>
+  </symbol>
+
+  <!-- 29: Candle -->
+  <symbol id="errl_prop_candle_01" viewBox="0 0 64 64">
+    <rect x="28" y="26" width="8" height="16" rx="2" fill="#e5e7eb"/>
+    <path d="M32 20c-1 1-2 2-2 3s1.5 2 2 2 2-1 2-2-1-2-2-3z" fill="#fbbf24"/>
+  </symbol>
+
+  <!-- 30: Bowl -->
+  <symbol id="errl_prop_bowl_01" viewBox="0 0 64 64">
+    <path d="M20 30h24q-1 10-12 10T20 30z" fill="#0f172a"/>
+    <path d="M20 30h24" stroke="#1e293b" stroke-width="2"/>
+  </symbol>
+
+
+  <!-- ========== 31–40: PLANTS & NATURE BITS ========== -->
+
+  <!-- 31: Potted plant -->
+  <symbol id="errl_env_plant_01" viewBox="0 0 64 64">
+    <rect x="26" y="32" width="12" height="10" rx="2" fill="#0f172a"/>
+    <path d="M32 32v-8" stroke="#22c55e" stroke-width="2" stroke-linecap="round"/>
+    <path d="M32 24c-3-4-6-6-8-4 0 3 3 5 8 4z" fill="#22c55e"/>
+    <path d="M32 24c3-4 6-6 8-4 0 3-3 5-8 4z" fill="#4ade80"/>
+  </symbol>
+
+  <!-- 32: Tall plant -->
+  <symbol id="errl_env_plant_02" viewBox="0 0 64 64">
+    <rect x="30" y="32" width="4" height="12" fill="#166534"/>
+    <circle cx="32" cy="26" r="6" fill="#22c55e"/>
+  </symbol>
+
+  <!-- 33: Hanging vine -->
+  <symbol id="errl_env_vine_01" viewBox="0 0 64 64">
+    <path d="M16 10q12 8 8 20t10 16" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="20" cy="14" r="2" fill="#22c55e"/>
+    <circle cx="26" cy="20" r="2" fill="#4ade80"/>
+  </symbol>
+
+  <!-- 34: Bush blob -->
+  <symbol id="errl_env_bush_01" viewBox="0 0 64 64">
+    <circle cx="24" cy="36" r="8" fill="#16a34a"/>
+    <circle cx="32" cy="34" r="9" fill="#22c55e"/>
+    <circle cx="40" cy="36" r="8" fill="#15803d"/>
+  </symbol>
+
+  <!-- 35: Cloud -->
+  <symbol id="errl_env_cloud_01" viewBox="0 0 64 64">
+    <circle cx="24" cy="26" r="6" fill="#e5e7eb"/>
+    <circle cx="32" cy="24" r="7" fill="#e5e7eb"/>
+    <circle cx="40" cy="26" r="6" fill="#e5e7eb"/>
+    <rect x="22" y="26" width="20" height="6" rx="3" fill="#e5e7eb"/>
+  </symbol>
+
+  <!-- 36: Star cluster -->
+  <symbol id="errl_fx_stars_01" viewBox="0 0 64 64">
+    <path d="M20 20l1.5 3 3 1.5-3 1.5-1.5 3-1.5-3-3-1.5 3-1.5z" fill="#facc15"/>
+    <path d="M36 14l1 2 2 1-2 1-1 2-1-2-2-1 2-1z" fill="#fbbf24"/>
+    <circle cx="44" cy="26" r="1.5" fill="#facc15"/>
+  </symbol>
+
+  <!-- 37: Moon -->
+  <symbol id="errl_env_moon_01" viewBox="0 0 64 64">
+    <circle cx="28" cy="24" r="8" fill="#e5e7eb"/>
+    <circle cx="31" cy="22" r="7" fill="#0f172a"/>
+  </symbol>
+
+  <!-- 38: Tiny mountain -->
+  <symbol id="errl_env_mountain_01" viewBox="0 0 64 64">
+    <polygon points="16,40 32,16 48,40" fill="#0f172a"/>
+    <polygon points="28,24 32,16 36,24" fill="#e5e7eb"/>
+  </symbol>
+
+  <!-- 39: Sparkle -->
+  <symbol id="errl_fx_sparkle_01" viewBox="0 0 64 64">
+    <path d="M32 18l3 7 7 3-7 3-3 7-3-7-7-3 7-3z" fill="#facc15"/>
+  </symbol>
+
+  <!-- 40: Floating rock -->
+  <symbol id="errl_env_rock_01" viewBox="0 0 64 64">
+    <path d="M20 34q4-8 12-10t12 8l-4 10H24z" fill="#1f2933"/>
+  </symbol>
+
+
+  <!-- ========== 41–50: GOO, DRIPS, SPLATS ========== -->
+
+  <!-- 41: Top drip -->
+  <symbol id="errl_goo_drip_top_01" viewBox="0 0 64 64">
+    <path d="M10 18q6-6 12 0t12 0 12 0 8-6v6q0 8-8 8-6 0-8-4t-4 4-8 4-8-8z" fill="#22d3ee"/>
+  </symbol>
+
+  <!-- 42: Side drip -->
+  <symbol id="errl_goo_drip_side_01" viewBox="0 0 64 64">
+    <path d="M18 12q8 4 8 12t-4 10-4 8-4 4v-38z" fill="#a855f7"/>
+  </symbol>
+
+  <!-- 43: Puddle -->
+  <symbol id="errl_goo_puddle_01" viewBox="0 0 64 64">
+    <ellipse cx="32" cy="40" rx="18" ry="6" fill="#22d3ee"/>
+    <ellipse cx="26" cy="38" rx="6" ry="2" fill="#67e8f9" opacity="0.5"/>
+  </symbol>
+
+  <!-- 44: Big splat -->
+  <symbol id="errl_goo_splat_01" viewBox="0 0 64 64">
+    <path d="M20 34q-4-6 2-10t10-4 10 4 2 10-6 8-6-2-6 2-6-8z" fill="#fb7185"/>
+  </symbol>
+
+  <!-- 45: Droplet -->
+  <symbol id="errl_goo_droplet_01" viewBox="0 0 64 64">
+    <path d="M32 18q-6 8-6 14a6 6 0 0012 0q0-6-6-14z" fill="#22d3ee"/>
+  </symbol>
+
+  <!-- 46: Double drip -->
+  <symbol id="errl_goo_drip_double_01" viewBox="0 0 64 64">
+    <path d="M14 20h36q0 6-4 10t-6 0-4 6-4 6-6-4-8-18z" fill="#a855f7"/>
+  </symbol>
+
+  <!-- 47: Goo ring -->
+  <symbol id="errl_goo_ring_01" viewBox="0 0 64 64">
+    <ellipse cx="32" cy="36" rx="18" ry="8" fill="#22d3ee"/>
+    <ellipse cx="32" cy="36" rx="10" ry="4" fill="#0f172a"/>
+  </symbol>
+
+  <!-- 48: Splash arc -->
+  <symbol id="errl_goo_splash_01" viewBox="0 0 64 64">
+    <path d="M16 40q0-10 8-14t16 0 8 14" fill="none" stroke="#22d3ee" stroke-width="4" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- 49: Tiny blob -->
+  <symbol id="errl_goo_blob_01" viewBox="0 0 64 64">
+    <path d="M24 34q0-6 8-8t10 4-2 10-10 4-6-10z" fill="#a855f7"/>
+  </symbol>
+
+  <!-- 50: Goo trail -->
+  <symbol id="errl_goo_trail_01" viewBox="0 0 64 64">
+    <path d="M16 28q6-8 14-4t14 0 8-4" fill="none" stroke="#22d3ee" stroke-width="3" stroke-linecap="round"/>
+  </symbol>
+
+
+  <!-- ========== 51–60: SPEECH BUBBLES & UI BITS ========== -->
+
+  <!-- 51: Speech bubble 1 -->
+  <symbol id="errl_ui_bubble_01" viewBox="0 0 64 64">
+    <rect x="14" y="18" width="36" height="20" rx="6" fill="#020617" stroke="#22d3ee" stroke-width="2"/>
+    <polygon points="22,38 26,38 22,44" fill="#020617" stroke="#22d3ee" stroke-width="2"/>
+  </symbol>
+
+  <!-- 52: Speech bubble 2 -->
+  <symbol id="errl_ui_bubble_02" viewBox="0 0 64 64">
+    <rect x="14" y="22" width="36" height="16" rx="4" fill="#020617" stroke="#fb7185" stroke-width="2"/>
+    <polygon points="40,38 44,38 40,44" fill="#020617" stroke="#fb7185" stroke-width="2"/>
+  </symbol>
+
+  <!-- 53: Thought bubble -->
+  <symbol id="errl_ui_thought_01" viewBox="0 0 64 64">
+    <circle cx="26" cy="24" r="6" fill="#020617" stroke="#e5e7eb" stroke-width="2"/>
+    <circle cx="36" cy="24" r="7" fill="#020617" stroke="#e5e7eb" stroke-width="2"/>
+    <circle cx="32" cy="30" r="6" fill="#020617" stroke="#e5e7eb" stroke-width="2"/>
+    <circle cx="28" cy="36" r="2" fill="#e5e7eb"/>
+    <circle cx="24" cy="40" r="1.5" fill="#e5e7eb"/>
+  </symbol>
+
+  <!-- 54: Rounded tag -->
+  <symbol id="errl_ui_tag_01" viewBox="0 0 64 64">
+    <rect x="16" y="26" width="32" height="12" rx="6" fill="#0f172a" stroke="#a855f7" stroke-width="2"/>
+  </symbol>
+
+  <!-- 55: Small button -->
+  <symbol id="errl_ui_button_01" viewBox="0 0 64 64">
+    <rect x="20" y="28" width="24" height="8" rx="4" fill="#22d3ee"/>
+  </symbol>
+
+  <!-- 56: Heart icon -->
+  <symbol id="errl_ui_heart_01" viewBox="0 0 64 64">
+    <path d="M32 42l-9-9a6 6 0 019-9 6 6 0 019 9z" fill="#fb7185"/>
+  </symbol>
+
+  <!-- 57: Warning pill -->
+  <symbol id="errl_ui_warning_01" viewBox="0 0 64 64">
+    <rect x="16" y="26" width="32" height="12" rx="6" fill="#fbbf24"/>
+    <rect x="30" y="27" width="4" height="6" fill="#0f172a"/>
+    <rect x="30" y="35" width="4" height="2" fill="#0f172a"/>
+  </symbol>
+
+  <!-- 58: Tiny star badge -->
+  <symbol id="errl_ui_badge_star_01" viewBox="0 0 64 64">
+    <circle cx="32" cy="32" r="8" fill="#0f172a"/>
+    <path d="M32 26l2 4 4 1-4 2-2 4-2-4-4-2 4-1z" fill="#facc15"/>
+  </symbol>
+
+  <!-- 59: Play button -->
+  <symbol id="errl_ui_play_01" viewBox="0 0 64 64">
+    <circle cx="32" cy="32" r="10" fill="#22d3ee"/>
+    <polygon points="30,28 38,32 30,36" fill="#0f172a"/>
+  </symbol>
+
+  <!-- 60: Slider track -->
+  <symbol id="errl_ui_slider_01" viewBox="0 0 64 64">
+    <rect x="16" y="30" width="32" height="4" rx="2" fill="#1e293b"/>
+    <circle cx="28" cy="32" r="4" fill="#22d3ee"/>
+  </symbol>
+
+
+  <!-- ========== 61–70: HATS, COSTUMES, ACCESSORIES ========== -->
+
+  <!-- 61: Party hat -->
+  <symbol id="errl_hat_party_01" viewBox="0 0 64 64">
+    <polygon points="28,18 36,18 32,34" fill="#a855f7"/>
+    <circle cx="32" cy="16" r="2" fill="#fb7185"/>
+  </symbol>
+
+  <!-- 62: Headband -->
+  <symbol id="errl_hat_headband_01" viewBox="0 0 64 64">
+    <path d="M24 30q8-6 16 0" fill="none" stroke="#22d3ee" stroke-width="3" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- 63: Tiny crown -->
+  <symbol id="errl_hat_crown_01" viewBox="0 0 64 64">
+    <path d="M24 26l4 6 4-8 4 8 4-6v8H24z" fill="#facc15"/>
+  </symbol>
+
+  <!-- 64: Wizard hat -->
+  <symbol id="errl_hat_wizard_01" viewBox="0 0 64 64">
+    <polygon points="30,16 38,34 24,34" fill="#0f172a"/>
+    <rect x="22" y="34" width="20" height="3" rx="1.5" fill="#1e293b"/>
+    <circle cx="31" cy="22" r="1" fill="#facc15"/>
+  </symbol>
+
+  <!-- 65: Glasses -->
+  <symbol id="errl_accessory_glasses_01" viewBox="0 0 64 64">
+    <circle cx="26" cy="30" r="4" fill="none" stroke="#e5e7eb" stroke-width="2"/>
+    <circle cx="38" cy="30" r="4" fill="none" stroke="#e5e7eb" stroke-width="2"/>
+    <line x1="30" y1="30" x2="34" y2="30" stroke="#e5e7eb" stroke-width="2"/>
+  </symbol>
+
+  <!-- 66: Big round glasses -->
+  <symbol id="errl_accessory_glasses_02" viewBox="0 0 64 64">
+    <circle cx="24" cy="30" r="6" fill="none" stroke="#22d3ee" stroke-width="2"/>
+    <circle cx="40" cy="30" r="6" fill="none" stroke="#22d3ee" stroke-width="2"/>
+  </symbol>
+
+  <!-- 67: Scarf -->
+  <symbol id="errl_accessory_scarf_01" viewBox="0 0 64 64">
+    <path d="M24 34q4-4 8-4t8 4-4 6-8 2-4-8z" fill="#fb7185"/>
+  </symbol>
+
+  <!-- 68: Tiny bowtie -->
+  <symbol id="errl_accessory_bowtie_01" viewBox="0 0 64 64">
+    <polygon points="26,32 30,30 30,34" fill="#22d3ee"/>
+    <polygon points="38,32 34,30 34,34" fill="#22d3ee"/>
+    <circle cx="32" cy="32" r="2" fill="#0f172a"/>
+  </symbol>
+
+  <!-- 69: Head halo -->
+  <symbol id="errl_accessory_halo_01" viewBox="0 0 64 64">
+    <ellipse cx="32" cy="20" rx="10" ry="3" fill="none" stroke="#facc15" stroke-width="2"/>
+  </symbol>
+
+  <!-- 70: Tiny backpack -->
+  <symbol id="errl_accessory_backpack_01" viewBox="0 0 64 64">
+    <rect x="26" y="26" width="12" height="14" rx="4" fill="#1e293b"/>
+    <rect x="28" y="30" width="8" height="6" rx="2" fill="#0f172a"/>
+  </symbol>
+
+
+  <!-- ========== 71–80: FRAMES, STANDS, ROOMS ========== -->
+
+  <!-- 71: Standing frame -->
+  <symbol id="errl_frame_stand_01" viewBox="0 0 64 64">
+    <rect x="18" y="18" width="28" height="22" rx="2" fill="#020617"/>
+    <rect x="20" y="20" width="24" height="18" fill="#0b1120"/>
+    <rect x="26" y="42" width="12" height="4" fill="#1e293b"/>
+  </symbol>
+
+  <!-- 72: Stage arch -->
+  <symbol id="errl_env_arch_01" viewBox="0 0 64 64">
+    <path d="M16 40v-8q0-12 16-12t16 12v8z" fill="#0f172a"/>
+  </symbol>
+
+  <!-- 73: Doorway -->
+  <symbol id="errl_env_door_01" viewBox="0 0 64 64">
+    <rect x="22" y="18" width="20" height="26" rx="2" fill="#020617"/>
+    <circle cx="40" cy="32" r="1.5" fill="#e5e7eb"/>
+  </symbol>
+
+  <!-- 74: Window -->
+  <symbol id="errl_env_window_01" viewBox="0 0 64 64">
+    <rect x="16" y="18" width="32" height="24" rx="2" fill="#0b1120"/>
+    <line x1="32" y1="18" x2="32" y2="42" stroke="#1e293b" stroke-width="2"/>
+    <line x1="16" y1="30" x2="48" y2="30" stroke="#1e293b" stroke-width="2"/>
+  </symbol>
+
+  <!-- 75: Shelf wall -->
+  <symbol id="errl_env_shelf_wall_01" viewBox="0 0 64 64">
+    <rect x="12" y="18" width="40" height="4" fill="#020617"/>
+    <rect x="12" y="28" width="40" height="4" fill="#020617"/>
+    <rect x="12" y="38" width="40" height="4" fill="#020617"/>
+  </symbol>
+
+  <!-- 76: Shrine base -->
+  <symbol id="errl_env_shrine_base_01" viewBox="0 0 64 64">
+    <rect x="18" y="34" width="28" height="10" rx="2" fill="#0f172a"/>
+    <circle cx="32" cy="30" r="6" fill="#a855f7"/>
+  </symbol>
+
+  <!-- 77: Poster -->
+  <symbol id="errl_env_poster_01" viewBox="0 0 64 64">
+    <rect x="18" y="16" width="28" height="32" rx="2" fill="#020617"/>
+    <rect x="20" y="18" width="24" height="10" fill="#0b1120"/>
+    <rect x="20" y="30" width="24" height="12" fill="#111827"/>
+  </symbol>
+
+  <!-- 78: Ceiling lamp -->
+  <symbol id="errl_env_lamp_ceiling_01" viewBox="0 0 64 64">
+    <line x1="32" y1="10" x2="32" y2="18" stroke="#1e293b" stroke-width="2"/>
+    <path d="M24 18h16l-4 8H28z" fill="#0f172a"/>
+    <polygon points="24,26 40,26 32,40" fill="#facc15" opacity="0.15"/>
+  </symbol>
+
+  <!-- 79: Floor lamp -->
+  <symbol id="errl_env_lamp_floor_01" viewBox="0 0 64 64">
+    <rect x="30" y="28" width="4" height="18" fill="#1e293b"/>
+    <circle cx="32" cy="26" r="6" fill="#facc15"/>
+  </symbol>
+
+  <!-- 80: Picture frame small -->
+  <symbol id="errl_env_frame_small_01" viewBox="0 0 64 64">
+    <rect x="22" y="22" width="20" height="20" rx="2" fill="#0f172a"/>
+    <rect x="24" y="24" width="16" height="16" fill="#0b1120"/>
+  </symbol>
+
+
+  <!-- ========== 81–90: ORBS, PARTICLES, ABSTRACT FX ========== -->
+
+  <!-- 81: Glow orb -->
+  <symbol id="errl_fx_orb_01" viewBox="0 0 64 64">
+    <circle cx="32" cy="32" r="8" fill="#22d3ee" opacity="0.8"/>
+    <circle cx="29" cy="29" r="3" fill="#e0f2fe" opacity="0.8"/>
+  </symbol>
+
+  <!-- 82: Ring orb -->
+  <symbol id="errl_fx_ring_01" viewBox="0 0 64 64">
+    <circle cx="32" cy="32" r="10" fill="none" stroke="#a855f7" stroke-width="3"/>
+  </symbol>
+
+  <!-- 83: Triple orbs -->
+  <symbol id="errl_fx_orb_cluster_01" viewBox="0 0 64 64">
+    <circle cx="26" cy="32" r="6" fill="#22d3ee"/>
+    <circle cx="36" cy="30" r="5" fill="#a855f7"/>
+    <circle cx="34" cy="38" r="4" fill="#fb7185"/>
+  </symbol>
+
+  <!-- 84: Particle trail -->
+  <symbol id="errl_fx_particles_01" viewBox="0 0 64 64">
+    <circle cx="20" cy="24" r="1.5" fill="#22d3ee"/>
+    <circle cx="28" cy="28" r="2" fill="#a855f7"/>
+    <circle cx="36" cy="32" r="2.5" fill="#fb7185"/>
+    <circle cx="44" cy="36" r="1.5" fill="#22d3ee"/>
+  </symbol>
+
+  <!-- 85: Vignette rectangle -->
+  <symbol id="errl_fx_vignette_01" viewBox="0 0 64 64">
+    <rect x="10" y="14" width="44" height="36" fill="#020617"/>
+    <rect x="14" y="18" width="36" height="28" fill="#020617" opacity="0.3"/>
+  </symbol>
+
+  <!-- 86: Soft blob -->
+  <symbol id="errl_fx_soft_blob_01" viewBox="0 0 64 64">
+    <ellipse cx="32" cy="32" rx="14" ry="10" fill="#a855f7" opacity="0.6"/>
+  </symbol>
+
+  <!-- 87: Spiky burst -->
+  <symbol id="errl_fx_burst_01" viewBox="0 0 64 64">
+    <path d="M32 18l4 8 8-4-4 8 8 4-8 2 4 8-8-4-4 8-4-8-8 4 4-8-8-2 8-4-4-8 8 4z" fill="#f97316"/>
+  </symbol>
+
+  <!-- 88: Ripple ring -->
+  <symbol id="errl_fx_ripple_01" viewBox="0 0 64 64">
+    <circle cx="32" cy="36" r="10" fill="none" stroke="#22d3ee" stroke-width="2"/>
+    <circle cx="32" cy="36" r="6" fill="none" stroke="#22d3ee" stroke-width="1"/>
+  </symbol>
+
+  <!-- 89: Tiny triangle cluster -->
+  <symbol id="errl_fx_triangles_01" viewBox="0 0 64 64">
+    <polygon points="22,22 26,22 24,26" fill="#22d3ee"/>
+    <polygon points="32,28 36,28 34,32" fill="#a855f7"/>
+    <polygon points="42,24 46,24 44,28" fill="#fb7185"/>
+  </symbol>
+
+  <!-- 90: Corner drips frame -->
+  <symbol id="errl_fx_corner_drips_01" viewBox="0 0 64 64">
+    <path d="M12 10q8 4 8 12" fill="none" stroke="#22d3ee" stroke-width="3" stroke-linecap="round"/>
+    <path d="M52 10q-8 4-8 12" fill="none" stroke="#a855f7" stroke-width="3" stroke-linecap="round"/>
+  </symbol>
+
+
+  <!-- ========== 91–100: MYSTERY, ERRL-WEIRD, MISC ========== -->
+
+  <!-- 91: Tiny portal -->
+  <symbol id="errl_mystery_portal_01" viewBox="0 0 64 64">
+    <ellipse cx="32" cy="36" rx="12" ry="5" fill="#0f172a"/>
+    <ellipse cx="32" cy="36" rx="8" ry="3" fill="#22d3ee"/>
+  </symbol>
+
+  <!-- 92: Mystery glyph -->
+  <symbol id="errl_mystery_glyph_01" viewBox="0 0 64 64">
+    <circle cx="32" cy="30" r="10" fill="#0f172a" stroke="#a855f7" stroke-width="2"/>
+    <path d="M32 22v16M26 30h12" stroke="#a855f7" stroke-width="2" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- 93: Totem base -->
+  <symbol id="errl_totem_base_01" viewBox="0 0 64 64">
+    <rect x="20" y="34" width="24" height="10" rx="2" fill="#0f172a"/>
+    <rect x="22" y="32" width="20" height="4" rx="2" fill="#1e293b"/>
+  </symbol>
+
+  <!-- 94: Little errl shrine icon -->
+  <symbol id="errl_totem_shrine_01" viewBox="0 0 64 64">
+    <rect x="22" y="24" width="20" height="20" rx="4" fill="#0f172a"/>
+    <circle cx="32" cy="34" r="6" fill="#22d3ee"/>
+  </symbol>
+
+  <!-- 95: Floating cube -->
+  <symbol id="errl_misc_cube_01" viewBox="0 0 64 64">
+    <rect x="24" y="24" width="16" height="16" fill="#1e293b"/>
+    <path d="M24 24l8-4 16 0-8 4z" fill="#0f172a"/>
+  </symbol>
+
+  <!-- 96: Floating pyramid -->
+  <symbol id="errl_misc_pyramid_01" viewBox="0 0 64 64">
+    <polygon points="20,40 32,18 44,40" fill="#0f172a"/>
+    <polygon points="32,18 44,40 32,34" fill="#1e293b"/>
+  </symbol>
+
+  <!-- 97: Sticker star -->
+  <symbol id="errl_misc_sticker_star_01" viewBox="0 0 64 64">
+    <path d="M32 18l4 8 8 2-6 6 2 8-8-4-8 4 2-8-6-6 8-2z" fill="#facc15"/>
+  </symbol>
+
+  <!-- 98: Corner tape -->
+  <symbol id="errl_misc_tape_corner_01" viewBox="0 0 64 64">
+    <polygon points="18,18 26,14 30,18 22,22" fill="#e5e7eb"/>
+  </symbol>
+
+  <!-- 99: Small floor shadow -->
+  <symbol id="errl_misc_shadow_01" viewBox="0 0 64 64">
+    <ellipse cx="32" cy="40" rx="16" ry="4" fill="#020617" opacity="0.6"/>
+  </symbol>
+
+  <!-- 100: Tiny errlish blob buddy -->
+  <symbol id="errl_misc_blob_friend_01" viewBox="0 0 64 64">
+    <path d="M24 36q0-6 4-10t8-2 4 8-3 8-5 2-6-2-2-4z" fill="#22d3ee"/>
+    <circle cx="32" cy="32" r="1.5" fill="#0f172a"/>
+    <circle cx="36" cy="32" r="1.5" fill="#0f172a"/>
+  </symbol>
+
+</svg>

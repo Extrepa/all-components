@@ -1,0 +1,34 @@
+# Project Name
+
+Brief description of the project.
+
+## Overview
+
+[Project overview and purpose]
+
+## Features
+
+- Feature 1
+- Feature 2
+- Feature 3
+
+## Getting Started
+
+```bash
+npm install
+npm run dev
+```
+
+## Project Structure
+
+See [INDEX.md](INDEX.md) for detailed project structure.
+
+## Documentation
+
+- [INDEX.md](INDEX.md) - Workspace index
+- [PROJECT_STATUS.md](PROJECT_STATUS.md) - Current status
+- [docs/](docs/) - Detailed documentation
+
+## License
+
+[License information]

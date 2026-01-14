@@ -1,0 +1,402 @@
+Time to turn Errl Lab into a little rave engine.
+Next upgrade: Audio-Reactive Mode – visuals wiggle harder when the music slaps. 🎶🫠
+
+We’ll add:
+	•	An Audio Reactive panel on the right
+	•	Load an audio file (MP3/WAV/etc.)
+	•	Live spectrum strip
+	•	A global audioReactiveValue ∈ [0, 1] that:
+	•	Modulates 3D rotation speed
+	•	Is ready to plug into your p5 wobble
+
+Same patch-style as before.
+
+⸻
+
+1. Add “Audio Reactive” panel (HTML)
+
+In the right-hand sidebar, drop this above the Sandbox Snippet block (or anywhere near it). Look for a logical spot after p5 / HTML FX / Captured frames / VS.
+
+Add:
+
+      <!-- Audio Reactive Mode -->
+      <div class="border-t border-slate-800/70 px-3 py-2 text-[11px] text-slate-200">
+        <div class="flex items-center justify-between mb-1">
+          <span class="font-semibold text-slate-100">Audio Reactive</span>
+          <span class="text-[10px] text-slate-500" id="audioStatus">
+            No audio loaded
+          </span>
+        </div>
+
+        <p class="text-[10px] text-slate-400 mb-1">
+          Load a track and let Errl's wobbles, voxels, and 3D spin respond to the beat.
+        </p>
+
+        <div class="flex items-center gap-1 mb-1">
+          <button
+            id="audioLoadBtn"
+            class="px-2 py-1 rounded-md border border-slate-600 text-slate-200 text-[10px] hover:bg-slate-900/80"
+          >
+            Load audio…
+          </button>
+          <input
+            id="audioFileInput"
+            type="file"
+            accept="audio/*"
+            class="hidden"
+          />
+          <button
+            id="audioToggleBtn"
+            class="px-2 py-1 rounded-md border border-emerald-500/70 text-emerald-200 text-[10px] hover:bg-emerald-500/15 disabled:opacity-40 disabled:cursor-not-allowed"
+            disabled
+          >
+            Enable reactive
+          </button>
+        </div>
+
+        <div class="w-full h-10 rounded-md border border-slate-700/80 bg-slate-950/80 overflow-hidden">
+          <canvas
+            id="audioSpectrumCanvas"
+            class="w-full h-full block"
+          ></canvas>
+        </div>
+
+        <p class="mt-1 text-[9px] text-slate-500">
+          Tip: audio boosts 3D rotation already. You can also hook it into your p5 wobble using
+          <code>audioReactiveValue</code>.
+        </p>
+      </div>
+
+So the right column now has:
+	•	Captured frames
+	•	VS Mode
+	•	Audio Reactive
+	•	Sandbox Snippet
+	•	Session Snapshot
+
+⸻
+
+2. Hook up DOM refs (JS)
+
+In your big DOM-grab section, add:
+
+    // Audio reactive UI
+    const audioStatusEl = document.getElementById("audioStatus");
+    const audioLoadBtn = document.getElementById("audioLoadBtn");
+    const audioFileInput = document.getElementById("audioFileInput");
+    const audioToggleBtn = document.getElementById("audioToggleBtn");
+    const audioSpectrumCanvas = document.getElementById("audioSpectrumCanvas");
+
+
+⸻
+
+3. Audio globals
+
+In your globals block (near Three.js and voxels), add:
+
+    // ---- Audio reactive state ----
+    let audioCtx = null;
+    let audioSourceNode = null;
+    let audioAnalyser = null;
+    let audioDataArray = null;
+    let audioReactiveValue = 0; // 0..1, used by 3D + p5
+    let audioAnimationId = null;
+    let audioReactiveEnabled = false;
+
+This audioReactiveValue is the magic “how intense is the sound?” slider.
+
+⸻
+
+4. Audio setup + analyser loop
+
+Add these helpers somewhere in your helpers section:
+
+    function initAudioContext() {
+      if (audioCtx) return audioCtx;
+      const Ctx = window.AudioContext || window.webkitAudioContext;
+      if (!Ctx) {
+        console.warn("Web Audio API not supported.");
+        if (audioStatusEl) {
+          audioStatusEl.textContent = "Web Audio not supported in this browser.";
+        }
+        return null;
+      }
+      audioCtx = new Ctx();
+      return audioCtx;
+    }
+
+    function stopAudioAnalysis() {
+      if (audioAnimationId !== null) {
+        cancelAnimationFrame(audioAnimationId);
+        audioAnimationId = null;
+      }
+      if (audioSourceNode) {
+        try {
+          audioSourceNode.disconnect();
+        } catch {}
+      }
+      if (audioAnalyser) {
+        try {
+          audioAnalyser.disconnect();
+        } catch {}
+      }
+      audioSourceNode = null;
+      audioAnalyser = null;
+      audioDataArray = null;
+      audioReactiveValue = 0;
+      if (audioSpectrumCanvas) {
+        const ctx = audioSpectrumCanvas.getContext("2d");
+        if (ctx) {
+          ctx.clearRect(0, 0, audioSpectrumCanvas.width, audioSpectrumCanvas.height);
+        }
+      }
+    }
+
+    function startAudioAnalysisFromBufferSource(sourceNode) {
+      const ctx = initAudioContext();
+      if (!ctx) return;
+      stopAudioAnalysis();
+
+      audioAnalyser = ctx.createAnalyser();
+      audioAnalyser.fftSize = 256;
+      const bufferLength = audioAnalyser.frequencyBinCount;
+      audioDataArray = new Uint8Array(bufferLength);
+
+      sourceNode.connect(audioAnalyser);
+      audioAnalyser.connect(ctx.destination);
+
+      audioSourceNode = sourceNode;
+
+      if (audioSpectrumCanvas) {
+        // Make sure canvas has real pixel size
+        const host = audioSpectrumCanvas.parentElement || audioSpectrumCanvas;
+        const width = host.clientWidth || 200;
+        const height = host.clientHeight || 40;
+        audioSpectrumCanvas.width = width;
+        audioSpectrumCanvas.height = height;
+      }
+
+      function drawAudioSpectrum() {
+        audioAnimationId = requestAnimationFrame(drawAudioSpectrum);
+        if (!audioAnalyser || !audioDataArray || !audioSpectrumCanvas) return;
+
+        audioAnalyser.getByteFrequencyData(audioDataArray);
+
+        // Compute "energy" (average amplitude)
+        let sum = 0;
+        for (let i = 0; i < audioDataArray.length; i++) {
+          sum += audioDataArray[i];
+        }
+        const avg = sum / audioDataArray.length;
+        // Normalize roughly 0..1
+        audioReactiveValue = Math.min(1, avg / 200);
+
+        const ctx2d = audioSpectrumCanvas.getContext("2d");
+        if (!ctx2d) return;
+
+        const { width, height } = audioSpectrumCanvas;
+        ctx2d.clearRect(0, 0, width, height);
+
+        const barWidth = (width / audioDataArray.length) * 1.4;
+        let x = 0;
+
+        for (let i = 0; i < audioDataArray.length; i++) {
+          const v = audioDataArray[i] / 255;
+          const barHeight = v * height;
+          const hue = 180 + v * 120; // cyan → magenta
+          ctx2d.fillStyle = `hsl(${hue}, 90%, 65%)`;
+          ctx2d.fillRect(
+            x,
+            height - barHeight,
+            barWidth,
+            barHeight
+          );
+          x += barWidth * 0.7;
+        }
+      }
+
+      drawAudioSpectrum();
+    }
+
+    function loadAudioFromFile(file) {
+      const ctx = initAudioContext();
+      if (!ctx) return;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const arrayBuffer = e.target?.result;
+        if (!arrayBuffer) return;
+        ctx.decodeAudioData(arrayBuffer.slice(0), (audioBuffer) => {
+          const source = ctx.createBufferSource();
+          source.buffer = audioBuffer;
+          source.loop = true;
+          startAudioAnalysisFromBufferSource(source);
+          source.start(0);
+          if (audioStatusEl) {
+            audioStatusEl.textContent = `Playing: ${file.name}`;
+          }
+          audioToggleBtn.disabled = false;
+          audioReactiveEnabled = true; // start enabled by default
+          audioToggleBtn.textContent = "Disable reactive";
+        });
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+Now we’ve got:
+	•	Audio context created lazily
+	•	Audio loaded from file → looped
+	•	FFT frequency data into audioReactiveValue
+	•	Spectrum drawing
+
+⸻
+
+5. Audio UI button wiring
+
+Near your other button listeners:
+
+    audioLoadBtn.addEventListener("click", () => {
+      if (!audioFileInput) return;
+      audioFileInput.value = "";
+      audioFileInput.click();
+    });
+
+    audioFileInput.addEventListener("change", () => {
+      const file = audioFileInput.files?.[0];
+      if (!file) return;
+      loadAudioFromFile(file);
+      playBeep(600, 0.06, "triangle");
+    });
+
+    audioToggleBtn.addEventListener("click", () => {
+      audioReactiveEnabled = !audioReactiveEnabled;
+      if (audioReactiveEnabled) {
+        audioToggleBtn.textContent = "Disable reactive";
+        audioStatusEl.textContent = "Reactive ON (modulating 3D + p5 hooks).";
+        playBeep(760, 0.07, "triangle");
+      } else {
+        audioToggleBtn.textContent = "Enable reactive";
+        audioStatusEl.textContent = "Reactive OFF (audio still playing).";
+        audioReactiveValue = 0;
+        playBeep(320, 0.07, "square");
+      }
+    });
+
+So:
+	•	Load audio… → pick file, starts playback + visualizer
+	•	Enable/Disable reactive → toggles whether audioReactiveValue is used
+
+Audio still plays even if reactive is off; you can treat that button as “visual sync”.
+
+⸻
+
+6. Hook audio into 3D rotation
+
+We already wrote the Three.js animate loop like this:
+
+          function animate(now) {
+            threeFrameId = requestAnimationFrame(animate);
+            const dt = (now - lastTime) / 1000;
+            lastTime = now;
+
+            if (threeMesh) {
+              threeMesh.rotation.y += dt * 0.7;
+              threeMesh.rotation.x += dt * 0.35;
+            }
+            threeRenderer.render(threeScene, threeCamera);
+          }
+
+We’ll make rotation respond to audioReactiveValue.
+
+Update the body to:
+
+          function animate(now) {
+            threeFrameId = requestAnimationFrame(animate);
+            const dt = (now - lastTime) / 1000;
+            lastTime = now;
+
+            // Audio boost: 1..(1+1.2) depending on energy
+            const audioBoost =
+              audioReactiveEnabled ? 1 + audioReactiveValue * 1.2 : 1;
+
+            if (threeMesh) {
+              threeMesh.rotation.y += dt * 0.7 * audioBoost;
+              threeMesh.rotation.x += dt * 0.35 * audioBoost;
+            }
+            threeRenderer.render(threeScene, threeCamera);
+          }
+
+Now:
+	•	Quiet section → normal spin
+	•	Loud chorus → much faster spin / wobble
+
+Same code works for both Wire and 3D Voxels because they share the same threeMesh.
+
+⸻
+
+7. (Optional but recommended) Hook audio into p5 wobble
+
+Your p5 sketch already uses p5Config.wobbleAmplitude, wobbleSpeed, etc.
+
+You can lightly “audio-wiggle” them by multiplying inside your p5 draw / update.
+You don’t have to edit right now, but here’s a clean pattern:
+
+In your p5 sketch (wherever you compute wobble), do something like:
+
+    // Before:
+    const wobble = sin(t * p5Config.wobbleSpeed) * p5Config.wobbleAmplitude;
+
+    // After:
+    const audioBoost = audioReactiveEnabled
+      ? 1 + audioReactiveValue * 0.9
+      : 1;
+
+    const wobble = Math.sin(t * p5Config.wobbleSpeed) *
+      p5Config.wobbleAmplitude *
+      audioBoost;
+
+You don’t need to re-wire any config; just use audioReactiveValue directly from the global scope in that p5 file (same ).
+
+Result: wobble intensity goes up with the beat, but your preset’s base value still matters.
+
+⸻
+
+8. Clear button small tweak (optional)
+
+If you want the Clear All button to also reset audio visuals (but not necessarily stop playback), at the end of your clearBtn handler you can add:
+
+      audioReactiveValue = 0;
+      if (audioSpectrumCanvas) {
+        const ctx2d = audioSpectrumCanvas.getContext("2d");
+        if (ctx2d) {
+          ctx2d.clearRect(0, 0, audioSpectrumCanvas.width, audioSpectrumCanvas.height);
+        }
+      }
+      if (audioStatusEl) {
+        audioStatusEl.textContent = "No audio loaded";
+      }
+
+Or you can leave audio completely untouched and treat it as “global background”.
+
+⸻
+
+What you’ve just unlocked
+
+Errl Studio is now music-aware:
+	•	Load an audio track.
+	•	Watch:
+	•	3D Wire & 3D Voxels spin harder with the sound.
+	•	Spectrum strip show frequency content.
+	•	(Optionally) p5 wobble pump to the beat.
+	•	audioReactiveValue is now a global modulation source:
+	•	You can plug it into:
+	•	glow intensity
+	•	background hue drift
+	•	voxel heights
+	•	anything you want to feel “alive” with the sound
+
+At this point your single index.html is basically:
+
+Errl Visual Synth OS – SVG in → multi-mode visuals out → audio-reactive, capturable, VS-exportable, and JSON-serializable.
+
+Which is absurdly cool for a one-file lab.

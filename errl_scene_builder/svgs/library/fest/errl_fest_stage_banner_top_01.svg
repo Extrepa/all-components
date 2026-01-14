@@ -1,0 +1,11 @@
+<!-- Example 108 | errl_fest_stage_banner_top_01 (fx/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="fx" data-name="errl_fest_stage_banner_top_01">
+  <g fill="none">
+    <path d="M12 20 H52"
+      stroke="#0f172a" stroke-width="3" stroke-linecap="round"/>
+    <path d="M12 20 L32 26 L52 20 Z" fill="#22d3ee" opacity="0.85"/>
+    <path d="M16 20 L22 24 L28 20 Z" fill="#fb7185"/>
+    <path d="M36 20 L42 24 L48 20 Z" fill="#facc15"/>
+  </g>
+</svg>

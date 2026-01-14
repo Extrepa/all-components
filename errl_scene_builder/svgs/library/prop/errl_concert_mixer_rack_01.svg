@@ -1,0 +1,10 @@
+<!-- errl_concert_mixer_rack_01 – vertical rack unit (prop/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_concert" data-cat="prop" data-name="errl_concert_mixer_rack_01">
+  <g fill="none">
+    <rect x="26" y="22" width="12" height="22" rx="2" fill="#111827"/>
+    <rect x="28" y="24" width="8" height="4" rx="1.5" fill="#020617"/>
+    <rect x="28" y="30" width="8" height="4" rx="1.5" fill="#020617"/>
+    <rect x="28" y="36" width="8" height="4" rx="1.5" fill="#020617"/>
+  </g>
+</svg>

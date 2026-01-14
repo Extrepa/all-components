@@ -1,0 +1,10 @@
+<!-- Example 177 | errl_fest_barrel_seating_01 (env/prop) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="env" data-name="errl_fest_barrel_seating_01">
+  <g fill="none">
+    <ellipse cx="24" cy="40" rx="5.5" ry="2" fill="#0f172a"/>
+    <rect x="20" y="40" width="8" height="4" rx="2" fill="#111827"/>
+    <ellipse cx="40" cy="40" rx="5.5" ry="2" fill="#0f172a"/>
+    <rect x="36" y="40" width="8" height="4" rx="2" fill="#111827"/>
+  </g>
+</svg>

@@ -1,0 +1,9 @@
+<!-- errl_concert_truss_segment_vertical_01 – vertical truss (env/prop) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_concert" data-cat="env" data-name="errl_concert_truss_segment_vertical_01">
+  <g fill="none">
+    <rect x="28" y="18" width="8" height="28" rx="2" fill="#111827"/>
+    <path d="M30 20 L34 24 M30 24 L34 28 M30 28 L34 32 M30 32 L34 36"
+      stroke="#22d3ee" stroke-width="1.2" stroke-linecap="round" opacity="0.8"/>
+  </g>
+</svg>

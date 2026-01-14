@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" id="icon-8uymvrze8">
+  <g xmlns="http://www.w3.org/2000/svg" fill="none">
+    <!-- posts -->
+    <rect x="14" y="26" width="5" height="22" rx="2" fill="#0f172a"/>
+    <rect x="45" y="26" width="5" height="22" rx="2" fill="#0f172a"/>
+    <!-- arch -->
+    <path d="M16.5 26 C20 18 26 14 32 14s12 4 15.5 12" stroke="#facc15" stroke-width="3" stroke-linecap="round" fill="none"/>
+    <!-- banner slab -->
+    <rect x="20" y="22" width="24" height="6" rx="3" fill="#fb7185"/>
+    <!-- tiny sparkle -->
+    <circle cx="32" cy="20" r="1.2" fill="#22d3ee"/>
+    <ellipse cx="32" cy="50" rx="18" ry="3" fill="#020617" opacity="0.45"/>
+  </g>
+</svg>

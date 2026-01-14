@@ -1,0 +1,24 @@
+# Development files (not needed on server)
+dev/
+scripts/
+docs/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+npm-debug.log*
+
+# Optional: Keep these if you want version control
+# Uncomment to exclude:
+# README.md
+# DEPLOYMENT.md

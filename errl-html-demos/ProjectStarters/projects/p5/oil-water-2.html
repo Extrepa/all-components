@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>An interactive overhead projector with oil and water to mix on it - P5.js Sketch</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0a0a0a;
+      color: #fff;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .header {
+      padding: 1.5rem 2rem;
+      background: #1a1a1a;
+      border-bottom: 1px solid #333;
+    }
+    .header h1 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .header p {
+      color: #b0b0b0;
+      font-size: 0.875rem;
+    }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 1rem;
+      color: #6366f1;
+      text-decoration: none;
+      font-size: 0.875rem;
+    }
+    .back-link:hover {
+      text-decoration: underline;
+    }
+    #p5-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background: #0a0a0a;
+    }
+    .info {
+      padding: 1.5rem 2rem;
+      background: #1a1a1a;
+      border-top: 1px solid #333;
+      font-size: 0.875rem;
+    }
+    .info-item {
+      margin-bottom: 0.5rem;
+      display: flex;
+    }
+    .info-label {
+      width: 120px;
+      color: #b0b0b0;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="../index.html" class="back-link">← Back to Gallery</a>
+      <h1>An interactive overhead projector with oil and water to mix on it</h1>
+      <p>P5.js Interactive Sketch</p>
+    </div>
+    <div id="p5-container"></div>
+    <div class="info">
+      <div class="info-item">
+        <span class="info-label">Prompt:</span>
+        <span>An interactive overhead projector with oil and water to mix on it</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Model:</span>
+        <span>threePro</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Generation Time:</span>
+        <span>55.2s</span>
+      </div>
+    </div>
+  </div>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+  <script>
+    const container = document.getElementById('p5-container');
+    const sketchCode = "let blobs = [];\nlet colorPalette = [];\n\nfunction setup() {\n  createCanvas(800, 600);\n  \n  // Define a translucent, oil-dye palette (Cyan, Magenta, Yellow, Purple, Red)\n  // Using RGBA for transparency logic, but blending will be handled by MULTIPLY\n  colorPalette = [\n    color(0, 255, 255, 200),   // Cyan\n    color(255, 0, 255, 200),   // Magenta\n    color(255, 255, 0, 200),   // Yellow\n    color(100, 0, 255, 180),   // Deep Purple\n    color(255, 50, 50, 180),   // Red\n    color(0, 200, 100, 180)    // Emerald\n  ];\n\n  // Create initial set of oil blobs\n  let initialBlobs = 15;\n  for (let i = 0; i < initialBlobs; i++) {\n    blobs.push(new OilBlob(random(width), random(height)));\n  }\n  \n  noStroke();\n}\n\nfunction draw() {\n  // 1. The Light Source (Background)\n  background(250, 248, 240); // Very bright, slightly warm white (projector bulb)\n\n  // 2. Physics & Interaction Step\n  for (let i = 0; i < blobs.length; i++) {\n    blobs[i].update();\n    blobs[i].checkEdges();\n    \n    // Inter-blob repulsion (simulating surface tension/oil immiscibility)\n    for (let j = i + 1; j < blobs.length; j++) {\n      blobs[i].interact(blobs[j]);\n    }\n    \n    // Mouse interaction (Stirring)\n    if (mouseIsPressed || dist(mouseX, mouseY, pmouseX, pmouseY) > 5) {\n      blobs[i].stir(mouseX, mouseY);\n    }\n  }\n\n  // 3. Render Blobs with Subtractive Mixing\n  // This simulates colored transparency films or oil dyes overlapping on a light table\n  blendMode(MULTIPLY);\n  \n  for (let b of blobs) {\n    b.display();\n  }\n\n  // 4. Projector Lens Artifacts (Vignette & Dust)\n  blendMode(BLEND); // Reset blend mode for overlays\n  \n  // Vignette\n  drawVignette();\n  \n  // Subtle dust/scratches\n  drawDust();\n}\n\nfunction drawVignette() {\n  // Create a radial gradient approximation using concentric circles with low alpha\n  // to darken the edges like an old overhead projector lens\n  noFill();\n  strokeWeight(40);\n  let maxDist = dist(0, 0, width/2, height/2);\n  for (let r = maxDist * 0.8; r < maxDist * 1.5; r += 30) {\n    let alpha = map(r, maxDist * 0.8, maxDist * 1.5, 0, 100);\n    stroke(20, 20, 30, alpha);\n    rectMode(CENTER);\n    // Drawing a rounded rect that approximates the screen edge\n    rect(width/2, height/2, width + (r-maxDist), height + (r-maxDist), 200);\n  }\n  rectMode(CORNER); // Reset\n  noStroke();\n}\n\nfunction drawDust() {\n  // Simulates dust on the glass plate\n  randomSeed(frameCount / 20); // Change slowly\n  fill(50, 50, 50, 40);\n  for(let i = 0; i < 10; i++){\n    let x = random(width);\n    let y = random(height);\n    circle(x, y, random(1, 3));\n  }\n}\n\nfunction mousePressed() {\n  // Add a new small drop of ink/oil on click\n  let b = new OilBlob(mouseX, mouseY);\n  b.r = 0; // Start small\n  b.targetR = random(30, 80);\n  blobs.push(b);\n  \n  // Cap max blobs for performance\n  if (blobs.length > 25) {\n    blobs.shift();\n  }\n}\n\nclass OilBlob {\n  constructor(x, y) {\n    this.pos = createVector(x, y);\n    this.vel = p5.Vector.random2D().mult(random(0.2, 1.0));\n    this.acc = createVector(0, 0);\n    \n    this.targetR = random(40, 120);\n    this.r = this.targetR; // Radius\n    \n    this.color = random(colorPalette);\n    \n    // Perlin noise offsets for shape wobble\n    this.noiseOffset = random(1000);\n    this.noiseStep = random(0.003, 0.01);\n    \n    // How \"wobbly\" the blob is\n    this.wobbleAmount = random(10, 30);\n  }\n\n  update() {\n    this.vel.add(this.acc);\n    this.vel.limit(3); // Viscous fluid limit\n    this.pos.add(this.vel);\n    this.acc.mult(0);\n    \n    // Slowly grow to target size (for newly clicked blobs)\n    this.r = lerp(this.r, this.targetR, 0.05);\n    \n    // Evolve shape\n    this.noiseOffset += this.noiseStep;\n  }\n\n  stir(mx, my) {\n    let mousePos = createVector(mx, my);\n    let dir = p5.Vector.sub(this.pos, mousePos);\n    let d = dir.mag();\n    \n    // If mouse is close, swirl around or push\n    if (d < 150) {\n      dir.normalize();\n      let force = 20 / (d + 1); // Stronger when closer\n      \n      // Add some rotational stir component\n      let stirDir = createVector(-dir.y, dir.x); // Perpendicular\n      \n      // Mix push and spin\n      this.acc.add(dir.mult(force * 0.5));\n      this.acc.add(stirDir.mult(force * 0.5));\n    }\n  }\n\n  interact(other) {\n    // Soft collision / repulsion\n    let d = dist(this.pos.x, this.pos.y, other.pos.x, other.pos.y);\n    let minDist = (this.r + other.r) * 0.7; // Allow some visual overlap (mixing)\n\n    if (d < minDist && d > 0) {\n      let forceVec = p5.Vector.sub(this.pos, other.pos);\n      forceVec.normalize();\n      // Repel force based on overlap\n      let forceMag = (minDist - d) * 0.02; \n      \n      this.acc.add(forceVec.mult(forceMag));\n      other.acc.sub(forceVec); // Newton's 3rd law\n    }\n  }\n\n  checkEdges() {\n    let buffer = -50;\n    if (this.pos.x < buffer) {\n      this.pos.x = width - buffer;\n    } else if (this.pos.x > width - buffer) {\n      this.pos.x = buffer;\n    }\n    \n    if (this.pos.y < buffer) {\n      this.pos.y = height - buffer;\n    } else if (this.pos.y > height - buffer) {\n      this.pos.y = buffer;\n    }\n  }\n\n  display() {\n    fill(this.color);\n    \n    beginShape();\n    // Draw vertices based on polar coordinates + noise\n    // Use a high number of vertices for smooth liquid look\n    let numVerts = 60; \n    for (let a = 0; a < TWO_PI; a += TWO_PI / numVerts) {\n      // Noise space is circular to make the loop seamless\n      let xoff = map(cos(a), -1, 1, 0, 2); \n      let yoff = map(sin(a), -1, 1, 0, 2);\n      \n      // Get noise value for this angle at this time\n      let n = noise(xoff + this.noiseOffset, yoff + this.noiseOffset);\n      \n      // Map noise to radius deviation\n      let offsetR = map(n, 0, 1, -this.wobbleAmount, this.wobbleAmount);\n      let r = this.r + offsetR;\n      \n      let x = this.pos.x + r * cos(a);\n      let y = this.pos.y + r * sin(a);\n      \n      curveVertex(x, y);\n    }\n    \n    // Close the curve loop smoothly\n    // Need to repeat the first few vertices at the end for curveVertex\n    for (let i = 0; i < 3; i++) {\n      let a = i * (TWO_PI / numVerts);\n      let xoff = map(cos(a), -1, 1, 0, 2);\n      let yoff = map(sin(a), -1, 1, 0, 2);\n      let n = noise(xoff + this.noiseOffset, yoff + this.noiseOffset);\n      let offsetR = map(n, 0, 1, -this.wobbleAmount, this.wobbleAmount);\n      let r = this.r + offsetR;\n      let x = this.pos.x + r * cos(a);\n      let y = this.pos.y + r * sin(a);\n      curveVertex(x, y);\n    }\n    endShape();\n    \n    // Add a \"glint\" or \"bubble\" inside for depth\n    fill(255, 255, 255, 100);\n    let glintSize = this.r * 0.2;\n    let glintX = this.pos.x + this.r * 0.3;\n    let glintY = this.pos.y - this.r * 0.3;\n    \n    // Only draw glint if blob is big enough\n    if(this.r > 20) {\n        ellipse(glintX, glintY, glintSize, glintSize * 0.6);\n    }\n  }\n}";
+    
+    const sketch = function(p) {
+      let blobs = [];
+let colorPalette = [];
+
+function setup() {
+  createCanvas(800, 600);
+  
+  // Define a translucent, oil-dye palette (Cyan, Magenta, Yellow, Purple, Red)
+  // Using RGBA for transparency logic, but blending will be handled by MULTIPLY
+  colorPalette = [
+    color(0, 255, 255, 200),   // Cyan
+    color(255, 0, 255, 200),   // Magenta
+    color(255, 255, 0, 200),   // Yellow
+    color(100, 0, 255, 180),   // Deep Purple
+    color(255, 50, 50, 180),   // Red
+    color(0, 200, 100, 180)    // Emerald
+  ];
+
+  // Create initial set of oil blobs
+  let initialBlobs = 15;
+  for (let i = 0; i < initialBlobs; i++) {
+    blobs.push(new OilBlob(random(width), random(height)));
+  }
+  
+  noStroke();
+}
+
+function draw() {
+  // 1. The Light Source (Background)
+  background(250, 248, 240); // Very bright, slightly warm white (projector bulb)
+
+  // 2. Physics & Interaction Step
+  for (let i = 0; i < blobs.length; i++) {
+    blobs[i].update();
+    blobs[i].checkEdges();
+    
+    // Inter-blob repulsion (simulating surface tension/oil immiscibility)
+    for (let j = i + 1; j < blobs.length; j++) {
+      blobs[i].interact(blobs[j]);
+    }
+    
+    // Mouse interaction (Stirring)
+    if (mouseIsPressed || dist(mouseX, mouseY, pmouseX, pmouseY) > 5) {
+      blobs[i].stir(mouseX, mouseY);
+    }
+  }
+
+  // 3. Render Blobs with Subtractive Mixing
+  // This simulates colored transparency films or oil dyes overlapping on a light table
+  blendMode(MULTIPLY);
+  
+  for (let b of blobs) {
+    b.display();
+  }
+
+  // 4. Projector Lens Artifacts (Vignette & Dust)
+  blendMode(BLEND); // Reset blend mode for overlays
+  
+  // Vignette
+  drawVignette();
+  
+  // Subtle dust/scratches
+  drawDust();
+}
+
+function drawVignette() {
+  // Create a radial gradient approximation using concentric circles with low alpha
+  // to darken the edges like an old overhead projector lens
+  noFill();
+  strokeWeight(40);
+  let maxDist = dist(0, 0, width/2, height/2);
+  for (let r = maxDist * 0.8; r < maxDist * 1.5; r += 30) {
+    let alpha = map(r, maxDist * 0.8, maxDist * 1.5, 0, 100);
+    stroke(20, 20, 30, alpha);
+    rectMode(CENTER);
+    // Drawing a rounded rect that approximates the screen edge
+    rect(width/2, height/2, width + (r-maxDist), height + (r-maxDist), 200);
+  }
+  rectMode(CORNER); // Reset
+  noStroke();
+}
+
+function drawDust() {
+  // Simulates dust on the glass plate
+  randomSeed(frameCount / 20); // Change slowly
+  fill(50, 50, 50, 40);
+  for(let i = 0; i < 10; i++){
+    let x = random(width);
+    let y = random(height);
+    circle(x, y, random(1, 3));
+  }
+}
+
+function mousePressed() {
+  // Add a new small drop of ink/oil on click
+  let b = new OilBlob(mouseX, mouseY);
+  b.r = 0; // Start small
+  b.targetR = random(30, 80);
+  blobs.push(b);
+  
+  // Cap max blobs for performance
+  if (blobs.length > 25) {
+    blobs.shift();
+  }
+}
+
+class OilBlob {
+  constructor(x, y) {
+    this.pos = createVector(x, y);
+    this.vel = p5.Vector.random2D().mult(random(0.2, 1.0));
+    this.acc = createVector(0, 0);
+    
+    this.targetR = random(40, 120);
+    this.r = this.targetR; // Radius
+    
+    this.color = random(colorPalette);
+    
+    // Perlin noise offsets for shape wobble
+    this.noiseOffset = random(1000);
+    this.noiseStep = random(0.003, 0.01);
+    
+    // How "wobbly" the blob is
+    this.wobbleAmount = random(10, 30);
+  }
+
+  update() {
+    this.vel.add(this.acc);
+    this.vel.limit(3); // Viscous fluid limit
+    this.pos.add(this.vel);
+    this.acc.mult(0);
+    
+    // Slowly grow to target size (for newly clicked blobs)
+    this.r = lerp(this.r, this.targetR, 0.05);
+    
+    // Evolve shape
+    this.noiseOffset += this.noiseStep;
+  }
+
+  stir(mx, my) {
+    let mousePos = createVector(mx, my);
+    let dir = p5.Vector.sub(this.pos, mousePos);
+    let d = dir.mag();
+    
+    // If mouse is close, swirl around or push
+    if (d < 150) {
+      dir.normalize();
+      let force = 20 / (d + 1); // Stronger when closer
+      
+      // Add some rotational stir component
+      let stirDir = createVector(-dir.y, dir.x); // Perpendicular
+      
+      // Mix push and spin
+      this.acc.add(dir.mult(force * 0.5));
+      this.acc.add(stirDir.mult(force * 0.5));
+    }
+  }
+
+  interact(other) {
+    // Soft collision / repulsion
+    let d = dist(this.pos.x, this.pos.y, other.pos.x, other.pos.y);
+    let minDist = (this.r + other.r) * 0.7; // Allow some visual overlap (mixing)
+
+    if (d < minDist && d > 0) {
+      let forceVec = p5.Vector.sub(this.pos, other.pos);
+      forceVec.normalize();
+      // Repel force based on overlap
+      let forceMag = (minDist - d) * 0.02; 
+      
+      this.acc.add(forceVec.mult(forceMag));
+      other.acc.sub(forceVec); // Newton's 3rd law
+    }
+  }
+
+  checkEdges() {
+    let buffer = -50;
+    if (this.pos.x < buffer) {
+      this.pos.x = width - buffer;
+    } else if (this.pos.x > width - buffer) {
+      this.pos.x = buffer;
+    }
+    
+    if (this.pos.y < buffer) {
+      this.pos.y = height - buffer;
+    } else if (this.pos.y > height - buffer) {
+      this.pos.y = buffer;
+    }
+  }
+
+  display() {
+    fill(this.color);
+    
+    beginShape();
+    // Draw vertices based on polar coordinates + noise
+    // Use a high number of vertices for smooth liquid look
+    let numVerts = 60; 
+    for (let a = 0; a < TWO_PI; a += TWO_PI / numVerts) {
+      // Noise space is circular to make the loop seamless
+      let xoff = map(cos(a), -1, 1, 0, 2); 
+      let yoff = map(sin(a), -1, 1, 0, 2);
+      
+      // Get noise value for this angle at this time
+      let n = noise(xoff + this.noiseOffset, yoff + this.noiseOffset);
+      
+      // Map noise to radius deviation
+      let offsetR = map(n, 0, 1, -this.wobbleAmount, this.wobbleAmount);
+      let r = this.r + offsetR;
+      
+      let x = this.pos.x + r * cos(a);
+      let y = this.pos.y + r * sin(a);
+      
+      curveVertex(x, y);
+    }
+    
+    // Close the curve loop smoothly
+    // Need to repeat the first few vertices at the end for curveVertex
+    for (let i = 0; i < 3; i++) {
+      let a = i * (TWO_PI / numVerts);
+      let xoff = map(cos(a), -1, 1, 0, 2);
+      let yoff = map(sin(a), -1, 1, 0, 2);
+      let n = noise(xoff + this.noiseOffset, yoff + this.noiseOffset);
+      let offsetR = map(n, 0, 1, -this.wobbleAmount, this.wobbleAmount);
+      let r = this.r + offsetR;
+      let x = this.pos.x + r * cos(a);
+      let y = this.pos.y + r * sin(a);
+      curveVertex(x, y);
+    }
+    endShape();
+    
+    // Add a "glint" or "bubble" inside for depth
+    fill(255, 255, 255, 100);
+    let glintSize = this.r * 0.2;
+    let glintX = this.pos.x + this.r * 0.3;
+    let glintY = this.pos.y - this.r * 0.3;
+    
+    // Only draw glint if blob is big enough
+    if(this.r > 20) {
+        ellipse(glintX, glintY, glintSize, glintSize * 0.6);
+    }
+  }
+}
+    };
+    
+    new p5(sketch, container);
+  </script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+<!-- 32) errl_woods_leaf_01 – single leaf (prop) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="prop" data-name="errl_woods_leaf_01">
+  <g fill="none">
+    <path d="M18 40 C24 34 30 32 38 32 36 40 32 46 24 48 Z"
+      fill="#22c55e"/>
+    <path d="M20 44 C26 38 31 35 36 34"
+      stroke="#166534" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+  </g>
+</svg>

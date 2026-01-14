@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <g id="plants" fill="#1cdd9c" stroke="#101020" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.9">
+    <path d="M120 1024c0-160 80-300 200-360-60 120-60 260-20 360z" />
+    <path d="M280 1024c-20-180 80-320 200-360-60 120-20 260 40 360z" />
+    <path d="M780 1024c20-180-40-320-160-360 50 120 10 260-40 360z" />
+  </g>
+</svg>

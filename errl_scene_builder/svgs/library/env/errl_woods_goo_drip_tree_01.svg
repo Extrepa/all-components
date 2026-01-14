@@ -1,0 +1,13 @@
+<!-- 98) errl_woods_goo_drip_tree_01 – goo dripping from branch (fx/prop) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="fx" data-name="errl_woods_goo_drip_tree_01">
+  <g fill="none">
+    <!-- branch -->
+    <path d="M16 20 H44" stroke="#78350f" stroke-width="2.2" stroke-linecap="round"/>
+    <!-- goo -->
+    <path d="M26 20 C28 22 28 24 28 26s-1.5 3-2.5 3S23 28 23 26s1-4 3-6z"
+      fill="#22c55e"/>
+    <path d="M36 20 C38 22 38 24 38 26s-1.5 3-2.5 3S33 28 33 26s1-4 3-6z"
+      fill="#22c55e"/>
+  </g>
+</svg>

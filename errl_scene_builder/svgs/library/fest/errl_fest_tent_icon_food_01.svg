@@ -1,0 +1,10 @@
+<!-- Example 193 | errl_fest_tent_icon_food_01 (ui/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="ui" data-name="errl_fest_tent_icon_food_01">
+  <g fill="none">
+    <rect x="24" y="26" width="16" height="14" rx="3" fill="#0f172a"/>
+    <path d="M26 38 L32 28 38 38 Z" fill="#a855f7"/>
+    <!-- little tray / food glyph -->
+    <rect x="28" y="34" width="8" height="2" rx="1" fill="#facc15"/>
+  </g>
+</svg>

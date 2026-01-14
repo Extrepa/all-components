@@ -1,0 +1,430 @@
+Alright, Errl Lab is hungry for Voxels Mode v1.
+We’ve got wobble, HTML FX, sandbox, 3D wire… now we add a chunky pixel-goo view. 🧊🟦🟩
+
+This pass gives you:
+	•	A new Voxels tab.
+	•	A simple 2.5D voxel mosaic of your Errl SVG.
+	•	Uses the same currentSvgUrl pipeline (no extra uploads).
+
+I’ll keep using patch-style edits so you don’t have to diff your soul.
+
+⸻
+
+1. Add a Voxels tab button
+
+Find the tab buttons block (where SVG Preview / p5 FX Lab / HTML FX / 3D Wire live):
+
+<div class="flex items-center gap-1 text-xs">
+  <button id="tabSvg" ... data-tab="svg">SVG Preview</button>
+  <button id="tabP5" ... data-tab="p5">p5 FX Lab</button>
+  <button id="tabHtmlFx" ... data-tab="htmlfx">HTML FX</button>
+  <button id="tabWire3d" ... data-tab="wire3d">3D Wire</button>
+</div>
+
+Add a fifth button inside that same <div>:
+
+              <button
+                id="tabVoxel"
+                class="preview-tab px-3 py-1.5 rounded-md text-slate-300 border border-transparent hover:border-slate-600/80 hover:bg-slate-900/80"
+                data-tab="voxel"
+              >
+                Voxels
+              </button>
+
+Now you’ll have tabs: SVG / p5 / HTML FX / 3D Wire / Voxels.
+
+⸻
+
+2. Add the Voxels preview panel
+
+In the same big preview area where you have the three existing containers, plus the 3D Wire container we added last time:
+
+<div class="flex-1 flex items-center justify-center bg-slate-900/40">
+  <!-- SVG Preview Container -->
+  ...
+  <!-- p5 Preview Container -->
+  ...
+  <!-- HTML FX Preview Container -->
+  ...
+  <!-- 3D Wire Preview Container -->
+  ...
+</div>
+
+Add this after the 3D Wire container:
+
+            <!-- Voxels Preview Container -->
+            <div
+              id="voxelPreviewContainer"
+              class="preview-panel hidden w-full max-w-[420px] max-h-[420px] aspect-square rounded-2xl bg-slate-950/70 border border-indigo-700/80 errl-glow flex flex-col overflow-hidden"
+              data-tab="voxel"
+            >
+              <div class="px-3 py-1.5 border-b border-slate-800/70 flex items-center justify-between text-[11px] text-slate-300">
+                <span>Voxel View</span>
+                <span id="voxelStatus" class="text-slate-500">
+                  Waiting for SVG…
+                </span>
+              </div>
+              <div class="flex-1 flex items-center justify-center bg-slate-900/60">
+                <canvas
+                  id="voxelCanvas"
+                  class="w-full h-full"
+                ></canvas>
+              </div>
+            </div>
+
+This gives Voxels its own square playground.
+
+⸻
+
+3. Wire up DOM refs + voxel state
+
+In your <script>, near the top where you already have:
+
+    const htmlFxImage = document.getElementById("htmlFxImage");
+    const htmlFxStatus = document.getElementById("htmlFxStatus");
+    const htmlFxPresetSelect = document.getElementById("htmlFxPresetSelect");
+    const copyCssFilterBtn = document.getElementById("copyCssFilterBtn");
+
+    // Preset pack manager elements
+    const presetNameInput = document.getElementById("presetNameInput");
+    ...
+    const presetListEl = document.getElementById("presetList");
+
+Add:
+
+    // Voxels
+    const voxelCanvas = document.getElementById("voxelCanvas");
+    const voxelStatusEl = document.getElementById("voxelStatus");
+
+Then in the globals section where you have:
+
+    let currentMode = "lab";
+    let currentSvg = null;
+    let currentSvgUrl = null;
+    let p5Instance = null;
+    ...
+    let isBatchRunning = false;
+
+    // ---- Simple audio feedback ----
+
+Add voxel globals:
+
+    // voxel state
+    let voxelImg = null;
+
+That’s all we need for v1.
+
+⸻
+
+4. Implement Voxels renderer
+
+Somewhere under your HTML FX helpers (or near the 3D Wire helpers) add:
+
+    // ---- Voxels: 2.5D mosaic of the SVG ----
+    function renderVoxelsForCurrentSvg() {
+      if (!voxelCanvas || !voxelStatusEl) return;
+
+      if (!currentSvg || !currentSvgUrl) {
+        voxelStatusEl.textContent = "Upload an SVG first.";
+        const ctx = voxelCanvas.getContext("2d");
+        if (ctx) {
+          ctx.clearRect(0, 0, voxelCanvas.width, voxelCanvas.height);
+        }
+        return;
+      }
+
+      const host = voxelCanvas.parentElement || voxelCanvas;
+      const width = host.clientWidth || 400;
+      const height = host.clientHeight || 400;
+      voxelCanvas.width = width;
+      voxelCanvas.height = height;
+
+      const ctx = voxelCanvas.getContext("2d");
+      if (!ctx) {
+        voxelStatusEl.textContent = "Canvas not supported.";
+        return;
+      }
+
+      voxelStatusEl.textContent = "Sampling image…";
+
+      const img = new Image();
+      img.onload = () => {
+        // Offscreen canvas to sample from SVG image
+        const sampleCanvas = document.createElement("canvas");
+        const sampleCtx = sampleCanvas.getContext("2d");
+        const sampleSize = 256; // base sample resolution
+
+        sampleCanvas.width = sampleSize;
+        sampleCanvas.height = sampleSize;
+
+        sampleCtx.drawImage(img, 0, 0, sampleSize, sampleSize);
+
+        ctx.clearRect(0, 0, width, height);
+
+        // Block size (voxel size) – you can later make this a slider.
+        const blockSize = 14;
+        const cols = Math.floor(width / blockSize);
+        const rows = Math.floor(height / blockSize);
+
+        // Center the voxel grid
+        const offsetX = (width - cols * blockSize) / 2;
+        const offsetY = (height - rows * blockSize) / 2;
+
+        // Fake little "3D" shading with a light coming from top-left
+        for (let y = 0; y < rows; y++) {
+          for (let x = 0; x < cols; x++) {
+            // Sample position in sampleCanvas
+            const sx = Math.floor((x / cols) * sampleSize);
+            const sy = Math.floor((y / rows) * sampleSize);
+            const pixel = sampleCtx.getImageData(sx, sy, 1, 1).data;
+            const r = pixel[0];
+            const g = pixel[1];
+            const b = pixel[2];
+            const a = pixel[3];
+
+            if (a < 30) {
+              // Skip very transparent pixels to keep background clean
+              continue;
+            }
+
+            const baseX = offsetX + x * blockSize;
+            const baseY = offsetY + y * blockSize;
+
+            // Main cube face
+            ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+            ctx.fillRect(baseX, baseY, blockSize, blockSize);
+
+            // Darker "side" for faux-depth
+            const sideShade = 0.7;
+            const sdR = Math.floor(r * sideShade);
+            const sdG = Math.floor(g * sideShade);
+            const sdB = Math.floor(b * sideShade);
+            ctx.fillStyle = `rgb(${sdR}, ${sdG}, ${sdB})`;
+            ctx.fillRect(
+              baseX + blockSize * 0.2,
+              baseY + blockSize * 0.2,
+              blockSize,
+              blockSize
+            );
+          }
+        }
+
+        voxelStatusEl.textContent = "Voxel mosaic ready.";
+      };
+      img.onerror = () => {
+        voxelStatusEl.textContent = "Failed to load SVG for voxels.";
+      };
+      img.src = currentSvgUrl;
+    }
+
+This:
+	•	Scales SVG into a 256×256 offscreen canvas.
+	•	Resamples that into a coarse grid of colored squares.
+	•	Draws a slightly offset darker square on top → fake “voxel depth”.
+
+⸻
+
+5. Hook voxels into tab switching
+
+We previously updated your tab switch handler to handle p5 + 3D wire. Let’s extend it to also turn Voxels on/off.
+
+Find this block (the updated one I gave you last time):
+
+    tabButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const tab = btn.dataset.tab;
+
+        tabButtons.forEach((b) =>
+          b.classList.remove(
+            "bg-slate-800/80",
+            "text-slate-50",
+            "border-slate-600/90"
+          )
+        );
+        btn.classList.add(
+          "bg-slate-800/80",
+          "text-slate-50",
+          "border-slate-600/90"
+        );
+
+        previewPanels.forEach((panel) => {
+          panel.classList.add("hidden");
+          if (panel.dataset.tab === tab) {
+            panel.classList.remove("hidden");
+          }
+        });
+
+        // p5 tab
+        if (tab === "p5") {
+          stopWire3D();
+          if (!currentSvg) {
+            p5StatusEl.textContent = "Upload an SVG first.";
+            captureFrameBtn.disabled = true;
+          } else {
+            startP5WithCurrentSvg();
+          }
+          return;
+        } else {
+          stopP5Instance();
+        }
+
+        // 3D wire tab
+        if (tab === "wire3d") {
+          startWire3DWithCurrentSvg();
+          return;
+        } else {
+          stopWire3D();
+        }
+
+        // HTML FX tab
+        if (tab === "htmlfx") {
+          if (!currentSvg) {
+            htmlFxStatus.textContent = "Upload an SVG to enable HTML FX.";
+          } else {
+            htmlFxStatus.textContent = "CSS filters are live.";
+          }
+        }
+      });
+    });
+
+Update it to include a branch for voxel:
+
+    tabButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const tab = btn.dataset.tab;
+
+        tabButtons.forEach((b) =>
+          b.classList.remove(
+            "bg-slate-800/80",
+            "text-slate-50",
+            "border-slate-600/90"
+          )
+        );
+        btn.classList.add(
+          "bg-slate-800/80",
+          "text-slate-50",
+          "border-slate-600/90"
+        );
+
+        previewPanels.forEach((panel) => {
+          panel.classList.add("hidden");
+          if (panel.dataset.tab === tab) {
+            panel.classList.remove("hidden");
+          }
+        });
+
+        // p5 tab
+        if (tab === "p5") {
+          stopWire3D();
+          if (!currentSvg) {
+            p5StatusEl.textContent = "Upload an SVG first.";
+            captureFrameBtn.disabled = true;
+          } else {
+            startP5WithCurrentSvg();
+          }
+          return;
+        } else {
+          stopP5Instance();
+        }
+
+        // 3D wire tab
+        if (tab === "wire3d") {
+          startWire3DWithCurrentSvg();
+          return;
+        } else {
+          stopWire3D();
+        }
+
+        // Voxels tab
+        if (tab === "voxel") {
+          renderVoxelsForCurrentSvg();
+          return;
+        }
+
+        // HTML FX tab
+        if (tab === "htmlfx") {
+          if (!currentSvg) {
+            htmlFxStatus.textContent = "Upload an SVG to enable HTML FX.";
+          } else {
+            htmlFxStatus.textContent = "CSS filters are live.";
+          }
+        }
+      });
+    });
+
+So:
+	•	Switching to Voxels calls renderVoxelsForCurrentSvg().
+	•	It doesn’t start animations, so no need to “stop” it when leaving – it just draws once.
+
+⸻
+
+6. Update status when SVG changes
+
+Inside handleSvgFile(file) where you already have:
+
+          updateUiForSvg(currentSvg);
+          updateHtmlFxImage();
+          updateSandboxSnippet();
+          flashStatus("SVG loaded and normalized ✅");
+          p5StatusEl.textContent = "Ready. Switch to this tab to see FX.";
+          htmlFxStatus.textContent = "CSS filters are live.";
+          if (wire3dStatusEl) {
+            wire3dStatusEl.textContent = "Ready. Switch to 3D Wire tab.";
+          }
+
+Add:
+
+          if (voxelStatusEl) {
+            voxelStatusEl.textContent = "Ready. Switch to Voxels tab.";
+          }
+
+And optionally, if you want Voxels to auto-refresh after every new SVG:
+
+          renderVoxelsForCurrentSvg();
+
+(but only if you don’t mind it drawing regardless of which tab is visible; it’s cheap, so fine.)
+
+⸻
+
+7. Clear Voxels on reset
+
+In your clearBtn.addEventListener("click", ...) handler, after you clear HTML FX stuff:
+
+      htmlFxImage.src = "";
+      htmlFxStatus.textContent = "Waiting for SVG…";
+
+Add:
+
+      if (voxelCanvas) {
+        const vctx = voxelCanvas.getContext("2d");
+        if (vctx) {
+          vctx.clearRect(0, 0, voxelCanvas.width, voxelCanvas.height);
+        }
+      }
+      if (voxelStatusEl) {
+        voxelStatusEl.textContent = "Waiting for SVG…";
+      }
+
+That keeps the voxel panel from showing old mosaic after clearing.
+
+⸻
+
+Where you’re at now
+
+Your Errl FX Megaforge can:
+	•	Upload one Errl SVG and:
+	•	Inspect its SVG DOM structure.
+	•	Animate it in p5.js with wobble presets, sliders, keyboard shortcuts, audio beeps.
+	•	Batch-capture p5 frames into a thumbnail gallery, with ⭐ favorites.
+	•	Apply HTML/CSS filters and copy the exact filter: stack.
+	•	Save/import “FX packs” (p5 + HTML FX) and batch capture across them.
+	•	Generate a sandbox .html that fully inlines the SVG + CSS filters.
+	•	Render a 3D Wire spinning box textured with the SVG.
+	•	Render a Voxel View mosaic of Errl using chunky fake-3D squares.
+
+Next logical chaos upgrades from here:
+	•	VS Mode that uses favorite frames (or voxel vs p5 vs HTML FX) side-by-side.
+	•	Keyboard shortcut to jump directly between tabs (Q/W/E/R/T style).
+	•	A tiny JSON export for capturedFrames and/or fxPresets so other tools (like Gemini / Warp agents) can munch them.
+
+Right now, though, you’ve basically built an Errl “graphics lab OS” in one HTML file.

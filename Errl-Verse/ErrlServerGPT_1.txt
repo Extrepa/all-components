@@ -1,0 +1,360 @@
+Beautiful, this is the right move.
+We’ll split the system into clean, single-purpose Markdown files you can drop straight into Obsidian (or any vault). Each file answers one question only. No cognitive soup.
+
+Below is a complete file set, with ready-to-paste Markdown content for each file.
+
+You can create a folder like:
+
+Home-Server/
+├── 00-Overview.md
+├── 01-Architecture.md
+├── 02-Hardware-Setup.md
+├── 03-OS-Install.md
+├── 04-Storage-Layout.md
+├── 05-Docker-Platform.md
+├── 06-Remote-Access.md
+├── 07-Media-Services.md
+├── 08-Public-Website.md
+├── 09-Workflows.md
+└── 10-Backups.md
+
+
+⸻
+
+📄 00-Overview.md
+
+# Home Server Overview
+
+This system provides:
+
+- Access from any computer or mobile device
+- Centralized storage (files, photos, music, videos, books, websites, games)
+- A private, secure home server
+- A cheap, disposable public website
+- Zero vendor lock-in
+
+## Core Principle
+
+**One server = one source of truth**
+
+Everything lives on the home server.
+The public website is just a projection.
+
+## What This Is Not
+
+- Not a Plex-only media box
+- Not a fragile DIY experiment
+- Not dependent on any single company
+
+This is a long-term personal infrastructure.
+
+
+⸻
+
+📄 01-Architecture.md
+
+# System Architecture
+
+## Two Worlds, One Domain
+
+### Private (Home Server)
+- Ubuntu on Dell OptiPlex 7050
+- Docker-based services
+- Media vault
+- Accessible via secure browser login
+
+### Public (Cheap Host)
+- Static website
+- Embedded media
+- No master files
+- Can be deleted and rebuilt anytime
+
+## Traffic Flow
+
+User → Domain → Cloudflare → Home Server (private services)
+User → Domain → Cheap Host (public site)
+
+## Why This Works
+
+- Home IP is hidden
+- No port forwarding
+- Mobile-friendly access
+- Public traffic never touches private data
+
+
+⸻
+
+📄 02-Hardware-Setup.md
+
+# Hardware Setup
+
+## Required Hardware
+
+- Dell OptiPlex 7050
+- 2TB–4TB 2.5" SATA SSD (data)
+- USB flash drive (Ubuntu installer)
+- Ethernet connection
+
+## Optional Hardware
+
+- NVMe SSD for OS
+- UPS for power protection
+
+## Installation Order
+
+1. Power off system
+2. Install SATA SSD
+3. (Optional) Install NVMe SSD
+4. Close case
+5. Reconnect cables
+
+Do not proceed without confirming drives are seated properly.
+
+
+⸻
+
+📄 03-OS-Install.md
+
+# Ubuntu Server Installation
+
+## Installer Prep
+
+- Download Ubuntu Server LTS
+- Flash to USB using balenaEtcher
+
+## Install Settings
+
+- Network: DHCP
+- Storage: Guided / Use entire disk
+- Enable OpenSSH
+- Skip extra snaps
+
+## After Install
+
+- Reboot
+- Note server IP
+- SSH in from another machine
+
+This system will be headless after this point.
+
+
+⸻
+
+📄 04-Storage-Layout.md
+
+# Canonical Storage Layout
+
+This layout must never change.
+
+```text
+/storage
+├── files
+├── photos
+│   ├── originals
+│   └── galleries
+├── music
+│   ├── lossless
+│   └── web
+├── videos
+│   ├── masters
+│   └── streams
+├── books
+├── websites
+│   ├── public
+│   └── experiments
+├── games
+│   ├── assets
+│   └── builds
+└── backups
+
+Rules
+	•	One media type per folder
+	•	Albums = folders
+	•	Originals never modified
+	•	Public content always copied, never moved
+
+---
+
+# 📄 05-Docker-Platform.md
+
+```md
+# Docker Platform
+
+## Why Docker
+
+- Reproducible
+- Easy to back up
+- No dependency rot
+- Services stay isolated
+
+## Core Components
+
+- Docker Engine
+- Docker Compose
+- Portainer (management UI)
+
+## Golden Rule
+
+Nothing runs directly on Ubuntu.
+Everything runs in containers.
+
+
+⸻
+
+📄 06-Remote-Access.md
+
+# Remote Access
+
+## Goals
+
+- No port forwarding
+- No exposed IP
+- Works on mobile networks
+- HTTPS everywhere
+
+## Method
+
+- Cloudflare DNS
+- Cloudflare Tunnel
+- Reverse proxy
+
+## Subdomains
+
+- vault.domain.com
+- files.domain.com
+- music.domain.com
+- photos.domain.com
+
+Access is browser-based only.
+No VPN required.
+
+
+⸻
+
+📄 07-Media-Services.md
+
+# Media Services
+
+Each media type is its own service.
+
+## Files
+- Upload/download
+- Folder browsing
+- Phone-friendly
+
+## Photos
+- Folder-based galleries
+- Originals preserved
+- No auto-reorganization
+
+## Music
+- Stream from /music/web
+- Lossless kept private
+- Album = folder
+
+## Videos
+- Stream compressed copies
+- Masters never exposed
+
+## Books
+- PDF / EPUB
+- Read in browser or download
+
+Each service:
+- One container
+- One subdomain
+- Shared authentication
+
+
+⸻
+
+📄 08-Public-Website.md
+
+# Public Website
+
+## Purpose
+
+- Landing page
+- Gallery previews
+- Embedded music players
+- Contact links
+
+## Hosting
+
+- Cheap shared hosting
+- Static files preferred
+
+## Rules
+
+- Never store master files
+- Never edit directly on host
+- Everything syncs from server
+
+The public site is disposable.
+
+
+⸻
+
+📄 09-Workflows.md
+
+# Daily Workflows
+
+## Adding Files
+Upload to /storage/files
+
+## Photos
+1. Upload to originals
+2. Copy curated sets to galleries
+
+## Music Release
+1. Add FLAC to lossless
+2. Encode MP3 to web
+3. Embed player on public site
+
+## Website Updates
+1. Edit /storage/websites/public
+2. Sync to public host
+
+## Games
+- Assets in /assets
+- Builds in /builds
+
+
+⸻
+
+📄 10-Backups.md
+
+# Backups
+
+## What Is Backed Up
+
+- /storage
+- Docker volumes
+- Configuration files
+
+## Backup Strategy
+
+- Daily local snapshots
+- Off-machine copy
+- Automated, silent
+
+## Philosophy
+
+If backups fail, everything else is irrelevant.
+
+
+⸻
+
+What this gives you
+	•	Each file is mentally small
+	•	Easy to reorganize or expand
+	•	Obsidian-friendly
+	•	Printable if needed
+	•	Future-proof for Errl OS integration
+
+Next natural upgrades (when you’re ready):
+	•	11-Dashboard.md
+	•	12-User-Roles.md
+	•	13-Automation.md
+
+This is now a real documentation system, not a blob of instructions.

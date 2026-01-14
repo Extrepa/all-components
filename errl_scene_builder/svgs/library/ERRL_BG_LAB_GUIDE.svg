@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <rect x="0" y="0" width="1024" height="1024" fill="none" />
+  <g id="guide" fill="none" stroke="#5be0ff" stroke-width="6" stroke-dasharray="12 12" opacity="0.5">
+    <rect x="412" y="420" width="200" height="200" rx="20" />
+    <rect x="620" y="520" width="200" height="160" rx="18" />
+    <rect x="320" y="560" width="120" height="120" rx="14" />
+  </g>
+  <text x="452" y="516" font-size="32" fill="#5be0ff" opacity="0.6">MAIN ERRL</text>
+  <text x="648" y="604" font-size="28" fill="#5be0ff" opacity="0.6">PROP</text>
+  <text x="322" y="642" font-size="24" fill="#5be0ff" opacity="0.6">SUPPORT</text>
+</svg>

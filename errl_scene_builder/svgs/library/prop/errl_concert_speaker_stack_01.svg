@@ -1,0 +1,14 @@
+<!-- errl_concert_speaker_stack_01 – tall speaker column (prop/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_concert" data-cat="prop" data-name="errl_concert_speaker_stack_01">
+  <g fill="none">
+    <rect x="24" y="18" width="16" height="28" rx="2" fill="#020617"/>
+    <!-- top cab -->
+    <circle cx="32" cy="24" r="3.5" fill="#111827"/>
+    <circle cx="32" cy="24" r="1.8" fill="#22d3ee"/>
+    <!-- bottom cab -->
+    <circle cx="32" cy="32" r="4.5" fill="#111827"/>
+    <circle cx="32" cy="32" r="2.2" fill="#0f172a"/>
+    <ellipse cx="32" cy="48" rx="10" ry="2.6" fill="#020617" opacity="0.5"/>
+  </g>
+</svg>

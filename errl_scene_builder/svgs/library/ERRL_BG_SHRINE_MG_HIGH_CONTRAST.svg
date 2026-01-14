@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <g id="MG_pedestal" fill="#ffe19c" stroke="#64646e" stroke-width="12" stroke-linejoin="round" stroke-linecap="round">
+    <rect x="330" y="620" width="364" height="120" rx="28" />
+    <rect x="370" y="560" width="284" height="70" rx="20" />
+  </g>
+  <g id="MG_side_pillars" fill="#f8f5ff" stroke="#64646e" stroke-width="10" stroke-linejoin="round" stroke-linecap="round">
+    <rect x="200" y="560" width="80" height="220" rx="18" />
+    <rect x="744" y="560" width="80" height="220" rx="18" />
+  </g>
+  <g id="MG_floor" fill="#64646e" opacity="0.2">
+    <ellipse cx="512" cy="780" rx="360" ry="50" />
+  </g>
+</svg>

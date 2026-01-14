@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <g id="MG_orbs" fill="#2c6274" opacity="0.4">
+    <circle cx="240" cy="360" r="120" />
+    <circle cx="520" cy="320" r="160" />
+    <circle cx="760" cy="380" r="120" />
+  </g>
+  <g id="MG_orbs_outline" fill="none" stroke="#0e0f1b" stroke-width="10" opacity="0.3">
+    <circle cx="240" cy="360" r="120" />
+    <circle cx="520" cy="320" r="160" />
+    <circle cx="760" cy="380" r="120" />
+  </g>
+</svg>

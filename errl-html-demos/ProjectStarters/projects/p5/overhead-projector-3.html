@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>An interactive overhead projector - P5.js Sketch</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0a0a0a;
+      color: #fff;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .header {
+      padding: 1.5rem 2rem;
+      background: #1a1a1a;
+      border-bottom: 1px solid #333;
+    }
+    .header h1 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .header p {
+      color: #b0b0b0;
+      font-size: 0.875rem;
+    }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 1rem;
+      color: #6366f1;
+      text-decoration: none;
+      font-size: 0.875rem;
+    }
+    .back-link:hover {
+      text-decoration: underline;
+    }
+    #p5-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background: #0a0a0a;
+    }
+    .info {
+      padding: 1.5rem 2rem;
+      background: #1a1a1a;
+      border-top: 1px solid #333;
+      font-size: 0.875rem;
+    }
+    .info-item {
+      margin-bottom: 0.5rem;
+      display: flex;
+    }
+    .info-label {
+      width: 120px;
+      color: #b0b0b0;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="../index.html" class="back-link">← Back to Gallery</a>
+      <h1>An interactive overhead projector</h1>
+      <p>P5.js Interactive Sketch</p>
+    </div>
+    <div id="p5-container"></div>
+    <div class="info">
+      <div class="info-item">
+        <span class="info-label">Prompt:</span>
+        <span>An interactive overhead projector</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Model:</span>
+        <span>threePro</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Generation Time:</span>
+        <span>44.6s</span>
+      </div>
+    </div>
+  </div>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+  <script>
+    const container = document.getElementById('p5-container');
+    const sketchCode = "function setup() {\n  createCanvas(800, 600);\n  \n  // Create the off-screen buffer for the acetate sheet (drawing layer)\n  acetate = createGraphics(800, 600);\n  acetate.clear();\n  \n  // Initialize particles for dust effect\n  for (let i = 0; i < 50; i++) {\n    dust.push(new DustParticle());\n  }\n  \n  // Default marker color (Blue)\n  markerColor = color(0, 0, 200, 150);\n  \n  noCursor();\n}\n\nlet acetate;\nlet markerColor;\nlet dust = [];\nlet lastX, lastY;\n\nfunction draw() {\n  background(10); // Dark room environment\n\n  // --- 1. The Projected Light (Trapezoid/Keystone effect) ---\n  push();\n  translate(width / 2, height / 2);\n  \n  // Glow effect\n  drawingContext.shadowBlur = 100;\n  drawingContext.shadowColor = color(220, 240, 255);\n  \n  noStroke();\n  fill(240, 248, 255); // Slightly blue-ish white light\n  \n  // Draw the main projection area (rounded rect)\n  rectMode(CENTER);\n  rect(0, 0, 700, 500, 20);\n  pop();\n\n  // --- 2. Fresnel Lens Texture (Concentric rings) ---\n  push();\n  translate(width / 2, height / 2);\n  noFill();\n  stroke(0, 0, 0, 5); // Very faint lines\n  strokeWeight(1);\n  for (let r = 0; r < 800; r += 15) {\n    ellipse(0, 0, r, r * 0.8); // Elliptical to match perspective slightly\n  }\n  pop();\n\n  // --- 3. User Interaction (Drawing on the Acetate) ---\n  if (mouseIsPressed) {\n    acetate.stroke(markerColor);\n    acetate.strokeWeight(6);\n    acetate.strokeJoin(ROUND);\n    acetate.strokeCap(ROUND);\n    \n    // Simulate marker ink physics (multiply effect via alpha)\n    if (lastX && lastY) {\n      // Interpolate for smoother lines\n      let d = dist(lastX, lastY, mouseX, mouseY);\n      // Variable speed creates variable ink density\n      let speed = constrain(d, 0, 20);\n      let alphaVal = map(speed, 0, 20, 200, 100);\n      \n      let c = markerColor;\n      c.setAlpha(alphaVal);\n      acetate.stroke(c);\n      acetate.line(lastX, lastY, mouseX, mouseY);\n    }\n  } else {\n    lastX = null;\n    lastY = null;\n  }\n  \n  // Update last positions\n  if (mouseIsPressed) {\n    lastX = mouseX;\n    lastY = mouseY;\n  }\n\n  // --- 4. Render the Acetate Layer ---\n  image(acetate, 0, 0);\n\n  // --- 5. The \"Shadow\" of the Hand/Pen ---\n  // In an overhead projector, the hand hovers over the glass, casting a shadow\n  push();\n  translate(mouseX, mouseY);\n  \n  // Rotate slightly based on movement for a natural feel\n  let angle = map(mouseX, 0, width, -PI/6, PI/6);\n  rotate(angle);\n  \n  // Shadow settings (fuzzy shadow)\n  drawingContext.shadowBlur = 20;\n  drawingContext.shadowColor = 'rgba(0,0,0,0.8)';\n  \n  fill(20); // Dark shadow color\n  noStroke();\n  \n  // Draw a simple pen/hand silhouette shape\n  beginShape();\n  vertex(0, 0); // Tip of pen\n  bezierVertex(10, 10, 20, 50, 25, 200); // Shaft right\n  vertex(-25, 200); // Bottom\n  bezierVertex(-20, 50, -10, 10, 0, 0); // Shaft left\n  endShape(CLOSE);\n  \n  // Draw the actual \"pen\" object on top of the shadow (the object itself blocking light)\n  drawingContext.shadowBlur = 0;\n  \n  // Pen Body\n  if (markerColor.toString().includes(\"200\")) fill(0, 0, 200); // Blue\n  else if (markerColor.toString().includes(\"255, 0, 0\")) fill(200, 0, 0); // Red\n  else if (markerColor.toString().includes(\"0, 150, 0\")) fill(0, 150, 0); // Green\n  else fill(20); // Black\n  \n  beginShape();\n  vertex(0, 0);\n  bezierVertex(10, 10, 20, 50, 25, 200);\n  vertex(-25, 200);\n  bezierVertex(-20, 50, -10, 10, 0, 0);\n  endShape(CLOSE);\n  pop();\n\n  // --- 6. Atmosphere (Floating Dust) ---\n  for (let p of dust) {\n    p.update();\n    p.display();\n  }\n  \n  // --- 7. Vignette / Frame ---\n  // Darken edges to simulate the dark room\n  drawVignette();\n  \n  // --- 8. UI Instructions ---\n  drawUI();\n}\n\nfunction drawUI() {\n  push();\n  fill(100);\n  noStroke();\n  textSize(14);\n  textAlign(LEFT, BOTTOM);\n  text(\"KEYS: [R] Red  [G] Green  [B] Blue  [K] Black  [SPACE] Clear Sheet\", 60, height - 60);\n  pop();\n}\n\nfunction keyPressed() {\n  if (key === ' ' || key === 'c') {\n    // Clear acetate\n    acetate.clear();\n  }\n  if (key === 'r' || key === 'R') {\n    markerColor = color(255, 0, 0, 150);\n  }\n  if (key === 'b' || key === 'B') {\n    markerColor = color(0, 0, 200, 150);\n  }\n  if (key === 'g' || key === 'G') {\n    markerColor = color(0, 150, 0, 150);\n  }\n  if (key === 'k' || key === 'K') {\n    markerColor = color(0, 0, 0, 180);\n  }\n}\n\nfunction drawVignette() {\n  push();\n  blendMode(MULTIPLY);\n  let gradient = drawingContext.createRadialGradient(width/2, height/2, 250, width/2, height/2, 500);\n  gradient.addColorStop(0, 'rgba(0,0,0,0)');\n  gradient.addColorStop(1, 'rgba(0,0,0,0.9)');\n  drawingContext.fillStyle = gradient;\n  rect(0, 0, width, height);\n  pop();\n}\n\nclass DustParticle {\n  constructor() {\n    this.reset();\n    this.y = random(height); // Start randomly\n  }\n  \n  reset() {\n    this.x = random(width);\n    this.y = height + 10;\n    this.size = random(1, 3);\n    this.speed = random(0.2, 1);\n    this.alpha = random(50, 150);\n    this.oscillationOffset = random(TWO_PI);\n  }\n  \n  update() {\n    // Heat rises, dust floats up\n    this.y -= this.speed;\n    // Slight side to side movement\n    this.x += sin(frameCount * 0.01 + this.oscillationOffset) * 0.2;\n    \n    if (this.y < -10) {\n      this.reset();\n    }\n  }\n  \n  display() {\n    push();\n    noStroke();\n    // Dust is illuminated by the light\n    fill(255, 255, 200, this.alpha); \n    ellipse(this.x, this.y, this.size);\n    pop();\n  }\n}";
+    
+    const sketch = function(p) {
+      function setup() {
+  createCanvas(800, 600);
+  
+  // Create the off-screen buffer for the acetate sheet (drawing layer)
+  acetate = createGraphics(800, 600);
+  acetate.clear();
+  
+  // Initialize particles for dust effect
+  for (let i = 0; i < 50; i++) {
+    dust.push(new DustParticle());
+  }
+  
+  // Default marker color (Blue)
+  markerColor = color(0, 0, 200, 150);
+  
+  noCursor();
+}
+
+let acetate;
+let markerColor;
+let dust = [];
+let lastX, lastY;
+
+function draw() {
+  background(10); // Dark room environment
+
+  // --- 1. The Projected Light (Trapezoid/Keystone effect) ---
+  push();
+  translate(width / 2, height / 2);
+  
+  // Glow effect
+  drawingContext.shadowBlur = 100;
+  drawingContext.shadowColor = color(220, 240, 255);
+  
+  noStroke();
+  fill(240, 248, 255); // Slightly blue-ish white light
+  
+  // Draw the main projection area (rounded rect)
+  rectMode(CENTER);
+  rect(0, 0, 700, 500, 20);
+  pop();
+
+  // --- 2. Fresnel Lens Texture (Concentric rings) ---
+  push();
+  translate(width / 2, height / 2);
+  noFill();
+  stroke(0, 0, 0, 5); // Very faint lines
+  strokeWeight(1);
+  for (let r = 0; r < 800; r += 15) {
+    ellipse(0, 0, r, r * 0.8); // Elliptical to match perspective slightly
+  }
+  pop();
+
+  // --- 3. User Interaction (Drawing on the Acetate) ---
+  if (mouseIsPressed) {
+    acetate.stroke(markerColor);
+    acetate.strokeWeight(6);
+    acetate.strokeJoin(ROUND);
+    acetate.strokeCap(ROUND);
+    
+    // Simulate marker ink physics (multiply effect via alpha)
+    if (lastX && lastY) {
+      // Interpolate for smoother lines
+      let d = dist(lastX, lastY, mouseX, mouseY);
+      // Variable speed creates variable ink density
+      let speed = constrain(d, 0, 20);
+      let alphaVal = map(speed, 0, 20, 200, 100);
+      
+      let c = markerColor;
+      c.setAlpha(alphaVal);
+      acetate.stroke(c);
+      acetate.line(lastX, lastY, mouseX, mouseY);
+    }
+  } else {
+    lastX = null;
+    lastY = null;
+  }
+  
+  // Update last positions
+  if (mouseIsPressed) {
+    lastX = mouseX;
+    lastY = mouseY;
+  }
+
+  // --- 4. Render the Acetate Layer ---
+  image(acetate, 0, 0);
+
+  // --- 5. The "Shadow" of the Hand/Pen ---
+  // In an overhead projector, the hand hovers over the glass, casting a shadow
+  push();
+  translate(mouseX, mouseY);
+  
+  // Rotate slightly based on movement for a natural feel
+  let angle = map(mouseX, 0, width, -PI/6, PI/6);
+  rotate(angle);
+  
+  // Shadow settings (fuzzy shadow)
+  drawingContext.shadowBlur = 20;
+  drawingContext.shadowColor = 'rgba(0,0,0,0.8)';
+  
+  fill(20); // Dark shadow color
+  noStroke();
+  
+  // Draw a simple pen/hand silhouette shape
+  beginShape();
+  vertex(0, 0); // Tip of pen
+  bezierVertex(10, 10, 20, 50, 25, 200); // Shaft right
+  vertex(-25, 200); // Bottom
+  bezierVertex(-20, 50, -10, 10, 0, 0); // Shaft left
+  endShape(CLOSE);
+  
+  // Draw the actual "pen" object on top of the shadow (the object itself blocking light)
+  drawingContext.shadowBlur = 0;
+  
+  // Pen Body
+  if (markerColor.toString().includes("200")) fill(0, 0, 200); // Blue
+  else if (markerColor.toString().includes("255, 0, 0")) fill(200, 0, 0); // Red
+  else if (markerColor.toString().includes("0, 150, 0")) fill(0, 150, 0); // Green
+  else fill(20); // Black
+  
+  beginShape();
+  vertex(0, 0);
+  bezierVertex(10, 10, 20, 50, 25, 200);
+  vertex(-25, 200);
+  bezierVertex(-20, 50, -10, 10, 0, 0);
+  endShape(CLOSE);
+  pop();
+
+  // --- 6. Atmosphere (Floating Dust) ---
+  for (let p of dust) {
+    p.update();
+    p.display();
+  }
+  
+  // --- 7. Vignette / Frame ---
+  // Darken edges to simulate the dark room
+  drawVignette();
+  
+  // --- 8. UI Instructions ---
+  drawUI();
+}
+
+function drawUI() {
+  push();
+  fill(100);
+  noStroke();
+  textSize(14);
+  textAlign(LEFT, BOTTOM);
+  text("KEYS: [R] Red  [G] Green  [B] Blue  [K] Black  [SPACE] Clear Sheet", 60, height - 60);
+  pop();
+}
+
+function keyPressed() {
+  if (key === ' ' || key === 'c') {
+    // Clear acetate
+    acetate.clear();
+  }
+  if (key === 'r' || key === 'R') {
+    markerColor = color(255, 0, 0, 150);
+  }
+  if (key === 'b' || key === 'B') {
+    markerColor = color(0, 0, 200, 150);
+  }
+  if (key === 'g' || key === 'G') {
+    markerColor = color(0, 150, 0, 150);
+  }
+  if (key === 'k' || key === 'K') {
+    markerColor = color(0, 0, 0, 180);
+  }
+}
+
+function drawVignette() {
+  push();
+  blendMode(MULTIPLY);
+  let gradient = drawingContext.createRadialGradient(width/2, height/2, 250, width/2, height/2, 500);
+  gradient.addColorStop(0, 'rgba(0,0,0,0)');
+  gradient.addColorStop(1, 'rgba(0,0,0,0.9)');
+  drawingContext.fillStyle = gradient;
+  rect(0, 0, width, height);
+  pop();
+}
+
+class DustParticle {
+  constructor() {
+    this.reset();
+    this.y = random(height); // Start randomly
+  }
+  
+  reset() {
+    this.x = random(width);
+    this.y = height + 10;
+    this.size = random(1, 3);
+    this.speed = random(0.2, 1);
+    this.alpha = random(50, 150);
+    this.oscillationOffset = random(TWO_PI);
+  }
+  
+  update() {
+    // Heat rises, dust floats up
+    this.y -= this.speed;
+    // Slight side to side movement
+    this.x += sin(frameCount * 0.01 + this.oscillationOffset) * 0.2;
+    
+    if (this.y < -10) {
+      this.reset();
+    }
+  }
+  
+  display() {
+    push();
+    noStroke();
+    // Dust is illuminated by the light
+    fill(255, 255, 200, this.alpha); 
+    ellipse(this.x, this.y, this.size);
+    pop();
+  }
+}
+    };
+    
+    new p5(sketch, container);
+  </script>
+</body>
+</html>

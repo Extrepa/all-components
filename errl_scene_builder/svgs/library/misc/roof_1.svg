@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" id="icon-9bfzg135f">
+  <g xmlns="http://www.w3.org/2000/svg" fill="none">
+    <!-- roof -->
+    <path d="M14 32 L32 20 50 32 Z" fill="#a855f7"/>
+    <!-- stripes -->
+    <path d="M18 32 L24 20 M24 32 L30 20 M30 32 L36 20 M36 32 L42 20 M42 32 L46 22" stroke="#f9a8ff" stroke-width="1.2" stroke-linecap="round" opacity="0.9"/>
+    <!-- stall body -->
+    <rect x="16" y="32" width="32" height="12" rx="2" fill="#020617"/>
+    <!-- serving window -->
+    <rect x="18.5" y="34.5" width="27" height="5.5" rx="1.5" fill="#111827"/>
+    <!-- small sign panel -->
+    <rect x="26" y="29" width="12" height="3" rx="1" fill="#facc15"/>
+    <ellipse cx="32" cy="48" rx="17" ry="3" fill="#111827" opacity="0.35"/>
+  </g>
+</svg>

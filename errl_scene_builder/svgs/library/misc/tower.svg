@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" id="icon-z28t01geg">
+  <g xmlns="http://www.w3.org/2000/svg" fill="none">
+    <!-- tower -->
+    <rect x="28" y="24" width="8" height="22" rx="2" fill="#111827"/>
+    <!-- cab -->
+    <rect x="26" y="18" width="12" height="6" rx="1.5" fill="#020617"/>
+    <rect x="28" y="19" width="8" height="4" rx="1" fill="#1e293b"/>
+    <!-- lights -->
+    <circle cx="29" cy="21" r="0.9" fill="#22d3ee"/>
+    <circle cx="35" cy="21" r="0.9" fill="#facc15"/>
+    <ellipse cx="32" cy="50" rx="11" ry="2.6" fill="#020617" opacity="0.5"/>
+  </g>
+</svg>

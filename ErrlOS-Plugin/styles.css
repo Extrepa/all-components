@@ -1,0 +1,1775 @@
+/* Errl OS Plugin Styles */
+/* Uses Errl Design System variables when available, falls back to Obsidian defaults */
+
+/* ============================================================================
+   Setup Wizard Modal Styles
+   ============================================================================ */
+
+/* Wizard Modal - Consistent sizing (scoped to Errl modals) */
+.errl-setup-modal .modal-content {
+	min-height: 400px !important;
+	max-height: 600px !important;
+	display: flex !important;
+	flex-direction: column !important;
+	width: 600px !important;
+	position: relative !important;
+}
+
+/* Wizard content area - scrollable */
+.errl-setup-modal .wizard-content {
+	flex: 1 !important;
+	overflow-y: auto !important;
+	overflow-x: hidden !important;
+	padding: 1rem 0 !important;
+	min-height: 0 !important;
+	max-height: calc(100% - 120px) !important; /* Leave room for buttons */
+}
+
+/* Progress indicator - hide numbers, show as visual indicator */
+.errl-setup-modal .wizard-progress {
+	display: flex !important;
+	gap: 0.5rem !important;
+	margin-bottom: 1rem !important;
+	justify-content: center !important;
+	align-items: center !important;
+}
+
+.errl-setup-modal .wizard-step {
+	width: 2rem !important;
+	height: 2rem !important;
+	border-radius: 50% !important;
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	background: var(--background-secondary, var(--background-modifier-form-field)) !important;
+	border: 2px solid var(--text-muted, var(--text-faint)) !important;
+	position: relative !important;
+}
+
+.errl-setup-modal .wizard-step.active {
+	background: var(--interactive-accent, var(--color-accent)) !important;
+	border-color: var(--interactive-accent, var(--color-accent)) !important;
+}
+
+.errl-setup-modal .wizard-step span {
+	display: none !important; /* Hide the number text */
+}
+
+/* Button container - sticky footer */
+.errl-setup-modal .modal-button-container {
+	margin-top: auto !important;
+	padding: 1rem !important;
+	border-top: 1px solid var(--background-modifier-border, var(--color-border)) !important;
+	flex-shrink: 0 !important;
+	display: flex !important;
+	justify-content: flex-end !important;
+	gap: 0.5rem !important;
+	background: var(--background-primary, var(--background-secondary)) !important;
+	position: sticky !important;
+	bottom: 0 !important;
+	z-index: 10 !important;
+	width: 100% !important;
+	box-sizing: border-box !important;
+}
+
+/* Ensure buttons are visible */
+.errl-setup-modal .modal-button-container .setting-item {
+	margin: 0 !important;
+	padding: 0 !important;
+}
+
+.errl-setup-modal .modal-button-container .setting-item-control {
+	justify-content: flex-end !important;
+}
+
+.errl-setup-modal .modal-button-container button {
+	min-width: 80px !important;
+	padding: 0.5rem 1rem !important;
+	cursor: pointer !important;
+	display: inline-block !important;
+	visibility: visible !important;
+	opacity: 1 !important;
+}
+
+/* Wizard error message */
+.errl-setup-modal .wizard-error {
+	background: var(--background-modifier-error, rgba(255, 0, 0, 0.1)) !important;
+	border: 1px solid var(--text-error, #ff0000) !important;
+	border-radius: 4px !important;
+	padding: 1rem !important;
+	margin-top: 1rem !important;
+	color: var(--text-error, #ff0000) !important;
+}
+
+/* Ensure wizard settings are clickable */
+.errl-setup-modal .wizard-content .setting-item {
+	pointer-events: auto !important;
+}
+
+.errl-setup-modal .wizard-content .setting-item .checkbox-container {
+	pointer-events: auto !important;
+	cursor: pointer !important;
+}
+
+.errl-setup-modal .wizard-content .setting-item input[type="checkbox"] {
+	pointer-events: auto !important;
+	cursor: pointer !important;
+}
+
+/* ============================================================================
+   CSS Custom Properties (Design System Variables)
+   ============================================================================ */
+
+:root {
+	/* ============================================
+	   DESIGN SYSTEM COLORS (Errl Design System)
+	   ============================================ */
+	
+	/* Core Colors - Design System Compatible */
+	--color-background: rgba(20, 20, 20, 0.9);
+	--color-border: #00ffff;
+	--color-text: #ffffff;
+	--color-accent: #00ffff;
+	--color-title: #00ffff;
+	--color-text-faint: #999999;
+	
+	/* Design System Semantic Colors */
+	--surface: var(--color-background);
+	--border: var(--color-border);
+	--accent: var(--color-accent);
+	--text: var(--color-text);
+	
+	/* Errl Brand Colors */
+	--errl-cyan: #00ffff;
+	--errl-magenta: #ff00ff;
+	
+	/* Gradient Border Colors */
+	--border-gradient-from: var(--errl-cyan);
+	--border-gradient-to: var(--errl-magenta);
+	
+	/* ============================================
+	   SPACING (Design System Compatible)
+	   ============================================ */
+	
+	--spacing-panel-padding: 16px;
+	--spacing-button-padding: 10px 20px;
+	
+	/* ============================================
+	   TYPOGRAPHY (Design System Compatible)
+	   ============================================ */
+	
+	--font-size-sm: 14px;
+	--font-weight-medium: 500;
+	
+	/* ============================================
+	   BORDERS (Design System Compatible)
+	   ============================================ */
+	
+	--border-radius: 8px;
+	
+	/* ============================================
+	   SHADOWS (Design System Compatible)
+	   ============================================ */
+	
+	--shadow-panel: 0 4px 20px rgba(0, 255, 255, 0.3);
+	
+	/* ============================================
+	   ANIMATIONS (Design System Compatible)
+	   ============================================ */
+	
+	--animation-duration-fast: 0.2s;
+	--animation-duration-normal: 0.3s;
+	--animation-easing-ease: ease;
+	
+	/* ============================================
+	   PLUGIN-SPECIFIC PROPERTIES
+	   ============================================ */
+	
+	/* Grid properties */
+	--errl-grid-min-width: 280px;
+	--errl-grid-gap: 16px;
+	--errl-grid-margin: 16px;
+	
+	/* Card properties */
+	--errl-card-padding: 14px;
+	--errl-card-border-radius: 18px;
+	--errl-card-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+	--errl-card-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.15);
+	
+	/* Button properties */
+	--errl-btn-padding: 8px 16px;
+	--errl-btn-padding-universal: 8px 10px;
+	--errl-btn-border-radius: 8px;
+	--errl-btn-border-radius-universal: 12px;
+	--errl-btn-font-size: 0.9rem;
+	--errl-btn-font-weight: 500;
+	--errl-btn-margin: 4px 4px 4px 0;
+	--errl-btn-margin-universal: 10px 10px 0 0;
+	
+	/* Typography */
+	--errl-card-title-font-size: 1.05rem;
+	--errl-card-title-font-weight: 600;
+	--errl-card-title-margin: 4px;
+	--errl-card-sub-font-size: 0.9rem;
+	--errl-card-sub-margin: 12px;
+	--errl-placeholder-font-size: 0.9rem;
+	--errl-placeholder-margin: 8px;
+	
+	/* Transitions */
+	--errl-transition-fast: 0.08s ease;
+	--errl-transition-normal: 0.15s ease;
+	--errl-transition-button: 0.2s ease;
+	--errl-transition-card: 0.2s ease;
+}
+
+/* ============================================================================
+   Universal selectors - work in all modes - MUST match reading and editing
+   ============================================================================ */
+.errl-grid,
+div.errl-grid,
+.errl-grid[class],
+div.errl-grid[class] {
+	display: grid !important;
+	grid-template-columns: repeat(3, 1fr) !important;
+	gap: var(--errl-grid-gap) !important;
+	margin-top: var(--errl-grid-margin) !important;
+	margin-bottom: var(--errl-grid-margin) !important;
+	width: 100% !important;
+	grid-auto-flow: row !important;
+	grid-auto-rows: auto !important;
+	align-items: start !important;
+	justify-items: stretch !important;
+	/* Force grid - override any parent styles */
+	position: relative !important;
+	flex-direction: unset !important;
+	flex-wrap: unset !important;
+	/* Allow grid to adapt to visible cards - shrink/grow naturally */
+	height: auto !important;
+	min-height: 0 !important;
+	max-height: none !important;
+}
+
+/* Responsive: 2 columns on smaller screens */
+@media (max-width: 900px) {
+	.errl-grid,
+	div.errl-grid,
+	.errl-grid[class],
+	div.errl-grid[class],
+	.markdown-preview-view .errl-grid,
+	.markdown-preview-view .markdown-preview-section .errl-grid,
+	.markdown-preview-view .markdown-preview-sizer .errl-grid,
+	.markdown-reading-view .errl-grid,
+	.markdown-reading-view .markdown-preview-section .errl-grid,
+	.markdown-reading-view .markdown-preview-sizer .errl-grid,
+	.markdown-source-view .errl-grid {
+		grid-template-columns: repeat(2, 1fr) !important;
+	}
+}
+
+/* Responsive: 1 column on very small screens */
+@media (max-width: 600px) {
+	.errl-grid,
+	div.errl-grid,
+	.errl-grid[class],
+	div.errl-grid[class],
+	.markdown-preview-view .errl-grid,
+	.markdown-preview-view .markdown-preview-section .errl-grid,
+	.markdown-preview-view .markdown-preview-sizer .errl-grid,
+	.markdown-reading-view .errl-grid,
+	.markdown-reading-view .markdown-preview-section .errl-grid,
+	.markdown-reading-view .markdown-preview-sizer .errl-grid,
+	.markdown-source-view .errl-grid {
+		grid-template-columns: 1fr !important;
+	}
+}
+
+/* Grid styles for editing/preview mode - consolidated selectors */
+.markdown-preview-view .errl-grid,
+.markdown-preview-view .markdown-preview-section .errl-grid,
+.markdown-preview-view .markdown-preview-sizer .errl-grid,
+.markdown-preview-view .markdown-preview-sizer > .errl-grid,
+.markdown-preview-view .markdown-preview-section > .errl-grid,
+.markdown-preview-view div.errl-grid,
+.markdown-preview-view .markdown-preview-section div.errl-grid,
+.markdown-preview-view .markdown-preview-sizer div.errl-grid,
+.view-content .markdown-preview-view .errl-grid,
+.markdown-preview-view.markdown-rendered .errl-grid,
+.markdown-rendered .errl-grid,
+/* Additional selectors for split view and live preview */
+.workspace-split .markdown-preview-view .errl-grid,
+.workspace-split.mod-vertical .markdown-preview-view .errl-grid,
+.workspace-split.mod-horizontal .markdown-preview-view .errl-grid,
+.markdown-preview-view .view-content .errl-grid,
+.markdown-preview-view .view-content .markdown-preview-section .errl-grid {
+	display: grid !important;
+	grid-template-columns: repeat(3, 1fr) !important;
+	gap: var(--errl-grid-gap) !important;
+	margin-top: var(--errl-grid-margin) !important;
+	margin-bottom: var(--errl-grid-margin) !important;
+	width: 100% !important;
+	grid-auto-flow: row !important;
+	grid-auto-rows: auto !important;
+	align-items: start !important;
+	justify-items: stretch !important;
+	flex-direction: unset !important;
+	flex-wrap: unset !important;
+	position: relative !important;
+	/* Force grid display - override any parent flex/block */
+	min-width: 0 !important;
+	max-width: 100% !important;
+}
+
+/* Preview mode: Ensure cards fill grid cells */
+.markdown-preview-view .errl-grid .errl-card,
+.markdown-preview-view .markdown-preview-section .errl-grid .errl-card,
+.markdown-preview-view .markdown-preview-sizer .errl-grid .errl-card,
+.workspace-split .markdown-preview-view .errl-grid .errl-card,
+.markdown-preview-view .view-content .errl-grid .errl-card {
+	width: 100% !important;
+	max-width: 100% !important;
+	flex: 1 1 auto !important;
+	align-self: start !important;
+	box-sizing: border-box !important;
+	display: flex !important;
+	flex-direction: column !important;
+	position: relative !important;
+}
+
+/* Grid styles for reading mode - consolidated selectors */
+.markdown-reading-view .errl-grid,
+.markdown-reading-view .markdown-preview-section .errl-grid,
+.markdown-reading-view .markdown-preview-sizer .errl-grid,
+.markdown-reading-view .markdown-preview-sizer > .errl-grid,
+.markdown-reading-view .markdown-preview-section > .errl-grid,
+.markdown-reading-view div.errl-grid,
+.markdown-reading-view .markdown-preview-section div.errl-grid,
+.markdown-reading-view .markdown-preview-sizer div.errl-grid,
+.markdown-reading-view .markdown-preview-sizer .markdown-preview-section div.errl-grid,
+.markdown-reading-view .markdown-preview-sizer > div.errl-grid,
+.markdown-reading-view .markdown-preview-section > div.errl-grid,
+.markdown-reading-view div.errl-grid.errl-grid,
+.markdown-reading-view .errl-grid[class*="errl-grid"],
+.view-content .markdown-reading-view .errl-grid,
+.markdown-reading-view.markdown-rendered .errl-grid {
+	display: grid !important;
+	grid-template-columns: repeat(3, 1fr) !important;
+	gap: var(--errl-grid-gap) !important;
+	margin-top: var(--errl-grid-margin) !important;
+	margin-bottom: var(--errl-grid-margin) !important;
+	width: 100% !important;
+	grid-auto-flow: row !important;
+	grid-auto-rows: auto !important;
+	align-items: start !important;
+	justify-items: stretch !important;
+	flex-direction: unset !important;
+	flex-wrap: unset !important;
+	position: relative !important;
+	/* Prevent parent containers from forcing full width */
+	max-width: none !important;
+}
+
+/* Reading mode: Ensure cards fill grid cells properly */
+.markdown-reading-view .errl-grid .errl-card,
+.markdown-reading-view .markdown-preview-section .errl-grid .errl-card,
+.markdown-reading-view .markdown-preview-sizer .errl-grid .errl-card,
+.markdown-reading-view .markdown-preview-sizer .markdown-preview-section .errl-grid .errl-card,
+.view-content .markdown-reading-view .errl-grid .errl-card,
+.markdown-reading-view.markdown-rendered .errl-grid .errl-card {
+	width: 100% !important;
+	max-width: 100% !important;
+	flex: 0 1 auto !important;
+	align-self: start !important;
+	display: flex !important;
+	flex-direction: column !important;
+	box-sizing: border-box !important;
+	position: relative !important;
+	z-index: auto !important;
+	/* Prevent overlapping */
+	margin: 0 !important;
+}
+
+/* Reading mode: Cards with module grids should not be constrained by grid cell height */
+.markdown-reading-view .errl-grid .errl-card:has(.errl-module-grid),
+.markdown-reading-view .markdown-preview-section .errl-grid .errl-card:has(.errl-module-grid),
+.markdown-reading-view .markdown-preview-sizer .errl-grid .errl-card:has(.errl-module-grid) {
+	/* Allow card to expand beyond grid cell if needed */
+	align-self: start !important;
+	min-height: fit-content !important;
+	height: auto !important;
+}
+
+/* Fallback for browsers without :has() - module grid styles ensure parent card expansion */
+
+/* Reading mode: Ensure parent containers allow grid to work */
+.markdown-reading-view .markdown-preview-section,
+.markdown-reading-view .markdown-preview-sizer {
+	max-width: 100% !important;
+	width: 100% !important;
+	display: block !important;
+}
+
+/* CRITICAL: Force reading mode grids to display as grid - most aggressive override */
+.markdown-reading-view .markdown-preview-section .errl-grid,
+.markdown-reading-view .markdown-preview-sizer .errl-grid,
+.markdown-reading-view .view-content .errl-grid {
+	display: grid !important;
+	grid-template-columns: repeat(3, 1fr) !important;
+	grid-auto-flow: row !important;
+	flex-direction: unset !important;
+	flex-wrap: unset !important;
+}
+
+/* Reading mode: Grid alignment - ensure display and columns are set */
+.markdown-reading-view .errl-grid {
+	display: grid !important;
+	grid-template-columns: repeat(3, 1fr) !important;
+	justify-items: stretch !important;
+	align-items: start !important;
+	/* Ensure grid rows can expand to fit content and adapt to visible cards */
+	grid-auto-rows: auto !important;
+	/* Allow grid to shrink/grow based on content */
+	height: auto !important;
+	min-height: 0 !important;
+	max-height: none !important;
+}
+
+/* CRITICAL: Grid cells containing cards with module grids must allow expansion */
+.markdown-reading-view .errl-grid > .errl-card:has(.errl-module-grid) {
+	/* Force grid cell to allow card to expand beyond row height */
+	grid-row: span 10 !important; /* Allow card to span multiple rows if needed */
+	min-height: fit-content !important;
+}
+
+/* Grid styles for source view (editing mode) - consolidated */
+.markdown-source-view .errl-grid,
+.markdown-source-view .cm-editor .errl-grid,
+.markdown-source-view .cm-content .errl-grid,
+.markdown-source-view .cm-scroller .errl-grid,
+.markdown-source-view .cm-contentContainer .errl-grid,
+.markdown-source-view .cm-sizer .errl-grid,
+.markdown-source-view .markdown-source-view-inner .errl-grid,
+.markdown-source-view div.errl-grid,
+.markdown-source-view .view-content .errl-grid,
+.markdown-preview-section .errl-grid,
+.markdown-preview-section div.errl-grid,
+/* CodeMirror 6 specific selectors for rendered HTML in source mode */
+.markdown-source-view .cm-line .errl-grid,
+.markdown-source-view .cm-lineContent .errl-grid {
+	display: grid !important;
+	grid-template-columns: repeat(3, 1fr) !important;
+	gap: var(--errl-grid-gap) !important;
+	margin-top: var(--errl-grid-margin) !important;
+	margin-bottom: var(--errl-grid-margin) !important;
+	width: 100% !important;
+	grid-auto-flow: row !important;
+	grid-auto-rows: auto !important;
+	align-items: start !important;
+	justify-items: stretch !important;
+	flex-direction: unset !important;
+	flex-wrap: unset !important;
+	position: relative !important;
+	/* Force grid to be visible in editing mode */
+	visibility: visible !important;
+	opacity: 1 !important;
+	/* Ensure HTML renders, not just shows as text */
+	white-space: normal !important;
+}
+
+/* Source view: Ensure cards fill grid cells in editing mode */
+.markdown-source-view .errl-grid .errl-card,
+.markdown-source-view .cm-editor .errl-grid .errl-card,
+.markdown-source-view .cm-content .errl-grid .errl-card,
+.markdown-source-view .cm-scroller .errl-grid .errl-card,
+.markdown-source-view .cm-contentContainer .errl-grid .errl-card,
+.markdown-source-view .cm-sizer .errl-grid .errl-card,
+/* CodeMirror 6 specific selectors for rendered HTML in source mode */
+.markdown-source-view .cm-line .errl-grid .errl-card,
+.markdown-source-view .cm-lineContent .errl-grid .errl-card {
+	width: 100% !important;
+	max-width: 100% !important;
+	flex: 1 1 auto !important;
+	align-self: start !important;
+	box-sizing: border-box !important;
+	/* Ensure cards are visible in editing mode */
+	display: flex !important;
+	flex-direction: column !important;
+	visibility: visible !important;
+	opacity: 1 !important;
+	position: relative !important;
+}
+
+/* Dashboard Cards - universal first */
+/* Uses Errl design system variables: --surface, --border, --border-gradient-from, --border-gradient-to */
+.errl-card {
+	background: var(--surface, var(--color-background, var(--background-secondary))) !important;
+	border-radius: var(--border-radius, var(--errl-card-border-radius)) !important;
+	padding: var(--spacing-panel-padding, var(--errl-card-padding)) !important;
+	border: 1px solid var(--border, var(--color-border, var(--background-modifier-border))) !important;
+	box-shadow: var(--shadow-panel, var(--errl-card-shadow)) !important;
+	transition: box-shadow var(--animation-duration-fast, var(--errl-transition-card)) var(--animation-easing-ease, ease) !important;
+	position: relative !important;
+	overflow: visible !important;
+	display: flex !important;
+	flex-direction: column !important;
+	box-sizing: border-box !important;
+	/* Cards should fill their grid cell to utilize available space */
+	min-width: 0 !important;
+	max-width: 100% !important;
+	width: 100% !important;
+	/* Allow cards to grow within grid cells */
+	flex: 1 1 auto !important;
+	align-self: start !important;
+	/* Ensure card content doesn't overflow, but allow pointer events on interactive elements */
+	/* Use layout containment only - style containment can clip module grids */
+	contain: layout !important;
+	/* Don't constrain card height - allow content to expand */
+	max-height: none !important;
+	height: auto !important;
+}
+
+/* Exception: Module grids need full visibility - ensure parent cards don't clip */
+.errl-card .errl-module-grid,
+.markdown-preview-view .errl-card .errl-module-grid,
+.markdown-reading-view .errl-card .errl-module-grid,
+.markdown-source-view .errl-card .errl-module-grid {
+	/* Ensure parent card doesn't clip this content */
+	position: relative !important;
+	z-index: 1 !important;
+}
+
+/* Ensure all content stays inside cards */
+.errl-card > * {
+	box-sizing: border-box !important;
+}
+
+/* Buttons inside cards - ensure they stay contained and clickable */
+.errl-card .errl-btn {
+	margin-top: 8px !important;
+	margin-bottom: 0 !important;
+	width: auto !important;
+	display: inline-block !important;
+	position: relative !important;
+	z-index: 10 !important;
+	pointer-events: auto !important;
+}
+
+/* Ensure interactive elements in cards are clickable */
+.errl-card button,
+.errl-card [data-errl-cmd],
+.errl-card [data-errl-open] {
+	pointer-events: auto !important;
+	position: relative !important;
+	z-index: 10 !important;
+}
+
+/* Gradient border effect from design system */
+.errl-card::before {
+	content: "" !important;
+	position: absolute !important;
+	inset: 0 !important;
+	border-radius: var(--border-radius, 18px) !important;
+	padding: 1px !important;
+	background: linear-gradient(90deg, var(--border-gradient-from, var(--errl-cyan, #00ffff)), var(--border-gradient-to, var(--errl-magenta, #ff00ff))) !important;
+	-webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0) !important;
+	mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0) !important;
+	-webkit-mask-composite: xor !important;
+	mask-composite: exclude !important;
+	opacity: 0.55 !important;
+	pointer-events: none !important;
+}
+
+/* Card styles scoped to markdown views - consolidated */
+.markdown-preview-view .errl-card,
+.markdown-reading-view .errl-card,
+.markdown-source-view .errl-card,
+.markdown-preview-section .errl-card,
+.markdown-preview-view .markdown-preview-section .errl-card,
+.markdown-reading-view .markdown-preview-section .errl-card,
+.markdown-preview-view .markdown-preview-sizer .errl-card,
+.markdown-reading-view .markdown-preview-sizer .errl-card,
+.view-content .markdown-preview-view .errl-card,
+.view-content .markdown-reading-view .errl-card,
+.markdown-rendered .errl-card,
+.markdown-preview-view.markdown-rendered .errl-card,
+.markdown-reading-view.markdown-rendered .errl-card {
+	position: relative !important;
+	/* Cards should fill grid cells to utilize space */
+	width: 100% !important;
+	max-width: 100% !important;
+	flex: 1 1 auto !important;
+	align-self: start !important;
+}
+
+/* Card hover effect - consolidated */
+.errl-card:hover,
+.markdown-preview-view .errl-card:hover,
+.markdown-reading-view .errl-card:hover,
+.markdown-source-view .errl-card:hover,
+.markdown-preview-section .errl-card:hover,
+.markdown-preview-view .markdown-preview-section .errl-card:hover,
+.markdown-reading-view .markdown-preview-section .errl-card:hover {
+	box-shadow: var(--errl-card-shadow-hover);
+}
+
+/* Card title - consolidated */
+.errl-card-title,
+.markdown-preview-view .errl-card-title,
+.markdown-reading-view .errl-card-title,
+.markdown-source-view .errl-card-title,
+.markdown-preview-section .errl-card-title,
+.markdown-preview-view .markdown-preview-section .errl-card-title,
+.markdown-reading-view .markdown-preview-section .errl-card-title {
+	font-weight: var(--errl-card-title-font-weight);
+	font-size: var(--errl-card-title-font-size);
+	margin-bottom: var(--errl-card-title-margin);
+	color: var(--text-normal);
+}
+
+/* Card subtitle - consolidated */
+.errl-card-sub,
+.markdown-preview-view .errl-card-sub,
+.markdown-reading-view .errl-card-sub,
+.markdown-source-view .errl-card-sub,
+.markdown-preview-section .errl-card-sub,
+.markdown-preview-view .markdown-preview-section .errl-card-sub,
+.markdown-reading-view .markdown-preview-section .errl-card-sub {
+	color: var(--text-muted);
+	font-size: var(--errl-card-sub-font-size);
+	margin-bottom: var(--errl-card-sub-margin);
+	line-height: 1.4;
+}
+
+/* Dashboard Buttons - universal first */
+/* Uses Errl design system: --accent, --surface, --border, --text */
+.errl-btn {
+	appearance: none !important;
+	display: inline-block !important;
+	margin: var(--errl-btn-margin-universal) !important;
+	padding: var(--spacing-button-padding, var(--errl-btn-padding-universal)) !important;
+	border-radius: var(--border-radius, var(--errl-btn-border-radius-universal)) !important;
+	border: 1px solid var(--border, var(--color-border, var(--background-modifier-border))) !important;
+	background: color-mix(in oklab, var(--accent, var(--color-accent, var(--interactive-normal))) 14%, var(--surface, var(--color-background, var(--background-secondary)))) !important;
+	color: var(--text, var(--color-text, var(--text-normal))) !important;
+	cursor: pointer !important;
+	font-size: var(--font-size-sm, var(--errl-btn-font-size)) !important;
+	font-weight: var(--font-weight-medium, var(--errl-btn-font-weight)) !important;
+	transition: transform var(--animation-duration-fast, var(--errl-transition-fast)) var(--animation-easing-ease, ease), filter var(--animation-duration-normal, var(--errl-transition-normal)) var(--animation-easing-ease, ease) !important;
+	text-decoration: none !important;
+}
+
+/* Buttons scoped to markdown views - consolidated */
+.markdown-preview-view .errl-btn,
+.markdown-reading-view .errl-btn,
+.markdown-source-view .errl-btn,
+.markdown-preview-section .errl-btn,
+.markdown-preview-view .markdown-preview-section .errl-btn,
+.markdown-reading-view .markdown-preview-section .errl-btn,
+.markdown-preview-view .markdown-preview-sizer .errl-btn,
+.markdown-reading-view .markdown-preview-sizer .errl-btn,
+.markdown-preview-view button.errl-btn,
+.markdown-reading-view button.errl-btn,
+.view-content .markdown-preview-view .errl-btn,
+.view-content .markdown-reading-view .errl-btn,
+.markdown-rendered .errl-btn,
+.markdown-preview-view.markdown-rendered .errl-btn,
+.markdown-reading-view.markdown-rendered .errl-btn {
+	display: inline-block !important;
+	margin: var(--errl-btn-margin) !important;
+	padding: var(--errl-btn-padding) !important;
+	border-radius: var(--errl-btn-border-radius) !important;
+	border: 1px solid var(--background-modifier-border) !important;
+	background: var(--interactive-normal) !important;
+	color: var(--text-normal) !important;
+	cursor: pointer !important;
+	font-size: var(--errl-btn-font-size) !important;
+	font-weight: var(--errl-btn-font-weight) !important;
+	transition: all var(--errl-transition-button) ease !important;
+	text-decoration: none !important;
+	pointer-events: auto !important;
+	position: relative !important;
+	z-index: 10 !important;
+	-webkit-user-select: none !important;
+	user-select: none !important;
+}
+
+/* Button hover effect - consolidated */
+.errl-btn:hover,
+.markdown-preview-view .errl-btn:hover,
+.markdown-reading-view .errl-btn:hover,
+.markdown-source-view .errl-btn:hover,
+.markdown-preview-section .errl-btn:hover,
+.markdown-preview-view .markdown-preview-section .errl-btn:hover,
+.markdown-reading-view .markdown-preview-section .errl-btn:hover,
+.markdown-preview-view button.errl-btn:hover,
+.markdown-reading-view button.errl-btn:hover,
+.view-content .markdown-preview-view .errl-btn:hover,
+.view-content .markdown-reading-view .errl-btn:hover,
+.markdown-rendered .errl-btn:hover {
+	background: var(--interactive-hover) !important;
+	border-color: var(--interactive-hover) !important;
+	transform: translateY(-1px) !important;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+	pointer-events: auto !important;
+}
+
+/* Button active state - consolidated */
+.errl-btn:active,
+.markdown-preview-view .errl-btn:active,
+.markdown-reading-view .errl-btn:active,
+.markdown-source-view .errl-btn:active {
+	transform: translateY(0);
+}
+
+/* Ghost button styles - consolidated */
+.errl-btn-ghost,
+.markdown-preview-view .errl-btn-ghost,
+.markdown-reading-view .errl-btn-ghost,
+.markdown-source-view .errl-btn-ghost {
+	background: transparent;
+	border-color: var(--background-modifier-border);
+}
+
+.errl-btn-ghost:hover,
+.markdown-preview-view .errl-btn-ghost:hover,
+.markdown-reading-view .errl-btn-ghost:hover,
+.markdown-source-view .errl-btn-ghost:hover {
+	background: var(--background-modifier-hover);
+}
+
+/* Legacy button style - subtle, secondary appearance */
+.errl-btn-legacy {
+	opacity: 0.7 !important;
+	font-size: 0.85rem !important;
+	padding: 6px 12px !important;
+}
+
+/* Onboarding Modal */
+.errl-onboarding-modal .modal-content {
+	max-width: 600px !important;
+	max-height: 80vh !important;
+	display: flex !important;
+	flex-direction: column !important;
+}
+
+.errl-onboarding-header {
+	font-size: 1.5rem !important;
+	font-weight: 600 !important;
+	margin-bottom: 0.5rem !important;
+	color: var(--text-normal) !important;
+}
+
+.errl-onboarding-subheader {
+	color: var(--text-muted) !important;
+	margin-bottom: 1.5rem !important;
+	font-size: 1rem !important;
+}
+
+.errl-onboarding-content {
+	max-height: 50vh !important;
+	overflow-y: auto !important;
+	margin-bottom: 1rem !important;
+	padding-right: 0.5rem !important;
+}
+
+.errl-onboarding-section {
+	margin-bottom: 1.5rem !important;
+}
+
+.errl-onboarding-section-title {
+	font-size: 1.1rem !important;
+	font-weight: 600 !important;
+	margin-bottom: 0.75rem !important;
+	color: var(--text-normal) !important;
+}
+
+.errl-onboarding-section-content {
+	color: var(--text-normal) !important;
+	line-height: 1.6 !important;
+}
+
+.errl-onboarding-section-content p {
+	margin: 0.5rem 0 !important;
+}
+
+.errl-onboarding-section-content strong {
+	display: block !important;
+	margin-top: 0.5rem !important;
+	font-weight: 600 !important;
+}
+
+.errl-onboarding-footer {
+	border-top: 1px solid var(--background-modifier-border) !important;
+	padding-top: 1rem !important;
+	margin-top: 1rem !important;
+}
+
+.errl-onboarding-buttons {
+	display: flex !important;
+	gap: 0.5rem !important;
+	justify-content: flex-end !important;
+	margin-top: 1rem !important;
+}
+
+/* Placeholder text - consolidated */
+.errl-pulse-placeholder,
+.markdown-preview-view .errl-pulse-placeholder,
+.markdown-reading-view .errl-pulse-placeholder,
+.markdown-source-view .errl-pulse-placeholder {
+	color: var(--text-muted);
+	font-style: italic;
+	font-size: var(--errl-placeholder-font-size);
+	margin-top: var(--errl-placeholder-margin);
+}
+
+/* Module status indicators - consolidated */
+.errl-module-status,
+.markdown-preview-view .errl-module-status,
+.markdown-reading-view .errl-module-status,
+.markdown-source-view .errl-module-status {
+	font-weight: 600;
+	font-style: normal;
+}
+
+/* Module item container - compact layout */
+/* Consolidated selectors for all view modes */
+.errl-module-item,
+.markdown-preview-view .errl-module-item,
+.markdown-reading-view .errl-module-item,
+.markdown-source-view .errl-module-item,
+.markdown-preview-section .errl-module-item,
+.markdown-preview-view .markdown-preview-section .errl-module-item,
+.markdown-reading-view .markdown-preview-section .errl-module-item {
+	display: flex !important;
+	justify-content: space-between !important;
+	align-items: center !important;
+	margin-bottom: 4px !important;
+	font-size: 0.9rem !important;
+	line-height: 1.3 !important;
+}
+
+.errl-module-item:last-child,
+.markdown-preview-view .errl-module-item:last-child,
+.markdown-reading-view .errl-module-item:last-child,
+.markdown-source-view .errl-module-item:last-child {
+	margin-bottom: 0 !important;
+}
+
+/* Module name styling */
+/* Consolidated selectors for all view modes */
+.errl-module-name,
+.markdown-preview-view .errl-module-name,
+.markdown-reading-view .errl-module-name,
+.markdown-source-view .errl-module-name,
+.markdown-preview-section .errl-module-name,
+.markdown-preview-view .markdown-preview-section .errl-module-name,
+.markdown-reading-view .markdown-preview-section .errl-module-name {
+	color: var(--text-normal) !important;
+	flex: 1 !important;
+}
+
+/* Module status bubble - base styles */
+/* Consolidated selectors for all view modes and containers */
+.errl-module-status-bubble,
+.markdown-preview-view .errl-module-status-bubble,
+.markdown-reading-view .errl-module-status-bubble,
+.markdown-source-view .errl-module-status-bubble,
+.markdown-preview-section .errl-module-status-bubble,
+.markdown-preview-view .markdown-preview-section .errl-module-status-bubble,
+.markdown-reading-view .markdown-preview-section .errl-module-status-bubble,
+.markdown-preview-view .markdown-preview-sizer .errl-module-status-bubble,
+.markdown-reading-view .markdown-preview-sizer .errl-module-status-bubble,
+.view-content .markdown-preview-view .errl-module-status-bubble,
+.view-content .markdown-reading-view .errl-module-status-bubble,
+.markdown-rendered .errl-module-status-bubble,
+.markdown-preview-view.markdown-rendered .errl-module-status-bubble,
+.markdown-reading-view.markdown-rendered .errl-module-status-bubble {
+	display: inline-block !important;
+	width: 10px !important;
+	height: 10px !important;
+	border-radius: 50% !important;
+	flex-shrink: 0 !important;
+	margin-left: 8px !important;
+}
+
+/* Module status ON - green/cyan bubble */
+/* Consolidated selectors for all view modes and containers */
+.errl-module-status-on,
+.markdown-preview-view .errl-module-status-on,
+.markdown-reading-view .errl-module-status-on,
+.markdown-source-view .errl-module-status-on,
+.markdown-preview-section .errl-module-status-on,
+.markdown-preview-view .markdown-preview-section .errl-module-status-on,
+.markdown-reading-view .markdown-preview-section .errl-module-status-on,
+.markdown-preview-view .markdown-preview-sizer .errl-module-status-on,
+.markdown-reading-view .markdown-preview-sizer .errl-module-status-on,
+.view-content .markdown-preview-view .errl-module-status-on,
+.view-content .markdown-reading-view .errl-module-status-on,
+.markdown-rendered .errl-module-status-on,
+.markdown-preview-view.markdown-rendered .errl-module-status-on,
+.markdown-reading-view.markdown-rendered .errl-module-status-on {
+	background-color: var(--errl-cyan, var(--color-accent, #00ffff)) !important;
+	box-shadow: 0 0 4px rgba(0, 255, 255, 0.4) !important;
+}
+
+/* Module status OFF - muted/gray bubble */
+/* Consolidated selectors for all view modes and containers */
+.errl-module-status-off,
+.markdown-preview-view .errl-module-status-off,
+.markdown-reading-view .errl-module-status-off,
+.markdown-source-view .errl-module-status-off,
+.markdown-preview-section .errl-module-status-off,
+.markdown-preview-view .markdown-preview-section .errl-module-status-off,
+.markdown-reading-view .markdown-preview-section .errl-module-status-off,
+.markdown-preview-view .markdown-preview-sizer .errl-module-status-off,
+.markdown-reading-view .markdown-preview-sizer .errl-module-status-off,
+.view-content .markdown-preview-view .errl-module-status-off,
+.view-content .markdown-reading-view .errl-module-status-off,
+.markdown-rendered .errl-module-status-off,
+.markdown-preview-view.markdown-rendered .errl-module-status-off,
+.markdown-reading-view.markdown-rendered .errl-module-status-off {
+	background-color: var(--text-muted, var(--color-text-faint, #999)) !important;
+	opacity: 0.5 !important;
+}
+
+/* Module grid container - CSS Grid layout for modules */
+.errl-module-grid,
+.markdown-preview-view .errl-module-grid,
+.markdown-reading-view .errl-module-grid,
+.markdown-source-view .errl-module-grid {
+	display: grid !important;
+	grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)) !important;
+	gap: 6px !important;
+	margin-bottom: 12px !important;
+	/* Ensure all items are visible */
+	overflow: visible !important;
+	max-height: none !important;
+	height: auto !important;
+	min-height: fit-content !important;
+	/* Ensure grid expands to fit content */
+	grid-auto-rows: min-content !important;
+	/* Prevent collapsing */
+	flex-shrink: 0 !important;
+}
+
+/* Responsive: 2 columns on narrow screens */
+@media (max-width: 600px) {
+	.errl-module-grid,
+	.markdown-preview-view .errl-module-grid,
+	.markdown-reading-view .errl-module-grid,
+	.markdown-source-view .errl-module-grid {
+		grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)) !important;
+	}
+}
+
+/* Reading mode: Override card containment for cards containing module grids */
+/* Use :has() for modern browsers that support it */
+@supports selector(:has(*)) {
+	.markdown-reading-view .errl-card:has(> .errl-module-grid),
+	.markdown-reading-view .markdown-preview-section .errl-card:has(> .errl-module-grid),
+	.markdown-reading-view .markdown-preview-sizer .errl-card:has(> .errl-module-grid) {
+		contain: none !important;
+		overflow: visible !important;
+		max-height: none !important;
+		height: auto !important;
+	}
+}
+
+/* Fallback: Reading mode cards containing module grids - ensure they don't clip */
+/* Target via child selector for better browser compatibility */
+/* (Styles applied via more specific selectors below) */
+
+/* More aggressive: Reading mode cards should allow content to expand */
+.markdown-reading-view .errl-card,
+.markdown-reading-view .markdown-preview-section .errl-card,
+.markdown-reading-view .markdown-preview-sizer .errl-card {
+	/* Allow cards to expand to show all content */
+	min-height: 0 !important;
+	/* Ensure cards don't clip their content */
+	overflow: visible !important;
+	/* Remove max-height constraints that clip content */
+	max-height: none !important;
+	height: auto !important;
+	/* Override any Obsidian theme constraints */
+	min-height: fit-content !important;
+}
+
+/* CRITICAL: Cards containing module grids must expand fully - override ALL constraints */
+.markdown-reading-view .errl-card:has(.errl-module-grid),
+.markdown-reading-view .markdown-preview-section .errl-card:has(.errl-module-grid),
+.markdown-reading-view .markdown-preview-sizer .errl-card:has(.errl-module-grid),
+.markdown-reading-view .errl-grid .errl-card:has(.errl-module-grid),
+.markdown-reading-view .markdown-preview-sizer .markdown-preview-section .errl-card:has(.errl-module-grid),
+.view-content .markdown-reading-view .errl-card:has(.errl-module-grid),
+.markdown-reading-view.markdown-rendered .errl-card:has(.errl-module-grid) {
+	/* Override any height constraints - most specific selectors */
+	max-height: none !important;
+	min-height: fit-content !important;
+	height: auto !important;
+	overflow: visible !important;
+	contain: none !important;
+	/* Break out of grid cell constraints */
+	align-self: start !important;
+	/* Ensure flex doesn't constrain */
+	flex: 0 1 auto !important;
+	/* Override any parent grid row constraints */
+	grid-row: auto !important;
+	/* Force card to expand to fit all content */
+	min-height: max-content !important;
+	/* Prevent overlapping */
+	position: relative !important;
+	z-index: auto !important;
+	margin: 0 !important;
+}
+
+/* CRITICAL: Module grid must force parent card to expand */
+.markdown-reading-view .errl-card .errl-module-grid {
+	/* This ensures the card is forced to expand */
+	min-height: fit-content !important;
+	height: auto !important;
+	/* Force all rows to render */
+	grid-auto-rows: min-content !important;
+}
+
+/* Force cards containing module grids to not clip - target via child */
+/* Override parent card constraints when it contains a module grid */
+.markdown-reading-view .errl-card:has(> .errl-module-grid),
+.markdown-reading-view .markdown-preview-section .errl-card:has(> .errl-module-grid),
+.markdown-reading-view .markdown-preview-sizer .errl-card:has(> .errl-module-grid) {
+	max-height: none !important;
+	height: auto !important;
+	overflow: visible !important;
+	contain: none !important;
+}
+
+/* Fallback for browsers without :has() support - ensure grid has height */
+.markdown-reading-view .errl-card .errl-module-grid,
+.markdown-reading-view .markdown-preview-section .errl-card .errl-module-grid,
+.markdown-reading-view .markdown-preview-sizer .errl-card .errl-module-grid {
+	/* Force grid to have proper height */
+	display: grid !important;
+	height: auto !important;
+	min-height: fit-content !important;
+	max-height: none !important;
+	overflow: visible !important;
+	/* Ensure grid rows are generated */
+	grid-auto-rows: min-content !important;
+	/* Prevent flexbox from collapsing grid */
+	flex-shrink: 0 !important;
+	align-self: flex-start !important;
+	margin-bottom: 0 !important;
+}
+
+/* Reading mode: Ensure module grids display all items without clipping */
+.markdown-reading-view .errl-card .errl-module-grid,
+.markdown-reading-view .markdown-preview-section .errl-card .errl-module-grid,
+.markdown-reading-view .markdown-preview-sizer .errl-card .errl-module-grid,
+.markdown-reading-view .markdown-preview-sizer .markdown-preview-section .errl-card .errl-module-grid,
+.view-content .markdown-reading-view .errl-card .errl-module-grid,
+.markdown-reading-view.markdown-rendered .errl-card .errl-module-grid {
+	display: grid !important;
+	overflow: visible !important;
+	max-height: none !important;
+	height: auto !important;
+	min-height: fit-content !important;
+	/* Ensure all grid items are visible */
+	grid-auto-rows: min-content !important;
+	/* Prevent any clipping */
+	contain: none !important;
+	/* Force all items to render */
+	grid-template-rows: none !important;
+	/* Ensure parent doesn't clip */
+	position: relative !important;
+	z-index: 1 !important;
+	/* Prevent flexbox from collapsing grid */
+	flex-shrink: 0 !important;
+	align-self: flex-start !important;
+}
+
+/* Reading mode: Ensure module grid items are fully visible */
+.markdown-reading-view .errl-card .errl-module-grid .errl-module-item,
+.markdown-reading-view .markdown-preview-section .errl-card .errl-module-grid .errl-module-item,
+.markdown-reading-view .markdown-preview-sizer .errl-card .errl-module-grid .errl-module-item {
+	display: flex !important;
+	overflow: visible !important;
+	visibility: visible !important;
+	opacity: 1 !important;
+}
+
+/* Module item in grid */
+.errl-module-grid .errl-module-item,
+.markdown-preview-view .errl-module-grid .errl-module-item,
+.markdown-reading-view .errl-module-grid .errl-module-item,
+.markdown-source-view .errl-module-grid .errl-module-item {
+	display: flex !important;
+	justify-content: space-between !important;
+	align-items: center !important;
+	/* Ensure items have height so grid expands */
+	min-height: fit-content !important;
+	height: auto !important;
+	/* Prevent items from collapsing */
+	flex-shrink: 0 !important;
+}
+
+/* Module legend row */
+.errl-module-legend,
+.markdown-preview-view .errl-module-legend,
+	.markdown-reading-view .errl-module-legend,
+	.markdown-source-view .errl-module-legend {
+	font-size: 0.9rem !important;
+	line-height: 1.2 !important;
+	margin-bottom: 6px !important;
+	display: flex !important;
+	gap: 8px !important;
+	align-items: center !important;
+}
+
+.errl-module-legend-item,
+.markdown-preview-view .errl-module-legend-item,
+	.markdown-reading-view .errl-module-legend-item,
+	.markdown-source-view .errl-module-legend-item {
+	display: flex !important;
+	align-items: center !important;
+	gap: 4px !important;
+	font-size: 0.9rem !important;
+	line-height: 1.2 !important;
+}
+
+/* Module name in condensed view */
+.errl-module-grid .errl-module-name,
+.markdown-preview-view .errl-module-grid .errl-module-name,
+	.markdown-reading-view .errl-module-grid .errl-module-name,
+	.markdown-source-view .errl-module-grid .errl-module-name {
+	font-size: 0.9rem !important;
+	line-height: 1.2 !important;
+	white-space: nowrap !important;
+	overflow: hidden !important;
+	text-overflow: ellipsis !important;
+	margin-right: 4px !important;
+}
+
+/* Status bubble in condensed view */
+.errl-module-grid .errl-module-status-bubble,
+.markdown-preview-view .errl-module-grid .errl-module-status-bubble,
+.markdown-reading-view .errl-module-grid .errl-module-status-bubble,
+.markdown-source-view .errl-module-grid .errl-module-status-bubble {
+	flex-shrink: 0 !important;
+	margin-left: 6px !important;
+}
+
+/* Legacy support: Keep old row-based styles for backward compatibility */
+.errl-module-row,
+.markdown-preview-view .errl-module-row,
+.markdown-reading-view .errl-module-row,
+.markdown-source-view .errl-module-row {
+	display: grid !important;
+	grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)) !important;
+	gap: 6px !important;
+	margin-bottom: 8px !important;
+}
+
+.errl-module-row .errl-module-item,
+.markdown-preview-view .errl-module-row .errl-module-item,
+.markdown-reading-view .errl-module-row .errl-module-item,
+.markdown-source-view .errl-module-row .errl-module-item {
+	display: flex !important;
+	justify-content: space-between !important;
+	align-items: center !important;
+}
+
+.errl-module-row .errl-module-name,
+.markdown-preview-view .errl-module-row .errl-module-name,
+	.markdown-reading-view .errl-module-row .errl-module-name,
+	.markdown-source-view .errl-module-row .errl-module-name {
+	font-size: 0.9rem !important;
+	line-height: 1.2 !important;
+	white-space: nowrap !important;
+	overflow: hidden !important;
+	text-overflow: ellipsis !important;
+	margin-right: 4px !important;
+}
+
+/* Capture Modal */
+.errl-os-capture-modal textarea {
+	width: 100%;
+	min-height: 200px;
+	font-family: var(--font-text);
+	font-size: var(--font-text-size);
+	border-radius: 6px;
+	padding: 12px;
+	resize: vertical;
+}
+
+.errl-os-capture-modal .tag-input {
+	width: 100%;
+	margin-top: 10px;
+}
+
+/* Organ Status Indicators */
+.errl-os-organ-status {
+	display: inline-block;
+	padding: 2px 8px;
+	border-radius: 4px;
+	font-size: 0.9em;
+}
+
+.errl-os-organ-status.enabled {
+	background-color: var(--background-modifier-success);
+	color: var(--text-on-accent);
+}
+
+.errl-os-organ-status.disabled {
+	background-color: var(--background-modifier-border);
+	color: var(--text-muted);
+}
+
+/* ============================================================================
+   Low-Energy Mode - Dim visual noise and simplify UI
+   ============================================================================ */
+
+/* Low-energy mode CSS variables */
+body.errl-low-energy-mode {
+	--errl-card-opacity: 0.85;
+	--errl-button-opacity: 0.9;
+}
+
+/* Dim non-essential cards */
+body.errl-low-energy-mode .errl-card:not(.errl-card-essential) {
+	opacity: var(--errl-card-opacity) !important;
+}
+
+/* Dim non-primary buttons */
+body.errl-low-energy-mode .errl-btn:not(.errl-btn-primary) {
+	opacity: var(--errl-button-opacity) !important;
+}
+
+/* Hide cards marked as hidden in low-energy mode */
+body.errl-low-energy-mode .errl-card-hidden {
+	display: none !important;
+}
+
+/* Simplified dashboard in low-energy mode */
+.errl-dashboard-low-energy .errl-card {
+	padding: 12px !important;
+}
+
+.errl-dashboard-low-energy .errl-card-sub {
+	display: none !important;
+}
+
+/* Momentum-related styles */
+.errl-momentum-no-tasks {
+	color: var(--text-muted);
+	font-style: italic;
+	margin-top: 12px;
+}
+
+/* ============================================================================
+   Obsidian UI Font Size Fixes (Directory & Markdown)
+   ============================================================================ */
+
+/* File Tree / Directory - Ensure readable font sizes */
+.nav-file-title,
+.nav-folder-title {
+	font-size: 0.9rem !important; /* 14.4px at 16px base - minimum readable size */
+	line-height: 1.4 !important;
+}
+
+/* Markdown Preview - Ensure readable text */
+.markdown-preview-view,
+.markdown-preview-view p,
+.markdown-preview-view li,
+.markdown-preview-view td,
+.markdown-preview-view th {
+	font-size: 0.9rem !important; /* 14.4px at 16px base */
+	line-height: 1.6 !important;
+}
+
+/* Markdown Source View - Ensure readable text in editing mode */
+.markdown-source-view,
+.markdown-source-view .cm-content,
+.markdown-source-view .cm-line {
+	font-size: 0.9rem !important; /* 14.4px at 16px base */
+	line-height: 1.6 !important;
+}
+
+/* Markdown Reading View - Ensure readable text */
+.markdown-reading-view,
+.markdown-reading-view p,
+.markdown-reading-view li,
+.markdown-reading-view td,
+.markdown-reading-view th {
+	font-size: 0.9rem !important; /* 14.4px at 16px base */
+	line-height: 1.6 !important;
+}
+
+/* ============================================================================
+   Help Modal Styles
+   ============================================================================ */
+
+/* Help Modal - Consistent sizing with other Errl modals */
+.errl-help-modal .modal-content {
+	min-height: 400px !important;
+	max-height: 80vh !important;
+	width: 700px !important;
+	max-width: 90vw !important;
+}
+
+.errl-help-modal .modal-content {
+	overflow-y: auto !important;
+	padding: 1.5rem !important;
+}
+
+/* Help Modal Content Styling */
+.errl-help-modal h2 {
+	margin-top: 1.5rem !important;
+	margin-bottom: 0.75rem !important;
+	color: var(--text-normal) !important;
+	font-size: 1.3rem !important;
+}
+
+.errl-help-modal h2:first-child {
+	margin-top: 0 !important;
+}
+
+.errl-help-modal h3 {
+	margin-top: 1.25rem !important;
+	margin-bottom: 0.5rem !important;
+	color: var(--text-normal) !important;
+	font-size: 1.1rem !important;
+}
+
+.errl-help-modal h4 {
+	margin-top: 1rem !important;
+	margin-bottom: 0.5rem !important;
+	color: var(--text-normal) !important;
+	font-size: 1rem !important;
+}
+
+.errl-help-modal p {
+	margin-bottom: 0.75rem !important;
+	line-height: 1.6 !important;
+}
+
+/* Purpose and Description */
+.errl-help-purpose {
+	font-size: 1.05rem !important;
+	font-weight: 500 !important;
+	color: var(--text-normal) !important;
+}
+
+.errl-help-description {
+	color: var(--text-muted) !important;
+	margin-bottom: 1rem !important;
+}
+
+/* Divider */
+.errl-help-divider {
+	height: 1px !important;
+	background: var(--background-modifier-border) !important;
+	margin: 1.5rem 0 !important;
+}
+
+/* Lists */
+.errl-help-modal ul,
+.errl-help-modal ol {
+	margin-left: 1.5rem !important;
+	margin-bottom: 1rem !important;
+}
+
+.errl-help-modal li {
+	margin-bottom: 0.5rem !important;
+	line-height: 1.6 !important;
+}
+
+/* Capabilities List */
+.errl-help-capabilities li {
+	margin-bottom: 1rem !important;
+}
+
+.errl-help-capabilities strong {
+	color: var(--text-normal) !important;
+	font-weight: 600 !important;
+}
+
+.errl-help-commands,
+.errl-help-hotkeys {
+	margin-top: 0.5rem !important;
+	margin-left: 1.5rem !important;
+	list-style-type: disc !important;
+}
+
+/* File Operations */
+.errl-help-file-ops li {
+	margin-bottom: 1.25rem !important;
+	padding-bottom: 1rem !important;
+	border-bottom: 1px solid var(--background-modifier-border) !important;
+}
+
+.errl-help-file-ops li:last-child {
+	border-bottom: none !important;
+}
+
+.errl-help-file-ops code {
+	background: var(--background-modifier-border) !important;
+	padding: 2px 6px !important;
+	border-radius: 3px !important;
+	font-family: var(--font-monospace) !important;
+	font-size: 0.9em !important;
+	color: var(--text-normal) !important;
+}
+
+.errl-help-when,
+.errl-help-control,
+.errl-help-example {
+	margin-top: 0.5rem !important;
+	margin-bottom: 0.25rem !important;
+	font-size: 0.9em !important;
+	color: var(--text-muted) !important;
+}
+
+.errl-help-example {
+	font-style: italic !important;
+}
+
+/* Background Processes */
+.errl-help-background li {
+	margin-bottom: 0.75rem !important;
+}
+
+.errl-help-interval,
+.errl-help-resources,
+.errl-help-disableable,
+.errl-help-startstop {
+	font-size: 0.85em !important;
+	color: var(--text-muted) !important;
+	margin-left: 0.5rem !important;
+}
+
+/* Settings List */
+.errl-help-settings li {
+	margin-bottom: 1.25rem !important;
+	padding-bottom: 1rem !important;
+	border-bottom: 1px solid var(--background-modifier-border) !important;
+}
+
+.errl-help-settings li:last-child {
+	border-bottom: none !important;
+}
+
+.errl-help-default {
+	margin-top: 0.5rem !important;
+	font-size: 0.9em !important;
+	color: var(--text-muted) !important;
+	font-family: var(--font-monospace) !important;
+}
+
+.errl-help-affects {
+	margin-top: 0.5rem !important;
+	list-style-type: disc !important;
+}
+
+/* Use Cases */
+.errl-help-steps {
+	margin-top: 0.75rem !important;
+	margin-bottom: 1rem !important;
+}
+
+.errl-help-outcome {
+	margin-top: 0.75rem !important;
+	margin-bottom: 0.5rem !important;
+	font-style: italic !important;
+	color: var(--text-muted) !important;
+}
+
+/* Troubleshooting */
+.errl-help-cause,
+.errl-help-solution {
+	margin-top: 0.5rem !important;
+	margin-bottom: 0.5rem !important;
+	padding-left: 1rem !important;
+	border-left: 3px solid var(--background-modifier-border) !important;
+}
+
+.errl-help-cause {
+	color: var(--text-muted) !important;
+	font-style: italic !important;
+}
+
+.errl-help-solution {
+	color: var(--text-normal) !important;
+	font-weight: 500 !important;
+}
+
+/* Dependencies */
+.errl-help-conflicts {
+	color: var(--text-error, #ff6b6b) !important;
+}
+
+/* Monitoring */
+.errl-help-monitoring li {
+	margin-bottom: 1rem !important;
+	padding-bottom: 0.75rem !important;
+	border-bottom: 1px solid var(--background-modifier-border) !important;
+}
+
+.errl-help-monitoring li:last-child {
+	border-bottom: none !important;
+}
+
+.errl-help-why,
+.errl-help-how {
+	margin-top: 0.5rem !important;
+	margin-bottom: 0.25rem !important;
+	font-size: 0.9em !important;
+	color: var(--text-muted) !important;
+}
+
+/* ============================================================================
+   Command Help Modal Styles
+   ============================================================================ */
+
+.errl-command-help-modal {
+	padding: 20px;
+	max-height: 80vh;
+	overflow-y: auto;
+}
+
+.errl-command-help-intro {
+	color: var(--text-muted);
+	margin-bottom: 20px;
+}
+
+.errl-command-search-container {
+	margin-bottom: 15px;
+}
+
+.errl-command-search-input {
+	width: 100%;
+	padding: 8px 12px;
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 4px;
+	background-color: var(--background-primary);
+	color: var(--text-normal);
+	font-size: 14px;
+}
+
+.errl-command-search-input:focus {
+	outline: none;
+	border-color: var(--interactive-accent);
+	box-shadow: 0 0 0 2px var(--interactive-accent-hover);
+}
+
+.errl-command-filter-container {
+	margin-bottom: 20px;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.errl-command-filter-label {
+	color: var(--text-normal);
+	font-weight: 500;
+}
+
+.errl-command-filter-select {
+	padding: 6px 10px;
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 4px;
+	background-color: var(--background-primary);
+	color: var(--text-normal);
+	font-size: 14px;
+}
+
+.errl-commands-container {
+	margin-top: 20px;
+}
+
+.errl-command-organ-section {
+	margin-bottom: 30px;
+	padding-bottom: 20px;
+	border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.errl-command-organ-section:last-child {
+	border-bottom: none;
+}
+
+.errl-command-organ-title {
+	margin-top: 0;
+	margin-bottom: 15px;
+	color: var(--text-normal);
+	font-size: 18px;
+	font-weight: 600;
+}
+
+.errl-command-list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.errl-command-item {
+	margin-bottom: 20px;
+	padding: 12px;
+	background-color: var(--background-secondary);
+	border-radius: 6px;
+	border-left: 3px solid var(--interactive-accent);
+}
+
+.errl-command-name {
+	font-size: 16px;
+	margin-bottom: 6px;
+}
+
+.errl-command-id {
+	font-size: 11px;
+	color: var(--text-muted);
+	font-family: var(--font-monospace);
+	margin-bottom: 6px;
+}
+
+.errl-command-description {
+	color: var(--text-normal);
+	margin-bottom: 8px;
+	line-height: 1.5;
+}
+
+.errl-command-hotkeys {
+	margin-top: 8px;
+	font-size: 13px;
+	color: var(--text-muted);
+}
+
+.errl-command-hotkeys kbd {
+	display: inline-block;
+	padding: 2px 6px;
+	margin: 0 2px;
+	background-color: var(--background-modifier-border);
+	border: 1px solid var(--background-modifier-border-hover);
+	border-radius: 3px;
+	font-family: var(--font-monospace);
+	font-size: 11px;
+	color: var(--text-normal);
+}
+
+.errl-command-capability {
+	font-size: 12px;
+	color: var(--text-muted);
+	margin-top: 4px;
+	font-style: italic;
+}
+
+.errl-command-help-empty {
+	text-align: center;
+	padding: 40px 20px;
+	color: var(--text-muted);
+	font-style: italic;
+}
+
+.errl-command-help-stats {
+	margin-top: 20px;
+	padding-top: 15px;
+	border-top: 1px solid var(--background-modifier-border);
+	font-size: 12px;
+	color: var(--text-muted);
+	text-align: center;
+}
+
+/* ============================================================================
+   Layered Control UI Styles
+   ============================================================================ */
+
+/* Settings Section Headers */
+.errl-settings-section-header {
+	margin-top: 2rem !important;
+	margin-bottom: 0.5rem !important;
+	font-size: 1.2rem !important;
+	font-weight: 600 !important;
+	color: var(--text-normal) !important;
+}
+
+.errl-settings-section-header:first-child {
+	margin-top: 0 !important;
+}
+
+.errl-settings-section-desc {
+	margin-bottom: 1rem !important;
+	color: var(--text-muted) !important;
+	font-size: 0.9rem !important;
+	line-height: 1.5 !important;
+}
+
+/* Settings Divider */
+.errl-settings-divider {
+	margin: 2rem 0 !important;
+	border: none !important;
+	border-top: 1px solid var(--background-modifier-border) !important;
+}
+
+/* Feature Controls */
+.errl-feature-control {
+	margin-bottom: 0.75rem !important;
+	border-left: 3px solid var(--interactive-accent) !important;
+	padding-left: 0.75rem !important;
+}
+
+.errl-feature-control.setting-item {
+	border-left: 3px solid var(--interactive-accent) !important;
+	padding-left: 0.75rem !important;
+}
+
+/* Fine-Grained Controls Container */
+.errl-fine-grained-controls {
+	margin-left: 1rem !important;
+	margin-top: 0.5rem !important;
+	margin-bottom: 1rem !important;
+	padding-left: 0.5rem !important;
+	border-left: 2px solid var(--background-modifier-border) !important;
+}
+
+/* Collapsible Header */
+.errl-collapsible-header {
+	cursor: pointer !important;
+	user-select: none !important;
+	transition: background-color 0.2s ease !important;
+}
+
+.errl-collapsible-header:hover {
+	background-color: var(--background-modifier-hover) !important;
+}
+
+/* Collapsible Content */
+.errl-collapsible-content {
+	overflow: hidden !important;
+	transition: max-height 0.3s ease !important;
+}
+
+.errl-collapsible-content .setting-item {
+	margin-bottom: 0.5rem !important;
+	padding-left: 0.5rem !important;
+}
+
+/* Control Item Styling */
+.errl-feature-control .setting-item-control,
+.errl-fine-grained-controls .setting-item-control {
+	flex-shrink: 0 !important;
+}
+
+/* ============================================================================
+   Session Ghost Status Indicator Styles
+   ============================================================================ */
+
+.errl-session-ghost-status {
+	display: inline-block;
+	margin-left: 8px;
+	font-size: 0.85em;
+	font-weight: 500;
+}
+
+.errl-session-ghost-active {
+	color: var(--text-success, #00ff00);
+}
+
+.errl-session-ghost-inactive {
+	color: var(--text-muted);
+}

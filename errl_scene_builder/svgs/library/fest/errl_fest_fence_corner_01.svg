@@ -1,0 +1,8 @@
+<!-- Example 212 | errl_fest_fence_corner_01 (env/prop) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="env" data-name="errl_fest_fence_corner_01">
+  <g fill="none">
+    <rect x="18" y="32" width="16" height="3" rx="1.5" fill="#111827"/>
+    <rect x="32" y="28" width="3" height="12" rx="1.5" fill="#111827"/>
+  </g>
+</svg>

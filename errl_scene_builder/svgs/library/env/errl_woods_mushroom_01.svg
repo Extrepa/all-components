@@ -1,0 +1,16 @@
+<!-- 21) errl_woods_mushroom_01 – classic red cap mushroom (prop) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="prop" data-name="errl_woods_mushroom_01">
+  <g fill="none">
+    <!-- cap -->
+    <path d="M22 28c0-5.5 5-9.5 10-9.5s10 4 10 9.5H22z" fill="#ef4444"/>
+    <!-- stem -->
+    <rect x="30" y="28" width="4" height="12" rx="1.8" fill="#fef3c7"/>
+    <!-- dots -->
+    <circle cx="29" cy="25" r="1.2" fill="#fefce8"/>
+    <circle cx="35" cy="24" r="1.4" fill="#fefce8"/>
+    <circle cx="33" cy="27" r="1.1" fill="#fefce8"/>
+    <!-- shadow -->
+    <ellipse cx="32" cy="44" rx="7" ry="2.2" fill="#14532d" opacity="0.25"/>
+  </g>
+</svg>

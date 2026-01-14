@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <g id="group_shade" fill="#ffd166" stroke="#101020" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M360 260h304l-76 260H436z" />
+  </g>
+  <g id="group_rim" fill="#f4f0ff" stroke="#101020" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="360" y="260" width="304" height="26" rx="12" />
+    <rect x="412" y="520" width="200" height="16" rx="8" />
+  </g>
+</svg>

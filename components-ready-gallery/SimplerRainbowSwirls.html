@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SimplerRainbowSwirls</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+    <style> body { margin: 0; padding: 0; overflow: hidden; background: #000; } canvas { display: block; } </style>
+</head>
+<body>
+    <script>
+let particles = [];
+let noiseTime = 0;
+
+class Particle {
+  constructor() {
+    this.pos = createVector(random(width), random(height));
+    this.vel = createVector(0, 0);
+    this.acc = createVector(0, 0);
+    this.maxSpeed = 3;
+    this.history = [];
+    this.colorOffset = random(360);
+  }
+
+  update(time, scale, strength) {
+    let angle = noise(this.pos.x * scale, this.pos.y * scale, time) * TWO_PI * 4;
+    let force = p5.Vector.fromAngle(angle);
+    force.mult(strength);
+    this.acc.add(force);
+
+    this.vel.add(this.acc);
+    this.vel.limit(this.maxSpeed);
+    this.pos.add(this.vel);
+    this.acc.mult(0);
+
+    this.history.push(this.pos.copy());
+    if (this.history.length > 30) {
+      this.history.splice(0, 1);
+    }
+    
+    this.edges();
+  }
+  
+  edges() {
+    if (this.pos.x > width + 10) { this.pos.x = -10; this.history = []; }
+    if (this.pos.x < -10) { this.pos.x = width + 10; this.history = []; }
+    if (this.pos.y > height + 10) { this.pos.y = -10; this.history = []; }
+    if (this.pos.y < -10) { this.pos.y = height + 10; this.history = []; }
+  }
+
+  display(time) {
+    noFill();
+    beginShape();
+    for (let i = 0; i < this.history.length; i++) {
+      let p = this.history[i];
+      let hue = (this.colorOffset + time * 80) % 360;
+      let alpha = map(i, 0, this.history.length, 0, 70);
+      strokeWeight(1);
+      stroke(hue, 90, 100, alpha);
+      vertex(p.x, p.y);
+    }
+    endShape();
+  }
+}
+
+
+function setup() {
+  createCanvas(800, 600);
+  colorMode(HSB, 360, 100, 100, 100);
+  background(0);
+  for (let i = 0; i < 400; i++) {
+    particles.push(new Particle());
+  }
+}
+
+function draw() {
+  blendMode(BLEND);
+  background(0, 0, 0, 8);
+  blendMode(ADD);
+
+  noiseTime += 0.003;
+  
+  let noiseScale = map(mouseX, 0, width, 0.001, 0.01, true);
+  let noiseStrength = map(mouseY, 0, height, 0.05, 0.4, true);
+
+  for (let p of particles) {
+    p.update(noiseTime, noiseScale, noiseStrength);
+    p.display(noiseTime);
+  }
+  
+  let t = frameCount * 0.01;
+  let sides = 12;
+  let layers = 6;
+  
+  let dx = map(noise(t * 0.2), 0, 1, -15, 15);
+  let dy = map(noise(t * 0.2 + 1000), 0, 1, -15, 15);
+  
+  translate(width / 2 + dx, height / 2 + dy);
+  
+  for (let l = 1; l < layers; l++) {
+    push();
+    let rotation = t * 0.4 * (l % 2 === 0 ? -1 : 1) * (l * 0.3);
+    rotate(rotation);
+    strokeWeight(map(sin(t * 2 + l), -1, 1, 1, 3));
+    
+    let baseRadius = l * 30 + map(sin(t + l), -1, 1, 0, 40);
+    let waveAmplitude = l * 15 + map(cos(t * 2 - l), -1, 1, 0, 50);
+    let waveFreq = floor(map(sin(t * 0.5 + l), -1, 1, 3, 8));
+
+    beginShape();
+    noFill();
+    for (let i = 0; i <= sides; i++) {
+      let angle = map(i, 0, sides, 0, TWO_PI);
+      let hue = (t * 30 + l * 40 + map(i, 0, sides, 0, 180)) % 360;
+      let alpha = map(l, 1, layers, 100, 30);
+      stroke(hue, 80, 100, alpha);
+      
+      let r = baseRadius + waveAmplitude * sin(angle * waveFreq + t * 2);
+      
+      let x = r * cos(angle);
+      let y = r * sin(angle);
+      
+      curveVertex(x, y);
+
+      if (i > 0) {
+          let pAngle = map(i - 1, 0, sides, 0, TWO_PI);
+          let pr = baseRadius + waveAmplitude * sin(pAngle * waveFreq + t*2);
+          let px = pr * cos(pAngle);
+          let py = pr * sin(pAngle);
+          let d = dist(x, y, px, py);
+          if (d < 50) {
+              line(x, y, 0, 0);
+          }
+      }
+    }
+    endShape();
+    pop();
+  }
+}
+    </script>
+</body>
+</html>

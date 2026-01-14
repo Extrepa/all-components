@@ -1,0 +1,59 @@
+# Contributing
+
+**Project:** [Project Name]
+
+Thank you for your interest in contributing!
+
+## Getting Started
+
+### Development Setup
+
+```bash
+# Clone repository
+git clone [repository-url]
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+```
+
+## Contribution Guidelines
+
+### Code Style
+- [Code style requirements]
+- [Linting rules]
+- [Formatting rules]
+
+### Commit Messages
+- [Commit message format]
+- [Examples]
+
+### Pull Requests
+- [PR requirements]
+- [Review process]
+- [Merge criteria]
+
+## Development Workflow
+
+1. Create feature branch
+2. Make changes
+3. Write tests
+4. Run tests
+5. Submit pull request
+
+## Testing
+
+- [Testing requirements]
+- [How to run tests]
+- [Test coverage expectations]
+
+## Documentation
+
+- [Documentation requirements]
+- [Where to document changes]
+
+## Questions?
+
+[Contact information or link to discussion forum]

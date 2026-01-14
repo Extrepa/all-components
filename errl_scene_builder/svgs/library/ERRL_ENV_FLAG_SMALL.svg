@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <g id="group_flag" fill="#ff7ad1" stroke="#101020" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M260 260l0 160 120-34-120-46 120-46z" />
+  </g>
+  <g id="group_pole" fill="#101020">
+    <rect x="248" y="240" width="12" height="360" rx="6" />
+  </g>
+</svg>

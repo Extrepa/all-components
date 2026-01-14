@@ -1,0 +1,8 @@
+<!-- errl_weather_sun_simple_01 – clean sun disc (fx/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_weather" data-cat="fx" data-name="errl_weather_sun_simple_01">
+  <g fill="none">
+    <circle cx="32" cy="24" r="6" fill="#facc15"/>
+    <circle cx="32" cy="24" r="10" fill="#facc15" opacity="0.18"/>
+  </g>
+</svg>

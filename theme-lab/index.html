@@ -1,0 +1,2819 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="errl-core">
+<head>
+  <meta charset="UTF-8" />
+  <title>Theme Lab – 25 Variants</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="./shared/theme.css" />
+  <link rel="stylesheet" href="./shared/ui/core.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <header class="sidebar-header">
+        <h1 class="app-title">Theme Lab</h1>
+        <p class="app-subtitle">Preview 25 theme tokens + core UI</p>
+      </header>
+
+      <div class="theme-controls">
+        <div class="theme-search-wrapper">
+          <input 
+            type="text" 
+            id="themeSearch" 
+            class="theme-search-input" 
+            placeholder="🔍 Search themes..."
+            autocomplete="off"
+          />
+        </div>
+        <button id="randomTheme" class="btn btn-outline btn-sm" style="width: 100%;">
+          🎲 Random
+        </button>
+        
+        <!-- Tab Navigation -->
+        <div class="sidebar-tabs">
+          <button class="sidebar-tab active" data-tab="themes">Themes</button>
+          <button class="sidebar-tab" data-tab="tokens">Tokens</button>
+          <button class="sidebar-tab" data-tab="export">Export</button>
+          <button class="sidebar-tab" data-tab="tools">Tools</button>
+      </div>
+
+        <!-- Tab Content: Themes -->
+        <div class="sidebar-tab-content active" id="themes-tab">
+          <div id="themeList" class="theme-list"></div>
+        </div>
+
+        <!-- Tab Content: Tokens -->
+        <div class="sidebar-tab-content" id="tokens-tab">
+          <div id="tokenControlsContainer" style="flex: 1; min-height: 0; overflow-y: auto;"></div>
+          <div style="margin-top: 0.75rem; display: flex; gap: 0.5rem; flex-shrink: 0;">
+            <button id="resetAllTokens" class="btn btn-sm btn-outline" style="flex: 1;">Reset All</button>
+            <button id="exportTokenChanges" class="btn btn-sm btn-primary" style="flex: 1;">Export</button>
+          </div>
+        </div>
+
+        <!-- Tab Content: Export -->
+        <div class="sidebar-tab-content" id="export-tab">
+          <div class="sidebar-button-grid">
+            <button id="exportTheme" class="btn btn-ghost btn-sm" title="Export JSON">📤 JSON</button>
+            <button id="copyTheme" class="btn btn-ghost btn-sm" title="Copy CSS">📋 CSS</button>
+          </div>
+          <div class="code-snippet-dropdown" style="margin-top: 0.5rem;">
+            <button id="codeSnippetBtn" class="btn btn-ghost btn-sm" style="width: 100%;" title="Code snippets">💻 Code Snippets</button>
+            <div id="codeSnippetMenu" class="code-snippet-menu" hidden>
+              <button class="code-snippet-item" data-format="react">⚛️ React</button>
+              <button class="code-snippet-item" data-format="tailwind">🎨 Tailwind</button>
+              <button class="code-snippet-item" data-format="styled-components">💅 styled-components</button>
+              <button class="code-snippet-item" data-format="emotion">😊 Emotion</button>
+              <button class="code-snippet-item" data-format="typescript">📘 TypeScript</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab Content: Tools -->
+        <div class="sidebar-tab-content" id="tools-tab">
+          <div class="sidebar-button-grid">
+            <button id="editTheme" class="btn btn-ghost btn-sm" title="Edit theme colors">🎨 Edit</button>
+            <button id="validateTheme" class="btn btn-ghost btn-sm" title="Validate">✓ Check</button>
+            <button id="compareThemes" class="btn btn-ghost btn-sm" title="Compare">⚖️ Compare</button>
+            <button id="showTokenReference" class="btn btn-ghost btn-sm" title="Tokens">🎨 Tokens</button>
+            <button id="importTheme" class="btn btn-ghost btn-sm" title="Import">📥 Import</button>
+            <button id="shareTheme" class="btn btn-ghost btn-sm" title="Share">🔗 Share</button>
+            <button id="savePreset" class="btn btn-ghost btn-sm" title="Save preset">💾 Save</button>
+            <button id="componentPlayground" class="btn btn-ghost btn-sm" title="Playground">🧩 Play</button>
+            <button id="animationPlayground" class="btn btn-ghost btn-sm" title="Animations">🎬 Anim</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="layout-controls">
+        <div class="layout-control-group">
+          <label class="layout-control-label">Density</label>
+          <div class="layout-control-row">
+            <button class="layout-toggle" data-layout="density" data-value="compact" aria-pressed="false">Compact</button>
+            <button class="layout-toggle" data-layout="density" data-value="cozy" aria-pressed="true">Cozy</button>
+            <button class="layout-toggle" data-layout="density" data-value="spacious" aria-pressed="false">Spacious</button>
+          </div>
+        </div>
+
+        <div class="layout-control-group">
+          <label class="layout-control-label">Borders & Shadows</label>
+          <div class="layout-control-row">
+            <button class="layout-toggle layout-toggle-sm" data-layout="borders" data-value="on" aria-pressed="true">Borders</button>
+            <button class="layout-toggle layout-toggle-sm" data-layout="shadows" data-value="on" aria-pressed="true">Shadows</button>
+          </div>
+        </div>
+
+        <div class="layout-control-group">
+          <label class="layout-control-label">Sidebar</label>
+          <div class="layout-control-row">
+            <button class="layout-toggle layout-toggle-sm" data-layout="sidebar-bg" data-value="gradient" aria-pressed="true">Gradient</button>
+            <button class="layout-toggle layout-toggle-sm" data-layout="sidebar-bg" data-value="solid" aria-pressed="false">Solid</button>
+          </div>
+        </div>
+
+        <div class="layout-control-group">
+          <label class="layout-control-label">Header</label>
+          <div class="layout-control-row">
+            <button class="layout-toggle layout-toggle-sm" data-layout="header" data-value="show" aria-pressed="true">Show</button>
+            <button class="layout-toggle layout-toggle-sm" data-layout="header" data-value="hide" aria-pressed="false">Hide</button>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="preview-area">
+      <section class="preview-grid">
+        <!-- Card 1: Buttons -->
+        <article class="card">
+          <div class="card-header">
+            <h2>Buttons</h2>
+            <p class="card-subtitle">Variants & states</p>
+          </div>
+          <div class="card-body">
+            <div class="btn-row">
+              <button class="btn btn-primary">Primary</button>
+              <button class="btn btn-outline">Outline</button>
+              <button class="btn btn-ghost">Ghost</button>
+              <button class="btn btn-subtle">Subtle</button>
+            </div>
+            <div class="btn-row" style="margin-top: 0.5rem;">
+              <button class="btn btn-primary" disabled>Disabled</button>
+              <button class="btn btn-outline btn-loading">
+                <span class="btn-spinner"></span>
+                Loading
+              </button>
+              <button class="btn btn-danger">Danger</button>
+              <button class="btn btn-success">Success</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 2: Inputs -->
+        <article class="card">
+          <div class="card-header">
+            <h2>Inputs</h2>
+            <p class="card-subtitle">States & validation</p>
+          </div>
+          <div class="card-body">
+            <label class="field">
+              <span class="field-label">Email</span>
+              <input type="email" class="input" placeholder="errl@goo.portal" />
+            </label>
+
+            <label class="field field-error">
+              <span class="field-label">Error state</span>
+              <input type="text" class="input input-error" value="invalid@email" />
+              <span class="field-error-message">Please enter a valid email</span>
+            </label>
+
+            <label class="field field-success">
+              <span class="field-label">Success state</span>
+              <input type="text" class="input input-success" value="valid@email.com" />
+            </label>
+
+            <label class="field">
+              <span class="field-label">Disabled</span>
+              <input type="text" class="input" value="Disabled input" disabled />
+            </label>
+
+            <label class="field">
+              <span class="field-label">Mode</span>
+              <select class="input">
+                <option>Chill</option>
+                <option>Party</option>
+                <option>Debug</option>
+              </select>
+            </label>
+          </div>
+        </article>
+
+        <!-- Card 3: Toggles -->
+        <article class="card">
+          <div class="card-header">
+            <h2>Toggles</h2>
+            <p class="card-subtitle">States & labels</p>
+          </div>
+          <div class="card-body toggle-stack">
+            <label class="toggle">
+              <input type="checkbox" checked />
+              <span class="toggle-track">
+                <span class="toggle-thumb"></span>
+              </span>
+              <span class="toggle-label">Glow mode</span>
+            </label>
+
+            <label class="toggle">
+              <input type="checkbox" />
+              <span class="toggle-track">
+                <span class="toggle-thumb"></span>
+              </span>
+              <span class="toggle-label">Reduce motion</span>
+            </label>
+
+            <label class="toggle">
+              <input type="checkbox" checked />
+              <span class="toggle-track">
+                <span class="toggle-thumb"></span>
+              </span>
+              <span class="toggle-label">High contrast</span>
+            </label>
+          </div>
+        </article>
+
+        <!-- Card 4: Modal preview -->
+        <article class="card">
+          <div class="card-header">
+            <h2>Modal</h2>
+            <p class="card-subtitle">Backdrop, surface, buttons</p>
+          </div>
+          <div class="card-body">
+            <button id="openModal" class="btn btn-primary">
+              Open modal
+            </button>
+          </div>
+        </article>
+
+        <!-- Card 5: Checkboxes & Radios -->
+        <article class="card">
+          <div class="card-header">
+            <h2>Checkboxes & Radios</h2>
+            <p class="card-subtitle">Form controls</p>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <label class="checkbox-label">
+                <input type="checkbox" checked />
+                <span>Option one</span>
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" />
+                <span>Option two</span>
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" />
+                <span>Option three</span>
+              </label>
+            </div>
+            <div class="field" style="margin-top: 0.75rem;">
+              <label class="radio-label">
+                <input type="radio" name="radio-group" checked />
+                <span>Choice A</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="radio-group" />
+                <span>Choice B</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="radio-group" />
+                <span>Choice C</span>
+              </label>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 6: Progress & Loading -->
+        <article class="card">
+          <div class="card-header">
+            <h2>Progress & Loading</h2>
+            <p class="card-subtitle">Status indicators</p>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 45%"></div>
+              </div>
+              <div class="progress-bar" style="margin-top: 0.5rem;">
+                <div class="progress-fill" style="width: 75%"></div>
+              </div>
+              <div class="progress-bar" style="margin-top: 0.5rem;">
+                <div class="progress-fill" style="width: 100%"></div>
+              </div>
+            </div>
+            <div class="loading-spinner" style="margin-top: 1rem;"></div>
+          </div>
+        </article>
+
+        <!-- Card 7: Typography Scale -->
+        <article class="card card-span">
+          <div class="card-header">
+            <h2>Typography Scale</h2>
+            <p class="card-subtitle">Complete type system preview</p>
+          </div>
+          <div class="card-body text-stack">
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;">
+              <div>
+                <h4 style="margin: 0 0 0.75rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted);">Headings</h4>
+                <h1 style="margin: 0 0 0.5rem; font-size: 2.5rem; font-weight: 700; line-height: 1.2;">Heading 1</h1>
+                <h2 style="margin: 0 0 0.5rem; font-size: 2rem; font-weight: 600; line-height: 1.3;">Heading 2</h2>
+                <h3 style="margin: 0 0 0.5rem; font-size: 1.5rem; font-weight: 600; line-height: 1.4;">Heading 3</h3>
+                <h4 style="margin: 0 0 0.5rem; font-size: 1.25rem; font-weight: 600; line-height: 1.4;">Heading 4</h4>
+                <h5 style="margin: 0 0 0.5rem; font-size: 1.1rem; font-weight: 600; line-height: 1.5;">Heading 5</h5>
+                <h6 style="margin: 0; font-size: 1rem; font-weight: 600; line-height: 1.5;">Heading 6</h6>
+              </div>
+              
+              <div>
+                <h4 style="margin: 0 0 0.75rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted);">Body Text</h4>
+                <p style="margin: 0 0 0.75rem; font-size: 1rem; line-height: 1.6;">
+                  This is regular body text. It uses the <code style="background: var(--accent-soft); padding: 0.15rem 0.3rem; border-radius: 0.25rem; font-size: 0.9em;">--text</code> token and sits comfortably on the surface.
+                </p>
+                <p style="margin: 0 0 0.75rem; font-size: 0.9rem; line-height: 1.6; color: var(--muted);">
+                  This is smaller muted text using <code style="background: var(--accent-soft); padding: 0.15rem 0.3rem; border-radius: 0.25rem; font-size: 0.9em;">--muted</code>. Perfect for captions and helper text.
+                </p>
+                <p style="margin: 0 0 0.75rem; font-size: 0.85rem; line-height: 1.6; color: var(--muted);">
+                  Even smaller text for fine print and disclaimers.
+                </p>
+              </div>
+              
+              <div>
+                <h4 style="margin: 0 0 0.75rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted);">Text Styles</h4>
+                <p style="margin: 0 0 0.5rem;">
+                  Text with <strong style="font-weight: 600;">strong emphasis</strong> and <em style="font-style: italic;">italic emphasis</em>.
+                </p>
+                <p style="margin: 0 0 0.5rem;">
+                  <code style="background: var(--accent-soft); padding: 0.15rem 0.3rem; border-radius: 0.25rem; font-family: 'Monaco', 'Courier New', monospace; font-size: 0.9em;">Inline code</code> and <kbd style="background: var(--surface-alt); padding: 0.15rem 0.4rem; border-radius: 0.25rem; border: 1px solid var(--border-soft); font-family: monospace; font-size: 0.85em;">keyboard</kbd> input.
+                </p>
+                <p style="margin: 0 0 0.5rem;">
+                  <a href="#" style="color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-soft);">Link text</a> with accent color.
+                </p>
+                <p style="margin: 0; color: var(--danger);">
+                  Error text using danger token.
+                </p>
+                <p style="margin: 0.5rem 0 0; color: var(--success);">
+                  Success text using success token.
+                </p>
+              </div>
+              
+              <div>
+                <h4 style="margin: 0 0 0.75rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted);">Special Elements</h4>
+                <blockquote style="margin: 0 0 0.75rem; padding: 0.75rem 1rem; border-left: 3px solid var(--accent); background: var(--accent-soft); border-radius: 0 0.5rem 0.5rem 0; font-style: italic;">
+                  This is a blockquote with accent styling. Great for highlighting important quotes or callouts.
+                </blockquote>
+                <pre style="margin: 0; padding: 0.75rem; background: var(--surface-alt); border: 1px solid var(--border-soft); border-radius: 0.5rem; font-family: 'Monaco', 'Courier New', monospace; font-size: 0.85rem; overflow-x: auto;"><code>// Code block example
+const theme = {
+  accent: 'var(--accent)',
+  text: 'var(--text)'
+};</code></pre>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 8: Typography & Surfaces -->
+        <article class="card">
+          <div class="card-header">
+            <h2>Badges & Tags</h2>
+            <p class="card-subtitle">Status indicators</p>
+          </div>
+          <div class="card-body">
+            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+              <span class="badge">Default</span>
+              <span class="badge badge-alt">Accent</span>
+              <span class="badge badge-soft">Soft</span>
+              <span class="badge" style="background: var(--danger); border-color: var(--danger);">Danger</span>
+              <span class="badge" style="background: var(--success); border-color: var(--success); color: #050510;">Success</span>
+            </div>
+          </div>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modal -->
+  <div id="modalBackdrop" class="modal-backdrop" hidden>
+    <div class="modal">
+      <header class="modal-header">
+        <h3>Theme modal</h3>
+      </header>
+      <div class="modal-body">
+        <p>
+          This modal uses <code>--surface-alt</code>, <code>--shadow-strong</code>,
+          and accent tokens for the button styles.
+        </p>
+      </div>
+      <footer class="modal-footer">
+        <button id="closeModal" class="btn btn-subtle">Close</button>
+        <button class="btn btn-primary">Do the thing</button>
+      </footer>
+    </div>
+  </div>
+
+  <script type="module" src="/app.ts"></script>
+  
+  <!-- Original JavaScript (preserved for reference during migration) -->
+  <!--
+  <script>
+    const THEMES = [
+      { id: "errl-core", label: "Errl Core" },
+      { id: "errl-deepsea", label: "Deep Sea" },
+      { id: "errl-sunset", label: "Sunset Fade" },
+      { id: "errl-forest", label: "Forest Glow" },
+      { id: "errl-night-sky", label: "Night Sky" },
+      { id: "errl-neon-dream", label: "Neon Dream" },
+      { id: "errl-void", label: "Void Core" },
+      { id: "errl-cotton-candy", label: "Cotton Candy" },
+      { id: "errl-gold", label: "Gold Flux" },
+      { id: "errl-holographic", label: "Holographic" },
+      { id: "errl-lava-lamp", label: "Lava Lamp" },
+      { id: "errl-crystal-cave", label: "Crystal Cave" },
+      { id: "errl-pastel-gloom", label: "Pastel Gloom" },
+      { id: "errl-aurora", label: "Aurora Veil" },
+      { id: "errl-terminal", label: "Terminal Green" },
+      { id: "errl-acid-rain", label: "Acid Rain" },
+      { id: "errl-bubblegum", label: "Bubblegum" },
+      { id: "errl-midnight-ocean", label: "Midnight Ocean" },
+      { id: "errl-desert-dusk", label: "Desert Dusk" },
+      { id: "errl-mint-choc", label: "Mint Choc" },
+      { id: "errl-plasma", label: "Plasma" },
+      { id: "errl-rainbow-orb", label: "Rainbow Orb" },
+      { id: "errl-ice", label: "Ice Shard" },
+      { id: "errl-bruised-peach", label: "Bruised Peach" },
+      { id: "errl-mono", label: "Mono Minimal" }
+    ];
+
+    const htmlEl = document.documentElement;
+    const themeListEl = document.getElementById("themeList");
+    const randomBtn = document.getElementById("randomTheme");
+
+    function setTheme(id) {
+      htmlEl.setAttribute("data-theme", id);
+      [...themeListEl.children].forEach((btn) => {
+        btn.classList.toggle("theme-item-active", btn.dataset.themeId === id);
+      });
+    }
+
+    // Build theme list
+    function buildThemeList(filter = '') {
+      // Clear existing list
+      themeListEl.innerHTML = '';
+      
+      // Filter themes
+      const filtered = THEMES.filter(theme => {
+        if (!filter) return true;
+        const searchTerm = filter.toLowerCase();
+        return theme.label.toLowerCase().includes(searchTerm) ||
+               theme.id.toLowerCase().includes(searchTerm);
+      });
+      
+      // Create buttons
+      filtered.forEach((theme) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.dataset.themeId = theme.id;
+      btn.className = "theme-item";
+      btn.innerHTML = `<span class="theme-dot"></span><span>${theme.label}</span>`;
+        btn.addEventListener("click", () => {
+          setTheme(theme.id);
+          // Clear search if clicking a theme
+          if (filter) {
+            themeSearchInput.value = '';
+            buildThemeList('');
+          }
+        });
+      themeListEl.appendChild(btn);
+      });
+      
+      // Show message if no results
+      if (filtered.length === 0) {
+        const noResults = document.createElement("div");
+        noResults.className = "theme-no-results";
+        noResults.textContent = `No themes found${filter ? ` matching "${filter}"` : ''}`;
+        themeListEl.appendChild(noResults);
+      }
+      
+      // Re-apply active state if current theme is visible
+      const currentTheme = htmlEl.getAttribute("data-theme");
+      if (currentTheme) {
+        setTheme(currentTheme);
+      }
+    }
+    
+    // Initial build
+    buildThemeList();
+    
+    // Theme search
+    const themeSearchInput = document.getElementById("themeSearch");
+    themeSearchInput.addEventListener("input", (e) => {
+      buildThemeList(e.target.value);
+    });
+
+    // Activate default
+    setTheme("errl-core");
+
+    randomBtn.addEventListener("click", () => {
+      const idx = Math.floor(Math.random() * THEMES.length);
+      setTheme(THEMES[idx].id);
+    });
+
+    // Modal wiring
+    const openModalBtn = document.getElementById("openModal");
+    const closeModalBtn = document.getElementById("closeModal");
+    const modalBackdrop = document.getElementById("modalBackdrop");
+
+    function closeModal() {
+      modalBackdrop.hidden = true;
+    }
+
+    openModalBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      modalBackdrop.hidden = false;
+    });
+
+    closeModalBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      closeModal();
+    });
+
+    // Close on backdrop click
+    modalBackdrop.addEventListener("click", (e) => {
+      if (e.target === modalBackdrop) {
+        closeModal();
+      }
+    });
+
+    // Close on Escape key
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !modalBackdrop.hidden) {
+        closeModal();
+      }
+    });
+
+    // Prevent clicks inside modal from closing it
+    const modal = modalBackdrop.querySelector(".modal");
+    if (modal) {
+      modal.addEventListener("click", (e) => {
+        e.stopPropagation();
+      });
+    }
+
+    // Layout controls
+    const layoutToggles = document.querySelectorAll(".layout-toggle");
+
+    function setLayout(attribute, value) {
+      htmlEl.setAttribute(`data-${attribute}`, value);
+      
+      // Update toggle states
+      layoutToggles.forEach((toggle) => {
+        if (toggle.dataset.layout === attribute) {
+          toggle.setAttribute("aria-pressed", toggle.dataset.value === value ? "true" : "false");
+        }
+      });
+    }
+
+    // Initialize default layout
+    setLayout("density", "cozy");
+    setLayout("borders", "on");
+    setLayout("shadows", "on");
+    setLayout("sidebar-bg", "gradient");
+    setLayout("header", "show");
+
+    // Wire up layout toggles
+    layoutToggles.forEach((toggle) => {
+      toggle.addEventListener("click", () => {
+        const layout = toggle.dataset.layout;
+        const value = toggle.dataset.value;
+        setLayout(layout, value);
+      });
+    });
+
+    // Theme export functionality
+    function getCurrentThemeId() {
+      return htmlEl.getAttribute("data-theme") || "errl-core";
+    }
+
+    function getComputedThemeTokens(themeId) {
+      // Temporarily set theme to get computed values
+      const originalTheme = htmlEl.getAttribute("data-theme");
+      htmlEl.setAttribute("data-theme", themeId);
+      
+      const style = getComputedStyle(htmlEl);
+      const tokens = {
+        bg: style.getPropertyValue("--bg").trim(),
+        "bg-alt": style.getPropertyValue("--bg-alt").trim(),
+        surface: style.getPropertyValue("--surface").trim(),
+        "surface-alt": style.getPropertyValue("--surface-alt").trim(),
+        border: style.getPropertyValue("--border").trim(),
+        "border-soft": style.getPropertyValue("--border-soft").trim(),
+        "border-gradient-from": style.getPropertyValue("--border-gradient-from").trim(),
+        "border-gradient-to": style.getPropertyValue("--border-gradient-to").trim(),
+        accent: style.getPropertyValue("--accent").trim(),
+        "accent-soft": style.getPropertyValue("--accent-soft").trim(),
+        "accent-alt": style.getPropertyValue("--accent-alt").trim(),
+        "accent-boost": style.getPropertyValue("--accent-boost").trim(),
+        danger: style.getPropertyValue("--danger").trim(),
+        success: style.getPropertyValue("--success").trim(),
+        text: style.getPropertyValue("--text").trim(),
+        muted: style.getPropertyValue("--muted").trim(),
+      };
+      
+      // Restore original theme
+      htmlEl.setAttribute("data-theme", originalTheme);
+      
+      return tokens;
+    }
+
+    function getThemeAsJSON(themeId) {
+      const theme = getComputedThemeTokens(themeId);
+      const themeData = {
+        id: themeId,
+        label: THEMES.find(t => t.id === themeId)?.label || themeId,
+        tokens: theme
+      };
+      return JSON.stringify(themeData, null, 2);
+    }
+
+    function getThemeAsCSS(themeId) {
+      const theme = getComputedThemeTokens(themeId);
+      const themeLabel = THEMES.find(t => t.id === themeId)?.label || themeId;
+      
+      let css = `/* ${themeLabel} Theme */\n`;
+      css += `:root[data-theme="${themeId}"] {\n`;
+      
+      Object.entries(theme).forEach(([key, value]) => {
+        css += `  --${key}: ${value};\n`;
+      });
+      
+      css += `}\n`;
+      return css;
+    }
+
+    function getAllThemesAsJSON() {
+      const allThemes = THEMES.map(theme => {
+        const tokens = getComputedThemeTokens(theme.id);
+        return {
+          id: theme.id,
+          label: theme.label,
+          tokens: tokens
+        };
+      });
+      return JSON.stringify({ themes: allThemes }, null, 2);
+    }
+
+    // Code snippet generation
+    function generateCodeSnippet(format) {
+      const themeId = getCurrentThemeId();
+      const theme = getComputedThemeTokens(themeId);
+      const themeLabel = THEMES.find(t => t.id === themeId)?.label || themeId;
+      
+      switch(format) {
+        case 'react':
+          return `// React Theme Object
+const theme = {
+  colors: {
+    bg: '${theme.bg}',
+    bgAlt: '${theme['bg-alt']}',
+    surface: '${theme.surface}',
+    surfaceAlt: '${theme['surface-alt']}',
+    border: '${theme.border}',
+    borderSoft: '${theme['border-soft']}',
+    accent: '${theme.accent}',
+    accentAlt: '${theme['accent-alt']}',
+    accentSoft: '${theme['accent-soft']}',
+    accentBoost: '${theme['accent-boost']}',
+    text: '${theme.text}',
+    muted: '${theme.muted}',
+    danger: '${theme.danger}',
+    success: '${theme.success}',
+  },
+  gradients: {
+    borderFrom: '${theme['border-gradient-from']}',
+    borderTo: '${theme['border-gradient-to']}',
+  }
+};
+
+export default theme;`;
+
+        case 'tailwind':
+          return `// tailwind.config.js
+module.exports = {
+  theme: {
+    extend: {
+      colors: {
+        bg: '${theme.bg}',
+        'bg-alt': '${theme['bg-alt']}',
+        surface: '${theme.surface}',
+        'surface-alt': '${theme['surface-alt']}',
+        border: '${theme.border}',
+        'border-soft': '${theme['border-soft']}',
+        accent: '${theme.accent}',
+        'accent-alt': '${theme['accent-alt']}',
+        'accent-soft': '${theme['accent-soft']}',
+        'accent-boost': '${theme['accent-boost']}',
+        text: '${theme.text}',
+        muted: '${theme.muted}',
+        danger: '${theme.danger}',
+        success: '${theme.success}',
+      },
+    },
+  },
+};`;
+
+        case 'styled-components':
+          return `// styled-components theme
+import { ThemeProvider } from 'styled-components';
+
+const theme = {
+  colors: {
+    bg: '${theme.bg}',
+    bgAlt: '${theme['bg-alt']}',
+    surface: '${theme.surface}',
+    surfaceAlt: '${theme['surface-alt']}',
+    border: '${theme.border}',
+    borderSoft: '${theme['border-soft']}',
+    accent: '${theme.accent}',
+    accentAlt: '${theme['accent-alt']}',
+    accentSoft: '${theme['accent-soft']}',
+    accentBoost: '${theme['accent-boost']}',
+    text: '${theme.text}',
+    muted: '${theme.muted}',
+    danger: '${theme.danger}',
+    success: '${theme.success}',
+  },
+  gradients: {
+    borderFrom: '${theme['border-gradient-from']}',
+    borderTo: '${theme['border-gradient-to']}',
+  }
+};
+
+// Usage:
+// <ThemeProvider theme={theme}>
+//   <YourApp />
+// </ThemeProvider>
+
+export default theme;`;
+
+        case 'emotion':
+          return `// Emotion theme
+import '@emotion/react';
+
+declare module '@emotion/react' {
+  export interface Theme {
+    colors: {
+      bg: string;
+      bgAlt: string;
+      surface: string;
+      surfaceAlt: string;
+      border: string;
+      borderSoft: string;
+      accent: string;
+      accentAlt: string;
+      accentSoft: string;
+      accentBoost: string;
+      text: string;
+      muted: string;
+      danger: string;
+      success: string;
+    };
+    gradients: {
+      borderFrom: string;
+      borderTo: string;
+    };
+  }
+}
+
+export const theme = {
+  colors: {
+    bg: '${theme.bg}',
+    bgAlt: '${theme['bg-alt']}',
+    surface: '${theme.surface}',
+    surfaceAlt: '${theme['surface-alt']}',
+    border: '${theme.border}',
+    borderSoft: '${theme['border-soft']}',
+    accent: '${theme.accent}',
+    accentAlt: '${theme['accent-alt']}',
+    accentSoft: '${theme['accent-soft']}',
+    accentBoost: '${theme['accent-boost']}',
+    text: '${theme.text}',
+    muted: '${theme.muted}',
+    danger: '${theme.danger}',
+    success: '${theme.success}',
+  },
+  gradients: {
+    borderFrom: '${theme['border-gradient-from']}',
+    borderTo: '${theme['border-gradient-to']}',
+  }
+};`;
+
+        case 'typescript':
+          return `// TypeScript theme types
+export interface Theme {
+  colors: {
+    bg: string;
+    bgAlt: string;
+    surface: string;
+    surfaceAlt: string;
+    border: string;
+    borderSoft: string;
+    accent: string;
+    accentAlt: string;
+    accentSoft: string;
+    accentBoost: string;
+    text: string;
+    muted: string;
+    danger: string;
+    success: string;
+  };
+  gradients: {
+    borderFrom: string;
+    borderTo: string;
+  };
+}
+
+export const ${themeId.replace(/-/g, '_')}: Theme = {
+  colors: {
+    bg: '${theme.bg}',
+    bgAlt: '${theme['bg-alt']}',
+    surface: '${theme.surface}',
+    surfaceAlt: '${theme['surface-alt']}',
+    border: '${theme.border}',
+    borderSoft: '${theme['border-soft']}',
+    accent: '${theme.accent}',
+    accentAlt: '${theme['accent-alt']}',
+    accentSoft: '${theme['accent-soft']}',
+    accentBoost: '${theme['accent-boost']}',
+    text: '${theme.text}',
+    muted: '${theme.muted}',
+    danger: '${theme.danger}',
+    success: '${theme.success}',
+  },
+  gradients: {
+    borderFrom: '${theme['border-gradient-from']}',
+    borderTo: '${theme['border-gradient-to']}',
+  }
+};`;
+
+        default:
+          return '';
+      }
+    }
+
+    async function copyToClipboard(text) {
+      try {
+        await navigator.clipboard.writeText(text);
+        return true;
+      } catch (err) {
+        // Fallback for older browsers
+        const textarea = document.createElement("textarea");
+        textarea.value = text;
+        textarea.style.position = "fixed";
+        textarea.style.opacity = "0";
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+          document.execCommand("copy");
+          document.body.removeChild(textarea);
+          return true;
+        } catch (err2) {
+          document.body.removeChild(textarea);
+          return false;
+        }
+      }
+    }
+
+    function showToast(message, type = 'info') {
+      // Create toast notification
+      const toast = document.createElement("div");
+      toast.className = "toast";
+      
+      const icons = {
+        success: '✓',
+        error: '✗',
+        warning: '⚠',
+        info: 'ℹ'
+      };
+      
+      const colors = {
+        success: 'var(--success)',
+        error: 'var(--danger)',
+        warning: 'var(--accent)',
+        info: 'var(--accent)'
+      };
+      
+      toast.innerHTML = `
+        <span style="color: ${colors[type]}; margin-right: 0.5rem; font-weight: bold;">${icons[type]}</span>
+        <span>${message}</span>
+      `;
+      
+      toast.style.cssText = `
+        position: fixed;
+        bottom: 1rem;
+        right: 1rem;
+        background: var(--surface-alt);
+        color: var(--text);
+        padding: 0.75rem 1rem;
+        border-radius: 0.5rem;
+        border: 1px solid ${colors[type]};
+        box-shadow: var(--shadow-soft);
+        z-index: 1000;
+        font-size: 0.85rem;
+        display: flex;
+        align-items: center;
+        animation: toastSlideIn 0.3s ease-out;
+        max-width: 400px;
+      `;
+      document.body.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.style.animation = "toastSlideOut 0.3s ease-out";
+        setTimeout(() => {
+          if (toast.parentNode) {
+            document.body.removeChild(toast);
+          }
+        }, 300);
+      }, type === 'error' ? 4000 : 2000);
+    }
+
+    // Export theme as JSON
+    const exportThemeBtn = document.getElementById("exportTheme");
+    exportThemeBtn.addEventListener("click", () => {
+      const themeId = getCurrentThemeId();
+      const json = getThemeAsJSON(themeId);
+      const blob = new Blob([json], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${themeId}-theme.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast("Theme exported!", "success");
+    });
+
+    // Copy theme CSS to clipboard
+    const copyThemeBtn = document.getElementById("copyTheme");
+    copyThemeBtn.addEventListener("click", async () => {
+      const themeId = getCurrentThemeId();
+      const css = getThemeAsCSS(themeId);
+      const success = await copyToClipboard(css);
+      if (success) {
+        showToast("Theme CSS copied to clipboard!", "success");
+      } else {
+        showToast("Failed to copy. Check browser permissions.");
+      }
+    });
+
+    // Code snippet dropdown
+    const codeSnippetBtn = document.getElementById("codeSnippetBtn");
+    const codeSnippetMenu = document.getElementById("codeSnippetMenu");
+    const codeSnippetItems = document.querySelectorAll(".code-snippet-item");
+
+    codeSnippetBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      codeSnippetMenu.hidden = !codeSnippetMenu.hidden;
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener("click", (e) => {
+      if (!codeSnippetBtn.contains(e.target) && !codeSnippetMenu.contains(e.target)) {
+        codeSnippetMenu.hidden = true;
+      }
+    });
+
+    // Handle code snippet generation
+    codeSnippetItems.forEach(item => {
+      item.addEventListener("click", async () => {
+        const format = item.dataset.format;
+        const snippet = generateCodeSnippet(format);
+        const success = await copyToClipboard(snippet);
+        if (success) {
+          showToast(`${format} code copied to clipboard!`, "success");
+          codeSnippetMenu.hidden = true;
+        } else {
+          showToast("Failed to copy. Check browser permissions.", "error");
+        }
+      });
+    });
+
+    // Theme validation
+    function hexToRgb(hex) {
+      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+      } : null;
+    }
+
+    function getLuminance(r, g, b) {
+      const [rs, gs, bs] = [r, g, b].map(val => {
+        val = val / 255;
+        return val <= 0.03928 ? val / 12.92 : Math.pow((val + 0.055) / 1.055, 2.4);
+      });
+      return 0.2126 * rs + 0.7152 * gs + 0.0722 * bs;
+    }
+
+    function getContrastRatio(color1, color2) {
+      const rgb1 = hexToRgb(color1);
+      const rgb2 = hexToRgb(color2);
+      if (!rgb1 || !rgb2) return null;
+      
+      const lum1 = getLuminance(rgb1.r, rgb1.g, rgb1.b);
+      const lum2 = getLuminance(rgb2.r, rgb2.g, rgb2.b);
+      
+      const lighter = Math.max(lum1, lum2);
+      const darker = Math.min(lum1, lum2);
+      
+      return (lighter + 0.05) / (darker + 0.05);
+    }
+
+    function validateTheme(themeId) {
+      const theme = getComputedThemeTokens(themeId);
+      const issues = [];
+      const warnings = [];
+      
+      // Check text contrast on backgrounds
+      const textOnBg = getContrastRatio(theme.text, theme.bg);
+      const textOnSurface = getContrastRatio(theme.text, theme.surface);
+      const mutedOnBg = getContrastRatio(theme.muted, theme.bg);
+      
+      // WCAG AA requires 4.5:1 for normal text, 3:1 for large text
+      // WCAG AAA requires 7:1 for normal text, 4.5:1 for large text
+      
+      if (textOnBg < 4.5) {
+        issues.push({
+          type: 'error',
+          message: `Text on background contrast: ${textOnBg.toFixed(2)}:1 (needs 4.5:1 for AA)`,
+          fix: 'Increase text brightness or darken background'
+        });
+      } else if (textOnBg < 7) {
+        warnings.push({
+          type: 'warning',
+          message: `Text on background contrast: ${textOnBg.toFixed(2)}:1 (needs 7:1 for AAA)`,
+          fix: 'Consider increasing contrast for better accessibility'
+        });
+      }
+      
+      if (textOnSurface < 4.5) {
+        issues.push({
+          type: 'error',
+          message: `Text on surface contrast: ${textOnSurface.toFixed(2)}:1 (needs 4.5:1 for AA)`,
+          fix: 'Adjust text or surface colors'
+        });
+      }
+      
+      if (mutedOnBg < 3) {
+        warnings.push({
+          type: 'warning',
+          message: `Muted text contrast: ${mutedOnBg.toFixed(2)}:1 (may be hard to read)`,
+          fix: 'Consider increasing muted text brightness'
+        });
+      }
+      
+      // Check accent contrast
+      const accentOnBg = getContrastRatio(theme.accent, theme.bg);
+      if (accentOnBg < 3) {
+        warnings.push({
+          type: 'warning',
+          message: `Accent on background contrast: ${accentOnBg.toFixed(2)}:1 (may be hard to see)`,
+          fix: 'Increase accent color brightness'
+        });
+      }
+      
+      // Check button text contrast (accent buttons use dark text)
+      const darkTextOnAccent = getContrastRatio('#050510', theme.accent);
+      if (darkTextOnAccent < 4.5) {
+        issues.push({
+          type: 'error',
+          message: `Button text on accent contrast: ${darkTextOnAccent.toFixed(2)}:1 (needs 4.5:1)`,
+          fix: 'Use lighter accent color or lighter button text'
+        });
+      }
+      
+      // Additional checks
+      // Check if colors are too similar (background vs surface)
+      const bgSurfaceContrast = getContrastRatio(theme.bg, theme.surface);
+      if (bgSurfaceContrast < 1.5) {
+        warnings.push({
+          type: 'warning',
+          message: `Background and surface are very similar (${bgSurfaceContrast.toFixed(2)}:1)`,
+          fix: 'Increase contrast between background and surface for better depth'
+        });
+      }
+      
+      // Check link color contrast
+      const linkContrast = getContrastRatio(theme.accent, theme.bg);
+      if (linkContrast < 4.5) {
+        issues.push({
+          type: 'error',
+          message: `Link color contrast: ${linkContrast.toFixed(2)}:1 (needs 4.5:1)`,
+          fix: 'Increase accent color brightness for better link visibility'
+        });
+      }
+      
+      // Check border visibility
+      const borderContrast = getContrastRatio(theme.border, theme.surface);
+      if (borderContrast < 2) {
+        warnings.push({
+          type: 'warning',
+          message: `Border contrast: ${borderContrast.toFixed(2)}:1 (may be hard to see)`,
+          fix: 'Increase border color contrast'
+        });
+      }
+      
+      // Check if all required tokens are present
+      const requiredTokens = ['bg', 'surface', 'accent', 'text', 'muted', 'danger', 'success'];
+      const missingTokens = requiredTokens.filter(token => !theme[token] || theme[token] === '');
+      if (missingTokens.length > 0) {
+        issues.push({
+          type: 'error',
+          message: `Missing required tokens: ${missingTokens.join(', ')}`,
+          fix: 'Define all required color tokens'
+        });
+      }
+      
+      // Calculate overall score
+      const totalChecks = issues.length + warnings.length;
+      const passedChecks = totalChecks - issues.length - warnings.length;
+      const scorePercentage = totalChecks > 0 ? Math.round((passedChecks / totalChecks) * 100) : 100;
+      
+      return {
+        themeId,
+        themeLabel: THEMES.find(t => t.id === themeId)?.label || themeId,
+        issues,
+        warnings,
+        passed: issues.length === 0,
+        score: issues.length === 0 && warnings.length === 0 ? 'AAA' : 
+               issues.length === 0 ? 'AA' : 'Fail',
+        scorePercentage,
+        totalChecks: issues.length + warnings.length
+      };
+    }
+
+    function showValidationResults(results) {
+      const modal = document.createElement('div');
+      modal.className = 'modal-backdrop';
+      modal.style.zIndex = '2000';
+      
+      const content = document.createElement('div');
+      content.className = 'modal';
+      content.style.maxWidth = '500px';
+      
+      let html = `
+        <header class="modal-header">
+          <h3>Theme Validation: ${results.themeLabel}</h3>
+        </header>
+        <div class="modal-body">
+          <div style="margin-bottom: 1rem;">
+            <strong>Status:</strong> 
+            <span style="color: ${results.passed ? 'var(--success)' : 'var(--danger)'};">
+              ${results.score}
+            </span>
+          </div>
+      `;
+      
+      if (results.issues.length > 0) {
+        html += `
+          <div style="margin-bottom: 1rem;">
+            <strong style="color: var(--danger);">Errors (${results.issues.length}):</strong>
+            <ul style="margin: 0.5rem 0; padding-left: 1.5rem;">
+        `;
+        results.issues.forEach(issue => {
+          html += `<li style="margin-bottom: 0.5rem;">
+            <div>${issue.message}</div>
+            <div style="font-size: 0.8rem; color: var(--muted); margin-top: 0.25rem;">
+              💡 ${issue.fix}
+            </div>
+          </li>`;
+        });
+        html += `</ul></div>`;
+      }
+      
+      if (results.warnings.length > 0) {
+        html += `
+          <div style="margin-bottom: 1rem;">
+            <strong style="color: var(--accent);">Warnings (${results.warnings.length}):</strong>
+            <ul style="margin: 0.5rem 0; padding-left: 1.5rem;">
+        `;
+        results.warnings.forEach(warning => {
+          html += `<li style="margin-bottom: 0.5rem;">
+            <div>${warning.message}</div>
+            <div style="font-size: 0.8rem; color: var(--muted); margin-top: 0.25rem;">
+              💡 ${warning.fix}
+            </div>
+          </li>`;
+        });
+        html += `</ul></div>`;
+      }
+      
+      if (results.issues.length === 0 && results.warnings.length === 0) {
+        html += `
+          <div style="color: var(--success);">
+            ✓ All contrast checks passed! This theme meets WCAG AAA standards.
+          </div>
+        `;
+      }
+      
+      html += `
+          <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-soft);">
+            <div style="font-size: 0.85rem; color: var(--muted);">
+              <strong>Summary:</strong> ${results.issues.length} errors, ${results.warnings.length} warnings
+            </div>
+            ${results.scorePercentage !== undefined ? `
+              <div style="margin-top: 0.5rem;">
+                <div style="font-size: 0.75rem; color: var(--muted); margin-bottom: 0.25rem;">Accessibility Score</div>
+                <div style="
+                  width: 100%;
+                  height: 1rem;
+                  background: var(--surface-alt);
+                  border-radius: 0.5rem;
+                  overflow: hidden;
+                  border: 1px solid var(--border-soft);
+                ">
+                  <div style="
+                    width: ${results.scorePercentage}%;
+                    height: 100%;
+                    background: ${results.passed ? 'linear-gradient(90deg, var(--success), var(--accent))' : 'linear-gradient(90deg, var(--danger), var(--accent))'};
+                    transition: width 0.5s ease-out;
+                  "></div>
+                </div>
+                <div style="font-size: 0.75rem; color: var(--muted); margin-top: 0.25rem;">
+                  ${results.scorePercentage}% passing
+                </div>
+              </div>
+            ` : ''}
+          </div>
+          </div>
+          <footer class="modal-footer">
+            <button class="btn btn-primary" onclick="this.closest('.modal-backdrop').remove()">
+              Close
+            </button>
+          </footer>
+      `;
+      
+      content.innerHTML = html;
+      modal.appendChild(content);
+      document.body.appendChild(modal);
+      
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.remove();
+        }
+      });
+    }
+
+    // Validate theme button
+    const validateThemeBtn = document.getElementById("validateTheme");
+    validateThemeBtn.addEventListener("click", () => {
+      const themeId = getCurrentThemeId();
+      const results = validateTheme(themeId);
+      showValidationResults(results);
+    });
+
+    // Token Reference Viewer
+    function showTokenReference() {
+      const themeId = getCurrentThemeId();
+      const theme = getComputedThemeTokens(themeId);
+      const themeLabel = THEMES.find(t => t.id === themeId)?.label || themeId;
+      
+      const modal = document.createElement('div');
+      modal.className = 'modal-backdrop';
+      modal.style.zIndex = '2000';
+      
+      const content = document.createElement('div');
+      content.className = 'modal';
+      content.style.maxWidth = '700px';
+      content.style.maxHeight = '90vh';
+      content.style.overflowY = 'auto';
+      
+      const tokenCategories = {
+        'Backgrounds': [
+          { key: 'bg', label: 'Background', value: theme.bg },
+          { key: 'bg-alt', label: 'Background Alt', value: theme['bg-alt'] },
+        ],
+        'Surfaces': [
+          { key: 'surface', label: 'Surface', value: theme.surface },
+          { key: 'surface-alt', label: 'Surface Alt', value: theme['surface-alt'] },
+        ],
+        'Borders': [
+          { key: 'border', label: 'Border', value: theme.border },
+          { key: 'border-soft', label: 'Border Soft', value: theme['border-soft'] },
+        ],
+        'Accents': [
+          { key: 'accent', label: 'Accent', value: theme.accent },
+          { key: 'accent-alt', label: 'Accent Alt', value: theme['accent-alt'] },
+          { key: 'accent-soft', label: 'Accent Soft', value: theme['accent-soft'] },
+          { key: 'accent-boost', label: 'Accent Boost', value: theme['accent-boost'] },
+        ],
+        'Text': [
+          { key: 'text', label: 'Text', value: theme.text },
+          { key: 'muted', label: 'Muted', value: theme.muted },
+        ],
+        'Semantic': [
+          { key: 'danger', label: 'Danger', value: theme.danger },
+          { key: 'success', label: 'Success', value: theme.success },
+        ],
+        'Gradients': [
+          { key: 'border-gradient-from', label: 'Gradient From', value: theme['border-gradient-from'] },
+          { key: 'border-gradient-to', label: 'Gradient To', value: theme['border-gradient-to'] },
+        ],
+      };
+      
+      let html = `
+        <header class="modal-header">
+          <h3>Token Reference: ${themeLabel}</h3>
+        </header>
+        <div class="modal-body" style="padding: 1.5rem;">
+      `;
+      
+      Object.entries(tokenCategories).forEach(([category, tokens]) => {
+        html += `
+          <div style="margin-bottom: 2rem;">
+            <h4 style="margin: 0 0 1rem; font-size: 1rem; color: var(--accent);">${category}</h4>
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.75rem;">
+        `;
+        
+        tokens.forEach(token => {
+          html += `
+            <div class="token-card" style="
+              background: var(--surface);
+              border: 1px solid var(--border-soft);
+              border-radius: 0.5rem;
+              padding: 0.75rem;
+              cursor: pointer;
+              transition: transform var(--transition-fast);
+            " onclick="navigator.clipboard.writeText('var(--${token.key})').then(() => {
+              const toast = document.createElement('div');
+              toast.textContent = 'Copied!';
+              toast.style.cssText = 'position: fixed; bottom: 1rem; right: 1rem; background: var(--surface-alt); color: var(--text); padding: 0.5rem 1rem; border-radius: 0.5rem; z-index: 3000;';
+              document.body.appendChild(toast);
+              setTimeout(() => toast.remove(), 1500);
+            })">
+              <div style="
+                width: 100%;
+                height: 3rem;
+                background: ${token.value};
+                border-radius: 0.25rem;
+                margin-bottom: 0.5rem;
+                border: 1px solid var(--border-soft);
+              "></div>
+              <div style="font-size: 0.75rem; color: var(--muted); margin-bottom: 0.25rem;">${token.label}</div>
+              <div style="font-size: 0.7rem; font-family: monospace; color: var(--text); word-break: break-all;">--${token.key}</div>
+              <div style="font-size: 0.7rem; font-family: monospace; color: var(--muted); margin-top: 0.25rem;">${token.value}</div>
+            </div>
+          `;
+        });
+        
+        html += `</div></div>`;
+      });
+      
+      html += `
+          </div>
+          <footer class="modal-footer">
+            <div style="font-size: 0.8rem; color: var(--muted); margin-right: auto;">
+              Click any token to copy CSS variable name
+            </div>
+            <button class="btn btn-primary" onclick="this.closest('.modal-backdrop').remove()">
+              Close
+            </button>
+          </footer>
+      `;
+      
+      content.innerHTML = html;
+      modal.appendChild(content);
+      document.body.appendChild(modal);
+      
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.remove();
+        }
+      });
+    }
+
+    document.getElementById("showTokenReference").addEventListener("click", showTokenReference);
+
+    // Theme Import
+    function showImportDialog() {
+      const modal = document.createElement('div');
+      modal.className = 'modal-backdrop';
+      modal.style.zIndex = '2000';
+      
+      const content = document.createElement('div');
+      content.className = 'modal';
+      content.style.maxWidth = '600px';
+      
+      content.innerHTML = `
+        <header class="modal-header">
+          <h3>Import Theme</h3>
+        </header>
+        <div class="modal-body">
+          <p style="margin-bottom: 1rem; color: var(--muted);">
+            Paste your theme JSON below. Format should match:
+          </p>
+          <pre style="background: var(--surface); padding: 0.75rem; border-radius: 0.5rem; font-size: 0.75rem; overflow-x: auto; margin-bottom: 1rem;">{
+  "id": "my-theme",
+  "label": "My Theme",
+  "tokens": {
+    "bg": "#02070a",
+    "accent": "#34e1ff",
+    ...
+  }
+}</pre>
+          <textarea 
+            id="importThemeTextarea" 
+            class="input" 
+            rows="12" 
+            placeholder='Paste theme JSON here...'
+            style="width: 100%; font-family: monospace; font-size: 0.8rem; resize: vertical;"
+          ></textarea>
+          <div id="importError" style="color: var(--danger); font-size: 0.8rem; margin-top: 0.5rem; display: none;"></div>
+        </div>
+        <footer class="modal-footer">
+          <button class="btn btn-subtle" onclick="this.closest('.modal-backdrop').remove()">
+            Cancel
+          </button>
+          <button id="confirmImport" class="btn btn-primary">
+            Import Theme
+          </button>
+        </footer>
+      `;
+      
+      modal.appendChild(content);
+      document.body.appendChild(modal);
+      
+      const confirmBtn = content.querySelector('#confirmImport');
+      const textarea = content.querySelector('#importThemeTextarea');
+      const errorDiv = content.querySelector('#importError');
+      
+      confirmBtn.addEventListener('click', () => {
+        try {
+          const json = JSON.parse(textarea.value);
+          
+          if (!json.id || !json.tokens) {
+            throw new Error('Theme must have "id" and "tokens" properties');
+          }
+          
+          // Validate required tokens
+          const requiredTokens = ['bg', 'surface', 'accent', 'text'];
+          const missing = requiredTokens.filter(t => !json.tokens[t]);
+          if (missing.length > 0) {
+            throw new Error(`Missing required tokens: ${missing.join(', ')}`);
+          }
+          
+          // Add theme to CSS dynamically
+          const style = document.createElement('style');
+          style.id = `theme-${json.id}`;
+          
+          let css = `:root[data-theme="${json.id}"] {\n`;
+          Object.entries(json.tokens).forEach(([key, value]) => {
+            css += `  --${key}: ${value};\n`;
+          });
+          css += `}\n`;
+          
+          // Remove existing if present
+          const existing = document.getElementById(style.id);
+          if (existing) existing.remove();
+          
+          style.textContent = css;
+          document.head.appendChild(style);
+          
+          // Add to themes list
+          if (!THEMES.find(t => t.id === json.id)) {
+            THEMES.push({
+              id: json.id,
+              label: json.label || json.id
+            });
+            
+            // Rebuild theme list
+            buildThemeList(themeSearchInput.value);
+            
+            showToast(`Theme "${json.label || json.id}" imported successfully!`, "success");
+          } else {
+            showToast(`Theme "${json.id}" updated!`, "success");
+          }
+          
+          modal.remove();
+        } catch (err) {
+          errorDiv.textContent = `Error: ${err.message}`;
+          errorDiv.style.display = 'block';
+          showToast(`Import failed: ${err.message}`, "error");
+        }
+      });
+      
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.remove();
+        }
+      });
+    }
+
+    document.getElementById("importTheme").addEventListener("click", showImportDialog);
+
+    // Theme Comparison
+    function showThemeComparison() {
+      const modal = document.createElement('div');
+      modal.className = 'modal-backdrop';
+      modal.style.zIndex = '2000';
+      
+      const content = document.createElement('div');
+      content.className = 'modal';
+      content.style.maxWidth = '900px';
+      content.style.maxHeight = '90vh';
+      content.style.overflowY = 'auto';
+      
+      content.innerHTML = `
+        <header class="modal-header">
+          <h3>Compare Themes</h3>
+        </header>
+        <div class="modal-body">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+            <div>
+              <label class="field-label" style="display: block; margin-bottom: 0.5rem;">Theme 1</label>
+              <select id="compareTheme1" class="input">
+                ${THEMES.map(t => `<option value="${t.id}">${t.label}</option>`).join('')}
+              </select>
+            </div>
+            <div>
+              <label class="field-label" style="display: block; margin-bottom: 0.5rem;">Theme 2</label>
+              <select id="compareTheme2" class="input">
+                ${THEMES.map(t => `<option value="${t.id}">${t.label}</option>`).join('')}
+              </select>
+            </div>
+          </div>
+          <div id="comparisonResults" style="margin-top: 1.5rem;"></div>
+        </div>
+        <footer class="modal-footer">
+          <button class="btn btn-primary" onclick="this.closest('.modal-backdrop').remove()">
+            Close
+          </button>
+        </footer>
+      `;
+      
+      modal.appendChild(content);
+      document.body.appendChild(modal);
+      
+      const theme1Select = content.querySelector('#compareTheme1');
+      const theme2Select = content.querySelector('#compareTheme2');
+      const resultsDiv = content.querySelector('#comparisonResults');
+      
+      function updateComparison() {
+        const theme1 = getComputedThemeTokens(theme1Select.value);
+        const theme2 = getComputedThemeTokens(theme2Select.value);
+        const label1 = THEMES.find(t => t.id === theme1Select.value)?.label;
+        const label2 = THEMES.find(t => t.id === theme2Select.value)?.label;
+        
+        const allKeys = new Set([...Object.keys(theme1), ...Object.keys(theme2)]);
+        
+        let html = `
+          <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 0.5rem; margin-bottom: 0.5rem; font-weight: 600; border-bottom: 1px solid var(--border-soft); padding-bottom: 0.5rem;">
+            <div>Token</div>
+            <div>${label1}</div>
+            <div>${label2}</div>
+          </div>
+        `;
+        
+        allKeys.forEach(key => {
+          const val1 = theme1[key] || '—';
+          const val2 = theme2[key] || '—';
+          const isDifferent = val1 !== val2;
+          
+          html += `
+            <div style="
+              display: grid; 
+              grid-template-columns: 2fr 1fr 1fr; 
+              gap: 0.5rem; 
+              padding: 0.75rem; 
+              background: ${isDifferent ? 'rgba(255, 255, 0, 0.05)' : 'transparent'};
+              border-radius: 0.25rem;
+              margin-bottom: 0.25rem;
+            ">
+              <div style="font-family: monospace; font-size: 0.8rem; color: var(--text);">--${key}</div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                ${val1.startsWith('#') ? `<div style="width: 1.5rem; height: 1.5rem; background: ${val1}; border: 1px solid var(--border-soft); border-radius: 0.25rem;"></div>` : ''}
+                <span style="font-family: monospace; font-size: 0.75rem; color: var(--muted);">${val1}</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                ${val2.startsWith('#') ? `<div style="width: 1.5rem; height: 1.5rem; background: ${val2}; border: 1px solid var(--border-soft); border-radius: 0.25rem;"></div>` : ''}
+                <span style="font-family: monospace; font-size: 0.75rem; color: var(--muted);">${val2}</span>
+              </div>
+            </div>
+          `;
+        });
+        
+        resultsDiv.innerHTML = html;
+      }
+      
+      theme1Select.addEventListener('change', updateComparison);
+      theme2Select.addEventListener('change', updateComparison);
+      updateComparison();
+      
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.remove();
+        }
+      });
+    }
+
+    document.getElementById("compareThemes").addEventListener("click", showThemeComparison);
+
+    // Visual Theme Editor
+    function showThemeEditor() {
+      const themeId = getCurrentThemeId();
+      const theme = getComputedThemeTokens(themeId);
+      const themeLabel = THEMES.find(t => t.id === themeId)?.label || themeId;
+      
+      // Create a temporary style element for live editing
+      let editorStyle = document.getElementById('theme-editor-style');
+      if (!editorStyle) {
+        editorStyle = document.createElement('style');
+        editorStyle.id = 'theme-editor-style';
+        document.head.appendChild(editorStyle);
+      }
+      
+      const modal = document.createElement('div');
+      modal.className = 'modal-backdrop';
+      modal.style.zIndex = '2000';
+      
+      const content = document.createElement('div');
+      content.className = 'modal';
+      content.style.maxWidth = '700px';
+      content.style.maxHeight = '90vh';
+      content.style.overflowY = 'auto';
+      
+      const editableTokens = [
+        { key: 'bg', label: 'Background', category: 'Backgrounds' },
+        { key: 'bg-alt', label: 'Background Alt', category: 'Backgrounds' },
+        { key: 'surface', label: 'Surface', category: 'Surfaces' },
+        { key: 'surface-alt', label: 'Surface Alt', category: 'Surfaces' },
+        { key: 'border', label: 'Border', category: 'Borders' },
+        { key: 'border-soft', label: 'Border Soft', category: 'Borders' },
+        { key: 'accent', label: 'Accent', category: 'Accents' },
+        { key: 'accent-alt', label: 'Accent Alt', category: 'Accents' },
+        { key: 'accent-soft', label: 'Accent Soft', category: 'Accents' },
+        { key: 'accent-boost', label: 'Accent Boost', category: 'Accents' },
+        { key: 'text', label: 'Text', category: 'Text' },
+        { key: 'muted', label: 'Muted', category: 'Text' },
+        { key: 'danger', label: 'Danger', category: 'Semantic' },
+        { key: 'success', label: 'Success', category: 'Semantic' },
+        { key: 'border-gradient-from', label: 'Gradient From', category: 'Gradients' },
+        { key: 'border-gradient-to', label: 'Gradient To', category: 'Gradients' },
+      ];
+      
+      const categories = {};
+      editableTokens.forEach(token => {
+        if (!categories[token.category]) {
+          categories[token.category] = [];
+        }
+        categories[token.category].push(token);
+      });
+      
+      let html = `
+        <header class="modal-header">
+          <h3>Edit Theme: ${themeLabel}</h3>
+        </header>
+        <div class="modal-body" style="padding: 1.5rem;">
+      `;
+      
+      Object.entries(categories).forEach(([category, tokens]) => {
+        html += `
+          <div style="margin-bottom: 2rem;">
+            <h4 style="margin: 0 0 1rem; font-size: 1rem; color: var(--accent);">${category}</h4>
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem;">
+        `;
+        
+        tokens.forEach(token => {
+          const value = theme[token.key] || '';
+          html += `
+            <div>
+              <label style="display: block; font-size: 0.75rem; color: var(--muted); margin-bottom: 0.5rem;">
+                ${token.label}
+              </label>
+              <div style="display: flex; gap: 0.5rem; align-items: center;">
+                <input 
+                  type="color" 
+                  data-token="${token.key}"
+                  value="${value}"
+                  style="
+                    width: 3rem;
+                    height: 2.5rem;
+                    border: 1px solid var(--border);
+                    border-radius: 0.25rem;
+                    cursor: pointer;
+                    background: ${value};
+                  "
+                />
+                <input 
+                  type="text" 
+                  data-token="${token.key}"
+                  value="${value}"
+                  class="input"
+                  style="flex: 1; font-family: monospace; font-size: 0.8rem;"
+                  placeholder="#000000"
+                />
+              </div>
+              <div style="
+                width: 100%;
+                height: 1.5rem;
+                background: ${value};
+                border-radius: 0.25rem;
+                margin-top: 0.5rem;
+                border: 1px solid var(--border-soft);
+              "></div>
+            </div>
+          `;
+        });
+        
+        html += `</div></div>`;
+      });
+      
+      html += `
+          </div>
+          <footer class="modal-footer">
+            <button id="resetThemeEditor" class="btn btn-subtle">
+              Reset
+            </button>
+            <button id="exportEditedTheme" class="btn btn-outline">
+              Export as New Theme
+            </button>
+            <button id="applyThemeEditor" class="btn btn-primary">
+              Apply Changes
+            </button>
+          </footer>
+      `;
+      
+      content.innerHTML = html;
+      modal.appendChild(content);
+      document.body.appendChild(modal);
+      
+      // Store original values for reset
+      const originalValues = { ...theme };
+      
+      // Update preview in real-time
+      function updatePreview() {
+        let css = `:root[data-theme="${themeId}"] {\n`;
+        content.querySelectorAll('input[type="color"]').forEach(input => {
+          const token = input.dataset.token;
+          const value = input.value;
+          css += `  --${token}: ${value};\n`;
+        });
+        css += `}\n`;
+        editorStyle.textContent = css;
+      }
+      
+      // Wire up color pickers and text inputs
+      content.querySelectorAll('input[type="color"]').forEach(input => {
+        input.addEventListener('input', (e) => {
+          const textInput = content.querySelector(`input[type="text"][data-token="${e.target.dataset.token}"]`);
+          textInput.value = e.target.value;
+          updatePreview();
+        });
+      });
+      
+      content.querySelectorAll('input[type="text"][data-token]').forEach(input => {
+        input.addEventListener('input', (e) => {
+          const colorInput = content.querySelector(`input[type="color"][data-token="${e.target.dataset.token}"]`);
+          if (/^#[0-9A-F]{6}$/i.test(e.target.value)) {
+            colorInput.value = e.target.value;
+            updatePreview();
+          }
+        });
+      });
+      
+      // Reset button
+      content.querySelector('#resetThemeEditor').addEventListener('click', () => {
+        content.querySelectorAll('input[type="color"]').forEach(input => {
+          const token = input.dataset.token;
+          input.value = originalValues[token];
+          const textInput = content.querySelector(`input[type="text"][data-token="${token}"]`);
+          textInput.value = originalValues[token];
+        });
+        updatePreview();
+      });
+      
+      // Apply changes (temporary - only for this session)
+      content.querySelector('#applyThemeEditor').addEventListener('click', () => {
+        showToast('Changes applied! (Temporary - export to save permanently)', "success");
+        modal.remove();
+      });
+      
+      // Export as new theme
+      content.querySelector('#exportEditedTheme').addEventListener('click', () => {
+        const editedTheme = {};
+        content.querySelectorAll('input[type="color"]').forEach(input => {
+          editedTheme[input.dataset.token] = input.value;
+        });
+        
+        const themeData = {
+          id: `${themeId}-edited-${Date.now()}`,
+          label: `${themeLabel} (Edited)`,
+          tokens: editedTheme
+        };
+        
+        const json = JSON.stringify(themeData, null, 2);
+        const blob = new Blob([json], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${themeData.id}-theme.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        
+        showToast('Edited theme exported! Import it to use permanently.', "success");
+        modal.remove();
+      });
+      
+      // Initial preview
+      updatePreview();
+      
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          editorStyle.textContent = '';
+          modal.remove();
+        }
+      });
+    }
+
+    document.getElementById("editTheme").addEventListener("click", showThemeEditor);
+
+    // Theme Presets/Snapshots
+    const PRESETS_KEY = 'theme-lab-presets';
+    
+    function getPresets() {
+      try {
+        const stored = localStorage.getItem(PRESETS_KEY);
+        return stored ? JSON.parse(stored) : [];
+      } catch {
+        return [];
+      }
+    }
+    
+    function savePreset(preset) {
+      const presets = getPresets();
+      presets.push({
+        ...preset,
+        id: preset.id || `preset-${Date.now()}`,
+        createdAt: new Date().toISOString()
+      });
+      localStorage.setItem(PRESETS_KEY, JSON.stringify(presets));
+      return presets[presets.length - 1];
+    }
+    
+    function deletePreset(presetId) {
+      const presets = getPresets();
+      const filtered = presets.filter(p => p.id !== presetId);
+      localStorage.setItem(PRESETS_KEY, JSON.stringify(filtered));
+    }
+    
+    function loadPreset(preset) {
+      // Set theme
+      if (preset.themeId) {
+        setTheme(preset.themeId);
+      }
+      
+      // Set layout
+      if (preset.layout) {
+        Object.entries(preset.layout).forEach(([key, value]) => {
+          setLayout(key, value);
+        });
+      }
+      
+      showToast(`Preset "${preset.name}" loaded!`, "success");
+    }
+    
+    function showSavePresetDialog() {
+      const themeId = getCurrentThemeId();
+      const layout = {
+        density: htmlEl.getAttribute('data-density') || 'cozy',
+        borders: htmlEl.getAttribute('data-borders') || 'on',
+        shadows: htmlEl.getAttribute('data-shadows') || 'on',
+        'sidebar-bg': htmlEl.getAttribute('data-sidebar-bg') || 'gradient',
+        header: htmlEl.getAttribute('data-header') || 'show',
+      };
+      
+      const modal = document.createElement('div');
+      modal.className = 'modal-backdrop';
+      modal.style.zIndex = '2000';
+      
+      const content = document.createElement('div');
+      content.className = 'modal';
+      content.style.maxWidth = '500px';
+      
+      content.innerHTML = `
+        <header class="modal-header">
+          <h3>Save Preset</h3>
+        </header>
+        <div class="modal-body">
+          <label class="field">
+            <span class="field-label">Preset Name</span>
+            <input type="text" id="presetName" class="input" placeholder="My Preset" />
+          </label>
+          <div style="margin-top: 1rem; padding: 0.75rem; background: var(--surface-alt); border-radius: 0.5rem; font-size: 0.85rem; color: var(--muted);">
+            <div><strong>Theme:</strong> ${THEMES.find(t => t.id === themeId)?.label || themeId}</div>
+            <div style="margin-top: 0.5rem;"><strong>Layout:</strong> ${Object.entries(layout).map(([k, v]) => `${k}: ${v}`).join(', ')}</div>
+          </div>
+        </div>
+        <footer class="modal-footer">
+          <button class="btn btn-subtle" onclick="this.closest('.modal-backdrop').remove()">
+            Cancel
+          </button>
+          <button id="confirmSavePreset" class="btn btn-primary">
+            Save Preset
+          </button>
+        </footer>
+      `;
+      
+      modal.appendChild(content);
+      document.body.appendChild(modal);
+      
+      content.querySelector('#confirmSavePreset').addEventListener('click', () => {
+        const name = content.querySelector('#presetName').value.trim() || `Preset ${new Date().toLocaleString()}`;
+        const preset = {
+          name,
+          themeId,
+          layout
+        };
+        
+        savePreset(preset);
+        showToast(`Preset "${name}" saved!`, "success");
+        modal.remove();
+      });
+      
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.remove();
+        }
+      });
+    }
+    
+    function showPresetsManager() {
+      const presets = getPresets();
+      
+      const modal = document.createElement('div');
+      modal.className = 'modal-backdrop';
+      modal.style.zIndex = '2000';
+      
+      const content = document.createElement('div');
+      content.className = 'modal';
+      content.style.maxWidth = '600px';
+      content.style.maxHeight = '80vh';
+      content.style.overflowY = 'auto';
+      
+      let html = `
+        <header class="modal-header">
+          <h3>Presets</h3>
+        </header>
+        <div class="modal-body">
+      `;
+      
+      if (presets.length === 0) {
+        html += `
+          <div style="text-align: center; padding: 2rem; color: var(--muted);">
+            No presets saved yet.<br>
+            Save your current theme and layout as a preset to quickly return to it later.
+          </div>
+        `;
+      } else {
+        presets.forEach(preset => {
+          const themeLabel = THEMES.find(t => t.id === preset.themeId)?.label || preset.themeId;
+          html += `
+            <div style="
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              padding: 1rem;
+              background: var(--surface);
+              border: 1px solid var(--border-soft);
+              border-radius: 0.5rem;
+              margin-bottom: 0.75rem;
+            ">
+              <div>
+                <div style="font-weight: 600; margin-bottom: 0.25rem;">${preset.name}</div>
+                <div style="font-size: 0.8rem; color: var(--muted);">
+                  Theme: ${themeLabel} • ${new Date(preset.createdAt).toLocaleDateString()}
+                </div>
+              </div>
+              <div style="display: flex; gap: 0.5rem;">
+                <button class="btn btn-sm btn-outline" data-preset-id="${preset.id}" data-action="load">
+                  Load
+                </button>
+                <button class="btn btn-sm btn-ghost" data-preset-id="${preset.id}" data-action="delete">
+                  🗑️
+                </button>
+              </div>
+            </div>
+          `;
+        });
+      }
+      
+      html += `
+          </div>
+          <footer class="modal-footer">
+            <button class="btn btn-primary" onclick="this.closest('.modal-backdrop').remove()">
+              Close
+            </button>
+          </footer>
+      `;
+      
+      content.innerHTML = html;
+      modal.appendChild(content);
+      document.body.appendChild(modal);
+      
+      // Wire up buttons
+      content.querySelectorAll('[data-action="load"]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const preset = presets.find(p => p.id === btn.dataset.presetId);
+          if (preset) {
+            loadPreset(preset);
+            modal.remove();
+          }
+        });
+      });
+      
+      content.querySelectorAll('[data-action="delete"]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (confirm('Delete this preset?')) {
+            deletePreset(btn.dataset.presetId);
+            showPresetsManager(); // Refresh
+          }
+        });
+      });
+      
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.remove();
+        }
+      });
+    }
+    
+    document.getElementById("savePreset").addEventListener("click", showSavePresetDialog);
+    
+    // Add presets button to sidebar if there are saved presets
+    if (getPresets().length > 0) {
+      const presetsBtn = document.createElement('button');
+      presetsBtn.className = 'btn btn-ghost btn-sm';
+      presetsBtn.textContent = '📚 Presets';
+      presetsBtn.title = 'Manage saved presets';
+      presetsBtn.addEventListener('click', showPresetsManager);
+      document.querySelector('.export-controls').appendChild(presetsBtn);
+    }
+
+    // Animation Playground
+    function showAnimationPlayground() {
+      const modal = document.createElement('div');
+      modal.className = 'modal-backdrop';
+      modal.style.zIndex = '2000';
+      
+      const content = document.createElement('div');
+      content.className = 'modal';
+      content.style.maxWidth = '800px';
+      content.style.maxHeight = '90vh';
+      content.style.overflowY = 'auto';
+      
+      content.innerHTML = `
+        <header class="modal-header">
+          <h3>Animation Playground</h3>
+        </header>
+        <div class="modal-body" style="padding: 1.5rem;">
+          <p style="margin-bottom: 1.5rem; color: var(--muted);">
+            Preview transition timings and animation curves. All animations use theme tokens.
+          </p>
+          
+          <div style="margin-bottom: 2rem;">
+            <h4 style="margin: 0 0 1rem; font-size: 1rem; color: var(--accent);">Transition Timings</h4>
+            <div style="display: grid; gap: 1rem;">
+              <div>
+                <div style="margin-bottom: 0.5rem; font-size: 0.85rem; color: var(--muted);">Fast (--transition-fast)</div>
+                <div class="anim-demo-box" style="
+                  width: 100%;
+                  height: 3rem;
+                  background: var(--accent);
+                  border-radius: 0.5rem;
+                  transition: transform var(--transition-fast), background var(--transition-fast);
+                  cursor: pointer;
+                " onmouseenter="this.style.transform='translateX(20px)'; this.style.background='var(--accent-alt)'" 
+                   onmouseleave="this.style.transform='translateX(0)'; this.style.background='var(--accent)'">
+                  Hover me (150ms)
+                </div>
+              </div>
+              <div>
+                <div style="margin-bottom: 0.5rem; font-size: 0.85rem; color: var(--muted);">Medium (--transition-med)</div>
+                <div class="anim-demo-box" style="
+                  width: 100%;
+                  height: 3rem;
+                  background: var(--accent);
+                  border-radius: 0.5rem;
+                  transition: transform var(--transition-med), background var(--transition-med);
+                  cursor: pointer;
+                " onmouseenter="this.style.transform='translateX(20px)'; this.style.background='var(--accent-alt)'" 
+                   onmouseleave="this.style.transform='translateX(0)'; this.style.background='var(--accent)'">
+                  Hover me (220ms)
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div style="margin-bottom: 2rem;">
+            <h4 style="margin: 0 0 1rem; font-size: 1rem; color: var(--accent);">Button Animations</h4>
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+              <button class="btn btn-primary anim-demo-btn">Hover Me</button>
+              <button class="btn btn-outline anim-demo-btn">Hover Me</button>
+              <button class="btn btn-ghost anim-demo-btn">Hover Me</button>
+            </div>
+          </div>
+          
+          <div style="margin-bottom: 2rem;">
+            <h4 style="margin: 0 0 1rem; font-size: 1rem; color: var(--accent);">Card Hover Effects</h4>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+              <div class="card" style="
+                transition: transform var(--transition-fast), box-shadow var(--transition-med);
+                cursor: pointer;
+              " onmouseenter="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-strong)'" 
+                 onmouseleave="this.style.transform='translateY(0)'; this.style.boxShadow='var(--shadow-soft)'">
+                <div class="card-body">
+                  <div style="font-size: 0.85rem;">Hover for elevation</div>
+                </div>
+              </div>
+              <div class="card" style="
+                transition: transform var(--transition-fast), box-shadow var(--transition-med);
+                cursor: pointer;
+              " onmouseenter="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-strong)'" 
+                 onmouseleave="this.style.transform='translateY(0)'; this.style.boxShadow='var(--shadow-soft)'">
+                <div class="card-body">
+                  <div style="font-size: 0.85rem;">Hover for elevation</div>
+                </div>
+              </div>
+              <div class="card" style="
+                transition: transform var(--transition-fast), box-shadow var(--transition-med);
+                cursor: pointer;
+              " onmouseenter="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-strong)'" 
+                 onmouseleave="this.style.transform='translateY(0)'; this.style.boxShadow='var(--shadow-soft)'">
+                <div class="card-body">
+                  <div style="font-size: 0.85rem;">Hover for elevation</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div style="margin-bottom: 2rem;">
+            <h4 style="margin: 0 0 1rem; font-size: 1rem; color: var(--accent);">Loading Spinner</h4>
+            <div style="display: flex; gap: 2rem; align-items: center;">
+              <div class="loading-spinner"></div>
+              <div style="font-size: 0.85rem; color: var(--muted);">
+                Uses --accent and --border-soft tokens
+              </div>
+            </div>
+          </div>
+          
+          <div>
+            <h4 style="margin: 0 0 1rem; font-size: 1rem; color: var(--accent);">Reduced Motion</h4>
+            <div style="padding: 1rem; background: var(--surface-alt); border-radius: 0.5rem; font-size: 0.85rem; color: var(--muted);">
+              Respects <code style="background: var(--accent-soft); padding: 0.15rem 0.3rem; border-radius: 0.25rem;">prefers-reduced-motion</code> media query.
+              All animations should honor user motion preferences.
+            </div>
+          </div>
+        </div>
+        <footer class="modal-footer">
+          <button class="btn btn-primary" onclick="this.closest('.modal-backdrop').remove()">
+            Close
+          </button>
+        </footer>
+      `;
+      
+      modal.appendChild(content);
+      document.body.appendChild(modal);
+      
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.remove();
+        }
+      });
+    }
+
+    document.getElementById("animationPlayground").addEventListener("click", showAnimationPlayground);
+
+    // Component Playground
+    function showComponentPlayground() {
+      const modal = document.createElement('div');
+      modal.className = 'modal-backdrop';
+      modal.style.zIndex = '2000';
+      
+      const content = document.createElement('div');
+      content.className = 'modal';
+      content.style.maxWidth = '1000px';
+      content.style.maxHeight = '90vh';
+      content.style.display = 'flex';
+      content.style.flexDirection = 'column';
+      
+      const defaultHTML = `<button class="btn btn-primary">Click me</button>
+<button class="btn btn-outline">Outline</button>
+<div class="card" style="margin-top: 1rem;">
+  <div class="card-body">
+    <h3 style="margin: 0 0 0.5rem;">Card Title</h3>
+    <p style="margin: 0; color: var(--muted);">Edit the HTML above to see live preview.</p>
+  </div>
+</div>`;
+      
+      content.innerHTML = `
+        <header class="modal-header">
+          <h3>Component Playground</h3>
+        </header>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; flex: 1; overflow: hidden; padding: 1rem;">
+          <div style="display: flex; flex-direction: column;">
+            <label style="font-size: 0.85rem; color: var(--muted); margin-bottom: 0.5rem;">HTML Editor</label>
+            <textarea 
+              id="playgroundHTML" 
+              class="input" 
+              style="
+                flex: 1;
+                font-family: 'Monaco', 'Courier New', monospace;
+                font-size: 0.85rem;
+                resize: none;
+                min-height: 300px;
+              "
+            >${defaultHTML}</textarea>
+            <div style="margin-top: 0.75rem; display: flex; gap: 0.5rem;">
+              <button id="copyPlaygroundCode" class="btn btn-sm btn-outline">Copy HTML</button>
+              <button id="resetPlayground" class="btn btn-sm btn-ghost">Reset</button>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column;">
+            <label style="font-size: 0.85rem; color: var(--muted); margin-bottom: 0.5rem;">Live Preview</label>
+            <div 
+              id="playgroundPreview" 
+              style="
+                flex: 1;
+                background: var(--surface);
+                border: 1px solid var(--border-soft);
+                border-radius: 0.5rem;
+                padding: 1rem;
+                overflow-y: auto;
+              "
+            ></div>
+          </div>
+        </div>
+        <footer class="modal-footer">
+          <div style="font-size: 0.75rem; color: var(--muted); margin-right: auto;">
+            Uses all theme tokens and component classes
+          </div>
+          <button class="btn btn-primary" onclick="this.closest('.modal-backdrop').remove()">
+            Close
+          </button>
+        </footer>
+      `;
+      
+      modal.appendChild(content);
+      document.body.appendChild(modal);
+      
+      const htmlEditor = content.querySelector('#playgroundHTML');
+      const preview = content.querySelector('#playgroundPreview');
+      
+      function updatePreview() {
+        try {
+          preview.innerHTML = htmlEditor.value;
+        } catch (err) {
+          preview.innerHTML = `<div style="color: var(--danger);">Error: ${err.message}</div>`;
+        }
+      }
+      
+      htmlEditor.addEventListener('input', updatePreview);
+      updatePreview();
+      
+      content.querySelector('#copyPlaygroundCode').addEventListener('click', async () => {
+        const success = await copyToClipboard(htmlEditor.value);
+        if (success) {
+          showToast('HTML copied to clipboard!', "success");
+        }
+      });
+      
+      content.querySelector('#resetPlayground').addEventListener('click', () => {
+        htmlEditor.value = defaultHTML;
+        updatePreview();
+      });
+      
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.remove();
+        }
+      });
+    }
+
+    document.getElementById("componentPlayground").addEventListener("click", showComponentPlayground);
+
+    // Theme Sharing System
+    function shareTheme() {
+      const themeId = getCurrentThemeId();
+      const layout = {
+        density: htmlEl.getAttribute('data-density') || 'cozy',
+        borders: htmlEl.getAttribute('data-borders') || 'on',
+        shadows: htmlEl.getAttribute('data-shadows') || 'on',
+        'sidebar-bg': htmlEl.getAttribute('data-sidebar-bg') || 'gradient',
+        header: htmlEl.getAttribute('data-header') || 'show',
+      };
+      
+      const shareData = {
+        theme: themeId,
+        layout: layout,
+        timestamp: Date.now()
+      };
+      
+      // Encode as base64 URL parameter
+      const encoded = btoa(JSON.stringify(shareData));
+      const shareUrl = `${window.location.origin}${window.location.pathname}?share=${encoded}`;
+      
+      const modal = document.createElement('div');
+      modal.className = 'modal-backdrop';
+      modal.style.zIndex = '2000';
+      
+      const content = document.createElement('div');
+      content.className = 'modal';
+      content.style.maxWidth = '600px';
+      
+      content.innerHTML = `
+        <header class="modal-header">
+          <h3>Share Theme</h3>
+        </header>
+        <div class="modal-body">
+          <p style="margin-bottom: 1rem; color: var(--muted);">
+            Share this theme and layout configuration with others. Anyone with this link will see your exact setup.
+          </p>
+          <label class="field">
+            <span class="field-label">Share URL</span>
+            <div style="display: flex; gap: 0.5rem;">
+              <input 
+                type="text" 
+                id="shareUrlInput" 
+                class="input" 
+                value="${shareUrl}"
+                readonly
+                style="flex: 1; font-family: monospace; font-size: 0.8rem;"
+              />
+              <button id="copyShareUrl" class="btn btn-primary">Copy</button>
+            </div>
+          </label>
+          <div style="margin-top: 1rem; padding: 0.75rem; background: var(--surface-alt); border-radius: 0.5rem; font-size: 0.85rem; color: var(--muted);">
+            <div><strong>Theme:</strong> ${THEMES.find(t => t.id === themeId)?.label || themeId}</div>
+            <div style="margin-top: 0.5rem;"><strong>Layout:</strong> ${Object.entries(layout).map(([k, v]) => `${k}: ${v}`).join(', ')}</div>
+          </div>
+        </div>
+        <footer class="modal-footer">
+          <button class="btn btn-primary" onclick="this.closest('.modal-backdrop').remove()">
+            Close
+          </button>
+        </footer>
+      `;
+      
+      modal.appendChild(content);
+      document.body.appendChild(modal);
+      
+      content.querySelector('#copyShareUrl').addEventListener('click', async () => {
+        const input = content.querySelector('#shareUrlInput');
+        input.select();
+        const success = await copyToClipboard(input.value);
+        if (success) {
+          showToast('Share URL copied to clipboard!', "success");
+        }
+      });
+      
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.remove();
+        }
+      });
+    }
+    
+    // Load shared theme from URL
+    function loadSharedTheme() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const shareParam = urlParams.get('share');
+      
+      if (shareParam) {
+        try {
+          const shareData = JSON.parse(atob(shareParam));
+          
+          if (shareData.theme) {
+            setTheme(shareData.theme);
+            showToast(`Loaded shared theme: ${THEMES.find(t => t.id === shareData.theme)?.label || shareData.theme}`, "success");
+          }
+          
+          if (shareData.layout) {
+            Object.entries(shareData.layout).forEach(([key, value]) => {
+              setLayout(key, value);
+            });
+          }
+          
+          // Clean URL
+          window.history.replaceState({}, document.title, window.location.pathname);
+        } catch (err) {
+          console.error('Failed to load shared theme:', err);
+          showToast('Failed to load shared theme. Invalid URL format.', "error");
+        }
+      }
+    }
+    
+    // Load shared theme on page load
+    loadSharedTheme();
+    
+    document.getElementById("shareTheme").addEventListener("click", shareTheme);
+
+    // Responsive Preview Modes
+    function addResponsiveControls() {
+      const previewArea = document.querySelector('.preview-area');
+      if (!previewArea) return;
+      
+      // Create responsive controls bar
+      const controlsBar = document.createElement('div');
+      controlsBar.id = 'responsiveControls';
+      controlsBar.style.cssText = `
+        position: sticky;
+        top: 0;
+        background: var(--surface-alt);
+        border-bottom: 1px solid var(--border-soft);
+        padding: 0.75rem 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        z-index: 100;
+        margin: -1.25rem -1.5rem 1rem -1.5rem;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+      `;
+      
+      controlsBar.innerHTML = `
+        <div style="font-size: 0.75rem; color: var(--muted); margin-right: auto;">Viewport:</div>
+        <button class="responsive-btn" data-width="375" data-label="Mobile">📱 Mobile</button>
+        <button class="responsive-btn" data-width="768" data-label="Tablet">📱 Tablet</button>
+        <button class="responsive-btn" data-width="1024" data-label="Desktop">💻 Desktop</button>
+        <button class="responsive-btn" data-width="100%" data-label="Full">🖥️ Full</button>
+        <div id="currentViewport" style="font-size: 0.75rem; color: var(--muted); margin-left: 1rem; min-width: 100px;">
+          Full width
+        </div>
+      `;
+      
+      previewArea.insertBefore(controlsBar, previewArea.firstChild);
+      
+      // Wire up buttons
+      let currentWidth = '100%';
+      controlsBar.querySelectorAll('.responsive-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const width = btn.dataset.width;
+          const label = btn.dataset.label;
+          
+          // Update active state
+          controlsBar.querySelectorAll('.responsive-btn').forEach(b => {
+            b.style.background = 'transparent';
+            b.style.color = 'var(--text)';
+          });
+          btn.style.background = 'var(--accent-soft)';
+          btn.style.color = 'var(--accent-boost)';
+          
+          // Apply width constraint
+          const previewGrid = document.querySelector('.preview-grid');
+          if (previewGrid) {
+            if (width === '100%') {
+              previewGrid.style.maxWidth = 'none';
+              previewGrid.style.width = '100%';
+            } else {
+              previewGrid.style.maxWidth = `${width}px`;
+              previewGrid.style.width = '100%';
+            }
+          }
+          
+          // Update indicator
+          document.getElementById('currentViewport').textContent = `${label} (${width === '100%' ? 'unlimited' : width + 'px'})`;
+          currentWidth = width;
+        });
+      });
+      
+      // Style buttons
+      const style = document.createElement('style');
+      style.textContent = `
+        .responsive-btn {
+          padding: 0.4rem 0.75rem;
+          border: 1px solid var(--border-soft);
+          background: transparent;
+          color: var(--text);
+          border-radius: 0.5rem;
+          font-size: 0.8rem;
+          cursor: pointer;
+          transition: all var(--transition-fast);
+        }
+        .responsive-btn:hover {
+          background: rgba(255, 255, 255, 0.05);
+          border-color: var(--accent);
+        }
+      `;
+      document.head.appendChild(style);
+    }
+    
+    // Initialize responsive controls after DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(addResponsiveControls, 100);
+      });
+    } else {
+      setTimeout(addResponsiveControls, 100);
+    }
+
+    // Keyboard Shortcuts & Command Palette
+    const shortcuts = {
+      'r': () => {
+        const idx = Math.floor(Math.random() * THEMES.length);
+        setTheme(THEMES[idx].id);
+        showToast(`Random theme: ${THEMES[idx].label}`);
+      },
+      'e': () => document.getElementById('exportTheme')?.click(),
+      'c': () => document.getElementById('copyTheme')?.click(),
+      'v': () => document.getElementById('validateTheme')?.click(),
+      't': () => document.getElementById('showTokenReference')?.click(),
+      'i': () => document.getElementById('importTheme')?.click(),
+      'p': () => document.getElementById('savePreset')?.click(),
+      'k': () => showCommandPalette(),
+      '?': () => showKeyboardShortcuts(),
+      'Escape': () => {
+        // Close any open modals
+        document.querySelectorAll('.modal-backdrop').forEach(modal => {
+          if (modal.style.zIndex === '2000') modal.remove();
+        });
+      }
+    };
+
+    // Number keys for quick theme switching (1-9, then 0 for 10th, etc.)
+    for (let i = 0; i < Math.min(10, THEMES.length); i++) {
+      shortcuts[String(i + 1)] = () => {
+        if (i < THEMES.length) {
+          setTheme(THEMES[i].id);
+          showToast(THEMES[i].label);
+        }
+      };
+    }
+
+    // Arrow keys for theme navigation
+    shortcuts['ArrowUp'] = () => {
+      const currentIndex = THEMES.findIndex(t => t.id === getCurrentThemeId());
+      if (currentIndex > 0) {
+        setTheme(THEMES[currentIndex - 1].id);
+        showToast(THEMES[currentIndex - 1].label);
+      }
+    };
+
+    shortcuts['ArrowDown'] = () => {
+      const currentIndex = THEMES.findIndex(t => t.id === getCurrentThemeId());
+      if (currentIndex < THEMES.length - 1) {
+        setTheme(THEMES[currentIndex + 1].id);
+        showToast(THEMES[currentIndex + 1].label);
+      }
+    };
+
+    document.addEventListener('keydown', (e) => {
+      // Don't trigger shortcuts when typing in inputs
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+        return;
+      }
+
+      // Cmd/Ctrl + K for command palette
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        showCommandPalette();
+        return;
+      }
+
+      // Cmd/Ctrl + ? for help
+      if ((e.metaKey || e.ctrlKey) && e.key === '?') {
+        e.preventDefault();
+        showKeyboardShortcuts();
+        return;
+      }
+
+      // Single key shortcuts (only if not modifier keys)
+      if (!e.metaKey && !e.ctrlKey && !e.altKey && !e.shiftKey) {
+        const handler = shortcuts[e.key];
+        if (handler) {
+          e.preventDefault();
+          handler();
+        }
+      }
+    });
+
+    function showCommandPalette() {
+      const modal = document.createElement('div');
+      modal.className = 'modal-backdrop';
+      modal.style.zIndex = '3000';
+      modal.style.background = 'rgba(0, 0, 0, 0.8)';
+      
+      const content = document.createElement('div');
+      content.className = 'modal';
+      content.style.maxWidth = '600px';
+      content.style.marginTop = '10vh';
+      
+      const commands = [
+        { key: 'R', label: 'Random Theme', action: () => shortcuts['r']() },
+        { key: 'E', label: 'Export Theme', action: () => document.getElementById('exportTheme')?.click() },
+        { key: 'C', label: 'Copy CSS', action: () => document.getElementById('copyTheme')?.click() },
+        { key: 'V', label: 'Validate Theme', action: () => document.getElementById('validateTheme')?.click() },
+        { key: 'T', label: 'Token Reference', action: () => document.getElementById('showTokenReference')?.click() },
+        { key: 'I', label: 'Import Theme', action: () => document.getElementById('importTheme')?.click() },
+        { key: 'P', label: 'Save Preset', action: () => document.getElementById('savePreset')?.click() },
+        { key: '↑/↓', label: 'Navigate Themes', action: () => {} },
+        { key: '1-9', label: 'Quick Theme Switch', action: () => {} },
+      ];
+      
+      content.innerHTML = `
+        <div class="modal-body" style="padding: 0;">
+          <input 
+            type="text" 
+            id="commandInput" 
+            class="input" 
+            placeholder="Type to search commands..."
+            style="
+              width: 100%;
+              border: none;
+              border-bottom: 1px solid var(--border-soft);
+              border-radius: 0;
+              padding: 1rem;
+              font-size: 1rem;
+            "
+            autofocus
+          />
+          <div id="commandList" style="max-height: 400px; overflow-y: auto;">
+            ${commands.map(cmd => `
+              <div class="command-item" style="
+                padding: 0.75rem 1rem;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                border-bottom: 1px solid var(--border-soft);
+                transition: background var(--transition-fast);
+              " data-action="${cmd.label}">
+                <div>
+                  <div style="font-weight: 500;">${cmd.label}</div>
+                </div>
+                <div style="
+                  padding: 0.25rem 0.5rem;
+                  background: var(--accent-soft);
+                  border-radius: 0.25rem;
+                  font-size: 0.75rem;
+                  font-family: monospace;
+                  color: var(--accent-boost);
+                ">${cmd.key}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+      
+      modal.appendChild(content);
+      document.body.appendChild(modal);
+      
+      const input = content.querySelector('#commandInput');
+      const list = content.querySelector('#commandList');
+      
+      input.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase();
+        const items = list.querySelectorAll('.command-item');
+        items.forEach(item => {
+          const label = item.dataset.action.toLowerCase();
+          if (label.includes(query)) {
+            item.style.display = 'flex';
+          } else {
+            item.style.display = 'none';
+          }
+        });
+      });
+      
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          const visible = list.querySelector('.command-item[style*="flex"]');
+          if (visible) {
+            const label = visible.dataset.action;
+            const cmd = commands.find(c => c.label === label);
+            if (cmd && cmd.action) {
+              cmd.action();
+              modal.remove();
+            }
+          }
+        }
+        if (e.key === 'Escape') {
+          modal.remove();
+        }
+      });
+      
+      list.querySelectorAll('.command-item').forEach(item => {
+        item.addEventListener('click', () => {
+          const label = item.dataset.action;
+          const cmd = commands.find(c => c.label === label);
+          if (cmd && cmd.action) {
+            cmd.action();
+            modal.remove();
+          }
+        });
+        item.addEventListener('mouseenter', () => {
+          item.style.background = 'var(--accent-soft)';
+        });
+        item.addEventListener('mouseleave', () => {
+          item.style.background = 'transparent';
+        });
+      });
+      
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.remove();
+        }
+      });
+    }
+
+    function showKeyboardShortcuts() {
+      const modal = document.createElement('div');
+      modal.className = 'modal-backdrop';
+      modal.style.zIndex = '2000';
+      
+      const content = document.createElement('div');
+      content.className = 'modal';
+      content.style.maxWidth = '600px';
+      
+      content.innerHTML = `
+        <header class="modal-header">
+          <h3>Keyboard Shortcuts</h3>
+        </header>
+        <div class="modal-body">
+          <div style="display: grid; gap: 1rem;">
+            <div>
+              <h4 style="margin: 0 0 0.75rem; font-size: 0.9rem; color: var(--accent);">Navigation</h4>
+              <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 0.5rem; font-size: 0.85rem;">
+                <div style="font-family: monospace; color: var(--accent);">↑ / ↓</div>
+                <div>Navigate themes</div>
+                <div style="font-family: monospace; color: var(--accent);">1-9</div>
+                <div>Quick switch to theme 1-9</div>
+                <div style="font-family: monospace; color: var(--accent);">R</div>
+                <div>Random theme</div>
+              </div>
+            </div>
+            
+            <div>
+              <h4 style="margin: 0 0 0.75rem; font-size: 0.9rem; color: var(--accent);">Actions</h4>
+              <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 0.5rem; font-size: 0.85rem;">
+                <div style="font-family: monospace; color: var(--accent);">E</div>
+                <div>Export theme</div>
+                <div style="font-family: monospace; color: var(--accent);">C</div>
+                <div>Copy CSS</div>
+                <div style="font-family: monospace; color: var(--accent);">V</div>
+                <div>Validate theme</div>
+                <div style="font-family: monospace; color: var(--accent);">T</div>
+                <div>Token reference</div>
+                <div style="font-family: monospace; color: var(--accent);">I</div>
+                <div>Import theme</div>
+                <div style="font-family: monospace; color: var(--accent);">P</div>
+                <div>Save preset</div>
+              </div>
+            </div>
+            
+            <div>
+              <h4 style="margin: 0 0 0.75rem; font-size: 0.9rem; color: var(--accent);">System</h4>
+              <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 0.5rem; font-size: 0.85rem;">
+                <div style="font-family: monospace; color: var(--accent);">Cmd/Ctrl + K</div>
+                <div>Command palette</div>
+                <div style="font-family: monospace; color: var(--accent);">Cmd/Ctrl + ?</div>
+                <div>Show shortcuts</div>
+                <div style="font-family: monospace; color: var(--accent);">Esc</div>
+                <div>Close modals</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <footer class="modal-footer">
+          <button class="btn btn-primary" onclick="this.closest('.modal-backdrop').remove()">
+            Close
+          </button>
+        </footer>
+      `;
+      
+      modal.appendChild(content);
+      document.body.appendChild(modal);
+      
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.remove();
+        }
+      });
+    }
+
+    // Add toast animations
+    const style = document.createElement("style");
+    style.textContent = `
+      @keyframes toastSlideIn {
+        from {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+      @keyframes toastSlideOut {
+        from {
+          transform: translateX(0);
+          opacity: 1;
+        }
+        to {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+  -->
+</body>
+</html>

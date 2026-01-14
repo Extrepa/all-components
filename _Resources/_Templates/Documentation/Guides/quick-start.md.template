@@ -1,0 +1,33 @@
+# Quick Start Guide
+
+**Project:** [Project Name]
+
+## Installation
+
+```bash
+npm install
+```
+
+## Basic Usage
+
+```bash
+npm run dev
+```
+
+## First Steps
+
+1. [Step 1]
+2. [Step 2]
+3. [Step 3]
+
+## Example
+
+```typescript
+// Basic example
+```
+
+## Next Steps
+
+- Read [User Guide](user-guide.md.template) for detailed usage
+- See [Developer Guide](developer-guide.md.template) for development
+- Check [Documentation Index](../Core/docs-index.md.template) for all docs

@@ -1,0 +1,14 @@
+<!-- 99) errl_woods_errl_totem_01 – small wooden Errl totem (prop/char-ish) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="prop" data-name="errl_woods_errl_totem_01">
+  <g fill="none">
+    <!-- base pole -->
+    <rect x="30" y="26" width="4" height="18" rx="1.6" fill="#78350f"/>
+    <!-- head plate -->
+    <rect x="24" y="22" width="16" height="8" rx="3" fill="#0f172a"/>
+    <!-- tiny face -->
+    <circle cx="28" cy="26" r="1.2" fill="#22d3ee"/>
+    <circle cx="36" cy="26" r="1.2" fill="#22d3ee"/>
+    <path d="M30 28 L32 29 L34 28" stroke="#22d3ee" stroke-width="1.1" stroke-linecap="round"/>
+  </g>
+</svg>

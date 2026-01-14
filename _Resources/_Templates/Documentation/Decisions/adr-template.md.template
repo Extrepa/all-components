@@ -1,0 +1,97 @@
+# ADR [Number]: [Decision Title]
+
+**Status:** [Proposed/Accepted/Deprecated/Superseded]  
+**Date:** [Date]  
+**Deciders:** [Team/Individuals]
+
+---
+
+## Context
+
+[Background and context for the decision]
+
+**Problem Statement:**
+[What problem are we solving?]
+
+**Current State:**
+- [Current state item 1]
+- [Current state item 2]
+
+**Issues:**
+- [Issue 1]
+- [Issue 2]
+
+---
+
+## Decision
+
+**[Decision statement]**
+
+**Approach:**
+1. [Approach step 1]
+2. [Approach step 2]
+3. [Approach step 3]
+
+---
+
+## Consequences
+
+### Positive
+
+- ✅ [Positive consequence 1]
+- ✅ [Positive consequence 2]
+- ✅ [Positive consequence 3]
+
+### Negative
+
+- ⚠️ [Negative consequence 1]
+- ⚠️ [Negative consequence 2]
+
+### Neutral
+
+- [Neutral consequence 1]
+- [Neutral consequence 2]
+
+---
+
+## Alternatives Considered
+
+### Alternative 1: [Name]
+**Description:** [Description]  
+**Pros:** [Pros]  
+**Cons:** [Cons]  
+**Why Not Chosen:** [Reason]
+
+### Alternative 2: [Name]
+**Description:** [Description]  
+**Pros:** [Pros]  
+**Cons:** [Cons]  
+**Why Not Chosen:** [Reason]
+
+---
+
+## Implementation
+
+### Steps
+1. [Implementation step 1]
+2. [Implementation step 2]
+3. [Implementation step 3]
+
+### Timeline
+- [Phase 1]: [Date]
+- [Phase 2]: [Date]
+- [Phase 3]: [Date]
+
+---
+
+## References
+
+- [Related documentation]
+- [Related ADR]
+- [External reference]
+
+---
+
+## Notes
+
+[Additional notes and considerations]

@@ -1,0 +1,74 @@
+# Documentation Index
+
+**Project:** [Project Name]  
+**Category:** [A/B/C]  
+**Last Updated:** [Date]
+
+## Documentation Structure
+
+This directory contains detailed documentation for the [Project Name] project.
+
+### Core Documentation
+
+- [Architecture](architecture.md) - Technical architecture and design
+- [Project Structure](project-structure.md) - File organization and structure
+- [Completion Checklist](completion-checklist.md) - Task tracking and completion status
+
+### User Documentation
+
+- [User Guide](USER_GUIDE.md) - Complete user guide (if applicable)
+- [Quick Start](QUICK_START.md) - Quick start guide (if applicable)
+- [Features](features.md) - Feature documentation (if applicable)
+
+### Developer Documentation
+
+- [Developer Guide](DEVELOPER_GUIDE.md) - Complete developer guide
+- [API Documentation](api.md) - API reference (if applicable)
+- [Contributing](CONTRIBUTING.md) - Contribution guidelines (if applicable)
+
+### Specialized Documentation
+
+#### Testing
+- [Testing Documentation](testing.md) - Testing guides and results
+- [Test Checklist](TESTING_CHECKLIST.md) - Testing checklist
+
+#### Planning & Status
+- [Project Status](../PROJECT_STATUS.md) - Current project status
+- [Roadmap](roadmap.md) - Project roadmap (if applicable)
+- [Changelog](../CHANGELOG.md) - Version history (if applicable)
+
+#### Troubleshooting
+- [Troubleshooting Guide](troubleshooting.md) - Common issues and solutions
+
+## Quick Links
+
+- [Project INDEX](../INDEX.md) - Workspace index
+- [Project Status](../PROJECT_STATUS.md) - Current project status
+- [README](../README.md) - Main project documentation
+
+## Documentation Status
+
+- [ ] Architecture documentation complete
+- [ ] Project structure documented
+- [ ] User guide complete (if applicable)
+- [ ] Developer guide complete
+- [ ] API documentation complete (if applicable)
+- [ ] Testing documentation complete
+- [ ] Troubleshooting guide complete
+
+## Finding What You Need
+
+### For Users
+- Start with [README](../README.md) for overview
+- See [User Guide](USER_GUIDE.md) for detailed usage
+- Check [Quick Start](QUICK_START.md) for getting started
+
+### For Developers
+- Start with [Architecture](architecture.md) for system design
+- See [Developer Guide](DEVELOPER_GUIDE.md) for development setup
+- Check [Project Structure](project-structure.md) for code organization
+
+### For Contributors
+- Read [Contributing](CONTRIBUTING.md) for guidelines
+- Review [Architecture](architecture.md) for design decisions
+- Check [Testing Documentation](testing.md) for test requirements

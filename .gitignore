@@ -1,0 +1,7 @@
+.DS_Store
+node_modules/
+preview/node_modules/
+preview/dist/
+.npm-cache/
+.npm-logs/
+.vite/

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_accessory" data-cat="wearable" data-name="errl_accessory_belt_santa">
+  <rect width="64" height="64" rx="12" fill="none"/>
+  <rect x="10" y="36" width="44" height="10" rx="4" fill="#161616" stroke="#8b1212" stroke-width="2"/>
+  <rect x="25" y="34" width="14" height="14" stroke="#f5c76a" stroke-width="2" fill="none"/>
+  <rect x="28" y="36" width="8" height="10" fill="#f5c76a"/>
+</svg>

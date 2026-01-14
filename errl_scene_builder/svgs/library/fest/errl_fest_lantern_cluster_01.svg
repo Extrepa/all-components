@@ -1,0 +1,229 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" id="icon-27l0qz9i5">Nice, woods pack is looking chunky. 🌲 Your examples_2b.txt is now a legit “forest micro-library” of vines, roots, moss, stones, campfire, tent, lantern, signpost, etc. Time to actually do what that Warp tab says and proceed to the next theme.
+
+I’ll continue with the FESTIVAL pack, picking up from the earlier batch where we already made:
+	1.	errl_fest_tent_big_top_01
+	2.	errl_fest_tent_small_01
+	3.	errl_fest_tent_food_01
+	4.	errl_fest_stage_main_01
+	5.	errl_fest_stage_side_01
+	6.	errl_fest_dome_01
+	7.	errl_fest_gate_01
+	8.	errl_fest_tower_light_01
+	9.	errl_fest_string_lights_01
+	10.	errl_fest_flags_line_01
+
+Now I’ll add festival assets 11–20 in the same visual style. You can drop these into a new examples_fest.txt or into your big combined file under a // FESTIVAL header.
+
+Same conventions:
+	•	viewBox="0 0 64 64"
+	•	data-pack="errl_fest"
+	•	data-cat="env" | "prop" | "fx" | "ui"
+	•	Flat colors, 3–10 shapes each.
+
+⸻
+
+11) errl_fest_lantern_cluster_01 – 3 hanging lanterns (fx/prop)
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="fx" data-name="errl_fest_lantern_cluster_01">
+  <g fill="none">
+    <!-- cords -->
+    <line x1="20" y1="10" x2="20" y2="18" stroke="#e5e7eb" stroke-width="1.4" stroke-linecap="round"/>
+    <line x1="32" y1="8" x2="32" y2="18" stroke="#e5e7eb" stroke-width="1.4" stroke-linecap="round"/>
+    <line x1="44" y1="11" x2="44" y2="18" stroke="#e5e7eb" stroke-width="1.4" stroke-linecap="round"/>
+    <!-- lanterns -->
+    <rect x="16" y="18" width="8" height="10" rx="2" fill="#020617"/>
+    <rect x="18" y="20" width="4" height="6" rx="1.5" fill="#facc15" opacity="0.9"/>
+
+    <rect x="28" y="18" width="8" height="12" rx="2.2" fill="#020617"/>
+    <rect x="30" y="20" width="4" height="8" rx="1.6" fill="#22d3ee" opacity="0.9"/>
+
+    <rect x="40" y="18" width="8" height="10" rx="2" fill="#020617"/>
+    <rect x="42" y="20" width="4" height="6" rx="1.5" fill="#fb7185" opacity="0.9"/>
+  </g>
+</svg>
+
+
+⸻
+
+12) errl_fest_balloon_cluster_01 – bunch of balloons (prop/fx)
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="prop" data-name="errl_fest_balloon_cluster_01">
+  <g fill="none">
+    <!-- strings -->
+    <path d="M26 30 C24 36 24 42 26 48" stroke="#e5e7eb" stroke-width="1" stroke-linecap="round"/>
+    <path d="M32 28 C31 35 31 42 32 48" stroke="#e5e7eb" stroke-width="1" stroke-linecap="round"/>
+    <path d="M38 30 C40 36 40 42 38 48" stroke="#e5e7eb" stroke-width="1" stroke-linecap="round"/>
+    <!-- balloons -->
+    <ellipse cx="26" cy="26" rx="4" ry="5.5" fill="#fb7185"/>
+    <ellipse cx="32" cy="24" rx="4.5" ry="6" fill="#22d3ee"/>
+    <ellipse cx="38" cy="26" rx="4" ry="5.5" fill="#facc15"/>
+  </g>
+</svg>
+
+
+⸻
+
+13) errl_fest_wall_banner_01 – big vertical banner (env/ui)
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="env" data-name="errl_fest_wall_banner_01">
+  <g fill="none">
+    <rect x="24" y="10" width="16" height="34" rx="2" fill="#111827"/>
+    <path d="M26 12 H38 V38 L32 42 L26 38 Z" fill="#a855f7"/>
+    <!-- simple symbol placeholder -->
+    <circle cx="32" cy="20" r="4" fill="#facc15" opacity="0.9"/>
+  </g>
+</svg>
+
+
+⸻
+
+14) errl_fest_totem_pole_01 – decorative pole (env/prop)
+
+Totem-style structure you can drop near tents/stages.
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="prop" data-name="errl_fest_totem_pole_01">
+  <g fill="none">
+    <!-- pole -->
+    <rect x="30" y="18" width="4" height="28" rx="1.5" fill="#78350f"/>
+    <!-- stacked faces/panels -->
+    <rect x="26" y="18" width="12" height="6" rx="2" fill="#22d3ee" opacity="0.9"/>
+    <rect x="26" y="26" width="12" height="6" rx="2" fill="#a855f7" opacity="0.9"/>
+    <rect x="26" y="34" width="12" height="6" rx="2" fill="#f97316" opacity="0.9"/>
+    <!-- small “wings” -->
+    <path d="M26 22 L18 20 26 24 Z" fill="#22d3ee"/>
+    <path d="M38 22 L46 20 38 24 Z" fill="#22d3ee"/>
+    <ellipse cx="32" cy="48" rx="8" ry="2.6" fill="#111827" opacity="0.4"/>
+  </g>
+</svg>
+
+
+⸻
+
+15) errl_fest_art_structure_01 – weird abstract sculpture (env/prop)
+
+Good “art car / installation” placeholder.
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="env" data-name="errl_fest_art_structure_01">
+  <g fill="none">
+    <!-- base -->
+    <rect x="18" y="42" width="28" height="4" rx="2" fill="#020617"/>
+    <!-- curved form -->
+    <path d="M22 42 C24 32 30 24 38 22 C42 21 46 22 48 24              C44 26 42 30 41 34 C40 38 38 41 34 42 Z" fill="#22d3ee"/>
+    <!-- inner accent -->
+    <path d="M30 40 C32 32 36 28 40 26 C38.5 28.5 37.5 31 37 34              C36.5 37 35.5 39 34 40 Z" fill="#a855f7" opacity="0.85"/>
+  </g>
+</svg>
+
+
+⸻
+
+16) errl_fest_ground_pattern_01 – rug/mandala (env/prop)
+
+Perfect for Errl to sit on in camp scenes at festivals or woods.
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="env" data-name="errl_fest_ground_pattern_01">
+  <g fill="none">
+    <ellipse cx="32" cy="44" rx="16" ry="6" fill="#0f172a"/>
+    <ellipse cx="32" cy="44" rx="13" ry="4.5" fill="#111827"/>
+    <circle cx="32" cy="44" r="3" fill="#22d3ee"/>
+    <path d="M32 38 L34 40 L32 42 L30 40 Z" fill="#fb7185"/>
+    <path d="M26 44 L28 42 L30 44 L28 46 Z" fill="#facc15"/>
+    <path d="M38 44 L36 42 L34 44 L36 46 Z" fill="#a855f7"/>
+  </g>
+</svg>
+
+
+⸻
+
+17) errl_fest_confetti_01 – general confetti burst (fx)
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="fx" data-name="errl_fest_confetti_01">
+  <g fill="none">
+    <rect x="18" y="26" width="2" height="5" rx="1" fill="#fb7185"/>
+    <rect x="24" y="20" width="2" height="5" rx="1" fill="#22d3ee"/>
+    <rect x="30" y="24" width="2" height="5" rx="1" fill="#facc15"/>
+    <rect x="36" y="18" width="2" height="5" rx="1" fill="#a855f7"/>
+    <rect x="42" y="24" width="2" height="5" rx="1" fill="#fb7185"/>
+
+    <circle cx="22" cy="32" r="1" fill="#22d3ee"/>
+    <circle cx="28" cy="30" r="1" fill="#f97316"/>
+    <circle cx="34" cy="32" r="1" fill="#a855f7"/>
+    <circle cx="40" cy="30" r="1" fill="#facc15"/>
+  </g>
+</svg>
+
+
+⸻
+
+18) errl_fest_confetti_02 – falling confetti strip (fx)
+
+Good as a vertical overlay on one side of the scene.
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="fx" data-name="errl_fest_confetti_02">
+  <g fill="none">
+    <rect x="20" y="10" width="2" height="4" rx="1" fill="#fb7185"/>
+    <rect x="24" y="16" width="2" height="4" rx="1" fill="#22d3ee"/>
+    <rect x="18" y="22" width="2" height="4" rx="1" fill="#a855f7"/>
+    <rect x="26" y="28" width="2" height="4" rx="1" fill="#facc15"/>
+    <rect x="20" y="34" width="2" height="4" rx="1" fill="#f97316"/>
+    <rect x="24" y="40" width="2" height="4" rx="1" fill="#22d3ee"/>
+    <circle cx="22" cy="18" r="1" fill="#facc15"/>
+    <circle cx="26" cy="24" r="1" fill="#a855f7"/>
+    <circle cx="20" cy="30" r="1" fill="#22d3ee"/>
+    <circle cx="24" cy="36" r="1" fill="#fb7185"/>
+  </g>
+</svg>
+
+
+⸻
+
+19) errl_fest_projection_screen_01 – simple screen (env/prop)
+
+You can drop videos/animations onto this in the scene builder later if you want.
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="env" data-name="errl_fest_projection_screen_01">
+  <g fill="none">
+    <!-- frame -->
+    <rect x="12" y="18" width="40" height="22" rx="2" fill="#020617"/>
+    <!-- screen -->
+    <rect x="14" y="20" width="36" height="18" rx="1.5" fill="#111827"/>
+    <!-- subtle gradient-ish blocks -->
+    <rect x="14" y="20" width="18" height="18" fill="#1e293b" opacity="0.7"/>
+    <rect x="32" y="20" width="18" height="18" fill="#0f172a" opacity="0.8"/>
+    <!-- stand -->
+    <rect x="30" y="40" width="4" height="8" rx="1.5" fill="#020617"/>
+    <rect x="24" y="48" width="16" height="3" rx="1.5" fill="#020617"/>
+  </g>
+</svg>
+
+
+⸻
+
+20) errl_fest_projection_art_01 – trippy projected art frame (fx/env)
+
+Use this as a more stylized alternative or overlay on top of the screen above.
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="fx" data-name="errl_fest_projection_art_01">
+  <g fill="none">
+    <rect x="14" y="20" width="36" height="18" rx="2" fill="#0f172a"/>
+    <!-- abstract shapes -->
+    <circle cx="24" cy="29" r="5" fill="#22d3ee"/>
+    <circle cx="40" cy="27" r="4" fill="#fb7185"/>
+    <path d="M28 32 C32 36 36 36 42 34" stroke="#facc15" stroke-width="2" stroke-linecap="round"/>
+  </g>
+</svg>
+
+
+⸻
+
+How to use this with your project
+	•	Make a new file like:
+examples_fest.txt
+and start it with a comment like // FESTIVAL PACK SVGs (errl_fest_*).
+	•	Paste the 1–20 errl_fest_* snippets (including the first 10 I gave earlier + these 10).
+	•	Your scene builder can then:
+	•	Load all SVGs in /svgs/fest/ or from your combined txt,
+	•	Parse data-pack="errl_fest" to group in the Assets → Festival accordion,
+	•	Use data-cat to sort into “Environment / Props / FX / UI”.
+
+When you’re ready, we can keep going with fest 21–40 (more lights, decor, crowd/camping stuff), or hop to errl_concert_* if you want to start wiring up the stage-heavy assets next.</svg>

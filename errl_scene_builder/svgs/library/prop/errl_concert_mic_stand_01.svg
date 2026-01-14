@@ -1,0 +1,11 @@
+<!-- errl_concert_mic_stand_01 – simple microphone stand (prop) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_concert" data-cat="prop" data-name="errl_concert_mic_stand_01">
+  <g fill="none">
+    <line x1="32" y1="24" x2="28" y2="30"
+      stroke="#e5e7eb" stroke-width="1.6" stroke-linecap="round"/>
+    <circle cx="33.5" cy="22.5" r="1.8" fill="#e5e7eb"/>
+    <rect x="30.5" y="30" width="3" height="12" rx="1.2" fill="#111827"/>
+    <ellipse cx="32" cy="44" rx="6" ry="2" fill="#020617" opacity="0.5"/>
+  </g>
+</svg>

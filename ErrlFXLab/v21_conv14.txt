@@ -1,0 +1,383 @@
+Heh, we’ve basically built Ableton Live but for one goo. Let’s give Errl a spritesheet export forge so you can turn captured frames into game-ready sheets + manifest. 🎨📦
+
+We’ll:
+	•	Add a Spritesheet Export panel.
+	•	Let you choose all frames vs favorites only.
+	•	Generate:
+	•	A single PNG spritesheet.
+	•	A JSON manifest mapping each cell to frame id + mode.
+
+Patch-style as always.
+
+⸻
+
+1. Add “Spritesheet Export” panel (HTML)
+
+In the right column, near Gallery / VS / Audio, add this block. Good spot: below VS Mode and above Audio Reactive.
+
+Find this chunk:
+
+      <!-- VS Mode -->
+      <div
+        id="vsSection"
+        class="border-t border-slate-800/70 px-3 py-2 text-[11px] text-slate-200"
+      >
+        ...
+      </div>
+
+      <!-- Audio Reactive Mode -->
+      <div class="border-t border-slate-800/70 px-3 py-2 text-[11px] text-slate-200">
+        ...
+      </div>
+
+Insert the new block between those two:
+
+      <!-- Spritesheet Export -->
+      <div class="border-t border-slate-800/70 px-3 py-2 text-[11px] text-slate-200">
+        <div class="flex items-center justify-between mb-1">
+          <span class="font-semibold text-slate-100">Spritesheet Export</span>
+          <span id="spritesheetStatus" class="text-[10px] text-slate-500">
+            Choose frames and export
+          </span>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2 mb-2 text-[10px] text-slate-300">
+          <label class="inline-flex items-center gap-1">
+            <input
+              type="radio"
+              name="spritesheetSource"
+              value="all"
+              checked
+              class="bg-slate-900 border-slate-600"
+              id="spritesheetSourceAll"
+            />
+            <span>All frames</span>
+          </label>
+          <label class="inline-flex items-center gap-1">
+            <input
+              type="radio"
+              name="spritesheetSource"
+              value="favorites"
+              class="bg-slate-900 border-slate-600"
+              id="spritesheetSourceFavorites"
+            />
+            <span>Favorites only</span>
+          </label>
+
+          <div class="flex items-center gap-1 ml-auto">
+            <label for="spritesheetMaxCols" class="text-slate-400">Max cols:</label>
+            <input
+              id="spritesheetMaxCols"
+              type="number"
+              min="1"
+              max="20"
+              value="8"
+              class="w-12 px-1 py-0.5 rounded-md bg-slate-950 border border-slate-700 text-[10px] text-slate-100"
+            />
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 mb-1">
+          <button
+            id="exportSpritesheetBtn"
+            class="px-2 py-1 rounded-md border border-cyan-500/70 text-cyan-200 text-[10px] hover:bg-cyan-500/15"
+          >
+            Export PNG spritesheet
+          </button>
+          <button
+            id="copySpritesheetManifestBtn"
+            class="px-2 py-1 rounded-md border border-slate-600 text-slate-200 text-[10px] hover:bg-slate-900/80"
+          >
+            Copy JSON manifest
+          </button>
+        </div>
+
+        <textarea
+          id="spritesheetManifestOutput"
+          class="w-full h-16 mt-1 bg-slate-950 border border-slate-700 rounded-md px-2 py-1 text-[10px] font-mono text-slate-100 scrollbar-thin"
+          placeholder="// Manifest will appear here after export"
+          spellcheck="false"
+        ></textarea>
+      </div>
+
+
+⸻
+
+2. Wire up DOM elements (JS)
+
+In your big DOM grab block, add:
+
+    // Spritesheet export
+    const spritesheetStatusEl = document.getElementById("spritesheetStatus");
+    const spritesheetSourceAll = document.getElementById("spritesheetSourceAll");
+    const spritesheetSourceFavorites = document.getElementById(
+      "spritesheetSourceFavorites"
+    );
+    const spritesheetMaxColsInput = document.getElementById("spritesheetMaxCols");
+    const exportSpritesheetBtn = document.getElementById("exportSpritesheetBtn");
+    const copySpritesheetManifestBtn = document.getElementById(
+      "copySpritesheetManifestBtn"
+    );
+    const spritesheetManifestOutput = document.getElementById(
+      "spritesheetManifestOutput"
+    );
+
+We’ll reuse capturedFrames for data, as before.
+
+⸻
+
+3. Spritesheet generator helper
+
+Add this helper somewhere near your session snapshot / gallery helpers:
+
+    // ---- Spritesheet export helpers ----
+    function getSpritesheetFramesSelection() {
+      const useFavorites = spritesheetSourceFavorites?.checked;
+      let frames = capturedFrames;
+
+      if (useFavorites) {
+        frames = capturedFrames.filter((f) => f.favorite);
+      }
+
+      // Only frames that still have URLs
+      frames = frames.filter((f) => !!f.url);
+
+      return frames;
+    }
+
+    function buildSpritesheet(frames, maxCols) {
+      return new Promise((resolve, reject) => {
+        if (!frames.length) {
+          reject(new Error("No frames to export."));
+          return;
+        }
+
+        // Load all images first so we know dimensions
+        const images = [];
+        let loaded = 0;
+        let failed = false;
+
+        frames.forEach((frame, index) => {
+          const img = new Image();
+          img.onload = () => {
+            if (failed) return;
+            images[index] = img;
+            loaded++;
+            if (loaded === frames.length) {
+              // Once all loaded, build the sheet
+              try {
+                const w = images[0].width || 256;
+                const h = images[0].height || 256;
+
+                const cols = Math.min(maxCols, frames.length);
+                const rows = Math.ceil(frames.length / cols);
+
+                const sheetCanvas = document.createElement("canvas");
+                sheetCanvas.width = w * cols;
+                sheetCanvas.height = h * rows;
+                const ctx = sheetCanvas.getContext("2d");
+                if (!ctx) {
+                  reject(new Error("Could not get 2D context for spritesheet."));
+                  return;
+                }
+
+                const manifest = {
+                  frameWidth: w,
+                  frameHeight: h,
+                  columns: cols,
+                  rows: rows,
+                  frames: [],
+                };
+
+                frames.forEach((frame, i) => {
+                  const col = i % cols;
+                  const row = Math.floor(i / cols);
+                  const x = col * w;
+                  const y = row * h;
+
+                  ctx.drawImage(images[i], x, y, w, h);
+
+                  manifest.frames.push({
+                    id: frame.id,
+                    source: frame.source,
+                    modeLabel: frame.modeLabel,
+                    favorite: !!frame.favorite,
+                    createdAt: frame.createdAt,
+                    x,
+                    y,
+                    width: w,
+                    height: h,
+                    col,
+                    row,
+                  });
+                });
+
+                const dataUrl = sheetCanvas.toDataURL("image/png");
+                resolve({ dataUrl, manifest });
+              } catch (err) {
+                reject(err);
+              }
+            }
+          };
+          img.onerror = () => {
+            if (failed) return;
+            failed = true;
+            reject(new Error("Failed to load one or more frame images."));
+          };
+          img.src = frame.url;
+        });
+      });
+    }
+
+This:
+	•	Loads each frame image
+	•	Determines a grid (cols up to maxCols, rows as needed)
+	•	Draws all frames into one sheet
+	•	Returns { dataUrl, manifest } with full mapping.
+
+⸻
+
+4. Export spritesheet button behavior
+
+Add this listener near your other button handlers:
+
+    exportSpritesheetBtn.addEventListener("click", async () => {
+      try {
+        const frames = getSpritesheetFramesSelection();
+        if (!frames.length) {
+          spritesheetStatusEl.textContent = "No frames to export (try capturing some).";
+          flashStatus("No frames selected for spritesheet.", "error");
+          playBeep(200, 0.1, "square");
+          return;
+        }
+
+        let maxCols = parseInt(spritesheetMaxColsInput.value, 10);
+        if (!Number.isFinite(maxCols) || maxCols <= 0) {
+          maxCols = 8;
+          spritesheetMaxColsInput.value = "8";
+        }
+
+        spritesheetStatusEl.textContent = "Building spritesheet…";
+        const { dataUrl, manifest } = await buildSpritesheet(frames, maxCols);
+
+        // Download PNG
+        const a = document.createElement("a");
+        a.href = dataUrl;
+        const dateTag = new Date().toISOString().replace(/[:.]/g, "-");
+        const subsetTag = spritesheetSourceFavorites.checked ? "favorites" : "all";
+        a.download = `errl-spritesheet-${subsetTag}-${dateTag}.png`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        // Show manifest JSON
+        const manifestJson = JSON.stringify(manifest, null, 2);
+        spritesheetManifestOutput.value = manifestJson;
+
+        spritesheetStatusEl.textContent = `Spritesheet exported (${manifest.frames.length} frames, ${manifest.columns}×${manifest.rows}).`;
+        flashStatus("Spritesheet PNG exported ✅", "info");
+        playBeep(820, 0.1, "triangle");
+      } catch (err) {
+        console.error("Spritesheet export error:", err);
+        spritesheetStatusEl.textContent = "Spritesheet export failed.";
+        flashStatus("Spritesheet export failed.", "error");
+        playBeep(200, 0.1, "square");
+      }
+    });
+
+Now clicking Export PNG spritesheet:
+	•	Takes all frames (or favorites)
+	•	Builds a sheet
+	•	Downloads it
+	•	Writes a manifest into the textarea
+
+⸻
+
+5. “Copy manifest” button
+
+Add:
+
+    copySpritesheetManifestBtn.addEventListener("click", async () => {
+      try {
+        const text =
+          spritesheetManifestOutput.value.trim() ||
+          JSON.stringify(
+            {
+              note: "No spritesheet manifest yet. Export spritesheet first.",
+            },
+            null,
+            2
+          );
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(text);
+        } else {
+          const textarea = document.createElement("textarea");
+          textarea.value = text;
+          textarea.style.position = "fixed";
+          textarea.style.left = "-9999px";
+          document.body.appendChild(textarea);
+          textarea.focus();
+          textarea.select();
+          document.execCommand("copy");
+          document.body.removeChild(textarea);
+        }
+
+        flashStatus("Spritesheet manifest copied ✅");
+        playBeep(780, 0.08, "sine");
+      } catch (err) {
+        console.error("Copy spritesheet manifest error:", err);
+        flashStatus("Could not copy spritesheet manifest.", "error");
+        playBeep(200, 0.1, "square");
+      }
+    });
+
+So you can dump the manifest straight into Obsidian, a game engine, or an agent.
+
+⸻
+
+6. (Optional) Tie manifest into Session Snapshot
+
+If you want session JSON to include the most recent spritesheet manifest, you can stash it when exporting.
+
+At the top-level globals, add:
+
+    let lastSpritesheetManifest = null;
+
+Then in the export handler, after spritesheetManifestOutput.value = manifestJson; add:
+
+        lastSpritesheetManifest = manifest;
+
+And in collectSessionSnapshot(), inside the returned object, add:
+
+        spritesheet: {
+          lastManifest: lastSpritesheetManifest,
+        },
+
+Now your session JSON is fully self-aware of:
+	•	FX config
+	•	Frames
+	•	VS
+	•	Spritesheet layout
+
+Future agents can use that to reconstruct animations or slice frames automatically.
+
+⸻
+
+What you’ve added to the lab
+
+New superpower:
+	•	Take any set of captured frames (p5 / 3D / 2D voxels).
+	•	Filter to favorites or use all.
+	•	Generate:
+	•	A single PNG spritesheet with evenly spaced tiles.
+	•	A JSON manifest listing:
+	•	Frame id
+	•	Mode (“p5 FX”, “3D Wire”, “3D Voxels”, “2D Voxels”)
+	•	Favorite flag
+	•	Cell x/y/row/col
+
+Now Errl Lab isn’t just a visual toy; it’s a content pipeline:
+
+SVG in → FX + audio-reactive visuals → captured frames →
+VS exports, sandbox HTML, session JSON, and now spritesheets ready for games / websites / animations.

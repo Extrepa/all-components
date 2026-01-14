@@ -1,0 +1,4460 @@
+{
+  "accessory": [
+    {
+      "file": "errl_accessory_backpack_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/accessory/errl_accessory_backpack_01.svg"
+    },
+    {
+      "file": "errl_accessory_bowtie_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/accessory/errl_accessory_bowtie_01.svg"
+    },
+    {
+      "file": "errl_accessory_glasses_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/accessory/errl_accessory_glasses_01.svg"
+    },
+    {
+      "file": "errl_accessory_glasses_02.svg",
+      "logicalName": null,
+      "path": "svgs/library/accessory/errl_accessory_glasses_02.svg"
+    },
+    {
+      "file": "errl_accessory_halo_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/accessory/errl_accessory_halo_01.svg"
+    },
+    {
+      "file": "errl_accessory_scarf_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/accessory/errl_accessory_scarf_01.svg"
+    }
+  ],
+  "env": [
+    {
+      "file": "errl_bg_festival_sky_01.svg",
+      "logicalName": "errl_bg_festival_sky_01",
+      "path": "svgs/library/env/errl_bg_festival_sky_01.svg"
+    },
+    {
+      "file": "errl_bg_festival_sky_flags_01.svg",
+      "logicalName": "errl_bg_festival_sky_flags_01",
+      "path": "svgs/library/env/errl_bg_festival_sky_flags_01.svg"
+    },
+    {
+      "file": "errl_bg_field_horizon_01.svg",
+      "logicalName": "errl_bg_field_horizon_01",
+      "path": "svgs/library/env/errl_bg_field_horizon_01.svg"
+    },
+    {
+      "file": "errl_bg_field_horizon_night_01.svg",
+      "logicalName": "errl_bg_field_horizon_night_01",
+      "path": "svgs/library/env/errl_bg_field_horizon_night_01.svg"
+    },
+    {
+      "file": "errl_bg_grandma_room_01.svg",
+      "logicalName": "errl_bg_grandma_room_01",
+      "path": "svgs/library/env/errl_bg_grandma_room_01.svg"
+    },
+    {
+      "file": "errl_bg_lab_panel_01.svg",
+      "logicalName": "errl_bg_lab_panel_01",
+      "path": "svgs/library/env/errl_bg_lab_panel_01.svg"
+    },
+    {
+      "file": "errl_bg_lab_panel_glow_01.svg",
+      "logicalName": "errl_bg_lab_panel_glow_01",
+      "path": "svgs/library/env/errl_bg_lab_panel_glow_01.svg"
+    },
+    {
+      "file": "errl_bg_panel_gradient_diag_01.svg",
+      "logicalName": "errl_bg_panel_gradient_diag_01",
+      "path": "svgs/library/env/errl_bg_panel_gradient_diag_01.svg"
+    },
+    {
+      "file": "errl_bg_panel_gradient_stack_01.svg",
+      "logicalName": "errl_bg_panel_gradient_stack_01",
+      "path": "svgs/library/env/errl_bg_panel_gradient_stack_01.svg"
+    },
+    {
+      "file": "errl_bg_shrine_halo_01.svg",
+      "logicalName": "errl_bg_shrine_halo_01",
+      "path": "svgs/library/env/errl_bg_shrine_halo_01.svg"
+    },
+    {
+      "file": "errl_bg_shrine_pedestal_01.svg",
+      "logicalName": "errl_bg_shrine_pedestal_01",
+      "path": "svgs/library/env/errl_bg_shrine_pedestal_01.svg"
+    },
+    {
+      "file": "errl_bg_void_panel_01.svg",
+      "logicalName": "errl_bg_void_panel_01",
+      "path": "svgs/library/env/errl_bg_void_panel_01.svg"
+    },
+    {
+      "file": "errl_bg_void_panel_orbs_01.svg",
+      "logicalName": "errl_bg_void_panel_orbs_01",
+      "path": "svgs/library/env/errl_bg_void_panel_orbs_01.svg"
+    },
+    {
+      "file": "errl_env_arch_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/env/errl_env_arch_01.svg"
+    },
+    {
+      "file": "errl_env_bush_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/env/errl_env_bush_01.svg"
+    },
+    {
+      "file": "errl_env_cloud_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/env/errl_env_cloud_01.svg"
+    },
+    {
+      "file": "errl_env_door_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/env/errl_env_door_01.svg"
+    },
+    {
+      "file": "errl_env_frame_small_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/env/errl_env_frame_small_01.svg"
+    },
+    {
+      "file": "errl_env_lamp_ceiling_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/env/errl_env_lamp_ceiling_01.svg"
+    },
+    {
+      "file": "errl_env_lamp_floor_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/env/errl_env_lamp_floor_01.svg"
+    },
+    {
+      "file": "errl_env_moon_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/env/errl_env_moon_01.svg"
+    },
+    {
+      "file": "errl_env_mountain_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/env/errl_env_mountain_01.svg"
+    },
+    {
+      "file": "errl_env_plant_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/env/errl_env_plant_01.svg"
+    },
+    {
+      "file": "errl_env_plant_02.svg",
+      "logicalName": null,
+      "path": "svgs/library/env/errl_env_plant_02.svg"
+    },
+    {
+      "file": "errl_env_poster_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/env/errl_env_poster_01.svg"
+    },
+    {
+      "file": "errl_env_rock_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/env/errl_env_rock_01.svg"
+    },
+    {
+      "file": "errl_env_rug_round_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/env/errl_env_rug_round_01.svg"
+    },
+    {
+      "file": "errl_env_shelf_wall_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/env/errl_env_shelf_wall_01.svg"
+    },
+    {
+      "file": "errl_env_shrine_base_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/env/errl_env_shrine_base_01.svg"
+    },
+    {
+      "file": "errl_env_vine_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/env/errl_env_vine_01.svg"
+    },
+    {
+      "file": "errl_env_window_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/env/errl_env_window_01.svg"
+    },
+    {
+      "file": "errl_fest_backdrop_mesh_01.svg",
+      "logicalName": "errl_fest_backdrop_mesh_01",
+      "path": "svgs/library/env/errl_fest_backdrop_mesh_01.svg"
+    },
+    {
+      "file": "errl_fest_badge_staff_lanyard_01.svg",
+      "logicalName": "errl_fest_badge_staff_lanyard_01",
+      "path": "svgs/library/env/errl_fest_badge_staff_lanyard_01.svg"
+    },
+    {
+      "file": "errl_fest_banner_vertical_01.svg",
+      "logicalName": "errl_fest_banner_vertical_01",
+      "path": "svgs/library/env/errl_fest_banner_vertical_01.svg"
+    },
+    {
+      "file": "errl_fest_banner_vertical_02.svg",
+      "logicalName": "errl_fest_banner_vertical_02",
+      "path": "svgs/library/env/errl_fest_banner_vertical_02.svg"
+    },
+    {
+      "file": "errl_fest_barrel_ice_bucket_01.svg",
+      "logicalName": "errl_fest_barrel_ice_bucket_01",
+      "path": "svgs/library/env/errl_fest_barrel_ice_bucket_01.svg"
+    },
+    {
+      "file": "errl_fest_barrel_seating_01.svg",
+      "logicalName": "errl_fest_barrel_seating_01",
+      "path": "svgs/library/env/errl_fest_barrel_seating_01.svg"
+    },
+    {
+      "file": "errl_fest_barrel_table_01.svg",
+      "logicalName": "errl_fest_barrel_table_01",
+      "path": "svgs/library/env/errl_fest_barrel_table_01.svg"
+    },
+    {
+      "file": "errl_fest_barrel_trash_pair_01.svg",
+      "logicalName": "errl_fest_barrel_trash_pair_01",
+      "path": "svgs/library/env/errl_fest_barrel_trash_pair_01.svg"
+    },
+    {
+      "file": "errl_fest_beam_cross_01.svg",
+      "logicalName": "errl_fest_beam_cross_01",
+      "path": "svgs/library/env/errl_fest_beam_cross_01.svg"
+    },
+    {
+      "file": "errl_fest_beam_fan_vertical_01.svg",
+      "logicalName": "errl_fest_beam_fan_vertical_01",
+      "path": "svgs/library/env/errl_fest_beam_fan_vertical_01.svg"
+    },
+    {
+      "file": "errl_fest_bottle_crate_icon_01.svg",
+      "logicalName": "errl_fest_bottle_crate_icon_01",
+      "path": "svgs/library/env/errl_fest_bottle_crate_icon_01.svg"
+    },
+    {
+      "file": "errl_fest_chair_icon_01.svg",
+      "logicalName": "errl_fest_chair_icon_01",
+      "path": "svgs/library/env/errl_fest_chair_icon_01.svg"
+    },
+    {
+      "file": "errl_fest_chair_stack_01.svg",
+      "logicalName": "errl_fest_chair_stack_01",
+      "path": "svgs/library/env/errl_fest_chair_stack_01.svg"
+    },
+    {
+      "file": "errl_fest_checkpoint_flag_01.svg",
+      "logicalName": "errl_fest_checkpoint_flag_01",
+      "path": "svgs/library/env/errl_fest_checkpoint_flag_01.svg"
+    },
+    {
+      "file": "errl_fest_checkpoint_flag_02.svg",
+      "logicalName": "errl_fest_checkpoint_flag_02",
+      "path": "svgs/library/env/errl_fest_checkpoint_flag_02.svg"
+    },
+    {
+      "file": "errl_fest_chill_canopy_icon_01.svg",
+      "logicalName": "errl_fest_chill_canopy_icon_01",
+      "path": "svgs/library/env/errl_fest_chill_canopy_icon_01.svg"
+    },
+    {
+      "file": "errl_fest_chill_pillow_cluster_01.svg",
+      "logicalName": "errl_fest_chill_pillow_cluster_01",
+      "path": "svgs/library/env/errl_fest_chill_pillow_cluster_01.svg"
+    },
+    {
+      "file": "errl_fest_corner_lightpost_01.svg",
+      "logicalName": "errl_fest_corner_lightpost_01",
+      "path": "svgs/library/env/errl_fest_corner_lightpost_01.svg"
+    },
+    {
+      "file": "errl_fest_crowd_gate_bar_01.svg",
+      "logicalName": "errl_fest_crowd_gate_bar_01",
+      "path": "svgs/library/env/errl_fest_crowd_gate_bar_01.svg"
+    },
+    {
+      "file": "errl_fest_crowd_gate_icon_01.svg",
+      "logicalName": "errl_fest_crowd_gate_icon_01",
+      "path": "svgs/library/env/errl_fest_crowd_gate_icon_01.svg"
+    },
+    {
+      "file": "errl_fest_crowd_gate_icon_alt_01.svg",
+      "logicalName": "errl_fest_crowd_gate_icon_alt_01",
+      "path": "svgs/library/env/errl_fest_crowd_gate_icon_alt_01.svg"
+    },
+    {
+      "file": "errl_fest_crowd_wave_fx_01.svg",
+      "logicalName": "errl_fest_crowd_wave_fx_01",
+      "path": "svgs/library/env/errl_fest_crowd_wave_fx_01.svg"
+    },
+    {
+      "file": "errl_fest_crowd_wave_fx_neon_01.svg",
+      "logicalName": "errl_fest_crowd_wave_fx_neon_01",
+      "path": "svgs/library/env/errl_fest_crowd_wave_fx_neon_01.svg"
+    },
+    {
+      "file": "errl_fest_cup_stack_01.svg",
+      "logicalName": "errl_fest_cup_stack_01",
+      "path": "svgs/library/env/errl_fest_cup_stack_01.svg"
+    },
+    {
+      "file": "errl_fest_deco_column_angled_01.svg",
+      "logicalName": "errl_fest_deco_column_angled_01",
+      "path": "svgs/library/env/errl_fest_deco_column_angled_01.svg"
+    },
+    {
+      "file": "errl_fest_deco_orb_ring_01.svg",
+      "logicalName": "errl_fest_deco_orb_ring_01",
+      "path": "svgs/library/env/errl_fest_deco_orb_ring_01.svg"
+    },
+    {
+      "file": "errl_fest_exit_pylon_01.svg",
+      "logicalName": "errl_fest_exit_pylon_01",
+      "path": "svgs/library/env/errl_fest_exit_pylon_01.svg"
+    },
+    {
+      "file": "errl_fest_exit_sign_01.svg",
+      "logicalName": "errl_fest_exit_sign_01",
+      "path": "svgs/library/env/errl_fest_exit_sign_01.svg"
+    },
+    {
+      "file": "errl_fest_fence_corner_01.svg",
+      "logicalName": "errl_fest_fence_corner_01",
+      "path": "svgs/library/env/errl_fest_fence_corner_01.svg"
+    },
+    {
+      "file": "errl_fest_fence_corner_lit_01.svg",
+      "logicalName": "errl_fest_fence_corner_lit_01",
+      "path": "svgs/library/env/errl_fest_fence_corner_lit_01.svg"
+    },
+    {
+      "file": "errl_fest_fire_circle_icon_01.svg",
+      "logicalName": "errl_fest_fire_circle_icon_01",
+      "path": "svgs/library/env/errl_fest_fire_circle_icon_01.svg"
+    },
+    {
+      "file": "errl_fest_fire_lane_marker_01.svg",
+      "logicalName": "errl_fest_fire_lane_marker_01",
+      "path": "svgs/library/env/errl_fest_fire_lane_marker_01.svg"
+    },
+    {
+      "file": "errl_fest_first_aid_icon_01.svg",
+      "logicalName": "errl_fest_first_aid_icon_01",
+      "path": "svgs/library/env/errl_fest_first_aid_icon_01.svg"
+    },
+    {
+      "file": "errl_fest_first_aid_pylon_01.svg",
+      "logicalName": "errl_fest_first_aid_pylon_01",
+      "path": "svgs/library/env/errl_fest_first_aid_pylon_01.svg"
+    },
+    {
+      "file": "errl_fest_flagpole_arch_01.svg",
+      "logicalName": "errl_fest_flagpole_arch_01",
+      "path": "svgs/library/env/errl_fest_flagpole_arch_01.svg"
+    },
+    {
+      "file": "errl_fest_foam_hand_icon_01.svg",
+      "logicalName": "errl_fest_foam_hand_icon_01",
+      "path": "svgs/library/env/errl_fest_foam_hand_icon_01.svg"
+    },
+    {
+      "file": "errl_fest_food_tray_icon_01.svg",
+      "logicalName": "errl_fest_food_tray_icon_01",
+      "path": "svgs/library/env/errl_fest_food_tray_icon_01.svg"
+    },
+    {
+      "file": "errl_fest_food_truck_01.svg",
+      "logicalName": "errl_fest_food_truck_01",
+      "path": "svgs/library/env/errl_fest_food_truck_01.svg"
+    },
+    {
+      "file": "errl_fest_gate_icon_minimap_01.svg",
+      "logicalName": "errl_fest_gate_icon_minimap_01",
+      "path": "svgs/library/env/errl_fest_gate_icon_minimap_01.svg"
+    },
+    {
+      "file": "errl_fest_gate_icon_small_01.svg",
+      "logicalName": "errl_fest_gate_icon_small_01",
+      "path": "svgs/library/env/errl_fest_gate_icon_small_01.svg"
+    },
+    {
+      "file": "errl_fest_gate_link_chain_01.svg",
+      "logicalName": "errl_fest_gate_link_chain_01",
+      "path": "svgs/library/env/errl_fest_gate_link_chain_01.svg"
+    },
+    {
+      "file": "errl_fest_gate_post_pair_01.svg",
+      "logicalName": "errl_fest_gate_post_pair_01",
+      "path": "svgs/library/env/errl_fest_gate_post_pair_01.svg"
+    },
+    {
+      "file": "errl_fest_gate_side_column_01.svg",
+      "logicalName": "errl_fest_gate_side_column_01",
+      "path": "svgs/library/env/errl_fest_gate_side_column_01.svg"
+    },
+    {
+      "file": "errl_fest_glow_column_short_01.svg",
+      "logicalName": "errl_fest_glow_column_short_01",
+      "path": "svgs/library/env/errl_fest_glow_column_short_01.svg"
+    },
+    {
+      "file": "errl_fest_ground_arrow_pair_01.svg",
+      "logicalName": "errl_fest_ground_arrow_pair_01",
+      "path": "svgs/library/env/errl_fest_ground_arrow_pair_01.svg"
+    },
+    {
+      "file": "errl_fest_ground_dust_puff_01.svg",
+      "logicalName": "errl_fest_ground_dust_puff_01",
+      "path": "svgs/library/env/errl_fest_ground_dust_puff_01.svg"
+    },
+    {
+      "file": "errl_fest_ground_marker_heart_01.svg",
+      "logicalName": "errl_fest_ground_marker_heart_01",
+      "path": "svgs/library/env/errl_fest_ground_marker_heart_01.svg"
+    },
+    {
+      "file": "errl_fest_ground_marker_star_01.svg",
+      "logicalName": "errl_fest_ground_marker_star_01",
+      "path": "svgs/library/env/errl_fest_ground_marker_star_01.svg"
+    },
+    {
+      "file": "errl_fest_ground_path_curve_01.svg",
+      "logicalName": "errl_fest_ground_path_curve_01",
+      "path": "svgs/library/env/errl_fest_ground_path_curve_01.svg"
+    },
+    {
+      "file": "errl_fest_ground_spots_01.svg",
+      "logicalName": "errl_fest_ground_spots_01",
+      "path": "svgs/library/env/errl_fest_ground_spots_01.svg"
+    },
+    {
+      "file": "errl_fest_ground_tile_01.svg",
+      "logicalName": "errl_fest_ground_tile_01",
+      "path": "svgs/library/env/errl_fest_ground_tile_01.svg"
+    },
+    {
+      "file": "errl_fest_ground_tile_02.svg",
+      "logicalName": "errl_fest_ground_tile_02",
+      "path": "svgs/library/env/errl_fest_ground_tile_02.svg"
+    },
+    {
+      "file": "errl_fest_headliner_star_icon_01.svg",
+      "logicalName": "errl_fest_headliner_star_icon_01",
+      "path": "svgs/library/env/errl_fest_headliner_star_icon_01.svg"
+    },
+    {
+      "file": "errl_fest_info_pill_small_01.svg",
+      "logicalName": "errl_fest_info_pill_small_01",
+      "path": "svgs/library/env/errl_fest_info_pill_small_01.svg"
+    },
+    {
+      "file": "errl_fest_info_pillar_glow_01.svg",
+      "logicalName": "errl_fest_info_pillar_glow_01",
+      "path": "svgs/library/env/errl_fest_info_pillar_glow_01.svg"
+    },
+    {
+      "file": "errl_fest_info_ribbon_01.svg",
+      "logicalName": "errl_fest_info_ribbon_01",
+      "path": "svgs/library/env/errl_fest_info_ribbon_01.svg"
+    },
+    {
+      "file": "errl_fest_kiosk_cube_01.svg",
+      "logicalName": "errl_fest_kiosk_cube_01",
+      "path": "svgs/library/env/errl_fest_kiosk_cube_01.svg"
+    },
+    {
+      "file": "errl_fest_lantern_path_pair_01.svg",
+      "logicalName": "errl_fest_lantern_path_pair_01",
+      "path": "svgs/library/env/errl_fest_lantern_path_pair_01.svg"
+    },
+    {
+      "file": "errl_fest_light_arch_double_01.svg",
+      "logicalName": "errl_fest_light_arch_double_01",
+      "path": "svgs/library/env/errl_fest_light_arch_double_01.svg"
+    },
+    {
+      "file": "errl_fest_light_donut_ring_01.svg",
+      "logicalName": "errl_fest_light_donut_ring_01",
+      "path": "svgs/library/env/errl_fest_light_donut_ring_01.svg"
+    },
+    {
+      "file": "errl_fest_light_donut_ring_neon_01.svg",
+      "logicalName": "errl_fest_light_donut_ring_neon_01",
+      "path": "svgs/library/env/errl_fest_light_donut_ring_neon_01.svg"
+    },
+    {
+      "file": "errl_fest_light_orb_pair_01.svg",
+      "logicalName": "errl_fest_light_orb_pair_01",
+      "path": "svgs/library/env/errl_fest_light_orb_pair_01.svg"
+    },
+    {
+      "file": "errl_fest_light_orb_triple_01.svg",
+      "logicalName": "errl_fest_light_orb_triple_01",
+      "path": "svgs/library/env/errl_fest_light_orb_triple_01.svg"
+    },
+    {
+      "file": "errl_fest_light_string_vertical_01.svg",
+      "logicalName": "errl_fest_light_string_vertical_01",
+      "path": "svgs/library/env/errl_fest_light_string_vertical_01.svg"
+    },
+    {
+      "file": "errl_fest_merch_grid_wall_01.svg",
+      "logicalName": "errl_fest_merch_grid_wall_01",
+      "path": "svgs/library/env/errl_fest_merch_grid_wall_01.svg"
+    },
+    {
+      "file": "errl_fest_minimap_node_01.svg",
+      "logicalName": "errl_fest_minimap_node_01",
+      "path": "svgs/library/env/errl_fest_minimap_node_01.svg"
+    },
+    {
+      "file": "errl_fest_minimap_node_vip_01.svg",
+      "logicalName": "errl_fest_minimap_node_vip_01",
+      "path": "svgs/library/env/errl_fest_minimap_node_vip_01.svg"
+    },
+    {
+      "file": "errl_fest_mixer_console_icon_01.svg",
+      "logicalName": "errl_fest_mixer_console_icon_01",
+      "path": "svgs/library/env/errl_fest_mixer_console_icon_01.svg"
+    },
+    {
+      "file": "errl_fest_music_note_sign_01.svg",
+      "logicalName": "errl_fest_music_note_sign_01",
+      "path": "svgs/library/env/errl_fest_music_note_sign_01.svg"
+    },
+    {
+      "file": "errl_fest_nav_pylon_01.svg",
+      "logicalName": "errl_fest_nav_pylon_01",
+      "path": "svgs/library/env/errl_fest_nav_pylon_01.svg"
+    },
+    {
+      "file": "errl_fest_orb_line_path_01.svg",
+      "logicalName": "errl_fest_orb_line_path_01",
+      "path": "svgs/library/env/errl_fest_orb_line_path_01.svg"
+    },
+    {
+      "file": "errl_fest_path_arrow_stack_01.svg",
+      "logicalName": "errl_fest_path_arrow_stack_01",
+      "path": "svgs/library/env/errl_fest_path_arrow_stack_01.svg"
+    },
+    {
+      "file": "errl_fest_path_marker_dot_row_01.svg",
+      "logicalName": "errl_fest_path_marker_dot_row_01",
+      "path": "svgs/library/env/errl_fest_path_marker_dot_row_01.svg"
+    },
+    {
+      "file": "errl_fest_path_marker_dot_row_alt_01.svg",
+      "logicalName": "errl_fest_path_marker_dot_row_alt_01",
+      "path": "svgs/library/env/errl_fest_path_marker_dot_row_alt_01.svg"
+    },
+    {
+      "file": "errl_fest_path_marker_ring_double_01.svg",
+      "logicalName": "errl_fest_path_marker_ring_double_01",
+      "path": "svgs/library/env/errl_fest_path_marker_ring_double_01.svg"
+    },
+    {
+      "file": "errl_fest_path_marker_ring_triple_01.svg",
+      "logicalName": "errl_fest_path_marker_ring_triple_01",
+      "path": "svgs/library/env/errl_fest_path_marker_ring_triple_01.svg"
+    },
+    {
+      "file": "errl_fest_pole_capsule_light_01.svg",
+      "logicalName": "errl_fest_pole_capsule_light_01",
+      "path": "svgs/library/env/errl_fest_pole_capsule_light_01.svg"
+    },
+    {
+      "file": "errl_fest_portal_circle_fx_01.svg",
+      "logicalName": "errl_fest_portal_circle_fx_01",
+      "path": "svgs/library/env/errl_fest_portal_circle_fx_01.svg"
+    },
+    {
+      "file": "errl_fest_portal_circle_fx_neon_01.svg",
+      "logicalName": "errl_fest_portal_circle_fx_neon_01",
+      "path": "svgs/library/env/errl_fest_portal_circle_fx_neon_01.svg"
+    },
+    {
+      "file": "errl_fest_poster_column_01.svg",
+      "logicalName": "errl_fest_poster_column_01",
+      "path": "svgs/library/env/errl_fest_poster_column_01.svg"
+    },
+    {
+      "file": "errl_fest_poster_strip_01.svg",
+      "logicalName": "errl_fest_poster_strip_01",
+      "path": "svgs/library/env/errl_fest_poster_strip_01.svg"
+    },
+    {
+      "file": "errl_fest_pylon_round_top_01.svg",
+      "logicalName": "errl_fest_pylon_round_top_01",
+      "path": "svgs/library/env/errl_fest_pylon_round_top_01.svg"
+    },
+    {
+      "file": "errl_fest_pylon_round_top_glow_01.svg",
+      "logicalName": "errl_fest_pylon_round_top_glow_01",
+      "path": "svgs/library/env/errl_fest_pylon_round_top_glow_01.svg"
+    },
+    {
+      "file": "errl_fest_queue_snake_01.svg",
+      "logicalName": "errl_fest_queue_snake_01",
+      "path": "svgs/library/env/errl_fest_queue_snake_01.svg"
+    },
+    {
+      "file": "errl_fest_queue_snake_02.svg",
+      "logicalName": "errl_fest_queue_snake_02",
+      "path": "svgs/library/env/errl_fest_queue_snake_02.svg"
+    },
+    {
+      "file": "errl_fest_restock_cart_01.svg",
+      "logicalName": "errl_fest_restock_cart_01",
+      "path": "svgs/library/env/errl_fest_restock_cart_01.svg"
+    },
+    {
+      "file": "errl_fest_rope_curve_high_01.svg",
+      "logicalName": "errl_fest_rope_curve_high_01",
+      "path": "svgs/library/env/errl_fest_rope_curve_high_01.svg"
+    },
+    {
+      "file": "errl_fest_rope_curve_low_01.svg",
+      "logicalName": "errl_fest_rope_curve_low_01",
+      "path": "svgs/library/env/errl_fest_rope_curve_low_01.svg"
+    },
+    {
+      "file": "errl_fest_safety_notice_sign_01.svg",
+      "logicalName": "errl_fest_safety_notice_sign_01",
+      "path": "svgs/library/env/errl_fest_safety_notice_sign_01.svg"
+    },
+    {
+      "file": "errl_fest_sign_arrow_post_01.svg",
+      "logicalName": "errl_fest_sign_arrow_post_01",
+      "path": "svgs/library/env/errl_fest_sign_arrow_post_01.svg"
+    },
+    {
+      "file": "errl_fest_sign_arrow_post_02.svg",
+      "logicalName": "errl_fest_sign_arrow_post_02",
+      "path": "svgs/library/env/errl_fest_sign_arrow_post_02.svg"
+    },
+    {
+      "file": "errl_fest_small_bar_sign_01.svg",
+      "logicalName": "errl_fest_small_bar_sign_01",
+      "path": "svgs/library/env/errl_fest_small_bar_sign_01.svg"
+    },
+    {
+      "file": "errl_fest_small_spot_box_01.svg",
+      "logicalName": "errl_fest_small_spot_box_01",
+      "path": "svgs/library/env/errl_fest_small_spot_box_01.svg"
+    },
+    {
+      "file": "errl_fest_small_stage_box_01.svg",
+      "logicalName": "errl_fest_small_stage_box_01",
+      "path": "svgs/library/env/errl_fest_small_stage_box_01.svg"
+    },
+    {
+      "file": "errl_fest_small_stage_box_light_01.svg",
+      "logicalName": "errl_fest_small_stage_box_light_01",
+      "path": "svgs/library/env/errl_fest_small_stage_box_light_01.svg"
+    },
+    {
+      "file": "errl_fest_small_stage_front_risers_01.svg",
+      "logicalName": "errl_fest_small_stage_front_risers_01",
+      "path": "svgs/library/env/errl_fest_small_stage_front_risers_01.svg"
+    },
+    {
+      "file": "errl_fest_small_water_point_01.svg",
+      "logicalName": "errl_fest_small_water_point_01",
+      "path": "svgs/library/env/errl_fest_small_water_point_01.svg"
+    },
+    {
+      "file": "errl_fest_spiral_path_marker_01.svg",
+      "logicalName": "errl_fest_spiral_path_marker_01",
+      "path": "svgs/library/env/errl_fest_spiral_path_marker_01.svg"
+    },
+    {
+      "file": "errl_fest_staff_only_chain_01.svg",
+      "logicalName": "errl_fest_staff_only_chain_01",
+      "path": "svgs/library/env/errl_fest_staff_only_chain_01.svg"
+    },
+    {
+      "file": "errl_fest_staff_radio_icon_01.svg",
+      "logicalName": "errl_fest_staff_radio_icon_01",
+      "path": "svgs/library/env/errl_fest_staff_radio_icon_01.svg"
+    },
+    {
+      "file": "errl_fest_stage_back_truss_01.svg",
+      "logicalName": "errl_fest_stage_back_truss_01",
+      "path": "svgs/library/env/errl_fest_stage_back_truss_01.svg"
+    },
+    {
+      "file": "errl_fest_stage_banner_top_01.svg",
+      "logicalName": "errl_fest_stage_banner_top_01",
+      "path": "svgs/library/env/errl_fest_stage_banner_top_01.svg"
+    },
+    {
+      "file": "errl_fest_stage_ceiling_grid_01.svg",
+      "logicalName": "errl_fest_stage_ceiling_grid_01",
+      "path": "svgs/library/env/errl_fest_stage_ceiling_grid_01.svg"
+    },
+    {
+      "file": "errl_fest_stage_edge_flags_01.svg",
+      "logicalName": "errl_fest_stage_edge_flags_01",
+      "path": "svgs/library/env/errl_fest_stage_edge_flags_01.svg"
+    },
+    {
+      "file": "errl_fest_stage_floor_glow_01.svg",
+      "logicalName": "errl_fest_stage_floor_glow_01",
+      "path": "svgs/library/env/errl_fest_stage_floor_glow_01.svg"
+    },
+    {
+      "file": "errl_fest_stage_floor_pattern_01.svg",
+      "logicalName": "errl_fest_stage_floor_pattern_01",
+      "path": "svgs/library/env/errl_fest_stage_floor_pattern_01.svg"
+    },
+    {
+      "file": "errl_fest_stage_front_rail_01.svg",
+      "logicalName": "errl_fest_stage_front_rail_01",
+      "path": "svgs/library/env/errl_fest_stage_front_rail_01.svg"
+    },
+    {
+      "file": "errl_fest_stage_icon_minimap_01.svg",
+      "logicalName": "errl_fest_stage_icon_minimap_01",
+      "path": "svgs/library/env/errl_fest_stage_icon_minimap_01.svg"
+    },
+    {
+      "file": "errl_fest_stage_side_ramp_01.svg",
+      "logicalName": "errl_fest_stage_side_ramp_01",
+      "path": "svgs/library/env/errl_fest_stage_side_ramp_01.svg"
+    },
+    {
+      "file": "errl_fest_stage_stairs_01.svg",
+      "logicalName": "errl_fest_stage_stairs_01",
+      "path": "svgs/library/env/errl_fest_stage_stairs_01.svg"
+    },
+    {
+      "file": "errl_fest_string_lights_short_01.svg",
+      "logicalName": "errl_fest_string_lights_short_01",
+      "path": "svgs/library/env/errl_fest_string_lights_short_01.svg"
+    },
+    {
+      "file": "errl_fest_string_lights_short_neon_01.svg",
+      "logicalName": "errl_fest_string_lights_short_neon_01",
+      "path": "svgs/library/env/errl_fest_string_lights_short_neon_01.svg"
+    },
+    {
+      "file": "errl_fest_tent_backdrop_panel_01.svg",
+      "logicalName": "errl_fest_tent_backdrop_panel_01",
+      "path": "svgs/library/env/errl_fest_tent_backdrop_panel_01.svg"
+    },
+    {
+      "file": "errl_fest_tent_flag_cluster_01.svg",
+      "logicalName": "errl_fest_tent_flag_cluster_01",
+      "path": "svgs/library/env/errl_fest_tent_flag_cluster_01.svg"
+    },
+    {
+      "file": "errl_fest_tent_flag_row_01.svg",
+      "logicalName": "errl_fest_tent_flag_row_01",
+      "path": "svgs/library/env/errl_fest_tent_flag_row_01.svg"
+    },
+    {
+      "file": "errl_fest_tent_flag_topper_01.svg",
+      "logicalName": "errl_fest_tent_flag_topper_01",
+      "path": "svgs/library/env/errl_fest_tent_flag_topper_01.svg"
+    },
+    {
+      "file": "errl_fest_tent_icon_chill_01.svg",
+      "logicalName": "errl_fest_tent_icon_chill_01",
+      "path": "svgs/library/env/errl_fest_tent_icon_chill_01.svg"
+    },
+    {
+      "file": "errl_fest_tent_icon_food_01.svg",
+      "logicalName": "errl_fest_tent_icon_food_01",
+      "path": "svgs/library/env/errl_fest_tent_icon_food_01.svg"
+    },
+    {
+      "file": "errl_fest_tent_icon_mainstage_01.svg",
+      "logicalName": "errl_fest_tent_icon_mainstage_01",
+      "path": "svgs/library/env/errl_fest_tent_icon_mainstage_01.svg"
+    },
+    {
+      "file": "errl_fest_tent_icon_minimap_01.svg",
+      "logicalName": "errl_fest_tent_icon_minimap_01",
+      "path": "svgs/library/env/errl_fest_tent_icon_minimap_01.svg"
+    },
+    {
+      "file": "errl_fest_tent_row_icon_01.svg",
+      "logicalName": "errl_fest_tent_row_icon_01",
+      "path": "svgs/library/env/errl_fest_tent_row_icon_01.svg"
+    },
+    {
+      "file": "errl_fest_text_pillar_01.svg",
+      "logicalName": "errl_fest_text_pillar_01",
+      "path": "svgs/library/env/errl_fest_text_pillar_01.svg"
+    },
+    {
+      "file": "errl_fest_ticket_booth_window_01.svg",
+      "logicalName": "errl_fest_ticket_booth_window_01",
+      "path": "svgs/library/env/errl_fest_ticket_booth_window_01.svg"
+    },
+    {
+      "file": "errl_fest_ticket_stub_ui_01.svg",
+      "logicalName": "errl_fest_ticket_stub_ui_01",
+      "path": "svgs/library/env/errl_fest_ticket_stub_ui_01.svg"
+    },
+    {
+      "file": "errl_fest_tower_light_duo_01.svg",
+      "logicalName": "errl_fest_tower_light_duo_01",
+      "path": "svgs/library/env/errl_fest_tower_light_duo_01.svg"
+    },
+    {
+      "file": "errl_fest_tree_fairy_lights_01.svg",
+      "logicalName": "errl_fest_tree_fairy_lights_01",
+      "path": "svgs/library/env/errl_fest_tree_fairy_lights_01.svg"
+    },
+    {
+      "file": "errl_fest_tree_pole_combo_01.svg",
+      "logicalName": "errl_fest_tree_pole_combo_01",
+      "path": "svgs/library/env/errl_fest_tree_pole_combo_01.svg"
+    },
+    {
+      "file": "errl_fest_tree_rope_banner_01.svg",
+      "logicalName": "errl_fest_tree_rope_banner_01",
+      "path": "svgs/library/env/errl_fest_tree_rope_banner_01.svg"
+    },
+    {
+      "file": "errl_fest_truss_segment_01.svg",
+      "logicalName": "errl_fest_truss_segment_01",
+      "path": "svgs/library/env/errl_fest_truss_segment_01.svg"
+    },
+    {
+      "file": "errl_fest_vip_rope_corner_01.svg",
+      "logicalName": "errl_fest_vip_rope_corner_01",
+      "path": "svgs/library/env/errl_fest_vip_rope_corner_01.svg"
+    },
+    {
+      "file": "errl_fest_warning_pill_small_01.svg",
+      "logicalName": "errl_fest_warning_pill_small_01",
+      "path": "svgs/library/env/errl_fest_warning_pill_small_01.svg"
+    },
+    {
+      "file": "errl_fest_water_jug_cluster_01.svg",
+      "logicalName": "errl_fest_water_jug_cluster_01",
+      "path": "svgs/library/env/errl_fest_water_jug_cluster_01.svg"
+    },
+    {
+      "file": "errl_fest_water_mister_01.svg",
+      "logicalName": "errl_fest_water_mister_01",
+      "path": "svgs/library/env/errl_fest_water_mister_01.svg"
+    },
+    {
+      "file": "errl_fest_wayfinder_pole_01.svg",
+      "logicalName": "errl_fest_wayfinder_pole_01",
+      "path": "svgs/library/env/errl_fest_wayfinder_pole_01.svg"
+    },
+    {
+      "file": "errl_fest_waypoint_pin_01.svg",
+      "logicalName": "errl_fest_waypoint_pin_01",
+      "path": "svgs/library/env/errl_fest_waypoint_pin_01.svg"
+    },
+    {
+      "file": "errl_fest_waypoint_pin_vip_01.svg",
+      "logicalName": "errl_fest_waypoint_pin_vip_01",
+      "path": "svgs/library/env/errl_fest_waypoint_pin_vip_01.svg"
+    },
+    {
+      "file": "errl_fest_waypoint_ring_01.svg",
+      "logicalName": "errl_fest_waypoint_ring_01",
+      "path": "svgs/library/env/errl_fest_waypoint_ring_01.svg"
+    },
+    {
+      "file": "errl_woods_backpack_01.svg",
+      "logicalName": "errl_woods_backpack_01",
+      "path": "svgs/library/env/errl_woods_backpack_01.svg"
+    },
+    {
+      "file": "errl_woods_bin_01.svg",
+      "logicalName": "errl_woods_bin_01",
+      "path": "svgs/library/env/errl_woods_bin_01.svg"
+    },
+    {
+      "file": "errl_woods_binoculars_01.svg",
+      "logicalName": "errl_woods_binoculars_01",
+      "path": "svgs/library/env/errl_woods_binoculars_01.svg"
+    },
+    {
+      "file": "errl_woods_bird_01.svg",
+      "logicalName": "errl_woods_bird_01",
+      "path": "svgs/library/env/errl_woods_bird_01.svg"
+    },
+    {
+      "file": "errl_woods_bird_02.svg",
+      "logicalName": "errl_woods_bird_02",
+      "path": "svgs/library/env/errl_woods_bird_02.svg"
+    },
+    {
+      "file": "errl_woods_branches_01.svg",
+      "logicalName": "errl_woods_branches_01",
+      "path": "svgs/library/env/errl_woods_branches_01.svg"
+    },
+    {
+      "file": "errl_woods_branches_02.svg",
+      "logicalName": "errl_woods_branches_02",
+      "path": "svgs/library/env/errl_woods_branches_02.svg"
+    },
+    {
+      "file": "errl_woods_bug_01.svg",
+      "logicalName": "errl_woods_bug_01",
+      "path": "svgs/library/env/errl_woods_bug_01.svg"
+    },
+    {
+      "file": "errl_woods_bunny_01.svg",
+      "logicalName": "errl_woods_bunny_01",
+      "path": "svgs/library/env/errl_woods_bunny_01.svg"
+    },
+    {
+      "file": "errl_woods_bush_01.svg",
+      "logicalName": "errl_woods_bush_01",
+      "path": "svgs/library/env/errl_woods_bush_01.svg"
+    },
+    {
+      "file": "errl_woods_bush_berry_01.svg",
+      "logicalName": "errl_woods_bush_berry_01",
+      "path": "svgs/library/env/errl_woods_bush_berry_01.svg"
+    },
+    {
+      "file": "errl_woods_camp_chair_01.svg",
+      "logicalName": "errl_woods_camp_chair_01",
+      "path": "svgs/library/env/errl_woods_camp_chair_01.svg"
+    },
+    {
+      "file": "errl_woods_campfire_01.svg",
+      "logicalName": "errl_woods_campfire_01",
+      "path": "svgs/library/env/errl_woods_campfire_01.svg"
+    },
+    {
+      "file": "errl_woods_campfire_02.svg",
+      "logicalName": "errl_woods_campfire_02",
+      "path": "svgs/library/env/errl_woods_campfire_02.svg"
+    },
+    {
+      "file": "errl_woods_can_01.svg",
+      "logicalName": "errl_woods_can_01",
+      "path": "svgs/library/env/errl_woods_can_01.svg"
+    },
+    {
+      "file": "errl_woods_cooler_01.svg",
+      "logicalName": "errl_woods_cooler_01",
+      "path": "svgs/library/env/errl_woods_cooler_01.svg"
+    },
+    {
+      "file": "errl_woods_crate_food_01.svg",
+      "logicalName": "errl_woods_crate_food_01",
+      "path": "svgs/library/env/errl_woods_crate_food_01.svg"
+    },
+    {
+      "file": "errl_woods_deer_01.svg",
+      "logicalName": "errl_woods_deer_01",
+      "path": "svgs/library/env/errl_woods_deer_01.svg"
+    },
+    {
+      "file": "errl_woods_errl_footprints_01.svg",
+      "logicalName": "errl_woods_errl_footprints_01",
+      "path": "svgs/library/env/errl_woods_errl_footprints_01.svg"
+    },
+    {
+      "file": "errl_woods_errl_totem_01.svg",
+      "logicalName": "errl_woods_errl_totem_01",
+      "path": "svgs/library/env/errl_woods_errl_totem_01.svg"
+    },
+    {
+      "file": "errl_woods_eyes_in_dark_01.svg",
+      "logicalName": "errl_woods_eyes_in_dark_01",
+      "path": "svgs/library/env/errl_woods_eyes_in_dark_01.svg"
+    },
+    {
+      "file": "errl_woods_fern_01.svg",
+      "logicalName": "errl_woods_fern_01",
+      "path": "svgs/library/env/errl_woods_fern_01.svg"
+    },
+    {
+      "file": "errl_woods_fern_02.svg",
+      "logicalName": "errl_woods_fern_02",
+      "path": "svgs/library/env/errl_woods_fern_02.svg"
+    },
+    {
+      "file": "errl_woods_firefly_cluster_01.svg",
+      "logicalName": "errl_woods_firefly_cluster_01",
+      "path": "svgs/library/env/errl_woods_firefly_cluster_01.svg"
+    },
+    {
+      "file": "errl_woods_firefly_cluster_02.svg",
+      "logicalName": "errl_woods_firefly_cluster_02",
+      "path": "svgs/library/env/errl_woods_firefly_cluster_02.svg"
+    },
+    {
+      "file": "errl_woods_flashlight_01.svg",
+      "logicalName": "errl_woods_flashlight_01",
+      "path": "svgs/library/env/errl_woods_flashlight_01.svg"
+    },
+    {
+      "file": "errl_woods_flower_01.svg",
+      "logicalName": "errl_woods_flower_01",
+      "path": "svgs/library/env/errl_woods_flower_01.svg"
+    },
+    {
+      "file": "errl_woods_flower_02.svg",
+      "logicalName": "errl_woods_flower_02",
+      "path": "svgs/library/env/errl_woods_flower_02.svg"
+    },
+    {
+      "file": "errl_woods_flower_patch_01.svg",
+      "logicalName": "errl_woods_flower_patch_01",
+      "path": "svgs/library/env/errl_woods_flower_patch_01.svg"
+    },
+    {
+      "file": "errl_woods_fox_01.svg",
+      "logicalName": "errl_woods_fox_01",
+      "path": "svgs/library/env/errl_woods_fox_01.svg"
+    },
+    {
+      "file": "errl_woods_glow_spores_01.svg",
+      "logicalName": "errl_woods_glow_spores_01",
+      "path": "svgs/library/env/errl_woods_glow_spores_01.svg"
+    },
+    {
+      "file": "errl_woods_goo_drip_tree_01.svg",
+      "logicalName": "errl_woods_goo_drip_tree_01",
+      "path": "svgs/library/env/errl_woods_goo_drip_tree_01.svg"
+    },
+    {
+      "file": "errl_woods_goo_puddle_woods_01.svg",
+      "logicalName": "errl_woods_goo_puddle_woods_01",
+      "path": "svgs/library/env/errl_woods_goo_puddle_woods_01.svg"
+    },
+    {
+      "file": "errl_woods_grass_ring_01.svg",
+      "logicalName": "errl_woods_grass_ring_01",
+      "path": "svgs/library/env/errl_woods_grass_ring_01.svg"
+    },
+    {
+      "file": "errl_woods_grass_tuft_01.svg",
+      "logicalName": "errl_woods_grass_tuft_01",
+      "path": "svgs/library/env/errl_woods_grass_tuft_01.svg"
+    },
+    {
+      "file": "errl_woods_grass_tuft_02.svg",
+      "logicalName": "errl_woods_grass_tuft_02",
+      "path": "svgs/library/env/errl_woods_grass_tuft_02.svg"
+    },
+    {
+      "file": "errl_woods_ground_patch_01.svg",
+      "logicalName": "errl_woods_ground_patch_01",
+      "path": "svgs/library/env/errl_woods_ground_patch_01.svg"
+    },
+    {
+      "file": "errl_woods_lantern_01.svg",
+      "logicalName": "errl_woods_lantern_01",
+      "path": "svgs/library/env/errl_woods_lantern_01.svg"
+    },
+    {
+      "file": "errl_woods_lantern_02.svg",
+      "logicalName": "errl_woods_lantern_02",
+      "path": "svgs/library/env/errl_woods_lantern_02.svg"
+    },
+    {
+      "file": "errl_woods_leaf_01.svg",
+      "logicalName": "errl_woods_leaf_01",
+      "path": "svgs/library/env/errl_woods_leaf_01.svg"
+    },
+    {
+      "file": "errl_woods_leaf_02.svg",
+      "logicalName": "errl_woods_leaf_02",
+      "path": "svgs/library/env/errl_woods_leaf_02.svg"
+    },
+    {
+      "file": "errl_woods_leaf_pile_01.svg",
+      "logicalName": "errl_woods_leaf_pile_01",
+      "path": "svgs/library/env/errl_woods_leaf_pile_01.svg"
+    },
+    {
+      "file": "errl_woods_leaf_pile_02.svg",
+      "logicalName": "errl_woods_leaf_pile_02",
+      "path": "svgs/library/env/errl_woods_leaf_pile_02.svg"
+    },
+    {
+      "file": "errl_woods_log_bench_01.svg",
+      "logicalName": "errl_woods_log_bench_01",
+      "path": "svgs/library/env/errl_woods_log_bench_01.svg"
+    },
+    {
+      "file": "errl_woods_log_seat_01.svg",
+      "logicalName": "errl_woods_log_seat_01",
+      "path": "svgs/library/env/errl_woods_log_seat_01.svg"
+    },
+    {
+      "file": "errl_woods_log_slice_01.svg",
+      "logicalName": "errl_woods_log_slice_01",
+      "path": "svgs/library/env/errl_woods_log_slice_01.svg"
+    },
+    {
+      "file": "errl_woods_map_01.svg",
+      "logicalName": "errl_woods_map_01",
+      "path": "svgs/library/env/errl_woods_map_01.svg"
+    },
+    {
+      "file": "errl_woods_mist_01.svg",
+      "logicalName": "errl_woods_mist_01",
+      "path": "svgs/library/env/errl_woods_mist_01.svg"
+    },
+    {
+      "file": "errl_woods_mist_02.svg",
+      "logicalName": "errl_woods_mist_02",
+      "path": "svgs/library/env/errl_woods_mist_02.svg"
+    },
+    {
+      "file": "errl_woods_moon_through_trees_01.svg",
+      "logicalName": "errl_woods_moon_through_trees_01",
+      "path": "svgs/library/env/errl_woods_moon_through_trees_01.svg"
+    },
+    {
+      "file": "errl_woods_moss_patch_01.svg",
+      "logicalName": "errl_woods_moss_patch_01",
+      "path": "svgs/library/env/errl_woods_moss_patch_01.svg"
+    },
+    {
+      "file": "errl_woods_moss_trail_01.svg",
+      "logicalName": "errl_woods_moss_trail_01",
+      "path": "svgs/library/env/errl_woods_moss_trail_01.svg"
+    },
+    {
+      "file": "errl_woods_mug_camp_01.svg",
+      "logicalName": "errl_woods_mug_camp_01",
+      "path": "svgs/library/env/errl_woods_mug_camp_01.svg"
+    },
+    {
+      "file": "errl_woods_mushroom_01.svg",
+      "logicalName": "errl_woods_mushroom_01",
+      "path": "svgs/library/env/errl_woods_mushroom_01.svg"
+    },
+    {
+      "file": "errl_woods_mushroom_02.svg",
+      "logicalName": "errl_woods_mushroom_02",
+      "path": "svgs/library/env/errl_woods_mushroom_02.svg"
+    },
+    {
+      "file": "errl_woods_mushroom_03.svg",
+      "logicalName": "errl_woods_mushroom_03",
+      "path": "svgs/library/env/errl_woods_mushroom_03.svg"
+    },
+    {
+      "file": "errl_woods_mushroom_cluster_01.svg",
+      "logicalName": "errl_woods_mushroom_cluster_01",
+      "path": "svgs/library/env/errl_woods_mushroom_cluster_01.svg"
+    },
+    {
+      "file": "errl_woods_mushroom_glow_cluster_02.svg",
+      "logicalName": "errl_woods_mushroom_glow_cluster_02",
+      "path": "svgs/library/env/errl_woods_mushroom_glow_cluster_02.svg"
+    },
+    {
+      "file": "errl_woods_mushroom_ring_01.svg",
+      "logicalName": "errl_woods_mushroom_ring_01",
+      "path": "svgs/library/env/errl_woods_mushroom_ring_01.svg"
+    },
+    {
+      "file": "errl_woods_owl_01.svg",
+      "logicalName": "errl_woods_owl_01",
+      "path": "svgs/library/env/errl_woods_owl_01.svg"
+    },
+    {
+      "file": "errl_woods_particles_01.svg",
+      "logicalName": "errl_woods_particles_01",
+      "path": "svgs/library/env/errl_woods_particles_01.svg"
+    },
+    {
+      "file": "errl_woods_picnic_blanket_01.svg",
+      "logicalName": "errl_woods_picnic_blanket_01",
+      "path": "svgs/library/env/errl_woods_picnic_blanket_01.svg"
+    },
+    {
+      "file": "errl_woods_roots_01.svg",
+      "logicalName": "errl_woods_roots_01",
+      "path": "svgs/library/env/errl_woods_roots_01.svg"
+    },
+    {
+      "file": "errl_woods_rope_01.svg",
+      "logicalName": "errl_woods_rope_01",
+      "path": "svgs/library/env/errl_woods_rope_01.svg"
+    },
+    {
+      "file": "errl_woods_sign_post_01.svg",
+      "logicalName": "errl_woods_sign_post_01",
+      "path": "svgs/library/env/errl_woods_sign_post_01.svg"
+    },
+    {
+      "file": "errl_woods_sign_post_02.svg",
+      "logicalName": "errl_woods_sign_post_02",
+      "path": "svgs/library/env/errl_woods_sign_post_02.svg"
+    },
+    {
+      "file": "errl_woods_sparkle_leaf_01.svg",
+      "logicalName": "errl_woods_sparkle_leaf_01",
+      "path": "svgs/library/env/errl_woods_sparkle_leaf_01.svg"
+    },
+    {
+      "file": "errl_woods_spider_01.svg",
+      "logicalName": "errl_woods_spider_01",
+      "path": "svgs/library/env/errl_woods_spider_01.svg"
+    },
+    {
+      "file": "errl_woods_star_cluster_01.svg",
+      "logicalName": "errl_woods_star_cluster_01",
+      "path": "svgs/library/env/errl_woods_star_cluster_01.svg"
+    },
+    {
+      "file": "errl_woods_stone_01.svg",
+      "logicalName": "errl_woods_stone_01",
+      "path": "svgs/library/env/errl_woods_stone_01.svg"
+    },
+    {
+      "file": "errl_woods_stone_02.svg",
+      "logicalName": "errl_woods_stone_02",
+      "path": "svgs/library/env/errl_woods_stone_02.svg"
+    },
+    {
+      "file": "errl_woods_sunbeam_01.svg",
+      "logicalName": "errl_woods_sunbeam_01",
+      "path": "svgs/library/env/errl_woods_sunbeam_01.svg"
+    },
+    {
+      "file": "errl_woods_tent_01.svg",
+      "logicalName": "errl_woods_tent_01",
+      "path": "svgs/library/env/errl_woods_tent_01.svg"
+    },
+    {
+      "file": "errl_woods_tent_02.svg",
+      "logicalName": "errl_woods_tent_02",
+      "path": "svgs/library/env/errl_woods_tent_02.svg"
+    },
+    {
+      "file": "errl_woods_thermos_01.svg",
+      "logicalName": "errl_woods_thermos_01",
+      "path": "svgs/library/env/errl_woods_thermos_01.svg"
+    },
+    {
+      "file": "errl_woods_trail_marker_01.svg",
+      "logicalName": "errl_woods_trail_marker_01",
+      "path": "svgs/library/env/errl_woods_trail_marker_01.svg"
+    },
+    {
+      "file": "errl_woods_vine_01.svg",
+      "logicalName": "errl_woods_vine_01",
+      "path": "svgs/library/env/errl_woods_vine_01.svg"
+    },
+    {
+      "file": "errl_woods_vine_02.svg",
+      "logicalName": "errl_woods_vine_02",
+      "path": "svgs/library/env/errl_woods_vine_02.svg"
+    },
+    {
+      "file": "errl_woods_walking_stick_01.svg",
+      "logicalName": "errl_woods_walking_stick_01",
+      "path": "svgs/library/env/errl_woods_walking_stick_01.svg"
+    },
+    {
+      "file": "errl_woods_web_corner_01.svg",
+      "logicalName": "errl_woods_web_corner_01",
+      "path": "svgs/library/env/errl_woods_web_corner_01.svg"
+    }
+  ],
+  "fest": [
+    {
+      "file": "errl_fest_backdrop_mesh_01.svg",
+      "logicalName": "errl_fest_backdrop_mesh_01",
+      "path": "svgs/library/fest/errl_fest_backdrop_mesh_01.svg"
+    },
+    {
+      "file": "errl_fest_badge_staff_lanyard_01.svg",
+      "logicalName": "errl_fest_badge_staff_lanyard_01",
+      "path": "svgs/library/fest/errl_fest_badge_staff_lanyard_01.svg"
+    },
+    {
+      "file": "errl_fest_banner_vertical_01.svg",
+      "logicalName": "errl_fest_banner_vertical_01",
+      "path": "svgs/library/fest/errl_fest_banner_vertical_01.svg"
+    },
+    {
+      "file": "errl_fest_banner_vertical_02.svg",
+      "logicalName": "errl_fest_banner_vertical_02",
+      "path": "svgs/library/fest/errl_fest_banner_vertical_02.svg"
+    },
+    {
+      "file": "errl_fest_barrel_ice_bucket_01.svg",
+      "logicalName": "errl_fest_barrel_ice_bucket_01",
+      "path": "svgs/library/fest/errl_fest_barrel_ice_bucket_01.svg"
+    },
+    {
+      "file": "errl_fest_barrel_seating_01.svg",
+      "logicalName": "errl_fest_barrel_seating_01",
+      "path": "svgs/library/fest/errl_fest_barrel_seating_01.svg"
+    },
+    {
+      "file": "errl_fest_barrel_table_01.svg",
+      "logicalName": "errl_fest_barrel_table_01",
+      "path": "svgs/library/fest/errl_fest_barrel_table_01.svg"
+    },
+    {
+      "file": "errl_fest_barrel_trash_pair_01.svg",
+      "logicalName": "errl_fest_barrel_trash_pair_01",
+      "path": "svgs/library/fest/errl_fest_barrel_trash_pair_01.svg"
+    },
+    {
+      "file": "errl_fest_beam_cross_01.svg",
+      "logicalName": "errl_fest_beam_cross_01",
+      "path": "svgs/library/fest/errl_fest_beam_cross_01.svg"
+    },
+    {
+      "file": "errl_fest_beam_fan_vertical_01.svg",
+      "logicalName": "errl_fest_beam_fan_vertical_01",
+      "path": "svgs/library/fest/errl_fest_beam_fan_vertical_01.svg"
+    },
+    {
+      "file": "errl_fest_bottle_crate_icon_01.svg",
+      "logicalName": "errl_fest_bottle_crate_icon_01",
+      "path": "svgs/library/fest/errl_fest_bottle_crate_icon_01.svg"
+    },
+    {
+      "file": "errl_fest_chair_icon_01.svg",
+      "logicalName": "errl_fest_chair_icon_01",
+      "path": "svgs/library/fest/errl_fest_chair_icon_01.svg"
+    },
+    {
+      "file": "errl_fest_chair_stack_01.svg",
+      "logicalName": "errl_fest_chair_stack_01",
+      "path": "svgs/library/fest/errl_fest_chair_stack_01.svg"
+    },
+    {
+      "file": "errl_fest_checkpoint_flag_01.svg",
+      "logicalName": "errl_fest_checkpoint_flag_01",
+      "path": "svgs/library/fest/errl_fest_checkpoint_flag_01.svg"
+    },
+    {
+      "file": "errl_fest_checkpoint_flag_02.svg",
+      "logicalName": "errl_fest_checkpoint_flag_02",
+      "path": "svgs/library/fest/errl_fest_checkpoint_flag_02.svg"
+    },
+    {
+      "file": "errl_fest_chill_canopy_icon_01.svg",
+      "logicalName": "errl_fest_chill_canopy_icon_01",
+      "path": "svgs/library/fest/errl_fest_chill_canopy_icon_01.svg"
+    },
+    {
+      "file": "errl_fest_chill_pillow_cluster_01.svg",
+      "logicalName": "errl_fest_chill_pillow_cluster_01",
+      "path": "svgs/library/fest/errl_fest_chill_pillow_cluster_01.svg"
+    },
+    {
+      "file": "errl_fest_corner_lightpost_01.svg",
+      "logicalName": "errl_fest_corner_lightpost_01",
+      "path": "svgs/library/fest/errl_fest_corner_lightpost_01.svg"
+    },
+    {
+      "file": "errl_fest_crowd_gate_bar_01.svg",
+      "logicalName": "errl_fest_crowd_gate_bar_01",
+      "path": "svgs/library/fest/errl_fest_crowd_gate_bar_01.svg"
+    },
+    {
+      "file": "errl_fest_crowd_gate_icon_01.svg",
+      "logicalName": "errl_fest_crowd_gate_icon_01",
+      "path": "svgs/library/fest/errl_fest_crowd_gate_icon_01.svg"
+    },
+    {
+      "file": "errl_fest_crowd_gate_icon_alt_01.svg",
+      "logicalName": "errl_fest_crowd_gate_icon_alt_01",
+      "path": "svgs/library/fest/errl_fest_crowd_gate_icon_alt_01.svg"
+    },
+    {
+      "file": "errl_fest_crowd_wave_fx_01.svg",
+      "logicalName": "errl_fest_crowd_wave_fx_01",
+      "path": "svgs/library/fest/errl_fest_crowd_wave_fx_01.svg"
+    },
+    {
+      "file": "errl_fest_crowd_wave_fx_neon_01.svg",
+      "logicalName": "errl_fest_crowd_wave_fx_neon_01",
+      "path": "svgs/library/fest/errl_fest_crowd_wave_fx_neon_01.svg"
+    },
+    {
+      "file": "errl_fest_cup_stack_01.svg",
+      "logicalName": "errl_fest_cup_stack_01",
+      "path": "svgs/library/fest/errl_fest_cup_stack_01.svg"
+    },
+    {
+      "file": "errl_fest_deco_column_angled_01.svg",
+      "logicalName": "errl_fest_deco_column_angled_01",
+      "path": "svgs/library/fest/errl_fest_deco_column_angled_01.svg"
+    },
+    {
+      "file": "errl_fest_deco_orb_ring_01.svg",
+      "logicalName": "errl_fest_deco_orb_ring_01",
+      "path": "svgs/library/fest/errl_fest_deco_orb_ring_01.svg"
+    },
+    {
+      "file": "errl_fest_exit_pylon_01.svg",
+      "logicalName": "errl_fest_exit_pylon_01",
+      "path": "svgs/library/fest/errl_fest_exit_pylon_01.svg"
+    },
+    {
+      "file": "errl_fest_exit_sign_01.svg",
+      "logicalName": "errl_fest_exit_sign_01",
+      "path": "svgs/library/fest/errl_fest_exit_sign_01.svg"
+    },
+    {
+      "file": "errl_fest_fence_corner_01.svg",
+      "logicalName": "errl_fest_fence_corner_01",
+      "path": "svgs/library/fest/errl_fest_fence_corner_01.svg"
+    },
+    {
+      "file": "errl_fest_fence_corner_lit_01.svg",
+      "logicalName": "errl_fest_fence_corner_lit_01",
+      "path": "svgs/library/fest/errl_fest_fence_corner_lit_01.svg"
+    },
+    {
+      "file": "errl_fest_fire_circle_icon_01.svg",
+      "logicalName": "errl_fest_fire_circle_icon_01",
+      "path": "svgs/library/fest/errl_fest_fire_circle_icon_01.svg"
+    },
+    {
+      "file": "errl_fest_fire_lane_marker_01.svg",
+      "logicalName": "errl_fest_fire_lane_marker_01",
+      "path": "svgs/library/fest/errl_fest_fire_lane_marker_01.svg"
+    },
+    {
+      "file": "errl_fest_first_aid_icon_01.svg",
+      "logicalName": "errl_fest_first_aid_icon_01",
+      "path": "svgs/library/fest/errl_fest_first_aid_icon_01.svg"
+    },
+    {
+      "file": "errl_fest_first_aid_pylon_01.svg",
+      "logicalName": "errl_fest_first_aid_pylon_01",
+      "path": "svgs/library/fest/errl_fest_first_aid_pylon_01.svg"
+    },
+    {
+      "file": "errl_fest_flagpole_arch_01.svg",
+      "logicalName": "errl_fest_flagpole_arch_01",
+      "path": "svgs/library/fest/errl_fest_flagpole_arch_01.svg"
+    },
+    {
+      "file": "errl_fest_foam_hand_icon_01.svg",
+      "logicalName": "errl_fest_foam_hand_icon_01",
+      "path": "svgs/library/fest/errl_fest_foam_hand_icon_01.svg"
+    },
+    {
+      "file": "errl_fest_food_tray_icon_01.svg",
+      "logicalName": "errl_fest_food_tray_icon_01",
+      "path": "svgs/library/fest/errl_fest_food_tray_icon_01.svg"
+    },
+    {
+      "file": "errl_fest_food_truck_01.svg",
+      "logicalName": "errl_fest_food_truck_01",
+      "path": "svgs/library/fest/errl_fest_food_truck_01.svg"
+    },
+    {
+      "file": "errl_fest_gate_icon_minimap_01.svg",
+      "logicalName": "errl_fest_gate_icon_minimap_01",
+      "path": "svgs/library/fest/errl_fest_gate_icon_minimap_01.svg"
+    },
+    {
+      "file": "errl_fest_gate_icon_small_01.svg",
+      "logicalName": "errl_fest_gate_icon_small_01",
+      "path": "svgs/library/fest/errl_fest_gate_icon_small_01.svg"
+    },
+    {
+      "file": "errl_fest_gate_link_chain_01.svg",
+      "logicalName": "errl_fest_gate_link_chain_01",
+      "path": "svgs/library/fest/errl_fest_gate_link_chain_01.svg"
+    },
+    {
+      "file": "errl_fest_gate_post_pair_01.svg",
+      "logicalName": "errl_fest_gate_post_pair_01",
+      "path": "svgs/library/fest/errl_fest_gate_post_pair_01.svg"
+    },
+    {
+      "file": "errl_fest_gate_side_column_01.svg",
+      "logicalName": "errl_fest_gate_side_column_01",
+      "path": "svgs/library/fest/errl_fest_gate_side_column_01.svg"
+    },
+    {
+      "file": "errl_fest_glow_column_short_01.svg",
+      "logicalName": "errl_fest_glow_column_short_01",
+      "path": "svgs/library/fest/errl_fest_glow_column_short_01.svg"
+    },
+    {
+      "file": "errl_fest_ground_arrow_pair_01.svg",
+      "logicalName": "errl_fest_ground_arrow_pair_01",
+      "path": "svgs/library/fest/errl_fest_ground_arrow_pair_01.svg"
+    },
+    {
+      "file": "errl_fest_ground_dust_puff_01.svg",
+      "logicalName": "errl_fest_ground_dust_puff_01",
+      "path": "svgs/library/fest/errl_fest_ground_dust_puff_01.svg"
+    },
+    {
+      "file": "errl_fest_ground_marker_heart_01.svg",
+      "logicalName": "errl_fest_ground_marker_heart_01",
+      "path": "svgs/library/fest/errl_fest_ground_marker_heart_01.svg"
+    },
+    {
+      "file": "errl_fest_ground_marker_star_01.svg",
+      "logicalName": "errl_fest_ground_marker_star_01",
+      "path": "svgs/library/fest/errl_fest_ground_marker_star_01.svg"
+    },
+    {
+      "file": "errl_fest_ground_path_curve_01.svg",
+      "logicalName": "errl_fest_ground_path_curve_01",
+      "path": "svgs/library/fest/errl_fest_ground_path_curve_01.svg"
+    },
+    {
+      "file": "errl_fest_ground_spots_01.svg",
+      "logicalName": "errl_fest_ground_spots_01",
+      "path": "svgs/library/fest/errl_fest_ground_spots_01.svg"
+    },
+    {
+      "file": "errl_fest_ground_tile_01.svg",
+      "logicalName": "errl_fest_ground_tile_01",
+      "path": "svgs/library/fest/errl_fest_ground_tile_01.svg"
+    },
+    {
+      "file": "errl_fest_ground_tile_02.svg",
+      "logicalName": "errl_fest_ground_tile_02",
+      "path": "svgs/library/fest/errl_fest_ground_tile_02.svg"
+    },
+    {
+      "file": "errl_fest_headliner_star_icon_01.svg",
+      "logicalName": "errl_fest_headliner_star_icon_01",
+      "path": "svgs/library/fest/errl_fest_headliner_star_icon_01.svg"
+    },
+    {
+      "file": "errl_fest_info_pill_small_01.svg",
+      "logicalName": "errl_fest_info_pill_small_01",
+      "path": "svgs/library/fest/errl_fest_info_pill_small_01.svg"
+    },
+    {
+      "file": "errl_fest_info_pillar_glow_01.svg",
+      "logicalName": "errl_fest_info_pillar_glow_01",
+      "path": "svgs/library/fest/errl_fest_info_pillar_glow_01.svg"
+    },
+    {
+      "file": "errl_fest_info_ribbon_01.svg",
+      "logicalName": "errl_fest_info_ribbon_01",
+      "path": "svgs/library/fest/errl_fest_info_ribbon_01.svg"
+    },
+    {
+      "file": "errl_fest_kiosk_cube_01.svg",
+      "logicalName": "errl_fest_kiosk_cube_01",
+      "path": "svgs/library/fest/errl_fest_kiosk_cube_01.svg"
+    },
+    {
+      "file": "errl_fest_lantern_path_pair_01.svg",
+      "logicalName": "errl_fest_lantern_path_pair_01",
+      "path": "svgs/library/fest/errl_fest_lantern_path_pair_01.svg"
+    },
+    {
+      "file": "errl_fest_light_arch_double_01.svg",
+      "logicalName": "errl_fest_light_arch_double_01",
+      "path": "svgs/library/fest/errl_fest_light_arch_double_01.svg"
+    },
+    {
+      "file": "errl_fest_light_donut_ring_01.svg",
+      "logicalName": "errl_fest_light_donut_ring_01",
+      "path": "svgs/library/fest/errl_fest_light_donut_ring_01.svg"
+    },
+    {
+      "file": "errl_fest_light_donut_ring_neon_01.svg",
+      "logicalName": "errl_fest_light_donut_ring_neon_01",
+      "path": "svgs/library/fest/errl_fest_light_donut_ring_neon_01.svg"
+    },
+    {
+      "file": "errl_fest_light_orb_pair_01.svg",
+      "logicalName": "errl_fest_light_orb_pair_01",
+      "path": "svgs/library/fest/errl_fest_light_orb_pair_01.svg"
+    },
+    {
+      "file": "errl_fest_light_orb_triple_01.svg",
+      "logicalName": "errl_fest_light_orb_triple_01",
+      "path": "svgs/library/fest/errl_fest_light_orb_triple_01.svg"
+    },
+    {
+      "file": "errl_fest_light_string_vertical_01.svg",
+      "logicalName": "errl_fest_light_string_vertical_01",
+      "path": "svgs/library/fest/errl_fest_light_string_vertical_01.svg"
+    },
+    {
+      "file": "errl_fest_merch_grid_wall_01.svg",
+      "logicalName": "errl_fest_merch_grid_wall_01",
+      "path": "svgs/library/fest/errl_fest_merch_grid_wall_01.svg"
+    },
+    {
+      "file": "errl_fest_minimap_node_01.svg",
+      "logicalName": "errl_fest_minimap_node_01",
+      "path": "svgs/library/fest/errl_fest_minimap_node_01.svg"
+    },
+    {
+      "file": "errl_fest_minimap_node_vip_01.svg",
+      "logicalName": "errl_fest_minimap_node_vip_01",
+      "path": "svgs/library/fest/errl_fest_minimap_node_vip_01.svg"
+    },
+    {
+      "file": "errl_fest_mixer_console_icon_01.svg",
+      "logicalName": "errl_fest_mixer_console_icon_01",
+      "path": "svgs/library/fest/errl_fest_mixer_console_icon_01.svg"
+    },
+    {
+      "file": "errl_fest_music_note_sign_01.svg",
+      "logicalName": "errl_fest_music_note_sign_01",
+      "path": "svgs/library/fest/errl_fest_music_note_sign_01.svg"
+    },
+    {
+      "file": "errl_fest_nav_pylon_01.svg",
+      "logicalName": "errl_fest_nav_pylon_01",
+      "path": "svgs/library/fest/errl_fest_nav_pylon_01.svg"
+    },
+    {
+      "file": "errl_fest_orb_line_path_01.svg",
+      "logicalName": "errl_fest_orb_line_path_01",
+      "path": "svgs/library/fest/errl_fest_orb_line_path_01.svg"
+    },
+    {
+      "file": "errl_fest_path_arrow_stack_01.svg",
+      "logicalName": "errl_fest_path_arrow_stack_01",
+      "path": "svgs/library/fest/errl_fest_path_arrow_stack_01.svg"
+    },
+    {
+      "file": "errl_fest_path_marker_dot_row_01.svg",
+      "logicalName": "errl_fest_path_marker_dot_row_01",
+      "path": "svgs/library/fest/errl_fest_path_marker_dot_row_01.svg"
+    },
+    {
+      "file": "errl_fest_path_marker_dot_row_alt_01.svg",
+      "logicalName": "errl_fest_path_marker_dot_row_alt_01",
+      "path": "svgs/library/fest/errl_fest_path_marker_dot_row_alt_01.svg"
+    },
+    {
+      "file": "errl_fest_path_marker_ring_double_01.svg",
+      "logicalName": "errl_fest_path_marker_ring_double_01",
+      "path": "svgs/library/fest/errl_fest_path_marker_ring_double_01.svg"
+    },
+    {
+      "file": "errl_fest_path_marker_ring_triple_01.svg",
+      "logicalName": "errl_fest_path_marker_ring_triple_01",
+      "path": "svgs/library/fest/errl_fest_path_marker_ring_triple_01.svg"
+    },
+    {
+      "file": "errl_fest_pole_capsule_light_01.svg",
+      "logicalName": "errl_fest_pole_capsule_light_01",
+      "path": "svgs/library/fest/errl_fest_pole_capsule_light_01.svg"
+    },
+    {
+      "file": "errl_fest_portal_circle_fx_01.svg",
+      "logicalName": "errl_fest_portal_circle_fx_01",
+      "path": "svgs/library/fest/errl_fest_portal_circle_fx_01.svg"
+    },
+    {
+      "file": "errl_fest_portal_circle_fx_neon_01.svg",
+      "logicalName": "errl_fest_portal_circle_fx_neon_01",
+      "path": "svgs/library/fest/errl_fest_portal_circle_fx_neon_01.svg"
+    },
+    {
+      "file": "errl_fest_poster_column_01.svg",
+      "logicalName": "errl_fest_poster_column_01",
+      "path": "svgs/library/fest/errl_fest_poster_column_01.svg"
+    },
+    {
+      "file": "errl_fest_poster_strip_01.svg",
+      "logicalName": "errl_fest_poster_strip_01",
+      "path": "svgs/library/fest/errl_fest_poster_strip_01.svg"
+    },
+    {
+      "file": "errl_fest_pylon_round_top_01.svg",
+      "logicalName": "errl_fest_pylon_round_top_01",
+      "path": "svgs/library/fest/errl_fest_pylon_round_top_01.svg"
+    },
+    {
+      "file": "errl_fest_pylon_round_top_glow_01.svg",
+      "logicalName": "errl_fest_pylon_round_top_glow_01",
+      "path": "svgs/library/fest/errl_fest_pylon_round_top_glow_01.svg"
+    },
+    {
+      "file": "errl_fest_queue_snake_01.svg",
+      "logicalName": "errl_fest_queue_snake_01",
+      "path": "svgs/library/fest/errl_fest_queue_snake_01.svg"
+    },
+    {
+      "file": "errl_fest_queue_snake_02.svg",
+      "logicalName": "errl_fest_queue_snake_02",
+      "path": "svgs/library/fest/errl_fest_queue_snake_02.svg"
+    },
+    {
+      "file": "errl_fest_restock_cart_01.svg",
+      "logicalName": "errl_fest_restock_cart_01",
+      "path": "svgs/library/fest/errl_fest_restock_cart_01.svg"
+    },
+    {
+      "file": "errl_fest_rope_curve_high_01.svg",
+      "logicalName": "errl_fest_rope_curve_high_01",
+      "path": "svgs/library/fest/errl_fest_rope_curve_high_01.svg"
+    },
+    {
+      "file": "errl_fest_rope_curve_low_01.svg",
+      "logicalName": "errl_fest_rope_curve_low_01",
+      "path": "svgs/library/fest/errl_fest_rope_curve_low_01.svg"
+    },
+    {
+      "file": "errl_fest_safety_notice_sign_01.svg",
+      "logicalName": "errl_fest_safety_notice_sign_01",
+      "path": "svgs/library/fest/errl_fest_safety_notice_sign_01.svg"
+    },
+    {
+      "file": "errl_fest_sign_arrow_post_01.svg",
+      "logicalName": "errl_fest_sign_arrow_post_01",
+      "path": "svgs/library/fest/errl_fest_sign_arrow_post_01.svg"
+    },
+    {
+      "file": "errl_fest_sign_arrow_post_02.svg",
+      "logicalName": "errl_fest_sign_arrow_post_02",
+      "path": "svgs/library/fest/errl_fest_sign_arrow_post_02.svg"
+    },
+    {
+      "file": "errl_fest_small_bar_sign_01.svg",
+      "logicalName": "errl_fest_small_bar_sign_01",
+      "path": "svgs/library/fest/errl_fest_small_bar_sign_01.svg"
+    },
+    {
+      "file": "errl_fest_small_spot_box_01.svg",
+      "logicalName": "errl_fest_small_spot_box_01",
+      "path": "svgs/library/fest/errl_fest_small_spot_box_01.svg"
+    },
+    {
+      "file": "errl_fest_small_stage_box_01.svg",
+      "logicalName": "errl_fest_small_stage_box_01",
+      "path": "svgs/library/fest/errl_fest_small_stage_box_01.svg"
+    },
+    {
+      "file": "errl_fest_small_stage_box_light_01.svg",
+      "logicalName": "errl_fest_small_stage_box_light_01",
+      "path": "svgs/library/fest/errl_fest_small_stage_box_light_01.svg"
+    },
+    {
+      "file": "errl_fest_small_stage_front_risers_01.svg",
+      "logicalName": "errl_fest_small_stage_front_risers_01",
+      "path": "svgs/library/fest/errl_fest_small_stage_front_risers_01.svg"
+    },
+    {
+      "file": "errl_fest_small_water_point_01.svg",
+      "logicalName": "errl_fest_small_water_point_01",
+      "path": "svgs/library/fest/errl_fest_small_water_point_01.svg"
+    },
+    {
+      "file": "errl_fest_spiral_path_marker_01.svg",
+      "logicalName": "errl_fest_spiral_path_marker_01",
+      "path": "svgs/library/fest/errl_fest_spiral_path_marker_01.svg"
+    },
+    {
+      "file": "errl_fest_staff_only_chain_01.svg",
+      "logicalName": "errl_fest_staff_only_chain_01",
+      "path": "svgs/library/fest/errl_fest_staff_only_chain_01.svg"
+    },
+    {
+      "file": "errl_fest_staff_radio_icon_01.svg",
+      "logicalName": "errl_fest_staff_radio_icon_01",
+      "path": "svgs/library/fest/errl_fest_staff_radio_icon_01.svg"
+    },
+    {
+      "file": "errl_fest_stage_back_truss_01.svg",
+      "logicalName": "errl_fest_stage_back_truss_01",
+      "path": "svgs/library/fest/errl_fest_stage_back_truss_01.svg"
+    },
+    {
+      "file": "errl_fest_stage_banner_top_01.svg",
+      "logicalName": "errl_fest_stage_banner_top_01",
+      "path": "svgs/library/fest/errl_fest_stage_banner_top_01.svg"
+    },
+    {
+      "file": "errl_fest_stage_ceiling_grid_01.svg",
+      "logicalName": "errl_fest_stage_ceiling_grid_01",
+      "path": "svgs/library/fest/errl_fest_stage_ceiling_grid_01.svg"
+    },
+    {
+      "file": "errl_fest_stage_edge_flags_01.svg",
+      "logicalName": "errl_fest_stage_edge_flags_01",
+      "path": "svgs/library/fest/errl_fest_stage_edge_flags_01.svg"
+    },
+    {
+      "file": "errl_fest_stage_floor_glow_01.svg",
+      "logicalName": "errl_fest_stage_floor_glow_01",
+      "path": "svgs/library/fest/errl_fest_stage_floor_glow_01.svg"
+    },
+    {
+      "file": "errl_fest_stage_floor_pattern_01.svg",
+      "logicalName": "errl_fest_stage_floor_pattern_01",
+      "path": "svgs/library/fest/errl_fest_stage_floor_pattern_01.svg"
+    },
+    {
+      "file": "errl_fest_stage_front_rail_01.svg",
+      "logicalName": "errl_fest_stage_front_rail_01",
+      "path": "svgs/library/fest/errl_fest_stage_front_rail_01.svg"
+    },
+    {
+      "file": "errl_fest_stage_icon_minimap_01.svg",
+      "logicalName": "errl_fest_stage_icon_minimap_01",
+      "path": "svgs/library/fest/errl_fest_stage_icon_minimap_01.svg"
+    },
+    {
+      "file": "errl_fest_stage_side_ramp_01.svg",
+      "logicalName": "errl_fest_stage_side_ramp_01",
+      "path": "svgs/library/fest/errl_fest_stage_side_ramp_01.svg"
+    },
+    {
+      "file": "errl_fest_stage_stairs_01.svg",
+      "logicalName": "errl_fest_stage_stairs_01",
+      "path": "svgs/library/fest/errl_fest_stage_stairs_01.svg"
+    },
+    {
+      "file": "errl_fest_string_lights_short_01.svg",
+      "logicalName": "errl_fest_string_lights_short_01",
+      "path": "svgs/library/fest/errl_fest_string_lights_short_01.svg"
+    },
+    {
+      "file": "errl_fest_string_lights_short_neon_01.svg",
+      "logicalName": "errl_fest_string_lights_short_neon_01",
+      "path": "svgs/library/fest/errl_fest_string_lights_short_neon_01.svg"
+    },
+    {
+      "file": "errl_fest_tent_backdrop_panel_01.svg",
+      "logicalName": "errl_fest_tent_backdrop_panel_01",
+      "path": "svgs/library/fest/errl_fest_tent_backdrop_panel_01.svg"
+    },
+    {
+      "file": "errl_fest_tent_flag_cluster_01.svg",
+      "logicalName": "errl_fest_tent_flag_cluster_01",
+      "path": "svgs/library/fest/errl_fest_tent_flag_cluster_01.svg"
+    },
+    {
+      "file": "errl_fest_tent_flag_row_01.svg",
+      "logicalName": "errl_fest_tent_flag_row_01",
+      "path": "svgs/library/fest/errl_fest_tent_flag_row_01.svg"
+    },
+    {
+      "file": "errl_fest_tent_flag_topper_01.svg",
+      "logicalName": "errl_fest_tent_flag_topper_01",
+      "path": "svgs/library/fest/errl_fest_tent_flag_topper_01.svg"
+    },
+    {
+      "file": "errl_fest_tent_icon_chill_01.svg",
+      "logicalName": "errl_fest_tent_icon_chill_01",
+      "path": "svgs/library/fest/errl_fest_tent_icon_chill_01.svg"
+    },
+    {
+      "file": "errl_fest_tent_icon_food_01.svg",
+      "logicalName": "errl_fest_tent_icon_food_01",
+      "path": "svgs/library/fest/errl_fest_tent_icon_food_01.svg"
+    },
+    {
+      "file": "errl_fest_tent_icon_mainstage_01.svg",
+      "logicalName": "errl_fest_tent_icon_mainstage_01",
+      "path": "svgs/library/fest/errl_fest_tent_icon_mainstage_01.svg"
+    },
+    {
+      "file": "errl_fest_tent_icon_minimap_01.svg",
+      "logicalName": "errl_fest_tent_icon_minimap_01",
+      "path": "svgs/library/fest/errl_fest_tent_icon_minimap_01.svg"
+    },
+    {
+      "file": "errl_fest_tent_row_icon_01.svg",
+      "logicalName": "errl_fest_tent_row_icon_01",
+      "path": "svgs/library/fest/errl_fest_tent_row_icon_01.svg"
+    },
+    {
+      "file": "errl_fest_text_pillar_01.svg",
+      "logicalName": "errl_fest_text_pillar_01",
+      "path": "svgs/library/fest/errl_fest_text_pillar_01.svg"
+    },
+    {
+      "file": "errl_fest_ticket_booth_window_01.svg",
+      "logicalName": "errl_fest_ticket_booth_window_01",
+      "path": "svgs/library/fest/errl_fest_ticket_booth_window_01.svg"
+    },
+    {
+      "file": "errl_fest_ticket_stub_ui_01.svg",
+      "logicalName": "errl_fest_ticket_stub_ui_01",
+      "path": "svgs/library/fest/errl_fest_ticket_stub_ui_01.svg"
+    },
+    {
+      "file": "errl_fest_tower_light_duo_01.svg",
+      "logicalName": "errl_fest_tower_light_duo_01",
+      "path": "svgs/library/fest/errl_fest_tower_light_duo_01.svg"
+    },
+    {
+      "file": "errl_fest_tree_fairy_lights_01.svg",
+      "logicalName": "errl_fest_tree_fairy_lights_01",
+      "path": "svgs/library/fest/errl_fest_tree_fairy_lights_01.svg"
+    },
+    {
+      "file": "errl_fest_tree_pole_combo_01.svg",
+      "logicalName": "errl_fest_tree_pole_combo_01",
+      "path": "svgs/library/fest/errl_fest_tree_pole_combo_01.svg"
+    },
+    {
+      "file": "errl_fest_tree_rope_banner_01.svg",
+      "logicalName": "errl_fest_tree_rope_banner_01",
+      "path": "svgs/library/fest/errl_fest_tree_rope_banner_01.svg"
+    },
+    {
+      "file": "errl_fest_truss_segment_01.svg",
+      "logicalName": "errl_fest_truss_segment_01",
+      "path": "svgs/library/fest/errl_fest_truss_segment_01.svg"
+    },
+    {
+      "file": "errl_fest_vip_rope_corner_01.svg",
+      "logicalName": "errl_fest_vip_rope_corner_01",
+      "path": "svgs/library/fest/errl_fest_vip_rope_corner_01.svg"
+    },
+    {
+      "file": "errl_fest_warning_pill_small_01.svg",
+      "logicalName": "errl_fest_warning_pill_small_01",
+      "path": "svgs/library/fest/errl_fest_warning_pill_small_01.svg"
+    },
+    {
+      "file": "errl_fest_water_jug_cluster_01.svg",
+      "logicalName": "errl_fest_water_jug_cluster_01",
+      "path": "svgs/library/fest/errl_fest_water_jug_cluster_01.svg"
+    },
+    {
+      "file": "errl_fest_water_mister_01.svg",
+      "logicalName": "errl_fest_water_mister_01",
+      "path": "svgs/library/fest/errl_fest_water_mister_01.svg"
+    },
+    {
+      "file": "errl_fest_wayfinder_pole_01.svg",
+      "logicalName": "errl_fest_wayfinder_pole_01",
+      "path": "svgs/library/fest/errl_fest_wayfinder_pole_01.svg"
+    },
+    {
+      "file": "errl_fest_waypoint_pin_01.svg",
+      "logicalName": "errl_fest_waypoint_pin_01",
+      "path": "svgs/library/fest/errl_fest_waypoint_pin_01.svg"
+    },
+    {
+      "file": "errl_fest_waypoint_pin_vip_01.svg",
+      "logicalName": "errl_fest_waypoint_pin_vip_01",
+      "path": "svgs/library/fest/errl_fest_waypoint_pin_vip_01.svg"
+    },
+    {
+      "file": "errl_fest_waypoint_ring_01.svg",
+      "logicalName": "errl_fest_waypoint_ring_01",
+      "path": "svgs/library/fest/errl_fest_waypoint_ring_01.svg"
+    }
+  ],
+  "frame": [
+    {
+      "file": "errl_frame_polaroid_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/frame/errl_frame_polaroid_01.svg"
+    },
+    {
+      "file": "errl_frame_stand_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/frame/errl_frame_stand_01.svg"
+    }
+  ],
+  "fx": [
+    {
+      "file": "errl_fx_burst_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/fx/errl_fx_burst_01.svg"
+    },
+    {
+      "file": "errl_fx_corner_drips_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/fx/errl_fx_corner_drips_01.svg"
+    },
+    {
+      "file": "errl_fx_orb_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/fx/errl_fx_orb_01.svg"
+    },
+    {
+      "file": "errl_fx_orb_cluster_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/fx/errl_fx_orb_cluster_01.svg"
+    },
+    {
+      "file": "errl_fx_particles_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/fx/errl_fx_particles_01.svg"
+    },
+    {
+      "file": "errl_fx_ring_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/fx/errl_fx_ring_01.svg"
+    },
+    {
+      "file": "errl_fx_ripple_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/fx/errl_fx_ripple_01.svg"
+    },
+    {
+      "file": "errl_fx_soft_blob_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/fx/errl_fx_soft_blob_01.svg"
+    },
+    {
+      "file": "errl_fx_sparkle_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/fx/errl_fx_sparkle_01.svg"
+    },
+    {
+      "file": "errl_fx_stars_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/fx/errl_fx_stars_01.svg"
+    },
+    {
+      "file": "errl_fx_triangles_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/fx/errl_fx_triangles_01.svg"
+    },
+    {
+      "file": "errl_fx_vignette_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/fx/errl_fx_vignette_01.svg"
+    },
+    {
+      "file": "errl_weather_cloud_layer_01.svg",
+      "logicalName": "errl_weather_cloud_layer_01",
+      "path": "svgs/library/fx/errl_weather_cloud_layer_01.svg"
+    },
+    {
+      "file": "errl_weather_cloud_moon_01.svg",
+      "logicalName": "errl_weather_cloud_moon_01",
+      "path": "svgs/library/fx/errl_weather_cloud_moon_01.svg"
+    },
+    {
+      "file": "errl_weather_cloud_row_dark_01.svg",
+      "logicalName": "errl_weather_cloud_row_dark_01",
+      "path": "svgs/library/fx/errl_weather_cloud_row_dark_01.svg"
+    },
+    {
+      "file": "errl_weather_cloud_row_small_01.svg",
+      "logicalName": "errl_weather_cloud_row_small_01",
+      "path": "svgs/library/fx/errl_weather_cloud_row_small_01.svg"
+    },
+    {
+      "file": "errl_weather_cloud_single_01.svg",
+      "logicalName": "errl_weather_cloud_single_01",
+      "path": "svgs/library/fx/errl_weather_cloud_single_01.svg"
+    },
+    {
+      "file": "errl_weather_cloud_storm_01.svg",
+      "logicalName": "errl_weather_cloud_storm_01",
+      "path": "svgs/library/fx/errl_weather_cloud_storm_01.svg"
+    },
+    {
+      "file": "errl_weather_cloud_storm_rain_01.svg",
+      "logicalName": "errl_weather_cloud_storm_rain_01",
+      "path": "svgs/library/fx/errl_weather_cloud_storm_rain_01.svg"
+    },
+    {
+      "file": "errl_weather_cloud_sun_mix_01.svg",
+      "logicalName": "errl_weather_cloud_sun_mix_01",
+      "path": "svgs/library/fx/errl_weather_cloud_sun_mix_01.svg"
+    },
+    {
+      "file": "errl_weather_drizzle_01.svg",
+      "logicalName": "errl_weather_drizzle_01",
+      "path": "svgs/library/fx/errl_weather_drizzle_01.svg"
+    },
+    {
+      "file": "errl_weather_fog_layers_01.svg",
+      "logicalName": "errl_weather_fog_layers_01",
+      "path": "svgs/library/fx/errl_weather_fog_layers_01.svg"
+    },
+    {
+      "file": "errl_weather_fog_strip_01.svg",
+      "logicalName": "errl_weather_fog_strip_01",
+      "path": "svgs/library/fx/errl_weather_fog_strip_01.svg"
+    },
+    {
+      "file": "errl_weather_hail_01.svg",
+      "logicalName": "errl_weather_hail_01",
+      "path": "svgs/library/fx/errl_weather_hail_01.svg"
+    },
+    {
+      "file": "errl_weather_horizon_band_cool_01.svg",
+      "logicalName": "errl_weather_horizon_band_cool_01",
+      "path": "svgs/library/fx/errl_weather_horizon_band_cool_01.svg"
+    },
+    {
+      "file": "errl_weather_horizon_band_warm_01.svg",
+      "logicalName": "errl_weather_horizon_band_warm_01",
+      "path": "svgs/library/fx/errl_weather_horizon_band_warm_01.svg"
+    },
+    {
+      "file": "errl_weather_horizon_glow_01.svg",
+      "logicalName": "errl_weather_horizon_glow_01",
+      "path": "svgs/library/fx/errl_weather_horizon_glow_01.svg"
+    },
+    {
+      "file": "errl_weather_lightning_icon_01.svg",
+      "logicalName": "errl_weather_lightning_icon_01",
+      "path": "svgs/library/fx/errl_weather_lightning_icon_01.svg"
+    },
+    {
+      "file": "errl_weather_mist_lines_01.svg",
+      "logicalName": "errl_weather_mist_lines_01",
+      "path": "svgs/library/fx/errl_weather_mist_lines_01.svg"
+    },
+    {
+      "file": "errl_weather_rain_cell_pair_01.svg",
+      "logicalName": "errl_weather_rain_cell_pair_01",
+      "path": "svgs/library/fx/errl_weather_rain_cell_pair_01.svg"
+    },
+    {
+      "file": "errl_weather_rain_cell_small_01.svg",
+      "logicalName": "errl_weather_rain_cell_small_01",
+      "path": "svgs/library/fx/errl_weather_rain_cell_small_01.svg"
+    },
+    {
+      "file": "errl_weather_rain_heavy_01.svg",
+      "logicalName": "errl_weather_rain_heavy_01",
+      "path": "svgs/library/fx/errl_weather_rain_heavy_01.svg"
+    },
+    {
+      "file": "errl_weather_rain_light_01.svg",
+      "logicalName": "errl_weather_rain_light_01",
+      "path": "svgs/library/fx/errl_weather_rain_light_01.svg"
+    },
+    {
+      "file": "errl_weather_rain_sun_mix_01.svg",
+      "logicalName": "errl_weather_rain_sun_mix_01",
+      "path": "svgs/library/fx/errl_weather_rain_sun_mix_01.svg"
+    },
+    {
+      "file": "errl_weather_raindrop_icon_01.svg",
+      "logicalName": "errl_weather_raindrop_icon_01",
+      "path": "svgs/library/fx/errl_weather_raindrop_icon_01.svg"
+    },
+    {
+      "file": "errl_weather_snow_fall_01.svg",
+      "logicalName": "errl_weather_snow_fall_01",
+      "path": "svgs/library/fx/errl_weather_snow_fall_01.svg"
+    },
+    {
+      "file": "errl_weather_snow_glow_01.svg",
+      "logicalName": "errl_weather_snow_glow_01",
+      "path": "svgs/library/fx/errl_weather_snow_glow_01.svg"
+    },
+    {
+      "file": "errl_weather_snowflake_icon_01.svg",
+      "logicalName": "errl_weather_snowflake_icon_01",
+      "path": "svgs/library/fx/errl_weather_snowflake_icon_01.svg"
+    },
+    {
+      "file": "errl_weather_stars_clear_01.svg",
+      "logicalName": "errl_weather_stars_clear_01",
+      "path": "svgs/library/fx/errl_weather_stars_clear_01.svg"
+    },
+    {
+      "file": "errl_weather_stars_cloudy_01.svg",
+      "logicalName": "errl_weather_stars_cloudy_01",
+      "path": "svgs/library/fx/errl_weather_stars_cloudy_01.svg"
+    },
+    {
+      "file": "errl_weather_sun_cloud_mixed_01.svg",
+      "logicalName": "errl_weather_sun_cloud_mixed_01",
+      "path": "svgs/library/fx/errl_weather_sun_cloud_mixed_01.svg"
+    },
+    {
+      "file": "errl_weather_sun_rays_01.svg",
+      "logicalName": "errl_weather_sun_rays_01",
+      "path": "svgs/library/fx/errl_weather_sun_rays_01.svg"
+    },
+    {
+      "file": "errl_weather_sun_simple_01.svg",
+      "logicalName": "errl_weather_sun_simple_01",
+      "path": "svgs/library/fx/errl_weather_sun_simple_01.svg"
+    },
+    {
+      "file": "errl_weather_sunbeam_fan_01.svg",
+      "logicalName": "errl_weather_sunbeam_fan_01",
+      "path": "svgs/library/fx/errl_weather_sunbeam_fan_01.svg"
+    },
+    {
+      "file": "errl_weather_wind_swirl_01.svg",
+      "logicalName": "errl_weather_wind_swirl_01",
+      "path": "svgs/library/fx/errl_weather_wind_swirl_01.svg"
+    },
+    {
+      "file": "errl_weather_wind_swirl_02.svg",
+      "logicalName": "errl_weather_wind_swirl_02",
+      "path": "svgs/library/fx/errl_weather_wind_swirl_02.svg"
+    }
+  ],
+  "goo": [
+    {
+      "file": "errl_goo_blob_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/goo/errl_goo_blob_01.svg"
+    },
+    {
+      "file": "errl_goo_drip_double_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/goo/errl_goo_drip_double_01.svg"
+    },
+    {
+      "file": "errl_goo_drip_side_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/goo/errl_goo_drip_side_01.svg"
+    },
+    {
+      "file": "errl_goo_drip_top_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/goo/errl_goo_drip_top_01.svg"
+    },
+    {
+      "file": "errl_goo_droplet_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/goo/errl_goo_droplet_01.svg"
+    },
+    {
+      "file": "errl_goo_puddle_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/goo/errl_goo_puddle_01.svg"
+    },
+    {
+      "file": "errl_goo_ring_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/goo/errl_goo_ring_01.svg"
+    },
+    {
+      "file": "errl_goo_splash_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/goo/errl_goo_splash_01.svg"
+    },
+    {
+      "file": "errl_goo_splat_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/goo/errl_goo_splat_01.svg"
+    },
+    {
+      "file": "errl_goo_trail_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/goo/errl_goo_trail_01.svg"
+    }
+  ],
+  "hat": [
+    {
+      "file": "errl_hat_crown_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/hat/errl_hat_crown_01.svg"
+    },
+    {
+      "file": "errl_hat_headband_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/hat/errl_hat_headband_01.svg"
+    },
+    {
+      "file": "errl_hat_party_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/hat/errl_hat_party_01.svg"
+    },
+    {
+      "file": "errl_hat_wizard_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/hat/errl_hat_wizard_01.svg"
+    }
+  ],
+  "misc": [
+    {
+      "file": "abstract_shapes.svg",
+      "logicalName": "abstract shapes",
+      "path": "svgs/library/misc/abstract_shapes.svg"
+    },
+    {
+      "file": "abstract_shapes_1.svg",
+      "logicalName": "abstract shapes",
+      "path": "svgs/library/misc/abstract_shapes_1.svg"
+    },
+    {
+      "file": "awning.svg",
+      "logicalName": "awning",
+      "path": "svgs/library/misc/awning.svg"
+    },
+    {
+      "file": "back_chair.svg",
+      "logicalName": "back chair",
+      "path": "svgs/library/misc/back_chair.svg"
+    },
+    {
+      "file": "back_tent.svg",
+      "logicalName": "back tent",
+      "path": "svgs/library/misc/back_tent.svg"
+    },
+    {
+      "file": "bar.svg",
+      "logicalName": "bar",
+      "path": "svgs/library/misc/bar.svg"
+    },
+    {
+      "file": "bar_1.svg",
+      "logicalName": "bar",
+      "path": "svgs/library/misc/bar_1.svg"
+    },
+    {
+      "file": "base.svg",
+      "logicalName": "base",
+      "path": "svgs/library/misc/base.svg"
+    },
+    {
+      "file": "base_1.svg",
+      "logicalName": "base",
+      "path": "svgs/library/misc/base_1.svg"
+    },
+    {
+      "file": "base_2.svg",
+      "logicalName": "base",
+      "path": "svgs/library/misc/base_2.svg"
+    },
+    {
+      "file": "base_3.svg",
+      "logicalName": "base",
+      "path": "svgs/library/misc/base_3.svg"
+    },
+    {
+      "file": "base_4.svg",
+      "logicalName": "base",
+      "path": "svgs/library/misc/base_4.svg"
+    },
+    {
+      "file": "base_tower.svg",
+      "logicalName": "base tower",
+      "path": "svgs/library/misc/base_tower.svg"
+    },
+    {
+      "file": "body.svg",
+      "logicalName": "body",
+      "path": "svgs/library/misc/body.svg"
+    },
+    {
+      "file": "bottom.svg",
+      "logicalName": "bottom",
+      "path": "svgs/library/misc/bottom.svg"
+    },
+    {
+      "file": "box.svg",
+      "logicalName": "box",
+      "path": "svgs/library/misc/box.svg"
+    },
+    {
+      "file": "central_performer.svg",
+      "logicalName": "central performer",
+      "path": "svgs/library/misc/central_performer.svg"
+    },
+    {
+      "file": "cords.svg",
+      "logicalName": "cords",
+      "path": "svgs/library/misc/cords.svg"
+    },
+    {
+      "file": "deck.svg",
+      "logicalName": "deck",
+      "path": "svgs/library/misc/deck.svg"
+    },
+    {
+      "file": "deck_1.svg",
+      "logicalName": "deck",
+      "path": "svgs/library/misc/deck_1.svg"
+    },
+    {
+      "file": "dome_base.svg",
+      "logicalName": "dome base",
+      "path": "svgs/library/misc/dome_base.svg"
+    },
+    {
+      "file": "dome_base_1.svg",
+      "logicalName": "dome base",
+      "path": "svgs/library/misc/dome_base_1.svg"
+    },
+    {
+      "file": "errl_fest_campfire_circle_01.svg",
+      "logicalName": "errl_fest_campfire_circle_01",
+      "path": "svgs/library/misc/errl_fest_campfire_circle_01.svg"
+    },
+    {
+      "file": "errl_fest_checkpoint_flag_01.svg",
+      "logicalName": "errl_fest_checkpoint_flag_01",
+      "path": "svgs/library/misc/errl_fest_checkpoint_flag_01.svg"
+    },
+    {
+      "file": "errl_fest_cooler_box_01.svg",
+      "logicalName": "errl_fest_cooler_box_01",
+      "path": "svgs/library/misc/errl_fest_cooler_box_01.svg"
+    },
+    {
+      "file": "errl_fest_flag_single_01.svg",
+      "logicalName": "errl_fest_flag_single_01",
+      "path": "svgs/library/misc/errl_fest_flag_single_01.svg"
+    },
+    {
+      "file": "errl_fest_ground_marker_star_01.svg",
+      "logicalName": "errl_fest_ground_marker_star_01",
+      "path": "svgs/library/misc/errl_fest_ground_marker_star_01.svg"
+    },
+    {
+      "file": "errl_fest_ground_pattern_01.svg",
+      "logicalName": "errl_fest_ground_pattern_01",
+      "path": "svgs/library/misc/errl_fest_ground_pattern_01.svg"
+    },
+    {
+      "file": "errl_fest_lantern_cluster_01.svg",
+      "logicalName": "errl_fest_lantern_cluster_01",
+      "path": "svgs/library/misc/errl_fest_lantern_cluster_01.svg"
+    },
+    {
+      "file": "errl_fest_light_donut_ring_01.svg",
+      "logicalName": "errl_fest_light_donut_ring_01",
+      "path": "svgs/library/misc/errl_fest_light_donut_ring_01.svg"
+    },
+    {
+      "file": "errl_fest_minimap_node_01.svg",
+      "logicalName": "errl_fest_minimap_node_01",
+      "path": "svgs/library/misc/errl_fest_minimap_node_01.svg"
+    },
+    {
+      "file": "errl_fest_portal_circle_fx_01.svg",
+      "logicalName": "errl_fest_portal_circle_fx_01",
+      "path": "svgs/library/misc/errl_fest_portal_circle_fx_01.svg"
+    },
+    {
+      "file": "errl_fest_spiral_path_marker_01.svg",
+      "logicalName": "errl_fest_spiral_path_marker_01",
+      "path": "svgs/library/misc/errl_fest_spiral_path_marker_01.svg"
+    },
+    {
+      "file": "errl_fest_stage_riser_01.svg",
+      "logicalName": "errl_fest_stage_riser_01",
+      "path": "svgs/library/misc/errl_fest_stage_riser_01.svg"
+    },
+    {
+      "file": "errl_fest_tent_big_top_01.svg",
+      "logicalName": "errl_fest_tent_big_top_01",
+      "path": "svgs/library/misc/errl_fest_tent_big_top_01.svg"
+    },
+    {
+      "file": "errl_fest_tent_big_top_01_1.svg",
+      "logicalName": "errl_fest_tent_big_top_01",
+      "path": "svgs/library/misc/errl_fest_tent_big_top_01_1.svg"
+    },
+    {
+      "file": "errl_fest_wayfinder_pole_01.svg",
+      "logicalName": "errl_fest_wayfinder_pole_01",
+      "path": "svgs/library/misc/errl_fest_wayfinder_pole_01.svg"
+    },
+    {
+      "file": "errl_misc_blob_friend_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/errl_misc_blob_friend_01.svg"
+    },
+    {
+      "file": "errl_misc_cube_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/errl_misc_cube_01.svg"
+    },
+    {
+      "file": "errl_misc_pyramid_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/errl_misc_pyramid_01.svg"
+    },
+    {
+      "file": "errl_misc_shadow_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/errl_misc_shadow_01.svg"
+    },
+    {
+      "file": "errl_misc_sticker_star_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/errl_misc_sticker_star_01.svg"
+    },
+    {
+      "file": "errl_misc_tape_corner_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/errl_misc_tape_corner_01.svg"
+    },
+    {
+      "file": "errl_woods_hill_02.svg",
+      "logicalName": "errl_woods_hill_02",
+      "path": "svgs/library/misc/errl_woods_hill_02.svg"
+    },
+    {
+      "file": "errl_woods_vine_01.svg",
+      "logicalName": "errl_woods_vine_01",
+      "path": "svgs/library/misc/errl_woods_vine_01.svg"
+    },
+    {
+      "file": "fake_barcode.svg",
+      "logicalName": "fake barcode",
+      "path": "svgs/library/misc/fake_barcode.svg"
+    },
+    {
+      "file": "fake_barcode_1.svg",
+      "logicalName": "fake barcode",
+      "path": "svgs/library/misc/fake_barcode_1.svg"
+    },
+    {
+      "file": "fixtures.svg",
+      "logicalName": "fixtures",
+      "path": "svgs/library/misc/fixtures.svg"
+    },
+    {
+      "file": "frame.svg",
+      "logicalName": "frame",
+      "path": "svgs/library/misc/frame.svg"
+    },
+    {
+      "file": "frame_1.svg",
+      "logicalName": "frame",
+      "path": "svgs/library/misc/frame_1.svg"
+    },
+    {
+      "file": "ground_ring.svg",
+      "logicalName": "ground ring",
+      "path": "svgs/library/misc/ground_ring.svg"
+    },
+    {
+      "file": "ground_strip.svg",
+      "logicalName": "ground strip",
+      "path": "svgs/library/misc/ground_strip.svg"
+    },
+    {
+      "file": "ground_strip_1.svg",
+      "logicalName": "ground strip",
+      "path": "svgs/library/misc/ground_strip_1.svg"
+    },
+    {
+      "file": "head.svg",
+      "logicalName": "head",
+      "path": "svgs/library/misc/head.svg"
+    },
+    {
+      "file": "icon-04zsmxyup.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-04zsmxyup.svg"
+    },
+    {
+      "file": "icon-07nzyp2ib.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-07nzyp2ib.svg"
+    },
+    {
+      "file": "icon-0qmgj1suf.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-0qmgj1suf.svg"
+    },
+    {
+      "file": "icon-0ttxg7fa9.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-0ttxg7fa9.svg"
+    },
+    {
+      "file": "icon-0z44mo5o1.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-0z44mo5o1.svg"
+    },
+    {
+      "file": "icon-11w58lkue.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-11w58lkue.svg"
+    },
+    {
+      "file": "icon-1d9vun1zt.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-1d9vun1zt.svg"
+    },
+    {
+      "file": "icon-1dnlbocr2.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-1dnlbocr2.svg"
+    },
+    {
+      "file": "icon-1esdxmjyf.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-1esdxmjyf.svg"
+    },
+    {
+      "file": "icon-1jue9vmk2.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-1jue9vmk2.svg"
+    },
+    {
+      "file": "icon-1m9zemqx4.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-1m9zemqx4.svg"
+    },
+    {
+      "file": "icon-26khjbrfe.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-26khjbrfe.svg"
+    },
+    {
+      "file": "icon-2dc4i21nj.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-2dc4i21nj.svg"
+    },
+    {
+      "file": "icon-2fo19sfkl.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-2fo19sfkl.svg"
+    },
+    {
+      "file": "icon-2hlq39ip3.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-2hlq39ip3.svg"
+    },
+    {
+      "file": "icon-2jajm0fvn.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-2jajm0fvn.svg"
+    },
+    {
+      "file": "icon-35rdr8rns.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-35rdr8rns.svg"
+    },
+    {
+      "file": "icon-3bfppezwd.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-3bfppezwd.svg"
+    },
+    {
+      "file": "icon-3i10b48dx.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-3i10b48dx.svg"
+    },
+    {
+      "file": "icon-3m5sv8srt.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-3m5sv8srt.svg"
+    },
+    {
+      "file": "icon-3oap1qdfg.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-3oap1qdfg.svg"
+    },
+    {
+      "file": "icon-3oy49eyt1.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-3oy49eyt1.svg"
+    },
+    {
+      "file": "icon-450uyb3qg.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-450uyb3qg.svg"
+    },
+    {
+      "file": "icon-468kqjykp.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-468kqjykp.svg"
+    },
+    {
+      "file": "icon-4gkypps1a.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-4gkypps1a.svg"
+    },
+    {
+      "file": "icon-4s0rzw4mp.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-4s0rzw4mp.svg"
+    },
+    {
+      "file": "icon-50sgqrnua.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-50sgqrnua.svg"
+    },
+    {
+      "file": "icon-51jxwnx2z.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-51jxwnx2z.svg"
+    },
+    {
+      "file": "icon-58nbeijsy.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-58nbeijsy.svg"
+    },
+    {
+      "file": "icon-5a7vgrjuo.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-5a7vgrjuo.svg"
+    },
+    {
+      "file": "icon-5das8bbk3.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-5das8bbk3.svg"
+    },
+    {
+      "file": "icon-5j3g7jha0.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-5j3g7jha0.svg"
+    },
+    {
+      "file": "icon-5kz0dzd1l.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-5kz0dzd1l.svg"
+    },
+    {
+      "file": "icon-5llf1upod.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-5llf1upod.svg"
+    },
+    {
+      "file": "icon-5t10kv3tk.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-5t10kv3tk.svg"
+    },
+    {
+      "file": "icon-698pnj6ma.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-698pnj6ma.svg"
+    },
+    {
+      "file": "icon-69a5625ev.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-69a5625ev.svg"
+    },
+    {
+      "file": "icon-6c04e07sd.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-6c04e07sd.svg"
+    },
+    {
+      "file": "icon-6vejqv9kh.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-6vejqv9kh.svg"
+    },
+    {
+      "file": "icon-6vppxddk7.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-6vppxddk7.svg"
+    },
+    {
+      "file": "icon-6xzruo5zx.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-6xzruo5zx.svg"
+    },
+    {
+      "file": "icon-7iv8o62nw.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-7iv8o62nw.svg"
+    },
+    {
+      "file": "icon-7qq2fsj83.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-7qq2fsj83.svg"
+    },
+    {
+      "file": "icon-83evfvf01.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-83evfvf01.svg"
+    },
+    {
+      "file": "icon-8gdl5ac7w.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-8gdl5ac7w.svg"
+    },
+    {
+      "file": "icon-8ij02u762.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-8ij02u762.svg"
+    },
+    {
+      "file": "icon-8p46akoq5.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-8p46akoq5.svg"
+    },
+    {
+      "file": "icon-91mo1g3jh.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-91mo1g3jh.svg"
+    },
+    {
+      "file": "icon-9amhn86a3.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-9amhn86a3.svg"
+    },
+    {
+      "file": "icon-9gghgxccn.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-9gghgxccn.svg"
+    },
+    {
+      "file": "icon-9gi9k48lt.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-9gi9k48lt.svg"
+    },
+    {
+      "file": "icon-9l5rlf13t.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-9l5rlf13t.svg"
+    },
+    {
+      "file": "icon-9uz6lxg7b.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-9uz6lxg7b.svg"
+    },
+    {
+      "file": "icon-aacp4h85h.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-aacp4h85h.svg"
+    },
+    {
+      "file": "icon-ayevkbflt.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-ayevkbflt.svg"
+    },
+    {
+      "file": "icon-b6jcvd92b.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-b6jcvd92b.svg"
+    },
+    {
+      "file": "icon-brh6wmzt3.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-brh6wmzt3.svg"
+    },
+    {
+      "file": "icon-brqznhk54.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-brqznhk54.svg"
+    },
+    {
+      "file": "icon-bzfdr7hn6.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-bzfdr7hn6.svg"
+    },
+    {
+      "file": "icon-c15ipcskr.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-c15ipcskr.svg"
+    },
+    {
+      "file": "icon-c4lu5eceh.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-c4lu5eceh.svg"
+    },
+    {
+      "file": "icon-caszbqr50.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-caszbqr50.svg"
+    },
+    {
+      "file": "icon-cavagnus2.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-cavagnus2.svg"
+    },
+    {
+      "file": "icon-cijxwi5o2.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-cijxwi5o2.svg"
+    },
+    {
+      "file": "icon-cj36rujp1.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-cj36rujp1.svg"
+    },
+    {
+      "file": "icon-cm7dbsmje.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-cm7dbsmje.svg"
+    },
+    {
+      "file": "icon-cpyjwjkh6.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-cpyjwjkh6.svg"
+    },
+    {
+      "file": "icon-crw3m64wm.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-crw3m64wm.svg"
+    },
+    {
+      "file": "icon-d3xzy56v4.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-d3xzy56v4.svg"
+    },
+    {
+      "file": "icon-d51ig0bgv.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-d51ig0bgv.svg"
+    },
+    {
+      "file": "icon-d6eh2osvc.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-d6eh2osvc.svg"
+    },
+    {
+      "file": "icon-dotduyl3m.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-dotduyl3m.svg"
+    },
+    {
+      "file": "icon-dq5paju9l.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-dq5paju9l.svg"
+    },
+    {
+      "file": "icon-dtn7cfudg.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-dtn7cfudg.svg"
+    },
+    {
+      "file": "icon-dukch5pex.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-dukch5pex.svg"
+    },
+    {
+      "file": "icon-e84tu2og7.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-e84tu2og7.svg"
+    },
+    {
+      "file": "icon-egw5lb18o.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-egw5lb18o.svg"
+    },
+    {
+      "file": "icon-esedsd8qa.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-esedsd8qa.svg"
+    },
+    {
+      "file": "icon-exue0shux.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-exue0shux.svg"
+    },
+    {
+      "file": "icon-f5fo8ic3x.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-f5fo8ic3x.svg"
+    },
+    {
+      "file": "icon-f7fycifoj.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-f7fycifoj.svg"
+    },
+    {
+      "file": "icon-f82rxc4ql.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-f82rxc4ql.svg"
+    },
+    {
+      "file": "icon-f941nug8n.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-f941nug8n.svg"
+    },
+    {
+      "file": "icon-fdtvi39q3.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-fdtvi39q3.svg"
+    },
+    {
+      "file": "icon-fkw2wx3ae.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-fkw2wx3ae.svg"
+    },
+    {
+      "file": "icon-fmw3vnqa6.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-fmw3vnqa6.svg"
+    },
+    {
+      "file": "icon-fnfv3c631.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-fnfv3c631.svg"
+    },
+    {
+      "file": "icon-g0gr3b5tw.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-g0gr3b5tw.svg"
+    },
+    {
+      "file": "icon-gee4dj061.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-gee4dj061.svg"
+    },
+    {
+      "file": "icon-gfztofxi5.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-gfztofxi5.svg"
+    },
+    {
+      "file": "icon-gh0cwlmvk.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-gh0cwlmvk.svg"
+    },
+    {
+      "file": "icon-glgkifjhm.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-glgkifjhm.svg"
+    },
+    {
+      "file": "icon-h06ldyyl1.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-h06ldyyl1.svg"
+    },
+    {
+      "file": "icon-h4bzphizz.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-h4bzphizz.svg"
+    },
+    {
+      "file": "icon-hb27wmjfk.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-hb27wmjfk.svg"
+    },
+    {
+      "file": "icon-hbme69nsn.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-hbme69nsn.svg"
+    },
+    {
+      "file": "icon-hzgdczjwi.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-hzgdczjwi.svg"
+    },
+    {
+      "file": "icon-i550bza44.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-i550bza44.svg"
+    },
+    {
+      "file": "icon-i8p51zowj.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-i8p51zowj.svg"
+    },
+    {
+      "file": "icon-iiwq290ix.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-iiwq290ix.svg"
+    },
+    {
+      "file": "icon-iksajc1li.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-iksajc1li.svg"
+    },
+    {
+      "file": "icon-ilanava1q.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-ilanava1q.svg"
+    },
+    {
+      "file": "icon-injifj07u.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-injifj07u.svg"
+    },
+    {
+      "file": "icon-iwgc9kzsw.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-iwgc9kzsw.svg"
+    },
+    {
+      "file": "icon-jfyvng7ht.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-jfyvng7ht.svg"
+    },
+    {
+      "file": "icon-jgo8zsa82.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-jgo8zsa82.svg"
+    },
+    {
+      "file": "icon-jlderiglq.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-jlderiglq.svg"
+    },
+    {
+      "file": "icon-jri2oa3jf.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-jri2oa3jf.svg"
+    },
+    {
+      "file": "icon-jrncromz0.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-jrncromz0.svg"
+    },
+    {
+      "file": "icon-k0chi2gl3.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-k0chi2gl3.svg"
+    },
+    {
+      "file": "icon-k0gxubal0.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-k0gxubal0.svg"
+    },
+    {
+      "file": "icon-k7f71jv6m.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-k7f71jv6m.svg"
+    },
+    {
+      "file": "icon-k9fwxezuh.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-k9fwxezuh.svg"
+    },
+    {
+      "file": "icon-ki46nblfk.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-ki46nblfk.svg"
+    },
+    {
+      "file": "icon-kj0osasqi.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-kj0osasqi.svg"
+    },
+    {
+      "file": "icon-kongwg8i1.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-kongwg8i1.svg"
+    },
+    {
+      "file": "icon-kvmyqggia.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-kvmyqggia.svg"
+    },
+    {
+      "file": "icon-ly8aikr2g.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-ly8aikr2g.svg"
+    },
+    {
+      "file": "icon-m5lsgjf6e.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-m5lsgjf6e.svg"
+    },
+    {
+      "file": "icon-mjacjrvx8.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-mjacjrvx8.svg"
+    },
+    {
+      "file": "icon-mpgeqqjdz.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-mpgeqqjdz.svg"
+    },
+    {
+      "file": "icon-mq4corplp.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-mq4corplp.svg"
+    },
+    {
+      "file": "icon-mttvjswmh.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-mttvjswmh.svg"
+    },
+    {
+      "file": "icon-mzw1bdnsp.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-mzw1bdnsp.svg"
+    },
+    {
+      "file": "icon-n0nd5449e.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-n0nd5449e.svg"
+    },
+    {
+      "file": "icon-n85m50wz6.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-n85m50wz6.svg"
+    },
+    {
+      "file": "icon-nauesi635.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-nauesi635.svg"
+    },
+    {
+      "file": "icon-navqer7oi.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-navqer7oi.svg"
+    },
+    {
+      "file": "icon-nbrhnog8s.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-nbrhnog8s.svg"
+    },
+    {
+      "file": "icon-nm806k19z.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-nm806k19z.svg"
+    },
+    {
+      "file": "icon-o32woycqm.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-o32woycqm.svg"
+    },
+    {
+      "file": "icon-o5hsjo5it.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-o5hsjo5it.svg"
+    },
+    {
+      "file": "icon-oetfhymln.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-oetfhymln.svg"
+    },
+    {
+      "file": "icon-oiozlxwzv.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-oiozlxwzv.svg"
+    },
+    {
+      "file": "icon-orp85gs77.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-orp85gs77.svg"
+    },
+    {
+      "file": "icon-p061rkkyr.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-p061rkkyr.svg"
+    },
+    {
+      "file": "icon-pc33drmpg.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-pc33drmpg.svg"
+    },
+    {
+      "file": "icon-pnttkub67.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-pnttkub67.svg"
+    },
+    {
+      "file": "icon-px4aeg4k4.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-px4aeg4k4.svg"
+    },
+    {
+      "file": "icon-q0yyzk3w8.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-q0yyzk3w8.svg"
+    },
+    {
+      "file": "icon-qawntwot5.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-qawntwot5.svg"
+    },
+    {
+      "file": "icon-qh5nc39cw.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-qh5nc39cw.svg"
+    },
+    {
+      "file": "icon-qmmgez08k.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-qmmgez08k.svg"
+    },
+    {
+      "file": "icon-qnsa23cs7.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-qnsa23cs7.svg"
+    },
+    {
+      "file": "icon-quvk072o0.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-quvk072o0.svg"
+    },
+    {
+      "file": "icon-r2jbqcnhi.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-r2jbqcnhi.svg"
+    },
+    {
+      "file": "icon-r63drknmi.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-r63drknmi.svg"
+    },
+    {
+      "file": "icon-r77xv8qwn.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-r77xv8qwn.svg"
+    },
+    {
+      "file": "icon-raugg638m.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-raugg638m.svg"
+    },
+    {
+      "file": "icon-rb8h2ju2b.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-rb8h2ju2b.svg"
+    },
+    {
+      "file": "icon-rslb3zyay.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-rslb3zyay.svg"
+    },
+    {
+      "file": "icon-rswd1nmps.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-rswd1nmps.svg"
+    },
+    {
+      "file": "icon-s5spjkh1g.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-s5spjkh1g.svg"
+    },
+    {
+      "file": "icon-snpxzukxd.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-snpxzukxd.svg"
+    },
+    {
+      "file": "icon-soh1rzspe.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-soh1rzspe.svg"
+    },
+    {
+      "file": "icon-suxfo429p.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-suxfo429p.svg"
+    },
+    {
+      "file": "icon-ta5qe2x27.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-ta5qe2x27.svg"
+    },
+    {
+      "file": "icon-tjpv9aju4.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-tjpv9aju4.svg"
+    },
+    {
+      "file": "icon-tpinwom13.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-tpinwom13.svg"
+    },
+    {
+      "file": "icon-u6t5b5qsp.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-u6t5b5qsp.svg"
+    },
+    {
+      "file": "icon-ua4i4qlmn.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-ua4i4qlmn.svg"
+    },
+    {
+      "file": "icon-udy5g4ieh.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-udy5g4ieh.svg"
+    },
+    {
+      "file": "icon-uikm77sbn.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-uikm77sbn.svg"
+    },
+    {
+      "file": "icon-uld9v5lca.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-uld9v5lca.svg"
+    },
+    {
+      "file": "icon-us4wpnhxd.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-us4wpnhxd.svg"
+    },
+    {
+      "file": "icon-uvddvlcfd.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-uvddvlcfd.svg"
+    },
+    {
+      "file": "icon-v4dzv467g.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-v4dzv467g.svg"
+    },
+    {
+      "file": "icon-v9ap66edj.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-v9ap66edj.svg"
+    },
+    {
+      "file": "icon-vc8f6rwil.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-vc8f6rwil.svg"
+    },
+    {
+      "file": "icon-vdk5y9jb3.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-vdk5y9jb3.svg"
+    },
+    {
+      "file": "icon-vq7icj6l7.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-vq7icj6l7.svg"
+    },
+    {
+      "file": "icon-vzewg327e.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-vzewg327e.svg"
+    },
+    {
+      "file": "icon-w8cl397mt.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-w8cl397mt.svg"
+    },
+    {
+      "file": "icon-wkjes96ry.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-wkjes96ry.svg"
+    },
+    {
+      "file": "icon-x04cvard0.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-x04cvard0.svg"
+    },
+    {
+      "file": "icon-x27yqexm3.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-x27yqexm3.svg"
+    },
+    {
+      "file": "icon-xfikcscu6.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-xfikcscu6.svg"
+    },
+    {
+      "file": "icon-xistabddj.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-xistabddj.svg"
+    },
+    {
+      "file": "icon-xkazr0j59.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-xkazr0j59.svg"
+    },
+    {
+      "file": "icon-xl804s4h9.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-xl804s4h9.svg"
+    },
+    {
+      "file": "icon-xr03ng2a5.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-xr03ng2a5.svg"
+    },
+    {
+      "file": "icon-xvspl639f.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-xvspl639f.svg"
+    },
+    {
+      "file": "icon-y4xdesikm.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-y4xdesikm.svg"
+    },
+    {
+      "file": "icon-y5k16x4xa.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-y5k16x4xa.svg"
+    },
+    {
+      "file": "icon-yhyi1gflo.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-yhyi1gflo.svg"
+    },
+    {
+      "file": "icon-yi1w5fv6g.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-yi1w5fv6g.svg"
+    },
+    {
+      "file": "icon-yije9yvs0.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-yije9yvs0.svg"
+    },
+    {
+      "file": "icon-ytmjb6hpz.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-ytmjb6hpz.svg"
+    },
+    {
+      "file": "icon-yxbynyoi2.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-yxbynyoi2.svg"
+    },
+    {
+      "file": "icon-yxyvl202o.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-yxyvl202o.svg"
+    },
+    {
+      "file": "icon-zj968u356.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-zj968u356.svg"
+    },
+    {
+      "file": "icon-zx08tucco.svg",
+      "logicalName": null,
+      "path": "svgs/library/misc/icon-zx08tucco.svg"
+    },
+    {
+      "file": "lanyard.svg",
+      "logicalName": "lanyard",
+      "path": "svgs/library/misc/lanyard.svg"
+    },
+    {
+      "file": "lanyard_1.svg",
+      "logicalName": "lanyard",
+      "path": "svgs/library/misc/lanyard_1.svg"
+    },
+    {
+      "file": "left.svg",
+      "logicalName": "left",
+      "path": "svgs/library/misc/left.svg"
+    },
+    {
+      "file": "left_1.svg",
+      "logicalName": "left",
+      "path": "svgs/library/misc/left_1.svg"
+    },
+    {
+      "file": "left_post.svg",
+      "logicalName": "left post",
+      "path": "svgs/library/misc/left_post.svg"
+    },
+    {
+      "file": "left_post_1.svg",
+      "logicalName": "left post",
+      "path": "svgs/library/misc/left_post_1.svg"
+    },
+    {
+      "file": "little_tray_food_glyph.svg",
+      "logicalName": "little tray / food glyph",
+      "path": "svgs/library/misc/little_tray_food_glyph.svg"
+    },
+    {
+      "file": "main_rug.svg",
+      "logicalName": "main rug",
+      "path": "svgs/library/misc/main_rug.svg"
+    },
+    {
+      "file": "main_rug_1.svg",
+      "logicalName": "main rug",
+      "path": "svgs/library/misc/main_rug_1.svg"
+    },
+    {
+      "file": "mist.svg",
+      "logicalName": "mist",
+      "path": "svgs/library/misc/mist.svg"
+    },
+    {
+      "file": "optional_edge_lines.svg",
+      "logicalName": "optional edge lines",
+      "path": "svgs/library/misc/optional_edge_lines.svg"
+    },
+    {
+      "file": "origin_at_bottom_center.svg",
+      "logicalName": "origin at bottom center",
+      "path": "svgs/library/misc/origin_at_bottom_center.svg"
+    },
+    {
+      "file": "panel.svg",
+      "logicalName": "panel",
+      "path": "svgs/library/misc/panel.svg"
+    },
+    {
+      "file": "pole.svg",
+      "logicalName": "pole",
+      "path": "svgs/library/misc/pole.svg"
+    },
+    {
+      "file": "pole_1.svg",
+      "logicalName": "pole",
+      "path": "svgs/library/misc/pole_1.svg"
+    },
+    {
+      "file": "pole_2.svg",
+      "logicalName": "pole",
+      "path": "svgs/library/misc/pole_2.svg"
+    },
+    {
+      "file": "pole_3.svg",
+      "logicalName": "pole",
+      "path": "svgs/library/misc/pole_3.svg"
+    },
+    {
+      "file": "pole_4.svg",
+      "logicalName": "pole",
+      "path": "svgs/library/misc/pole_4.svg"
+    },
+    {
+      "file": "poles.svg",
+      "logicalName": "poles",
+      "path": "svgs/library/misc/poles.svg"
+    },
+    {
+      "file": "poles_1.svg",
+      "logicalName": "poles",
+      "path": "svgs/library/misc/poles_1.svg"
+    },
+    {
+      "file": "poles_2.svg",
+      "logicalName": "poles",
+      "path": "svgs/library/misc/poles_2.svg"
+    },
+    {
+      "file": "post.svg",
+      "logicalName": "post",
+      "path": "svgs/library/misc/post.svg"
+    },
+    {
+      "file": "post_1.svg",
+      "logicalName": "post",
+      "path": "svgs/library/misc/post_1.svg"
+    },
+    {
+      "file": "posts.svg",
+      "logicalName": "posts",
+      "path": "svgs/library/misc/posts.svg"
+    },
+    {
+      "file": "posts_1.svg",
+      "logicalName": "posts",
+      "path": "svgs/library/misc/posts_1.svg"
+    },
+    {
+      "file": "posts_2.svg",
+      "logicalName": "posts",
+      "path": "svgs/library/misc/posts_2.svg"
+    },
+    {
+      "file": "recycle_symbol.svg",
+      "logicalName": "recycle symbol",
+      "path": "svgs/library/misc/recycle_symbol.svg"
+    },
+    {
+      "file": "roof.svg",
+      "logicalName": "roof",
+      "path": "svgs/library/misc/roof.svg"
+    },
+    {
+      "file": "roof_1.svg",
+      "logicalName": "roof",
+      "path": "svgs/library/misc/roof_1.svg"
+    },
+    {
+      "file": "roof_2.svg",
+      "logicalName": "roof",
+      "path": "svgs/library/misc/roof_2.svg"
+    },
+    {
+      "file": "roof_3.svg",
+      "logicalName": "roof",
+      "path": "svgs/library/misc/roof_3.svg"
+    },
+    {
+      "file": "roof_4.svg",
+      "logicalName": "roof",
+      "path": "svgs/library/misc/roof_4.svg"
+    },
+    {
+      "file": "roof_5.svg",
+      "logicalName": "roof",
+      "path": "svgs/library/misc/roof_5.svg"
+    },
+    {
+      "file": "seat.svg",
+      "logicalName": "seat",
+      "path": "svgs/library/misc/seat.svg"
+    },
+    {
+      "file": "simple_icons.svg",
+      "logicalName": "simple icons",
+      "path": "svgs/library/misc/simple_icons.svg"
+    },
+    {
+      "file": "simple_symbol_placeholder.svg",
+      "logicalName": "simple symbol placeholder",
+      "path": "svgs/library/misc/simple_symbol_placeholder.svg"
+    },
+    {
+      "file": "small_triangles_around.svg",
+      "logicalName": "small triangles around",
+      "path": "svgs/library/misc/small_triangles_around.svg"
+    },
+    {
+      "file": "stage_deck.svg",
+      "logicalName": "stage deck",
+      "path": "svgs/library/misc/stage_deck.svg"
+    },
+    {
+      "file": "stage_deck_1.svg",
+      "logicalName": "stage deck",
+      "path": "svgs/library/misc/stage_deck_1.svg"
+    },
+    {
+      "file": "stand.svg",
+      "logicalName": "stand",
+      "path": "svgs/library/misc/stand.svg"
+    },
+    {
+      "file": "stand_1.svg",
+      "logicalName": "stand",
+      "path": "svgs/library/misc/stand_1.svg"
+    },
+    {
+      "file": "stand_2.svg",
+      "logicalName": "stand",
+      "path": "svgs/library/misc/stand_2.svg"
+    },
+    {
+      "file": "strings.svg",
+      "logicalName": "strings",
+      "path": "svgs/library/misc/strings.svg"
+    },
+    {
+      "file": "subtle_highlights.svg",
+      "logicalName": "subtle highlights",
+      "path": "svgs/library/misc/subtle_highlights.svg"
+    },
+    {
+      "file": "support_poles.svg",
+      "logicalName": "support poles",
+      "path": "svgs/library/misc/support_poles.svg"
+    },
+    {
+      "file": "support_poles_1.svg",
+      "logicalName": "support poles",
+      "path": "svgs/library/misc/support_poles_1.svg"
+    },
+    {
+      "file": "table.svg",
+      "logicalName": "table",
+      "path": "svgs/library/misc/table.svg"
+    },
+    {
+      "file": "tabletop.svg",
+      "logicalName": "tabletop",
+      "path": "svgs/library/misc/tabletop.svg"
+    },
+    {
+      "file": "taps_bottles.svg",
+      "logicalName": "taps / bottles",
+      "path": "svgs/library/misc/taps_bottles.svg"
+    },
+    {
+      "file": "tower.svg",
+      "logicalName": "tower",
+      "path": "svgs/library/misc/tower.svg"
+    },
+    {
+      "file": "tree_trunk.svg",
+      "logicalName": "tree trunk",
+      "path": "svgs/library/misc/tree_trunk.svg"
+    },
+    {
+      "file": "triangles.svg",
+      "logicalName": "triangles",
+      "path": "svgs/library/misc/triangles.svg"
+    },
+    {
+      "file": "triangles_1.svg",
+      "logicalName": "triangles",
+      "path": "svgs/library/misc/triangles_1.svg"
+    },
+    {
+      "file": "truss_tower.svg",
+      "logicalName": "truss tower",
+      "path": "svgs/library/misc/truss_tower.svg"
+    },
+    {
+      "file": "truss_tower_1.svg",
+      "logicalName": "truss tower",
+      "path": "svgs/library/misc/truss_tower_1.svg"
+    },
+    {
+      "file": "water_line.svg",
+      "logicalName": "water line",
+      "path": "svgs/library/misc/water_line.svg"
+    },
+    {
+      "file": "wheels.svg",
+      "logicalName": "wheels",
+      "path": "svgs/library/misc/wheels.svg"
+    },
+    {
+      "file": "window_arch.svg",
+      "logicalName": "window arch",
+      "path": "svgs/library/misc/window_arch.svg"
+    }
+  ],
+  "mystery": [
+    {
+      "file": "errl_mystery_glyph_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/mystery/errl_mystery_glyph_01.svg"
+    },
+    {
+      "file": "errl_mystery_portal_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/mystery/errl_mystery_portal_01.svg"
+    }
+  ],
+  "prop": [
+    {
+      "file": "errl_concert_amp_head_01.svg",
+      "logicalName": "errl_concert_amp_head_01",
+      "path": "svgs/library/prop/errl_concert_amp_head_01.svg"
+    },
+    {
+      "file": "errl_concert_amp_stack_01.svg",
+      "logicalName": "errl_concert_amp_stack_01",
+      "path": "svgs/library/prop/errl_concert_amp_stack_01.svg"
+    },
+    {
+      "file": "errl_concert_backdrop_strip_lights_01.svg",
+      "logicalName": "errl_concert_backdrop_strip_lights_01",
+      "path": "svgs/library/prop/errl_concert_backdrop_strip_lights_01.svg"
+    },
+    {
+      "file": "errl_concert_cable_loops_01.svg",
+      "logicalName": "errl_concert_cable_loops_01",
+      "path": "svgs/library/prop/errl_concert_cable_loops_01.svg"
+    },
+    {
+      "file": "errl_concert_cable_snake_floor_01.svg",
+      "logicalName": "errl_concert_cable_snake_floor_01",
+      "path": "svgs/library/prop/errl_concert_cable_snake_floor_01.svg"
+    },
+    {
+      "file": "errl_concert_crowd_blob_back_01.svg",
+      "logicalName": "errl_concert_crowd_blob_back_01",
+      "path": "svgs/library/prop/errl_concert_crowd_blob_back_01.svg"
+    },
+    {
+      "file": "errl_concert_crowd_blob_side_01.svg",
+      "logicalName": "errl_concert_crowd_blob_side_01",
+      "path": "svgs/library/prop/errl_concert_crowd_blob_side_01.svg"
+    },
+    {
+      "file": "errl_concert_crowd_hands_01.svg",
+      "logicalName": "errl_concert_crowd_hands_01",
+      "path": "svgs/library/prop/errl_concert_crowd_hands_01.svg"
+    },
+    {
+      "file": "errl_concert_crowd_silhouette_01.svg",
+      "logicalName": "errl_concert_crowd_silhouette_01",
+      "path": "svgs/library/prop/errl_concert_crowd_silhouette_01.svg"
+    },
+    {
+      "file": "errl_concert_dj_deck_01.svg",
+      "logicalName": "errl_concert_dj_deck_01",
+      "path": "svgs/library/prop/errl_concert_dj_deck_01.svg"
+    },
+    {
+      "file": "errl_concert_dj_table_side_01.svg",
+      "logicalName": "errl_concert_dj_table_side_01",
+      "path": "svgs/library/prop/errl_concert_dj_table_side_01.svg"
+    },
+    {
+      "file": "errl_concert_laser_grid_ceiling_01.svg",
+      "logicalName": "errl_concert_laser_grid_ceiling_01",
+      "path": "svgs/library/prop/errl_concert_laser_grid_ceiling_01.svg"
+    },
+    {
+      "file": "errl_concert_led_panel_01.svg",
+      "logicalName": "errl_concert_led_panel_01",
+      "path": "svgs/library/prop/errl_concert_led_panel_01.svg"
+    },
+    {
+      "file": "errl_concert_led_panel_split_01.svg",
+      "logicalName": "errl_concert_led_panel_split_01",
+      "path": "svgs/library/prop/errl_concert_led_panel_split_01.svg"
+    },
+    {
+      "file": "errl_concert_light_bar_floor_01.svg",
+      "logicalName": "errl_concert_light_bar_floor_01",
+      "path": "svgs/library/prop/errl_concert_light_bar_floor_01.svg"
+    },
+    {
+      "file": "errl_concert_light_tower_01.svg",
+      "logicalName": "errl_concert_light_tower_01",
+      "path": "svgs/library/prop/errl_concert_light_tower_01.svg"
+    },
+    {
+      "file": "errl_concert_light_tower_head_01.svg",
+      "logicalName": "errl_concert_light_tower_head_01",
+      "path": "svgs/library/prop/errl_concert_light_tower_head_01.svg"
+    },
+    {
+      "file": "errl_concert_mic_pair_01.svg",
+      "logicalName": "errl_concert_mic_pair_01",
+      "path": "svgs/library/prop/errl_concert_mic_pair_01.svg"
+    },
+    {
+      "file": "errl_concert_mic_stand_01.svg",
+      "logicalName": "errl_concert_mic_stand_01",
+      "path": "svgs/library/prop/errl_concert_mic_stand_01.svg"
+    },
+    {
+      "file": "errl_concert_mixer_rack_01.svg",
+      "logicalName": "errl_concert_mixer_rack_01",
+      "path": "svgs/library/prop/errl_concert_mixer_rack_01.svg"
+    },
+    {
+      "file": "errl_concert_monitor_wedge_01.svg",
+      "logicalName": "errl_concert_monitor_wedge_01",
+      "path": "svgs/library/prop/errl_concert_monitor_wedge_01.svg"
+    },
+    {
+      "file": "errl_concert_monitor_wedge_small_01.svg",
+      "logicalName": "errl_concert_monitor_wedge_small_01",
+      "path": "svgs/library/prop/errl_concert_monitor_wedge_small_01.svg"
+    },
+    {
+      "file": "errl_concert_speaker_stack_01.svg",
+      "logicalName": "errl_concert_speaker_stack_01",
+      "path": "svgs/library/prop/errl_concert_speaker_stack_01.svg"
+    },
+    {
+      "file": "errl_concert_speaker_stack_wide_01.svg",
+      "logicalName": "errl_concert_speaker_stack_wide_01",
+      "path": "svgs/library/prop/errl_concert_speaker_stack_wide_01.svg"
+    },
+    {
+      "file": "errl_concert_spot_matrix_01.svg",
+      "logicalName": "errl_concert_spot_matrix_01",
+      "path": "svgs/library/prop/errl_concert_spot_matrix_01.svg"
+    },
+    {
+      "file": "errl_concert_spot_triple_floor_01.svg",
+      "logicalName": "errl_concert_spot_triple_floor_01",
+      "path": "svgs/library/prop/errl_concert_spot_triple_floor_01.svg"
+    },
+    {
+      "file": "errl_concert_spotlight_beams_01.svg",
+      "logicalName": "errl_concert_spotlight_beams_01",
+      "path": "svgs/library/prop/errl_concert_spotlight_beams_01.svg"
+    },
+    {
+      "file": "errl_concert_spotlight_rig_01.svg",
+      "logicalName": "errl_concert_spotlight_rig_01",
+      "path": "svgs/library/prop/errl_concert_spotlight_rig_01.svg"
+    },
+    {
+      "file": "errl_concert_stage_banner_top_01.svg",
+      "logicalName": "errl_concert_stage_banner_top_01",
+      "path": "svgs/library/prop/errl_concert_stage_banner_top_01.svg"
+    },
+    {
+      "file": "errl_concert_stage_main_01.svg",
+      "logicalName": "errl_concert_stage_main_01",
+      "path": "svgs/library/prop/errl_concert_stage_main_01.svg"
+    },
+    {
+      "file": "errl_concert_stage_riser_01.svg",
+      "logicalName": "errl_concert_stage_riser_01",
+      "path": "svgs/library/prop/errl_concert_stage_riser_01.svg"
+    },
+    {
+      "file": "errl_concert_stage_side_banner_01.svg",
+      "logicalName": "errl_concert_stage_side_banner_01",
+      "path": "svgs/library/prop/errl_concert_stage_side_banner_01.svg"
+    },
+    {
+      "file": "errl_concert_stage_side_banner_02.svg",
+      "logicalName": "errl_concert_stage_side_banner_02",
+      "path": "svgs/library/prop/errl_concert_stage_side_banner_02.svg"
+    },
+    {
+      "file": "errl_concert_stage_steps_side_01.svg",
+      "logicalName": "errl_concert_stage_steps_side_01",
+      "path": "svgs/library/prop/errl_concert_stage_steps_side_01.svg"
+    },
+    {
+      "file": "errl_concert_stage_top_arch_01.svg",
+      "logicalName": "errl_concert_stage_top_arch_01",
+      "path": "svgs/library/prop/errl_concert_stage_top_arch_01.svg"
+    },
+    {
+      "file": "errl_concert_tour_case_01.svg",
+      "logicalName": "errl_concert_tour_case_01",
+      "path": "svgs/library/prop/errl_concert_tour_case_01.svg"
+    },
+    {
+      "file": "errl_concert_tour_case_stack_01.svg",
+      "logicalName": "errl_concert_tour_case_stack_01",
+      "path": "svgs/library/prop/errl_concert_tour_case_stack_01.svg"
+    },
+    {
+      "file": "errl_concert_truss_segment_01.svg",
+      "logicalName": "errl_concert_truss_segment_01",
+      "path": "svgs/library/prop/errl_concert_truss_segment_01.svg"
+    },
+    {
+      "file": "errl_concert_truss_segment_vertical_01.svg",
+      "logicalName": "errl_concert_truss_segment_vertical_01",
+      "path": "svgs/library/prop/errl_concert_truss_segment_vertical_01.svg"
+    },
+    {
+      "file": "errl_prop_beanbag_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/prop/errl_prop_beanbag_01.svg"
+    },
+    {
+      "file": "errl_prop_block_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/prop/errl_prop_block_01.svg"
+    },
+    {
+      "file": "errl_prop_bottle_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/prop/errl_prop_bottle_01.svg"
+    },
+    {
+      "file": "errl_prop_bowl_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/prop/errl_prop_bowl_01.svg"
+    },
+    {
+      "file": "errl_prop_box_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/prop/errl_prop_box_01.svg"
+    },
+    {
+      "file": "errl_prop_candle_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/prop/errl_prop_candle_01.svg"
+    },
+    {
+      "file": "errl_prop_candy_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/prop/errl_prop_candy_01.svg"
+    },
+    {
+      "file": "errl_prop_cookie_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/prop/errl_prop_cookie_01.svg"
+    },
+    {
+      "file": "errl_prop_couch_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/prop/errl_prop_couch_01.svg"
+    },
+    {
+      "file": "errl_prop_crate_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/prop/errl_prop_crate_01.svg"
+    },
+    {
+      "file": "errl_prop_cup_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/prop/errl_prop_cup_01.svg"
+    },
+    {
+      "file": "errl_prop_mug_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/prop/errl_prop_mug_01.svg"
+    },
+    {
+      "file": "errl_prop_pizza_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/prop/errl_prop_pizza_01.svg"
+    },
+    {
+      "file": "errl_prop_plate_blob_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/prop/errl_prop_plate_blob_01.svg"
+    },
+    {
+      "file": "errl_prop_platform_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/prop/errl_prop_platform_01.svg"
+    },
+    {
+      "file": "errl_prop_podium_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/prop/errl_prop_podium_01.svg"
+    },
+    {
+      "file": "errl_prop_projector_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/prop/errl_prop_projector_01.svg"
+    },
+    {
+      "file": "errl_prop_projector_02.svg",
+      "logicalName": null,
+      "path": "svgs/library/prop/errl_prop_projector_02.svg"
+    },
+    {
+      "file": "errl_prop_projector_ceiling_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/prop/errl_prop_projector_ceiling_01.svg"
+    },
+    {
+      "file": "errl_prop_shelf_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/prop/errl_prop_shelf_01.svg"
+    },
+    {
+      "file": "errl_prop_side_table_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/prop/errl_prop_side_table_01.svg"
+    },
+    {
+      "file": "errl_prop_table_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/prop/errl_prop_table_01.svg"
+    },
+    {
+      "file": "errl_prop_vhs_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/prop/errl_prop_vhs_01.svg"
+    }
+  ],
+  "screen": [
+    {
+      "file": "errl_screen_hanging_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/screen/errl_screen_hanging_01.svg"
+    },
+    {
+      "file": "errl_screen_monitor_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/screen/errl_screen_monitor_01.svg"
+    },
+    {
+      "file": "errl_screen_tablet_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/screen/errl_screen_tablet_01.svg"
+    },
+    {
+      "file": "errl_screen_tv_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/screen/errl_screen_tv_01.svg"
+    },
+    {
+      "file": "errl_screen_tv_02.svg",
+      "logicalName": null,
+      "path": "svgs/library/screen/errl_screen_tv_02.svg"
+    }
+  ],
+  "totem": [
+    {
+      "file": "errl_totem_base_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/totem/errl_totem_base_01.svg"
+    },
+    {
+      "file": "errl_totem_shrine_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/totem/errl_totem_shrine_01.svg"
+    }
+  ],
+  "ui": [
+    {
+      "file": "errl_ui_badge_star_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/ui/errl_ui_badge_star_01.svg"
+    },
+    {
+      "file": "errl_ui_bubble_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/ui/errl_ui_bubble_01.svg"
+    },
+    {
+      "file": "errl_ui_bubble_02.svg",
+      "logicalName": null,
+      "path": "svgs/library/ui/errl_ui_bubble_02.svg"
+    },
+    {
+      "file": "errl_ui_button_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/ui/errl_ui_button_01.svg"
+    },
+    {
+      "file": "errl_ui_button_ghost_01.svg",
+      "logicalName": "errl_ui_button_ghost_01",
+      "path": "svgs/library/ui/errl_ui_button_ghost_01.svg"
+    },
+    {
+      "file": "errl_ui_button_primary_01.svg",
+      "logicalName": "errl_ui_button_primary_01",
+      "path": "svgs/library/ui/errl_ui_button_primary_01.svg"
+    },
+    {
+      "file": "errl_ui_heart_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/ui/errl_ui_heart_01.svg"
+    },
+    {
+      "file": "errl_ui_icon_camera_01.svg",
+      "logicalName": "errl_ui_icon_camera_01",
+      "path": "svgs/library/ui/errl_ui_icon_camera_01.svg"
+    },
+    {
+      "file": "errl_ui_icon_export_01.svg",
+      "logicalName": "errl_ui_icon_export_01",
+      "path": "svgs/library/ui/errl_ui_icon_export_01.svg"
+    },
+    {
+      "file": "errl_ui_icon_eye_closed_01.svg",
+      "logicalName": "errl_ui_icon_eye_closed_01",
+      "path": "svgs/library/ui/errl_ui_icon_eye_closed_01.svg"
+    },
+    {
+      "file": "errl_ui_icon_eye_open_01.svg",
+      "logicalName": "errl_ui_icon_eye_open_01",
+      "path": "svgs/library/ui/errl_ui_icon_eye_open_01.svg"
+    },
+    {
+      "file": "errl_ui_icon_import_01.svg",
+      "logicalName": "errl_ui_icon_import_01",
+      "path": "svgs/library/ui/errl_ui_icon_import_01.svg"
+    },
+    {
+      "file": "errl_ui_icon_layers_01.svg",
+      "logicalName": "errl_ui_icon_layers_01",
+      "path": "svgs/library/ui/errl_ui_icon_layers_01.svg"
+    },
+    {
+      "file": "errl_ui_icon_lock_01.svg",
+      "logicalName": "errl_ui_icon_lock_01",
+      "path": "svgs/library/ui/errl_ui_icon_lock_01.svg"
+    },
+    {
+      "file": "errl_ui_icon_pause_01.svg",
+      "logicalName": "errl_ui_icon_pause_01",
+      "path": "svgs/library/ui/errl_ui_icon_pause_01.svg"
+    },
+    {
+      "file": "errl_ui_icon_play_01.svg",
+      "logicalName": "errl_ui_icon_play_01",
+      "path": "svgs/library/ui/errl_ui_icon_play_01.svg"
+    },
+    {
+      "file": "errl_ui_icon_randomize_01.svg",
+      "logicalName": "errl_ui_icon_randomize_01",
+      "path": "svgs/library/ui/errl_ui_icon_randomize_01.svg"
+    },
+    {
+      "file": "errl_ui_icon_stop_01.svg",
+      "logicalName": "errl_ui_icon_stop_01",
+      "path": "svgs/library/ui/errl_ui_icon_stop_01.svg"
+    },
+    {
+      "file": "errl_ui_icon_unlock_01.svg",
+      "logicalName": "errl_ui_icon_unlock_01",
+      "path": "svgs/library/ui/errl_ui_icon_unlock_01.svg"
+    },
+    {
+      "file": "errl_ui_play_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/ui/errl_ui_play_01.svg"
+    },
+    {
+      "file": "errl_ui_slider_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/ui/errl_ui_slider_01.svg"
+    },
+    {
+      "file": "errl_ui_tag_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/ui/errl_ui_tag_01.svg"
+    },
+    {
+      "file": "errl_ui_thought_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/ui/errl_ui_thought_01.svg"
+    },
+    {
+      "file": "errl_ui_warning_01.svg",
+      "logicalName": null,
+      "path": "svgs/library/ui/errl_ui_warning_01.svg"
+    }
+  ],
+  "weather": [
+    {
+      "file": "errl_weather_cloud_layer_01.svg",
+      "logicalName": "errl_weather_cloud_layer_01",
+      "path": "svgs/library/weather/errl_weather_cloud_layer_01.svg"
+    },
+    {
+      "file": "errl_weather_cloud_moon_01.svg",
+      "logicalName": "errl_weather_cloud_moon_01",
+      "path": "svgs/library/weather/errl_weather_cloud_moon_01.svg"
+    },
+    {
+      "file": "errl_weather_cloud_row_dark_01.svg",
+      "logicalName": "errl_weather_cloud_row_dark_01",
+      "path": "svgs/library/weather/errl_weather_cloud_row_dark_01.svg"
+    },
+    {
+      "file": "errl_weather_cloud_row_small_01.svg",
+      "logicalName": "errl_weather_cloud_row_small_01",
+      "path": "svgs/library/weather/errl_weather_cloud_row_small_01.svg"
+    },
+    {
+      "file": "errl_weather_cloud_single_01.svg",
+      "logicalName": "errl_weather_cloud_single_01",
+      "path": "svgs/library/weather/errl_weather_cloud_single_01.svg"
+    },
+    {
+      "file": "errl_weather_cloud_storm_01.svg",
+      "logicalName": "errl_weather_cloud_storm_01",
+      "path": "svgs/library/weather/errl_weather_cloud_storm_01.svg"
+    },
+    {
+      "file": "errl_weather_cloud_storm_rain_01.svg",
+      "logicalName": "errl_weather_cloud_storm_rain_01",
+      "path": "svgs/library/weather/errl_weather_cloud_storm_rain_01.svg"
+    },
+    {
+      "file": "errl_weather_cloud_sun_mix_01.svg",
+      "logicalName": "errl_weather_cloud_sun_mix_01",
+      "path": "svgs/library/weather/errl_weather_cloud_sun_mix_01.svg"
+    },
+    {
+      "file": "errl_weather_drizzle_01.svg",
+      "logicalName": "errl_weather_drizzle_01",
+      "path": "svgs/library/weather/errl_weather_drizzle_01.svg"
+    },
+    {
+      "file": "errl_weather_fog_layers_01.svg",
+      "logicalName": "errl_weather_fog_layers_01",
+      "path": "svgs/library/weather/errl_weather_fog_layers_01.svg"
+    },
+    {
+      "file": "errl_weather_fog_strip_01.svg",
+      "logicalName": "errl_weather_fog_strip_01",
+      "path": "svgs/library/weather/errl_weather_fog_strip_01.svg"
+    },
+    {
+      "file": "errl_weather_hail_01.svg",
+      "logicalName": "errl_weather_hail_01",
+      "path": "svgs/library/weather/errl_weather_hail_01.svg"
+    },
+    {
+      "file": "errl_weather_horizon_band_cool_01.svg",
+      "logicalName": "errl_weather_horizon_band_cool_01",
+      "path": "svgs/library/weather/errl_weather_horizon_band_cool_01.svg"
+    },
+    {
+      "file": "errl_weather_horizon_band_warm_01.svg",
+      "logicalName": "errl_weather_horizon_band_warm_01",
+      "path": "svgs/library/weather/errl_weather_horizon_band_warm_01.svg"
+    },
+    {
+      "file": "errl_weather_horizon_glow_01.svg",
+      "logicalName": "errl_weather_horizon_glow_01",
+      "path": "svgs/library/weather/errl_weather_horizon_glow_01.svg"
+    },
+    {
+      "file": "errl_weather_lightning_icon_01.svg",
+      "logicalName": "errl_weather_lightning_icon_01",
+      "path": "svgs/library/weather/errl_weather_lightning_icon_01.svg"
+    },
+    {
+      "file": "errl_weather_mist_lines_01.svg",
+      "logicalName": "errl_weather_mist_lines_01",
+      "path": "svgs/library/weather/errl_weather_mist_lines_01.svg"
+    },
+    {
+      "file": "errl_weather_rain_cell_pair_01.svg",
+      "logicalName": "errl_weather_rain_cell_pair_01",
+      "path": "svgs/library/weather/errl_weather_rain_cell_pair_01.svg"
+    },
+    {
+      "file": "errl_weather_rain_cell_small_01.svg",
+      "logicalName": "errl_weather_rain_cell_small_01",
+      "path": "svgs/library/weather/errl_weather_rain_cell_small_01.svg"
+    },
+    {
+      "file": "errl_weather_rain_heavy_01.svg",
+      "logicalName": "errl_weather_rain_heavy_01",
+      "path": "svgs/library/weather/errl_weather_rain_heavy_01.svg"
+    },
+    {
+      "file": "errl_weather_rain_light_01.svg",
+      "logicalName": "errl_weather_rain_light_01",
+      "path": "svgs/library/weather/errl_weather_rain_light_01.svg"
+    },
+    {
+      "file": "errl_weather_rain_sun_mix_01.svg",
+      "logicalName": "errl_weather_rain_sun_mix_01",
+      "path": "svgs/library/weather/errl_weather_rain_sun_mix_01.svg"
+    },
+    {
+      "file": "errl_weather_raindrop_icon_01.svg",
+      "logicalName": "errl_weather_raindrop_icon_01",
+      "path": "svgs/library/weather/errl_weather_raindrop_icon_01.svg"
+    },
+    {
+      "file": "errl_weather_snow_fall_01.svg",
+      "logicalName": "errl_weather_snow_fall_01",
+      "path": "svgs/library/weather/errl_weather_snow_fall_01.svg"
+    },
+    {
+      "file": "errl_weather_snow_glow_01.svg",
+      "logicalName": "errl_weather_snow_glow_01",
+      "path": "svgs/library/weather/errl_weather_snow_glow_01.svg"
+    },
+    {
+      "file": "errl_weather_snowflake_icon_01.svg",
+      "logicalName": "errl_weather_snowflake_icon_01",
+      "path": "svgs/library/weather/errl_weather_snowflake_icon_01.svg"
+    },
+    {
+      "file": "errl_weather_stars_clear_01.svg",
+      "logicalName": "errl_weather_stars_clear_01",
+      "path": "svgs/library/weather/errl_weather_stars_clear_01.svg"
+    },
+    {
+      "file": "errl_weather_stars_cloudy_01.svg",
+      "logicalName": "errl_weather_stars_cloudy_01",
+      "path": "svgs/library/weather/errl_weather_stars_cloudy_01.svg"
+    },
+    {
+      "file": "errl_weather_sun_cloud_mixed_01.svg",
+      "logicalName": "errl_weather_sun_cloud_mixed_01",
+      "path": "svgs/library/weather/errl_weather_sun_cloud_mixed_01.svg"
+    },
+    {
+      "file": "errl_weather_sun_rays_01.svg",
+      "logicalName": "errl_weather_sun_rays_01",
+      "path": "svgs/library/weather/errl_weather_sun_rays_01.svg"
+    },
+    {
+      "file": "errl_weather_sun_simple_01.svg",
+      "logicalName": "errl_weather_sun_simple_01",
+      "path": "svgs/library/weather/errl_weather_sun_simple_01.svg"
+    },
+    {
+      "file": "errl_weather_sunbeam_fan_01.svg",
+      "logicalName": "errl_weather_sunbeam_fan_01",
+      "path": "svgs/library/weather/errl_weather_sunbeam_fan_01.svg"
+    },
+    {
+      "file": "errl_weather_wind_swirl_01.svg",
+      "logicalName": "errl_weather_wind_swirl_01",
+      "path": "svgs/library/weather/errl_weather_wind_swirl_01.svg"
+    },
+    {
+      "file": "errl_weather_wind_swirl_02.svg",
+      "logicalName": "errl_weather_wind_swirl_02",
+      "path": "svgs/library/weather/errl_weather_wind_swirl_02.svg"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <g id="group_soft_glow" opacity="0.28">
+    <ellipse cx="512" cy="540" rx="260" ry="140" fill="#5be0ff" />
+  </g>
+  <g id="group_core" fill="none" stroke="#5be0ff" stroke-width="20" stroke-linecap="round">
+    <ellipse cx="512" cy="520" rx="200" ry="110" />
+  </g>
+  <g id="group_outline" fill="none" stroke="#101020" stroke-width="12" stroke-linecap="round" stroke-dasharray="24 14">
+    <ellipse cx="512" cy="520" rx="200" ry="110" />
+  </g>
+  <g id="group_inner_noise" fill="#ffffff" opacity="0.18">
+    <circle cx="460" cy="470" r="10" />
+    <circle cx="560" cy="560" r="12" />
+    <circle cx="520" cy="500" r="8" />
+  </g>
+</svg>

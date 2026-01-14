@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <g id="FG_lamp" fill="#ffd166" stroke="#887043" stroke-width="10" stroke-linejoin="round" stroke-linecap="round" opacity="0.8">
+    <path d="M120 360h200l-40 220H160z" />
+    <rect x="120" y="340" width="200" height="24" rx="10" />
+  </g>
+  <g id="FG_plant" fill="#8ed781" stroke="#887043" stroke-width="10" stroke-linejoin="round" stroke-linecap="round" opacity="0.9">
+    <path d="M820 1024c-10-160 60-280 170-330-40 110-22 230 10 330z" />
+  </g>
+  <g id="FG_rug_edge" fill="none" stroke="#ffa69c" stroke-width="16" stroke-dasharray="30 18" opacity="0.8">
+    <path d="M120 900c220 40 560 40 784 0" />
+  </g>
+</svg>

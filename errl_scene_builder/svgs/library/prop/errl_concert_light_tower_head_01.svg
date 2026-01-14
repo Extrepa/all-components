@@ -1,0 +1,11 @@
+<!-- errl_concert_light_tower_head_01 – tower with RGB head (prop/fx) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_concert" data-cat="prop" data-name="errl_concert_light_tower_head_01">
+  <g fill="none">
+    <rect x="28" y="20" width="8" height="22" rx="2" fill="#111827"/>
+    <rect x="26" y="16" width="12" height="4" rx="1.5" fill="#020617"/>
+    <circle cx="29" cy="18" r="1.3" fill="#22d3ee"/>
+    <circle cx="32" cy="18" r="1.3" fill="#a855f7"/>
+    <circle cx="35" cy="18" r="1.3" fill="#facc15"/>
+  </g>
+</svg>

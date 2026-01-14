@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <g id="group_fill" fill="#f4f0ff">
+    <path d="M340 540c-56-4-104 38-104 94s46 98 102 98h344c74 0 122-68 96-138-16-42-64-68-110-60-16-66-84-106-154-90-30 8-56 28-72 54-26-36-68-58-102-58z" />
+  </g>
+  <g id="group_outline" fill="none" stroke="#101020" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M340 540c-56-4-104 38-104 94s46 98 102 98h344c74 0 122-68 96-138-16-42-64-68-110-60-16-66-84-106-154-90-30 8-56 28-72 54-26-36-68-58-102-58z" />
+  </g>
+</svg>

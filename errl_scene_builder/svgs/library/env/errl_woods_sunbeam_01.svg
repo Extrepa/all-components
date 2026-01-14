@@ -1,0 +1,7 @@
+<!-- 91) errl_woods_sunbeam_01 – diagonal soft beam shape (fx/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="fx" data-name="errl_woods_sunbeam_01">
+  <g fill="none">
+    <path d="M18 14 L38 14 50 44 30 44 Z" fill="#facc15" opacity="0.12"/>
+  </g>
+</svg>

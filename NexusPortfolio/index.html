@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nexus Visual Series Portfolio</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Navigation Sidebar -->
+    <aside id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+        <h1>Nexus Series</h1>
+        <p class="subtitle">6 Visual Projects</p>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <h3>All Projects</h3>
+          <button class="nav-btn active" data-category="all">View All</button>
+        </div>
+        
+        <div class="nav-section">
+          <h3>Categories</h3>
+          <button class="nav-btn" data-category="fractal">Fractals (2)</button>
+          <button class="nav-btn" data-category="simulation">Simulations (1)</button>
+          <button class="nav-btn" data-category="visual">Visual Effects (2)</button>
+          <button class="nav-btn" data-category="animation">Animations (1)</button>
+        </div>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <input type="search" id="search" placeholder="Search projects..." class="search-input">
+      </div>
+    </aside>
+    
+    <!-- Main Content -->
+    <main id="main-content" class="main-content">
+      <!-- Gallery View -->
+      <div id="gallery" class="gallery-view">
+        <div class="gallery-header">
+          <h2 id="gallery-title">All Projects</h2>
+          <p id="gallery-count" class="project-count">6 projects</p>
+        </div>
+        
+        <div id="project-grid" class="project-grid">
+          <!-- Projects will be loaded here -->
+        </div>
+      </div>
+      
+      <!-- Project Viewer -->
+      <div id="project-viewer" class="project-viewer hidden">
+        <div class="viewer-header">
+          <button id="back-btn" class="back-btn">← Back to Gallery</button>
+          <h2 id="viewer-title"></h2>
+        </div>
+        
+        <div id="project-container" class="project-container">
+          <!-- Project content will be loaded here -->
+        </div>
+        
+        <div id="project-info" class="project-info">
+          <div class="info-item">
+            <span class="info-label">Description:</span>
+            <span id="info-description"></span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Type:</span>
+            <span id="info-type"></span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Technology:</span>
+            <span id="info-tech"></span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Loading Indicator -->
+      <div id="loading" class="loading hidden">
+        <div class="spinner"></div>
+        <p>Loading project...</p>
+      </div>
+    </main>
+  </div>
+  
+  <!-- App Scripts -->
+  <script src="js/project-loader.js"></script>
+  <script src="js/project-viewer.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

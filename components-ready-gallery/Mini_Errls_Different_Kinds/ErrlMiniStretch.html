@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Buddy</title>
+    <style>
+        :root {
+            --bg-color: #f3f4f6;
+            --card-bg: #ffffff;
+            --buddy-color: #2E266F;
+            --text-color: #334155;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--bg-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        #app-container {
+            position: relative;
+            width: 80vmin;
+            height: 60vmin; /* 4:3 Aspect Ratio */
+            max-width: 800px;
+            max-height: 600px;
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+            cursor: grab;
+            touch-action: none;
+        }
+
+        canvas:active {
+            cursor: grabbing;
+        }
+
+        .ui-layer {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            pointer-events: none;
+            color: var(--buddy-color);
+            font-weight: bold;
+            opacity: 0.5;
+            transition: opacity 0.3s;
+        }
+
+        .hidden {
+            opacity: 0;
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="app-container">
+    <div class="ui-layer" id="hint">Click & Drag to Play</div>
+    <canvas id="canvas"></canvas>
+</div>
+
+<script>
+/**
+ * Interactive Buddy Logic
+ * Uses Vanilla JS and Canvas API
+ */
+
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const hint = document.getElementById('hint');
+
+let width, height;
+let pixelRatio = window.devicePixelRatio || 1;
+
+// Physics Constants
+const GRAVITY = 0.8;
+const FRICTION = 0.92;
+const BOUNCE = 0.6;
+const STIFFNESS = 0.15; // For limb lag
+const FLOOR_Y_OFFSET = 50;
+
+// Game State
+let mouse = { x: 0, y: 0, down: false };
+let dragOffset = { x: 0, y: 0 };
+let particles = [];
+
+// The Buddy Object
+const buddy = {
+    // Main position (Center of head)
+    x: 0,
+    y: 0,
+    vx: 0,
+    vy: 0,
+    radius: 70,
+    
+    // State
+    isDragging: false,
+    isGrounded: false,
+    scaleY: 1, // For squash/stretch
+    scaleX: 1,
+    
+    // Limbs (simulated as lagging points)
+    limbs: {
+        leftArm: { x: 0, y: 0, targetOffsetX: -70, targetOffsetY: 40 },
+        rightArm: { x: 0, y: 0, targetOffsetX: 70, targetOffsetY: 40 },
+        leftLeg: { x: 0, y: 0, targetOffsetX: -30, targetOffsetY: 100 },
+        rightLeg: { x: 0, y: 0, targetOffsetX: 30, targetOffsetY: 100 }
+    },
+
+    // Face State
+    blinkTimer: 0,
+    isBlinking: false,
+    mood: 'neutral'
+};
+
+function resize() {
+    const rect = canvas.getBoundingClientRect();
+    width = rect.width;
+    height = rect.height;
+    canvas.width = width * pixelRatio;
+    canvas.height = height * pixelRatio;
+    ctx.scale(pixelRatio, pixelRatio);
+
+    // Reset position if out of bounds
+    if (buddy.x === 0) {
+        buddy.x = width / 2;
+        buddy.y = height / 2;
+        // Init limbs
+        Object.values(buddy.limbs).forEach(l => {
+            l.x = buddy.x + l.targetOffsetX;
+            l.y = buddy.y + l.targetOffsetY;
+        });
+    }
+}
+
+window.addEventListener('resize', resize);
+resize();
+
+// --- Input Handling ---
+
+function getMousePos(e) {
+    const rect = canvas.getBoundingClientRect();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    return {
+        x: clientX - rect.left,
+        y: clientY - rect.top
+    };
+}
+
+function onDown(e) {
+    const pos = getMousePos(e);
+    mouse.x = pos.x;
+    mouse.y = pos.y;
+    mouse.down = true;
+
+    // Check hit detection (circle approx)
+    const dx = pos.x - buddy.x;
+    const dy = pos.y - buddy.y;
+    const dist = Math.sqrt(dx*dx + dy*dy);
+
+    if (dist < buddy.radius + 40) {
+        buddy.isDragging = true;
+        dragOffset.x = buddy.x - pos.x;
+        dragOffset.y = buddy.y - pos.y;
+        buddy.vx = 0;
+        buddy.vy = 0;
+        buddy.mood = 'surprised';
+        hint.classList.add('hidden');
+        createParticles(pos.x, pos.y, 3, '✨');
+    }
+}
+
+function onMove(e) {
+    const pos = getMousePos(e);
+    mouse.x = pos.x;
+    mouse.y = pos.y;
+}
+
+function onUp() {
+    if (buddy.isDragging) {
+        // Throw physics
+        buddy.vx = (buddy.vx + (mouse.x - (buddy.x - dragOffset.x)) * 0.2);
+        buddy.vy = (buddy.vy + (mouse.y - (buddy.y - dragOffset.y)) * 0.2);
+        buddy.isDragging = false;
+        buddy.mood = 'neutral';
+    }
+    mouse.down = false;
+}
+
+canvas.addEventListener('mousedown', onDown);
+canvas.addEventListener('mousemove', onMove);
+window.addEventListener('mouseup', onUp);
+canvas.addEventListener('touchstart', (e) => { e.preventDefault(); onDown(e); }, {passive: false});
+canvas.addEventListener('touchmove', (e) => { e.preventDefault(); onMove(e); }, {passive: false});
+window.addEventListener('touchend', onUp);
+
+// --- Physics Engine ---
+
+function updatePhysics() {
+    // Dragging
+    if (buddy.isDragging) {
+        const targetX = mouse.x + dragOffset.x;
+        const targetY = mouse.y + dragOffset.y;
+        
+        // Spring to mouse
+        buddy.x += (targetX - buddy.x) * 0.3;
+        buddy.y += (targetY - buddy.y) * 0.3;
+        
+        // Calculate velocity for "throw" release
+        buddy.vx = (targetX - buddy.x) * 0.5;
+        buddy.vy = (targetY - buddy.y) * 0.5;
+        
+        buddy.scaleX = 1 + Math.abs(buddy.vx) * 0.005;
+        buddy.scaleY = 1 + Math.abs(buddy.vy) * 0.005;
+        
+    } else {
+        // Gravity
+        buddy.vy += GRAVITY;
+        buddy.vx *= FRICTION;
+        buddy.vy *= FRICTION;
+
+        buddy.x += buddy.vx;
+        buddy.y += buddy.vy;
+
+        // Floor Collision
+        const floorY = height - FLOOR_Y_OFFSET - buddy.radius;
+        if (buddy.y > floorY) {
+            buddy.y = floorY;
+            // Impact Squash
+            if (buddy.vy > 2) {
+                buddy.scaleY = 0.7;
+                buddy.scaleX = 1.3;
+                createParticles(buddy.x, height - FLOOR_Y_OFFSET, 2, '💨');
+            }
+            buddy.vy *= -BOUNCE;
+            buddy.isGrounded = true;
+            
+            // Friction on floor
+            buddy.vx *= 0.8;
+        } else {
+            buddy.isGrounded = false;
+            // Return to normal shape in air
+            buddy.scaleX += (1 - buddy.scaleX) * 0.1;
+            buddy.scaleY += (1 - buddy.scaleY) * 0.1;
+        }
+
+        // Wall Collision
+        if (buddy.x < buddy.radius) {
+            buddy.x = buddy.radius;
+            buddy.vx *= -BOUNCE;
+        }
+        if (buddy.x > width - buddy.radius) {
+            buddy.x = width - buddy.radius;
+            buddy.vx *= -BOUNCE;
+        }
+    }
+
+    // Squash and Stretch Restoration
+    if (!buddy.isDragging && buddy.isGrounded) {
+        buddy.scaleX += (1 - buddy.scaleX) * 0.1;
+        buddy.scaleY += (1 - buddy.scaleY) * 0.1;
+    }
+
+    // Update Limbs (Lag Effect)
+    updateLimb(buddy.limbs.leftArm, -1);
+    updateLimb(buddy.limbs.rightArm, 1);
+    updateLimb(buddy.limbs.leftLeg, 0);
+    updateLimb(buddy.limbs.rightLeg, 0);
+}
+
+function updateLimb(limb, sideFactor) {
+    // Ideal position relative to body
+    let targetX = buddy.x + (limb.targetOffsetX * buddy.scaleX);
+    let targetY = buddy.y + (limb.targetOffsetY * buddy.scaleY);
+
+    // Add some swing based on velocity
+    targetX -= buddy.vx * 2; 
+    targetY -= buddy.vy * 2;
+
+    // Dynamic sway
+    if (buddy.isGrounded && Math.abs(buddy.vx) < 0.5) {
+        // Breathing
+        targetY += Math.sin(Date.now() / 500) * 2;
+    }
+
+    // Lerp towards target (Physics lag)
+    limb.x += (targetX - limb.x) * STIFFNESS;
+    limb.y += (targetY - limb.y) * STIFFNESS;
+}
+
+// --- Particle System ---
+class Particle {
+    constructor(x, y, char) {
+        this.x = x;
+        this.y = y;
+        this.vx = (Math.random() - 0.5) * 5;
+        this.vy = (Math.random() - 1) * 5;
+        this.life = 1;
+        this.char = char;
+    }
+    update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        this.vy += 0.2; // gravity
+        this.life -= 0.02;
+    }
+    draw() {
+        ctx.globalAlpha = this.life;
+        ctx.font = '20px sans-serif';
+        ctx.fillText(this.char, this.x, this.y);
+        ctx.globalAlpha = 1;
+    }
+}
+
+function createParticles(x, y, count, char) {
+    for(let i=0; i<count; i++) {
+        particles.push(new Particle(x, y, char));
+    }
+}
+
+// --- Rendering ---
+
+function drawBuddy() {
+    const { x, y, radius, scaleX, scaleY } = buddy;
+
+    ctx.fillStyle = '#2E266F'; // Deep Indigo
+    
+    // Helper function for rounded drawing
+    const drawCircle = (cx, cy, r) => {
+        ctx.beginPath();
+        ctx.arc(cx, cy, r, 0, Math.PI * 2);
+        ctx.fill();
+    };
+
+    const drawCapsule = (x1, y1, x2, y2, r) => {
+        const dx = x2 - x1;
+        const dy = y2 - y1;
+        const angle = Math.atan2(dy, dx);
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        
+        ctx.save();
+        ctx.translate(x1, y1);
+        ctx.rotate(angle);
+        ctx.beginPath();
+        ctx.roundRect(0, -r, dist, r*2, r);
+        ctx.fill();
+        ctx.restore();
+    };
+
+    // 1. Draw Legs & Arms (The "Drips")
+    // We draw these first so they merge behind the body or look seamless
+    
+    // Legs
+    const legRadius = 22 * scaleX;
+    drawCapsule(x - (20*scaleX), y + (20*scaleY), buddy.limbs.leftLeg.x, buddy.limbs.leftLeg.y, legRadius);
+    drawCapsule(x + (20*scaleX), y + (20*scaleY), buddy.limbs.rightLeg.x, buddy.limbs.rightLeg.y, legRadius);
+
+    // Arms (Drips on side)
+    const armRadius = 18 * scaleX;
+    // Connect from shoulder area to limb pos
+    drawCapsule(x - (50*scaleX), y + (10*scaleY), buddy.limbs.leftArm.x, buddy.limbs.leftArm.y, armRadius);
+    drawCapsule(x + (50*scaleX), y + (10*scaleY), buddy.limbs.rightArm.x, buddy.limbs.rightArm.y, armRadius);
+
+
+    // 2. Draw Main Body (Head + Torso merger)
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.scale(scaleX, scaleY);
+    
+    // Head
+    ctx.beginPath();
+    ctx.arc(0, 0, radius, 0, Math.PI * 2);
+    ctx.fill();
+    
+    // Torso (Rect moving down)
+    ctx.beginPath();
+    ctx.rect(-radius * 0.8, 0, radius * 1.6, radius * 0.8);
+    ctx.fill();
+
+    ctx.restore();
+
+
+    // 3. Draw Face
+    drawFace(x, y, scaleX, scaleY);
+}
+
+function drawFace(bx, by, sx, sy) {
+    // Face Container (White Circle)
+    const faceSize = 60 * ((sx + sy)/2);
+    
+    // Offset face slightly towards mouse for 3D effect
+    const dx = mouse.x - bx;
+    const dy = mouse.y - by;
+    const dist = Math.sqrt(dx*dx + dy*dy);
+    const maxOffset = 15;
+    const angle = Math.atan2(dy, dx);
+    const offsetDist = Math.min(dist * 0.05, maxOffset);
+    
+    const faceX = bx + Math.cos(angle) * offsetDist;
+    const faceY = by + Math.sin(angle) * offsetDist; // +10 to lower face slightly on head
+
+    ctx.fillStyle = 'white';
+    ctx.beginPath();
+    ctx.ellipse(faceX, faceY, faceSize, faceSize * 0.95, 0, 0, Math.PI*2);
+    ctx.fill();
+
+    // Eyes
+    ctx.fillStyle = '#2E266F';
+    
+    // Blink Logic
+    buddy.blinkTimer--;
+    if (buddy.blinkTimer <= 0) {
+        buddy.isBlinking = true;
+        if (buddy.blinkTimer <= -10) { // Blink duration
+            buddy.blinkTimer = Math.random() * 200 + 150;
+            buddy.isBlinking = false;
+        }
+    }
+
+    // Eye positions relative to face center
+    const eyeOffsetX = 20 * sx;
+    const eyeOffsetY = -5 * sy;
+    
+    // Mouse tracking for pupils/eyes
+    const lookX = (mouse.x - faceX) * 0.05;
+    const lookY = (mouse.y - faceY) * 0.05;
+    const clampedLookX = Math.max(-10, Math.min(10, lookX));
+    const clampedLookY = Math.max(-10, Math.min(10, lookY));
+
+    if (buddy.isBlinking) {
+        // Draw closed eyes (lines)
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = '#2E266F';
+        ctx.beginPath();
+        ctx.moveTo(faceX - eyeOffsetX - 10, faceY + eyeOffsetY);
+        ctx.lineTo(faceX - eyeOffsetX + 10, faceY + eyeOffsetY);
+        ctx.moveTo(faceX + eyeOffsetX - 10, faceY + eyeOffsetY);
+        ctx.lineTo(faceX + eyeOffsetX + 10, faceY + eyeOffsetY);
+        ctx.stroke();
+    } else {
+        // Draw open eyes (Ovals)
+        const eyeW = 12 * sx;
+        const eyeH = 18 * sy;
+
+        ctx.beginPath();
+        ctx.ellipse(faceX - eyeOffsetX + clampedLookX, faceY + eyeOffsetY + clampedLookY, eyeW, eyeH, 0, 0, Math.PI*2);
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.ellipse(faceX + eyeOffsetX + clampedLookX, faceY + eyeOffsetY + clampedLookY, eyeW, eyeH, 0, 0, Math.PI*2);
+        ctx.fill();
+    }
+
+    // Mouth
+    ctx.beginPath();
+    const mouthY = faceY + 25 * sy;
+    
+    if (buddy.mood === 'surprised' || Math.abs(buddy.vy) > 5) {
+        // O mouth
+        ctx.ellipse(faceX + clampedLookX*0.5, mouthY, 8, 10, 0, 0, Math.PI*2);
+    } else {
+        // Neutral/Smile
+        // Kidney shapeish or simple oval
+        ctx.ellipse(faceX + clampedLookX*0.5, mouthY, 12, 6, 0, 0, Math.PI*2);
+    }
+    ctx.fill();
+}
+
+
+// --- Main Loop ---
+
+function animate() {
+    // Clear
+    ctx.clearRect(0, 0, width, height);
+
+    // Update
+    updatePhysics();
+
+    // Particles
+    for (let i = particles.length - 1; i >= 0; i--) {
+        particles[i].update();
+        particles[i].draw();
+        if (particles[i].life <= 0) particles.splice(i, 1);
+    }
+
+    // Draw Shadow (Simple oval on floor)
+    if (buddy.y < height - FLOOR_Y_OFFSET + 50) {
+        ctx.fillStyle = 'rgba(0,0,0,0.1)';
+        const shadowScale = 1 - ((height - FLOOR_Y_OFFSET - buddy.y - buddy.radius) / 300);
+        if (shadowScale > 0) {
+            ctx.beginPath();
+            ctx.ellipse(buddy.x, height - FLOOR_Y_OFFSET + 5, 50 * shadowScale, 10 * shadowScale, 0, 0, Math.PI*2);
+            ctx.fill();
+        }
+    }
+
+    // Draw Buddy
+    drawBuddy();
+
+    requestAnimationFrame(animate);
+}
+
+// Start
+animate();
+
+// Interaction: Double Click to show love
+canvas.addEventListener('dblclick', (e) => {
+    const pos = getMousePos(e);
+    createParticles(pos.x, pos.y, 5, '❤️');
+    buddy.vy = -10; // Hop
+});
+
+</script>
+</body>
+</html>

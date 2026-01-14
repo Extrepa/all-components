@@ -1,0 +1,17 @@
+<!-- 83) errl_woods_deer_01 – minimal deer silhouette (char) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="char" data-name="errl_woods_deer_01">
+  <g fill="none">
+    <!-- body -->
+    <path d="M24 34 C26 32.5 28 32 30 32h4c3 0 5 1 6 3l2 3H24Z"
+      fill="#92400e"/>
+    <!-- head -->
+    <circle cx="32" cy="30" r="2" fill="#92400e"/>
+    <!-- legs -->
+    <path d="M26 40 V46 M30 40 V46 M36 40 V46"
+      stroke="#78350f" stroke-width="1.6" stroke-linecap="round"/>
+    <!-- antlers -->
+    <path d="M31 27 L30 25 M33 27 L34 25"
+      stroke="#e5e7eb" stroke-width="1.1" stroke-linecap="round"/>
+  </g>
+</svg>

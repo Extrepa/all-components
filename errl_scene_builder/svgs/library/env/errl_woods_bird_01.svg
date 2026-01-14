@@ -1,0 +1,9 @@
+<!-- 78) errl_woods_bird_01 – tiny bird silhouette (prop/char) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="char" data-name="errl_woods_bird_01">
+  <g fill="none">
+    <path d="M26 30 C28 28 30 27 32 27s4 1 5 3 1 4 1 5-1 2-3 2-4-1-5-2-2-3-2-4z"
+      fill="#0f172a"/>
+    <path d="M33 27 L36 26 L35 28 Z" fill="#0f172a"/>
+  </g>
+</svg>

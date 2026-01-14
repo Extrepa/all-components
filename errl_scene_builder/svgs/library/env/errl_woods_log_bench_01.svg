@@ -1,0 +1,13 @@
+<!-- 60) errl_woods_log_bench_01 – long bench log (env/prop) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="env" data-name="errl_woods_log_bench_01">
+  <g fill="none">
+    <rect x="12" y="34" width="40" height="7" rx="3.5" fill="#78350f"/>
+    <!-- end grain -->
+    <circle cx="14" cy="37.5" r="3.4" fill="#a16207"/>
+    <circle cx="14" cy="37.5" r="1.7" fill="#92400e"/>
+    <!-- simple legs -->
+    <rect x="18" y="38" width="2" height="6" rx="1" fill="#14532d"/>
+    <rect x="44" y="38" width="2" height="6" rx="1" fill="#14532d"/>
+  </g>
+</svg>

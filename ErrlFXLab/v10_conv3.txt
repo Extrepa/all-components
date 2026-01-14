@@ -1,0 +1,380 @@
+Time to give Errl a z-axis. Let’s bolt on a 3D Wireframe tab that uses the uploaded SVG as a texture on a spinning box, in proper neon-goo fashion. 🧊📡
+
+I’ll assume you’re on the v0.9 version we just outlined (favorites + sandbox snippet). These are add-on edits, not a full rewrite.
+
+⸻
+
+1. Add Three.js to <head>
+
+In your <head>, right after the p5 script, add Three.js:
+
+  <!-- p5.js for FX lab -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+
+  <!-- three.js for 3D wireframe mode -->
+  <script src="https://unpkg.com/three@0.161.0/build/three.min.js"></script>
+
+If your environment complains about this CDN, you can later download three.min.js into your project and change the src to a local path.
+
+⸻
+
+2. Add a “3D Wire” preview tab + panel
+
+2.1 Add the tab button
+
+Find the tab buttons block:
+
+<div class="flex items-center gap-1 text-xs">
+  <button id="tabSvg" ... data-tab="svg">SVG Preview</button>
+  <button id="tabP5" ... data-tab="p5">p5 FX Lab</button>
+  <button id="tabHtmlFx" ... data-tab="htmlfx">HTML FX</button>
+</div>
+
+Append this new button inside the same <div>:
+
+              <button
+                id="tabWire3d"
+                class="preview-tab px-3 py-1.5 rounded-md text-slate-300 border border-transparent hover:border-slate-600/80 hover:bg-slate-900/80"
+                data-tab="wire3d"
+              >
+                3D Wire
+              </button>
+
+So that block is now 4 buttons: SVG / p5 / HTML FX / 3D Wire.
+
+⸻
+
+2.2 Add the 3D preview panel
+
+Find the main preview container (where svgPreviewContainer, p5PreviewContainer, and htmlFxPreviewContainer live):
+
+<div class="flex-1 flex items-center justify-center bg-slate-900/40">
+  <!-- SVG Preview Container -->
+  ...
+  <!-- p5 Preview Container -->
+  ...
+  <!-- HTML FX Preview Container -->
+  ...
+</div>
+
+Right after the HTML FX container, add:
+
+            <!-- 3D Wire Preview Container -->
+            <div
+              id="wire3dPreviewContainer"
+              class="preview-panel hidden w-full max-w-[420px] max-h-[420px] aspect-square rounded-2xl bg-slate-950/70 border border-emerald-700/80 errl-glow flex flex-col overflow-hidden"
+              data-tab="wire3d"
+            >
+              <div class="px-3 py-1.5 border-b border-slate-800/70 flex items-center justify-between text-[11px] text-slate-300">
+                <span>3D Wireframe</span>
+                <span id="wire3dStatus" class="text-slate-500">
+                  Waiting for SVG…
+                </span>
+              </div>
+              <div class="flex-1 flex items-center justify-center bg-slate-900/60">
+                <div id="wire3dCanvasHost" class="w-full h-full"></div>
+              </div>
+            </div>
+
+Now all four preview panels share the preview-panel class and have a data-tab attribute that matches the tab’s data-tab.
+
+⸻
+
+3. Hook up DOM refs + Three.js globals
+
+In your <script> where you already grab DOM elements (the big block of const ... = document.getElementById(...) near the top), add these lines:
+
+    const wire3dCanvasHost = document.getElementById("wire3dCanvasHost");
+    const wire3dStatusEl = document.getElementById("wire3dStatus");
+
+Then, in the globals section (where you have things like let currentMode, let currentSvgUrl, let p5Instance…), add:
+
+    // three.js state
+    let threeRenderer = null;
+    let threeScene = null;
+    let threeCamera = null;
+    let threeMesh = null;
+    let threeFrameId = null;
+
+
+⸻
+
+4. Three.js helpers: start/stop 3D wireframe
+
+Somewhere below your p5 helpers (but before keyboard shortcuts / clear), add these functions:
+
+    // ---- 3D Wireframe (three.js) ----
+    function stopWire3D() {
+      if (threeFrameId !== null) {
+        cancelAnimationFrame(threeFrameId);
+        threeFrameId = null;
+      }
+      if (threeRenderer) {
+        threeRenderer.dispose();
+        if (wire3dCanvasHost) {
+          while (wire3dCanvasHost.firstChild) {
+            wire3dCanvasHost.removeChild(wire3dCanvasHost.firstChild);
+          }
+        }
+      }
+      threeRenderer = null;
+      threeScene = null;
+      threeCamera = null;
+      threeMesh = null;
+      if (wire3dStatusEl) {
+        wire3dStatusEl.textContent = currentSvg
+          ? "Ready. Uses current Errl SVG as texture."
+          : "Waiting for SVG…";
+      }
+    }
+
+    function startWire3DWithCurrentSvg() {
+      if (!wire3dCanvasHost || typeof THREE === "undefined") {
+        if (wire3dStatusEl) {
+          wire3dStatusEl.textContent = "three.js not available.";
+        }
+        return;
+      }
+      if (!currentSvg || !currentSvgUrl) {
+        if (wire3dStatusEl) {
+          wire3dStatusEl.textContent = "Upload an SVG first.";
+        }
+        return;
+      }
+
+      // Reset any existing scene
+      stopWire3D();
+
+      const width = wire3dCanvasHost.clientWidth || 400;
+      const height = wire3dCanvasHost.clientHeight || 400;
+
+      threeRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      threeRenderer.setSize(width, height);
+      threeRenderer.setPixelRatio(window.devicePixelRatio || 1);
+      wire3dCanvasHost.appendChild(threeRenderer.domElement);
+
+      threeScene = new THREE.Scene();
+      threeScene.background = new THREE.Color(0x02070a);
+
+      threeCamera = new THREE.PerspectiveCamera(35, width / height, 0.1, 100);
+      threeCamera.position.set(0, 0, 4);
+
+      const light1 = new THREE.DirectionalLight(0xffffff, 1.0);
+      light1.position.set(3, 4, 5);
+      threeScene.add(light1);
+
+      const light2 = new THREE.DirectionalLight(0x34e1ff, 0.7);
+      light2.position.set(-3, -2, -4);
+      threeScene.add(light2);
+
+      threeScene.add(new THREE.AmbientLight(0x404040, 0.6));
+
+      const textureLoader = new THREE.TextureLoader();
+      textureLoader.load(
+        currentSvgUrl,
+        (texture) => {
+          const geo = new THREE.BoxGeometry(1.8, 1.8, 0.3);
+
+          // Material with SVG texture
+          const mat = new THREE.MeshStandardMaterial({
+            map: texture,
+            metalness: 0.3,
+            roughness: 0.4,
+          });
+
+          threeMesh = new THREE.Mesh(geo, mat);
+
+          // Wireframe overlay
+          const edges = new THREE.EdgesGeometry(geo);
+          const hue = p5Config ? p5Config.bgHue || 210 : 210;
+          const wireColor = new THREE.Color().setHSL(hue / 360, 0.9, 0.6);
+          const lineMat = new THREE.LineBasicMaterial({
+            color: wireColor,
+            linewidth: 1,
+          });
+          const wire = new THREE.LineSegments(edges, lineMat);
+          threeMesh.add(wire);
+
+          threeScene.add(threeMesh);
+
+          if (wire3dStatusEl) {
+            wire3dStatusEl.textContent = "Spinning box · mouse to vibe.";
+          }
+
+          let lastTime = performance.now();
+          function animate(now) {
+            threeFrameId = requestAnimationFrame(animate);
+            const dt = (now - lastTime) / 1000;
+            lastTime = now;
+
+            if (threeMesh) {
+              threeMesh.rotation.y += dt * 0.7;
+              threeMesh.rotation.x += dt * 0.35;
+            }
+            threeRenderer.render(threeScene, threeCamera);
+          }
+          animate(lastTime);
+        },
+        undefined,
+        (err) => {
+          console.error("Three.js texture load error:", err);
+          if (wire3dStatusEl) {
+            wire3dStatusEl.textContent = "Failed to load SVG texture.";
+          }
+        }
+      );
+
+      // Handle resize
+      function onResize() {
+        if (!threeRenderer || !threeCamera) return;
+        const w = wire3dCanvasHost.clientWidth || 400;
+        const h = wire3dCanvasHost.clientHeight || 400;
+        threeRenderer.setSize(w, h);
+        threeCamera.aspect = w / h;
+        threeCamera.updateProjectionMatrix();
+      }
+
+      window.addEventListener("resize", onResize);
+
+      // Store to remove later if you like; for now we rely on full page lifetime.
+    }
+
+
+⸻
+
+5. Integrate with tab switching
+
+You already have a tab switch handler like:
+
+    tabButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const tab = btn.dataset.tab;
+
+        // ... update button styles
+        // ... show/hide previewPanels
+
+        if (tab === "p5") {
+          // ... start p5
+        } else {
+          stopP5Instance();
+        }
+
+        if (tab === "htmlfx") {
+          // ...
+        }
+      });
+    });
+
+Update this logic to also handle the wire3d tab and stop 3D when leaving.
+
+Replace that whole listener with this version:
+
+    tabButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const tab = btn.dataset.tab;
+
+        tabButtons.forEach((b) =>
+          b.classList.remove(
+            "bg-slate-800/80",
+            "text-slate-50",
+            "border-slate-600/90"
+          )
+        );
+        btn.classList.add(
+          "bg-slate-800/80",
+          "text-slate-50",
+          "border-slate-600/90"
+        );
+
+        previewPanels.forEach((panel) => {
+          panel.classList.add("hidden");
+          if (panel.dataset.tab === tab) {
+            panel.classList.remove("hidden");
+          }
+        });
+
+        // p5 tab
+        if (tab === "p5") {
+          stopWire3D();
+          if (!currentSvg) {
+            p5StatusEl.textContent = "Upload an SVG first.";
+            captureFrameBtn.disabled = true;
+          } else {
+            startP5WithCurrentSvg();
+          }
+          return;
+        } else {
+          stopP5Instance();
+        }
+
+        // 3D wire tab
+        if (tab === "wire3d") {
+          startWire3DWithCurrentSvg();
+          return;
+        } else {
+          stopWire3D();
+        }
+
+        // HTML FX tab
+        if (tab === "htmlfx") {
+          if (!currentSvg) {
+            htmlFxStatus.textContent = "Upload an SVG to enable HTML FX.";
+          } else {
+            htmlFxStatus.textContent = "CSS filters are live.";
+          }
+        }
+      });
+    });
+
+This ensures:
+	•	Only one of p5 or 3D is live at a time.
+	•	Switching tabs cleans up the other renderer.
+
+⸻
+
+6. Clean up 3D when clearing SVG
+
+In your clearBtn.addEventListener("click", ...) handler, after stopP5Instance(); add:
+
+      stopWire3D();
+
+So clear wipes:
+	•	SVG state
+	•	p5 sketch
+	•	Three.js scene
+	•	Thumbnails, etc.
+
+⸻
+
+7. Tiny status hook when loading a new SVG
+
+Inside handleSvgFile(file) where you already do:
+
+          updateUiForSvg(currentSvg);
+          updateHtmlFxImage();
+          updateSandboxSnippet();
+          flashStatus("SVG loaded and normalized ✅");
+          p5StatusEl.textContent = "Ready. Switch to this tab to see FX.";
+          htmlFxStatus.textContent = "CSS filters are live.";
+
+Add a line to set initial wireframe status:
+
+          if (wire3dStatusEl) {
+            wire3dStatusEl.textContent = "Ready. Switch to 3D Wire tab.";
+          }
+
+
+⸻
+
+What you have now
+
+Your Errl FX workstation can:
+	•	Upload a single Errl SVG and:
+	•	Inspect its SVG DOM tree.
+	•	Wobble it in p5.js and capture frames (with ⭐ favorites).
+	•	Style it with HTML/CSS filters and copy the filter: stack.
+	•	Save/import combined p5+HTML FX packs and batch-capture them.
+	•	Generate a self-contained sandbox HTML for embedding or <iframe srcdoc>.
+	•	Render a spinning 3D “wireframe” box textured with the same SVG.
+
+The left “3D Wire (soon)” mode button is now spiritually fulfilled by the new 3D Wire tab. We can later wire that mode button to auto-select the tab or toggle 3D-specific controls (orbit, depth sliders, voxel toggle, etc.) so the whole UI feels like a little Errl OS for visuals.

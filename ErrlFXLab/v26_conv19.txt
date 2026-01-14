@@ -1,0 +1,462 @@
+Alright, Errl OS, at this point this app is doing everything but introducing itself to other AIs.
+
+So next power-up:
+
+AI Handoff Prompt Generator
+
+One-click: “Summarize what’s going on in this lab as a prompt I can paste into another AI / Obsidian / engine doc.”
+
+We’ll use your existing collectSessionSnapshot() and generate a rich, human-readable prompt.
+
+⸻
+
+1. Add “AI Handoff Prompt” panel (HTML)
+
+Drop this on the right column, near Session Snapshot. Good spot: directly under Session Snapshot, or directly above it if you want it more visible.
+
+Find your Session Snapshot block:
+
+      <!-- Session Snapshot (JSON) -->
+      <div class="border-t border-slate-800/70 px-3 py-2 text-[11px] text-slate-200">
+        ...
+      </div>
+
+Add this block right after it:
+
+      <!-- AI Handoff Prompt -->
+      <div class="border-t border-slate-800/70 px-3 py-2 text-[11px] text-slate-200">
+        <div class="flex items-center justify-between mb-1">
+          <span class="font-semibold text-slate-100">AI Handoff Prompt</span>
+          <span id="aiHandoffStatus" class="text-[10px] text-slate-500">
+            Build a prompt for another AI
+          </span>
+        </div>
+
+        <p class="text-[10px] text-slate-400 mb-1">
+          Generates a structured description of this session (FX, frames, spritesheets, timelines) that you can paste
+          into ChatGPT, Gemini, Warp, or your game engine docs.
+        </p>
+
+        <div class="flex flex-wrap items-center gap-2 mb-1 text-[10px] text-slate-300">
+          <div class="flex items-center gap-1">
+            <span class="text-slate-400">Target:</span>
+            <select
+              id="aiHandoffTarget"
+              class="px-1 py-0.5 rounded-md bg-slate-950 border border-slate-700 text-[10px] text-slate-100"
+            >
+              <option value="generic">Generic AI assistant</option>
+              <option value="game-engine">Game engine / animation system</option>
+              <option value="video">Video editor / motion graphics</option>
+              <option value="obsidian">Obsidian / documentation</option>
+              <option value="code">Code assistant (JS/TS/Phaser/Pixi)</option>
+            </select>
+          </div>
+
+          <div class="flex-1 flex items-center gap-1">
+            <span class="text-slate-400">Goal:</span>
+            <input
+              id="aiHandoffGoal"
+              type="text"
+              placeholder="e.g., turn these into ErrlStory walk cycles"
+              class="flex-1 px-1 py-0.5 rounded-md bg-slate-950 border border-slate-700 text-[10px] text-slate-100 placeholder:text-slate-500"
+            />
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 mb-1">
+          <button
+            id="aiHandoffBuildBtn"
+            class="px-2 py-1 rounded-md border border-cyan-500/70 text-cyan-200 text-[10px] hover:bg-cyan-500/15"
+          >
+            Build AI prompt
+          </button>
+          <button
+            id="aiHandoffCopyBtn"
+            class="px-2 py-1 rounded-md border border-slate-600 text-slate-200 text-[10px] hover:bg-slate-900/80 disabled:opacity-40 disabled:cursor-not-allowed"
+            disabled
+          >
+            Copy AI prompt
+          </button>
+        </div>
+
+        <textarea
+          id="aiHandoffOutput"
+          class="w-full h-28 mt-1 bg-slate-950 border border-slate-700 rounded-md px-2 py-1 text-[10px] font-mono text-slate-100 scrollbar-thin"
+          placeholder="// AI-friendly description will appear here"
+          spellcheck="false"
+        ></textarea>
+
+        <p class="mt-1 text-[9px] text-slate-500">
+          Paste this into another AI or doc so it understands your FX setup, frames, spritesheets, and timelines without guessing.
+        </p>
+      </div>
+
+
+⸻
+
+2. Wire DOM refs (JS)
+
+In your big block of getElementById calls, add:
+
+    // AI Handoff Prompt
+    const aiHandoffStatusEl = document.getElementById("aiHandoffStatus");
+    const aiHandoffTargetEl = document.getElementById("aiHandoffTarget");
+    const aiHandoffGoalEl = document.getElementById("aiHandoffGoal");
+    const aiHandoffBuildBtn = document.getElementById("aiHandoffBuildBtn");
+    const aiHandoffCopyBtn = document.getElementById("aiHandoffCopyBtn");
+    const aiHandoffOutput = document.getElementById("aiHandoffOutput");
+
+We’ll re-use collectSessionSnapshot() and the globals we already introduced:
+	•	lastSpritesheetManifest
+	•	lastTimelineSnapshot
+	•	lastAnimationPack
+
+⸻
+
+3. Build AI handoff prompt from session snapshot
+
+Add this helper somewhere near your snapshot helpers:
+
+    function summarizeFxPresetsForPrompt(presets) {
+      if (!Array.isArray(presets) || !presets.length) return "No saved FX presets yet.";
+      const maxList = Math.min(6, presets.length);
+      const parts = presets.slice(0, maxList).map((p) => {
+        const id = p.id || "(no id)";
+        const name = p.name || "(unnamed preset)";
+        return `- ${name} (id: ${id})`;
+      });
+      if (presets.length > maxList) {
+        parts.push(`- ...and ${presets.length - maxList} more preset(s).`);
+      }
+      return parts.join("\n");
+    }
+
+    function summarizeFramesForPrompt(frames) {
+      if (!frames || !frames.all || !frames.all.length) {
+        return "No frames captured yet.";
+      }
+      const total = frames.all.length;
+      const favCount = Array.isArray(frames.favorites) ? frames.favorites.length : 0;
+      const bySource = {
+        p5: 0,
+        "3d": 0,
+        voxel: 0,
+        other: 0,
+      };
+      const tagsCount = {};
+      frames.all.forEach((f) => {
+        const s = f.source || "other";
+        if (bySource[s] === undefined) bySource.other++;
+        else bySource[s]++;
+        if (f.tag) {
+          tagsCount[f.tag] = (tagsCount[f.tag] || 0) + 1;
+        }
+      });
+
+      const lines = [];
+      lines.push(`Total frames: ${total} (favorites: ${favCount})`);
+      lines.push(
+        `By source: p5=${bySource.p5}, 3D=${bySource["3d"]}, 2D voxels=${bySource.voxel}, other=${bySource.other}`
+      );
+      if (Object.keys(tagsCount).length) {
+        lines.push("Tags used:");
+        Object.entries(tagsCount).forEach(([tag, count]) => {
+          lines.push(`- ${tag}: ${count} frame(s)`);
+        });
+      } else {
+        lines.push("No frame tags set yet (idle / walk / jump / fx, etc.).");
+      }
+      return lines.join("\n");
+    }
+
+    function summarizeSpritesheetForPrompt(sheet) {
+      if (!sheet || !sheet.frames || !sheet.frames.length) {
+        return "No spritesheet manifest generated yet.";
+      }
+      return [
+        `Frame size: ${sheet.frameWidth}×${sheet.frameHeight}`,
+        `Grid: ${sheet.columns} columns × ${sheet.rows} rows`,
+        `Total frames in sheet: ${sheet.frames.length}`,
+        `Each frame entry includes: id, source, tag, favorite, modeLabel, col/row, and pixel coords.`,
+      ].join("\n");
+    }
+
+    function summarizeTimelineForPrompt(timeline) {
+      if (!timeline || !timeline.frames || !timeline.frames.length) {
+        return "No timeline built yet.";
+      }
+      const tagsCount = {};
+      timeline.frames.forEach((f) => {
+        if (f.tag) {
+          tagsCount[f.tag] = (tagsCount[f.tag] || 0) + 1;
+        }
+      });
+      const lines = [];
+      lines.push(`FPS: ${timeline.fps}`);
+      lines.push(`Frame count: ${timeline.frameCount}`);
+      if (Object.keys(tagsCount).length) {
+        lines.push("Timeline tags within frames:");
+        Object.entries(tagsCount).forEach(([tag, count]) => {
+          lines.push(`- ${tag}: ${count} frame(s) in this timeline sequence`);
+        });
+      }
+      return lines.join("\n");
+    }
+
+    function summarizeAnimationPackForPrompt(pack) {
+      if (!pack || !pack.animations) {
+        return "No animation pack generated yet.";
+      }
+      const animNames = Object.keys(pack.animations);
+      if (!animNames.length) {
+        return "Animation pack has no clips defined.";
+      }
+      const lines = [];
+      lines.push(
+        `Sheet file: ${pack.sheet?.file || "unknown"} (${pack.sheet?.frameWidth}×${pack.sheet?.frameHeight})`
+      );
+      lines.push(`Named animations / clips:`);
+      animNames.forEach((name) => {
+        const clip = pack.animations[name];
+        lines.push(`- ${name}: ${clip.frameCount} frame(s)`);
+      });
+      return lines.join("\n");
+    }
+
+    function buildAiHandoffPrompt() {
+      const target = aiHandoffTargetEl?.value || "generic";
+      const goal = (aiHandoffGoalEl?.value || "").trim();
+
+      const snapshot = collectSessionSnapshot();
+
+      const lines = [];
+
+      // Header
+      lines.push("# Errl FX Lab – AI Handoff Context");
+      lines.push("");
+      lines.push("You are receiving a structured description of a visual FX + animation session.");
+      lines.push(
+        "The core entity is a character called **Errl** (a goo-like mascot), and this lab produces frames, spritesheets, and animations."
+      );
+      lines.push("");
+
+      if (goal) {
+        lines.push("## Goal");
+        lines.push(goal);
+        lines.push("");
+      }
+
+      lines.push("## Target System");
+      switch (target) {
+        case "game-engine":
+          lines.push(
+            "- Intended consumer: Game engine / animation system (e.g. Phaser, PixiJS, Unity, Godot, custom ErrlStory engine)."
+          );
+          break;
+        case "video":
+          lines.push(
+            "- Intended consumer: Video / motion graphics workflow (After Effects, Resolve Fusion, etc.)."
+          );
+          break;
+        case "obsidian":
+          lines.push("- Intended consumer: Documentation / Obsidian note for later reference.");
+          break;
+        case "code":
+          lines.push("- Intended consumer: Code assistant for generating JS/TS / Phaser / Pixi integration.");
+          break;
+        default:
+          lines.push("- Intended consumer: General AI assistant.");
+      }
+      lines.push("");
+
+      // UI state
+      lines.push("## Current UI / Mode State");
+      lines.push(`- Active preview tab: ${snapshot.ui?.activeTab || "unknown"}`);
+      lines.push(`- 3D mode: ${snapshot.ui?.threeMode || "wire / voxel3d / unknown"}`);
+      lines.push(`- SVG loaded: ${snapshot.svg?.hasSvg ? "yes" : "no"}`);
+      if (snapshot.svg?.name) {
+        lines.push(`- SVG name: ${snapshot.svg.name}`);
+      }
+      lines.push("");
+
+      // p5 + HTML FX
+      lines.push("## FX Configuration");
+      lines.push("### p5 FX snapshot");
+      lines.push(
+        `- bgHue: ${snapshot.p5Config?.bgHue}`
+      );
+      lines.push(
+        `- wobbleAmplitude: ${snapshot.p5Config?.wobbleAmplitude}, wobbleSpeed: ${snapshot.p5Config?.wobbleSpeed}`
+      );
+      lines.push(
+        `- glowStrength: ${snapshot.p5Config?.glowStrength}, sceneZoom: ${snapshot.p5Config?.sceneZoom}`
+      );
+      lines.push(
+        `- currentPresetId: ${snapshot.p5Config?.currentPresetId || "(none)"}`
+      );
+      lines.push("");
+      lines.push("### HTML FX snapshot");
+      lines.push(
+        `- selectedPresetId: ${snapshot.htmlFx?.selectedPresetId || "(none)"}`
+      );
+      lines.push(
+        `- filterString: ${snapshot.htmlFx?.filterString || "(CSS filters as string)"}`
+      );
+      lines.push("");
+      lines.push("### Saved FX presets (names and ids)");
+      lines.push(summarizeFxPresetsForPrompt(snapshot.fxPresets));
+      lines.push("");
+
+      // Frames
+      lines.push("## Captured Frames");
+      lines.push(summarizeFramesForPrompt(snapshot.frames));
+      lines.push("");
+
+      // Spritesheet
+      lines.push("## Spritesheet Manifest (if any)");
+      lines.push(summarizeSpritesheetForPrompt(lastSpritesheetManifest));
+      lines.push("");
+
+      // Timeline
+      lines.push("## Timeline (if any)");
+      lines.push(summarizeTimelineForPrompt(lastTimelineSnapshot));
+      lines.push("");
+
+      // Animation pack
+      lines.push("## Animation Pack (if any)");
+      lines.push(summarizeAnimationPackForPrompt(lastAnimationPack));
+      lines.push("");
+
+      // What we want the AI to do next
+      lines.push("## What I want you (the AI) to do");
+      if (goal) {
+        lines.push(
+          "- Respect the goal above, using the FX / frames / spritesheets / timelines as the visual source context."
+        );
+      } else {
+        lines.push(
+          "- Help me transform this visual context into game-ready animations, code, or documentation, depending on your capabilities."
+        );
+      }
+      lines.push(
+        "- You do NOT have the actual image assets here, but you DO have the structure: frame ordering, tags (idle/walk/jump/fx), spritesheet grid, and animation metadata."
+      );
+      lines.push(
+        "- Use this metadata to generate engine code, docs, or next-step instructions without guessing the visuals."
+      );
+
+      return lines.join("\n");
+    }
+
+This builds a markdown-style prompt, heavily structured, using your actual current session state.
+
+⸻
+
+4. Wire the buttons
+
+Hook up the build + copy buttons:
+
+    aiHandoffBuildBtn.addEventListener("click", () => {
+      try {
+        const promptText = buildAiHandoffPrompt();
+        aiHandoffOutput.value = promptText;
+        aiHandoffCopyBtn.disabled = false;
+        if (aiHandoffStatusEl) {
+          aiHandoffStatusEl.textContent = "Prompt built from current session.";
+        }
+        flashStatus("AI handoff prompt built ✅", "info");
+        playBeep(820, 0.08, "triangle");
+      } catch (err) {
+        console.error("AI handoff build error:", err);
+        if (aiHandoffStatusEl) {
+          aiHandoffStatusEl.textContent = "Could not build AI prompt.";
+        }
+        flashStatus("Could not build AI prompt.", "error");
+        playBeep(200, 0.1, "square");
+      }
+    });
+
+    aiHandoffCopyBtn.addEventListener("click", async () => {
+      try {
+        const text = (aiHandoffOutput.value || "").trim();
+        if (!text) {
+          flashStatus("No AI prompt to copy.", "error");
+          playBeep(200, 0.1, "square");
+          return;
+        }
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(text);
+        } else {
+          const textarea = document.createElement("textarea");
+          textarea.value = text;
+          textarea.style.position = "fixed";
+          textarea.style.left = "-9999px";
+          document.body.appendChild(textarea);
+          textarea.focus();
+          textarea.select();
+          document.execCommand("copy");
+          document.body.removeChild(textarea);
+        }
+
+        flashStatus("AI handoff prompt copied ✅", "info");
+        playBeep(780, 0.08, "sine");
+      } catch (err) {
+        console.error("AI handoff copy error:", err);
+        flashStatus("Could not copy AI prompt.", "error");
+        playBeep(200, 0.1, "square");
+      }
+    });
+
+Optional: every time you update the session snapshot (updateSessionJsonOutput()), you could also auto-refresh the AI prompt, but I’d keep it manual so you don’t spam yourself.
+
+⸻
+
+5. Optionally expose this in Command Palette
+
+If you want to launch this via Ctrl+K, add another command to the commands array:
+
+      {
+        id: "ai-handoff-build",
+        label: "Build AI handoff prompt",
+        keywords: "ai handoff prompt export context",
+        run: () => {
+          aiHandoffBuildBtn?.click();
+          // scroll to it if you like:
+          aiHandoffOutput?.scrollIntoView({ behavior: "smooth", block: "center" });
+        },
+      },
+
+Now typing “handoff” or “prompt” in the palette will hit it.
+
+⸻
+
+What you just added
+
+Now the lab can talk about itself in a way other AIs / docs understand:
+	•	It grabs:
+	•	current tab and mode
+	•	p5 config
+	•	HTML FX config
+	•	preset list
+	•	frames + tags + favorites
+	•	spritesheet manifest
+	•	timeline snapshot
+	•	animation pack summary
+	•	Then it composes a markdown prompt like:
+
+“Here’s Errl FX Lab state, here are the tags, here’s the spritesheet grid, here’s the animation pack, my goal is X — please generate Y.”
+
+Which means this single index.html is now:
+	•	FX lab
+	•	capture + gallery + VS
+	•	audio-reactive playground
+	•	spritesheet + timeline + animation pack factory
+	•	session black box
+	•	command palette
+	•	and a “Dear Future AI, here’s what the hell we did” generator.
+
+So every time you do a big Errl session, you can:
+	1.	Export spritesheets, timelines, animation packs.
+	2.	Build AI handoff prompt.
+	3.	Paste into another model or Obsidian and keep the whole pipeline coherent.

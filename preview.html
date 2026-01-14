@@ -1,0 +1,3455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>All Components Preview</title>
+  <!-- Prism.js for syntax highlighting -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+  <script>
+    // Configure Prism autoloader
+    if (window.Prism && window.Prism.plugins && window.Prism.plugins.autoloader) {
+      window.Prism.plugins.autoloader.languages_path = 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/';
+    }
+  </script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-primary: #ffffff;
+      --bg-secondary: #f9fafb;
+      --bg-tertiary: #ffffff;
+      --text-primary: #1f2937;
+      --text-secondary: #6b7280;
+      --text-tertiary: rgba(255,255,255,0.9);
+      --border-color: #e5e7eb;
+      --accent: #667eea;
+      --accent-hover: #5568d3;
+      --shadow-sm: 0 4px 12px rgba(0,0,0,0.1);
+      --shadow-md: 0 10px 30px rgba(0,0,0,0.2);
+      --shadow-lg: 0 4px 12px rgba(102, 126, 234, 0.2);
+      --gradient-start: #667eea;
+      --gradient-end: #764ba2;
+    }
+
+    [data-theme="dark"] {
+      --bg-primary: #1f2937;
+      --bg-secondary: #111827;
+      --bg-tertiary: #374151;
+      --text-primary: #f9fafb;
+      --text-secondary: #9ca3af;
+      --text-tertiary: rgba(255,255,255,0.8);
+      --border-color: #374151;
+      --accent: #818cf8;
+      --accent-hover: #6366f1;
+      --shadow-sm: 0 4px 12px rgba(0,0,0,0.3);
+      --shadow-md: 0 10px 30px rgba(0,0,0,0.4);
+      --shadow-lg: 0 4px 12px rgba(129, 140, 248, 0.3);
+      --gradient-start: #4f46e5;
+      --gradient-end: #7c3aed;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+      min-height: 100vh;
+      padding: 2rem;
+      color: var(--text-primary);
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .container {
+      max-width: 1700px;
+      width: 96%;
+      margin: 0 auto;
+    }
+
+    .header-section {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .header-content {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    h1 {
+      color: white;
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+      text-align: center;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+      transition: color 0.3s ease;
+    }
+
+    .subtitle {
+      color: var(--text-tertiary);
+      text-align: center;
+      margin-bottom: 0;
+      font-size: 1.2rem;
+      transition: color 0.3s ease;
+    }
+
+    .theme-toggle {
+      background: rgba(255, 255, 255, 0.2);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .theme-toggle:hover {
+      background: rgba(255, 255, 255, 0.3);
+      border-color: rgba(255, 255, 255, 0.5);
+      transform: translateY(-1px);
+    }
+
+    [data-theme="dark"] .theme-toggle {
+      background: rgba(0, 0, 0, 0.3);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .project-section {
+      background: var(--bg-primary);
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-md);
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .project-index {
+      background: var(--bg-primary);
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-md);
+    }
+
+    .project-index-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--border-color);
+    }
+
+    .project-index-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .project-index-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .project-index-card {
+      background: var(--bg-secondary);
+      border: 2px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1.5rem;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .project-index-card:hover {
+      border-color: var(--accent);
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-2px);
+    }
+
+    .project-index-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      word-break: break-word;
+    }
+
+    .project-index-meta {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .project-index-counts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .project-index-pill {
+      background: var(--bg-tertiary);
+      color: var(--text-secondary);
+      padding: 0.25rem 0.65rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      border: 1px solid var(--border-color);
+    }
+
+    .project-index-pill.primary {
+      background: var(--accent);
+      color: white;
+      border-color: transparent;
+    }
+
+    .view-toggle {
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 6px;
+      padding: 0.4rem 0.75rem;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .view-toggle:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .disabled-toggle {
+      background: rgba(0, 0, 0, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 6px;
+      padding: 0.4rem 0.75rem;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    [data-theme="dark"] .disabled-toggle {
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    .current-project-pill {
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      border-radius: 999px;
+      padding: 0.35rem 0.85rem;
+      color: white;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .project-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--border-color);
+      transition: border-color 0.3s ease;
+    }
+
+    .project-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      transition: color 0.3s ease;
+    }
+
+    .component-count {
+      background: var(--accent);
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: background 0.3s ease;
+    }
+
+    .components-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 2rem;
+    }
+
+    .component-card {
+      background: var(--bg-secondary);
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.75rem;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .component-card.preview-disabled {
+      cursor: not-allowed;
+      opacity: 0.75;
+    }
+
+    .component-card:hover {
+      border-color: var(--accent);
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-2px);
+    }
+
+    .component-card.preview-disabled:hover {
+      border-color: var(--border-color);
+      box-shadow: none;
+      transform: none;
+    }
+
+    .component-card:active {
+      transform: translateY(0);
+    }
+
+    .component-card.expanded {
+      padding-bottom: 0;
+    }
+
+    .component-preview-container {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      margin-top: 1rem;
+      border-top: 2px solid var(--border-color);
+      padding-top: 1rem;
+    }
+
+    .component-card.preview-visible .component-preview-container {
+      max-height: 820px;
+    }
+
+    .component-preview-frame {
+      width: 100%;
+      height: 620px;
+      border: none;
+      border-radius: 8px;
+      background: var(--bg-primary);
+      display: block;
+    }
+
+    .html-demo-section {
+      background: var(--bg-primary);
+      border-radius: 12px;
+      padding: 2rem;
+      margin-top: 2rem;
+      box-shadow: var(--shadow-md);
+    }
+
+    .html-demo-section h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.75rem;
+    }
+
+    .html-demo-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+
+    .html-demo-count {
+      background: var(--accent);
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: background 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .html-demo-search {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex: 1;
+      min-width: 220px;
+    }
+
+    .html-demo-search input {
+      width: 100%;
+      max-width: 360px;
+      padding: 0.65rem 1rem;
+      border-radius: 8px;
+      border: 2px solid var(--border-color);
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .html-demo-search input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+    }
+
+    .html-demo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.75rem;
+    }
+
+    .html-demo-card {
+      background: var(--bg-secondary);
+      border: 2px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .html-demo-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .html-demo-path {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      font-family: 'Monaco', 'Menlo', monospace;
+      word-break: break-all;
+    }
+
+    .html-demo-frame {
+      width: 100%;
+      height: 420px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      background: var(--bg-primary);
+    }
+
+    .html-demo-empty {
+      padding: 2rem;
+      border: 1px dashed var(--border-color);
+      border-radius: 10px;
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    .html-demo-actions {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .component-preview-loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 300px;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    .component-preview-error {
+      padding: 1rem;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      text-align: center;
+    }
+
+    .component-preview-toggle {
+      position: absolute;
+      bottom: 0.5rem;
+      right: 0.5rem;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      z-index: 10;
+    }
+
+    .component-preview-toggle:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: white;
+    }
+
+    .component-preview-code {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1rem;
+      font-family: 'Monaco', 'Menlo', monospace;
+      font-size: 0.8rem;
+      color: var(--text-primary);
+      max-height: 300px;
+      overflow: auto;
+      white-space: pre;
+      word-break: normal;
+      margin: 0;
+    }
+
+    /* Syntax highlighting overrides for dark mode */
+    [data-theme="dark"] .component-preview-code {
+      background: #1e1e1e;
+    }
+
+    [data-theme="dark"] .component-preview-code code {
+      background: transparent;
+    }
+
+    .component-name {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+      transition: color 0.3s ease;
+    }
+
+    .component-path {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      font-family: 'Monaco', 'Menlo', monospace;
+      margin-bottom: 0.75rem;
+      word-break: break-all;
+      transition: color 0.3s ease;
+    }
+
+    .component-type {
+      display: inline-block;
+      background: var(--bg-tertiary);
+      color: var(--text-secondary);
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      margin-top: 0.5rem;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .component-preview-badge {
+      display: inline-block;
+      background: #fee2e2;
+      color: #991b1b;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      margin-left: 0.5rem;
+      border: 1px solid #fecaca;
+    }
+
+    [data-theme="dark"] .component-preview-badge {
+      background: #3f1d1d;
+      color: #fecaca;
+      border-color: #7f1d1d;
+    }
+    .component-type.tsx {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    [data-theme="dark"] .component-type.tsx {
+      background: #1e3a8a;
+      color: #93c5fd;
+    }
+
+    .component-type.ts {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    [data-theme="dark"] .component-type.ts {
+      background: #1e3a8a;
+      color: #93c5fd;
+    }
+
+    .component-type.js {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    [data-theme="dark"] .component-type.js {
+      background: #78350f;
+      color: #fde68a;
+    }
+
+    .component-type.jsx {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    [data-theme="dark"] .component-type.jsx {
+      background: #78350f;
+      color: #fde68a;
+    }
+
+    .stats-bar {
+      background: var(--bg-primary);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 1rem;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent);
+      transition: color 0.3s ease;
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-top: 0.25rem;
+      transition: color 0.3s ease;
+    }
+
+    .search-box {
+      background: var(--bg-primary);
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      box-shadow: var(--shadow-sm);
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .controls-bar {
+      background: var(--bg-primary);
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .filter-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-group label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      white-space: nowrap;
+    }
+
+    .filter-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .filter-chip {
+      background: var(--bg-secondary);
+      border: 2px solid var(--border-color);
+      border-radius: 20px;
+      padding: 0.25rem 0.75rem;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .filter-chip:hover {
+      border-color: var(--accent);
+      background: var(--bg-primary);
+    }
+
+    .filter-chip.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: white;
+    }
+
+    .sort-control {
+      padding: 0.5rem 1rem;
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .sort-control:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .clear-filters {
+      background: transparent;
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-left: auto;
+    }
+
+    .clear-filters:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .auto-preview {
+      background: var(--accent);
+      border: none;
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      color: white;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-left: 0.5rem;
+    }
+
+    .auto-preview:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+    }
+
+    .favorite-button {
+      background: transparent;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      padding: 0.25rem;
+      transition: transform 0.2s ease;
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+    }
+
+    .favorite-button:hover {
+      transform: scale(1.2);
+    }
+
+    .favorite-button.active {
+      color: #fbbf24;
+    }
+
+    .export-button {
+      background: var(--accent);
+      border: none;
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      color: white;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .export-button:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 1rem;
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      transition: border-color 0.3s, background 0.3s ease, color 0.3s ease;
+    }
+
+    .search-input::placeholder {
+      color: var(--text-secondary);
+    }
+
+    .disabled-section {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: var(--bg-secondary);
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+    }
+
+    .disabled-section h3 {
+      margin: 0 0 1rem;
+      font-size: 1.1rem;
+      color: var(--text-primary);
+    }
+
+    .disabled-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+
+    .disabled-item {
+      background: var(--bg-primary);
+      border: 1px dashed var(--border-color);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .disabled-item strong {
+      display: block;
+      color: var(--text-primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--accent);
+      background: var(--bg-primary);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      color: var(--text-secondary);
+      transition: color 0.3s ease;
+    }
+
+    .empty-state h2 {
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+      transition: color 0.3s ease;
+    }
+
+    .loading-state {
+      text-align: center;
+      padding: 3rem;
+      color: var(--text-secondary);
+    }
+
+    .loading-spinner {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      border: 4px solid var(--border-color);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 1rem;
+      }
+
+      .components-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+
+      .header-section {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .theme-toggle {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .project-section {
+        padding: 1.5rem;
+      }
+
+      .stats-bar {
+        padding: 1rem;
+        gap: 0.5rem;
+      }
+
+      .stat-value {
+        font-size: 1.5rem;
+      }
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-content {
+      background: var(--bg-primary);
+      border-radius: 12px;
+      max-width: 600px;
+      width: 100%;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-md);
+      animation: slideUp 0.3s ease;
+      transition: background 0.3s ease;
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(20px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.5rem;
+      border-bottom: 2px solid var(--border-color);
+    }
+
+    .modal-header h2 {
+      margin: 0;
+      color: var(--text-primary);
+      font-size: 1.5rem;
+    }
+
+    .modal-close {
+      background: transparent;
+      border: none;
+      font-size: 2rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      padding: 0;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      transition: all 0.2s ease;
+    }
+
+    .modal-close:hover {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+    }
+
+    .modal-body {
+      padding: 1.5rem;
+    }
+
+    .modal-info {
+      margin-bottom: 1rem;
+    }
+
+    .modal-info-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+      font-size: 0.9rem;
+    }
+
+    .modal-info-label {
+      font-weight: 600;
+      color: var(--text-secondary);
+      min-width: 100px;
+    }
+
+    .modal-info-value {
+      color: var(--text-primary);
+      font-family: 'Monaco', 'Menlo', monospace;
+      word-break: break-all;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 2px solid var(--border-color);
+    }
+
+    .modal-button {
+      padding: 0.5rem 1rem;
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .modal-button:hover {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: white;
+    }
+
+    .modal-button.primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: white;
+    }
+
+    .component-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .component-card:hover .component-actions {
+      opacity: 1;
+    }
+
+    .action-button {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .action-button:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: white;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--bg-primary);
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1rem 1.5rem;
+      box-shadow: var(--shadow-md);
+      z-index: 2000;
+      animation: slideInRight 0.3s ease;
+      max-width: 300px;
+    }
+
+    @keyframes slideInRight {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    .toast-message {
+      color: var(--text-primary);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      .subtitle {
+        font-size: 1rem;
+      }
+
+      .project-title {
+        font-size: 1.4rem;
+      }
+
+      .component-card {
+        padding: 1rem;
+      }
+
+      .modal {
+        padding: 1rem;
+      }
+
+      .modal-content {
+        max-height: 90vh;
+      }
+
+      .modal-header,
+      .modal-body {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header-section">
+      <div class="header-content">
+        <h1>🎨 All Components Preview</h1>
+        <p class="subtitle">Browse all components from your projects</p>
+      </div>
+      <div style="display: flex; gap: 0.5rem; align-items: center;">
+        <button class="export-button" id="export-button" title="Export filtered list">
+          📥 Export
+        </button>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+          <span id="theme-icon">🌙</span>
+          <span id="theme-text">Dark</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="stats-bar">
+      <div class="stat-item">
+        <div class="stat-value" id="total-components">0</div>
+        <div class="stat-label">Total Components</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="total-projects">0</div>
+        <div class="stat-label">Projects</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="total-files">0</div>
+        <div class="stat-label">Files</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="disabled-components-count">0</div>
+        <div class="stat-label">Preview Disabled</div>
+      </div>
+    </div>
+
+    <div class="search-box">
+      <input type="text" class="search-input" id="search-input" placeholder="🔍 Search components...">
+    </div>
+
+    <div class="controls-bar" id="controls-bar">
+      <div class="filter-group">
+        <label>Projects:</label>
+        <div class="filter-chips" id="project-filters"></div>
+      </div>
+      <div class="filter-group">
+        <label>Types:</label>
+        <div class="filter-chips" id="type-filters"></div>
+      </div>
+      <div class="filter-group">
+        <label>Sort:</label>
+        <select class="sort-control" id="sort-select">
+          <option value="name-asc">Name (A-Z)</option>
+          <option value="name-desc">Name (Z-A)</option>
+          <option value="project">Project</option>
+          <option value="type">Type</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>View:</label>
+        <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+          <button class="view-toggle" id="project-view-toggle">Projects</button>
+          <button class="disabled-toggle" id="disabled-toggle">Show Disabled List</button>
+          <span class="current-project-pill" id="current-project-pill" style="display: none;"></span>
+        </div>
+      </div>
+      <button class="clear-filters" id="clear-filters">Clear All</button>
+      <button class="auto-preview" id="auto-preview">Auto Preview</button>
+    </div>
+
+    <div id="project-index" style="display: none;"></div>
+    <div id="components-container"></div>
+    <div id="html-demos-container" style="display: none;"></div>
+    <div id="disabled-components" class="disabled-section" style="display: none;"></div>
+  </div>
+
+  <!-- Component Detail Modal -->
+  <div id="component-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modal-title">Component Details</h2>
+        <button class="modal-close" id="modal-close">×</button>
+      </div>
+      <div class="modal-body" id="modal-body">
+        <!-- Content will be populated by JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Component data - will be loaded from external file or use embedded fallback
+    let components = {
+      "Errl_Components": {
+        path: "Errl_Components",
+        components: [
+          { name: "BubbleButton", path: "components/BubbleButton.tsx", type: "tsx" },
+          { name: "BubbleMesh", path: "components/BubbleMesh.tsx", type: "tsx" },
+          { name: "BubblePositionSync", path: "components/BubblePositionSync.tsx", type: "tsx" },
+          { name: "ErrlContentLayout", path: "components/ErrlContentLayout.tsx", type: "tsx" },
+          { name: "ErrlPage", path: "components/ErrlPage.tsx", type: "tsx" },
+          { name: "ErrorBoundary", path: "components/ErrorBoundary.tsx", type: "tsx" },
+          { name: "ExplosionSystem", path: "components/ExplosionSystem.tsx", type: "tsx" },
+          { name: "InstancedBubbleSystem", path: "components/InstancedBubbleSystem.tsx", type: "tsx" },
+          { name: "PerformanceMonitor", path: "components/PerformanceMonitor.tsx", type: "tsx" },
+          { name: "ProjectorRig", path: "components/ProjectorRig.tsx", type: "tsx" },
+          { name: "ScrollController", path: "components/ScrollController.tsx", type: "tsx" },
+          { name: "TriggerButton", path: "components/TriggerButton.tsx", type: "tsx" },
+          { name: "TrippyScene", path: "components/TrippyScene.tsx", type: "tsx" }
+        ]
+      },
+      "errl_scene_builder": {
+        path: "errl_scene_builder",
+        components: [
+          { name: "AppShell", path: "components/AppShell.tsx", type: "tsx" },
+          { name: "AssetPanel", path: "components/AssetPanel.tsx", type: "tsx" },
+          { name: "CanvasSettings", path: "components/CanvasSettings.tsx", type: "tsx" },
+          { name: "ErrlEditor", path: "components/ErrlEditor.tsx", type: "tsx" },
+          { name: "ExportDialog", path: "components/ExportDialog.tsx", type: "tsx" },
+          { name: "FxPanel", path: "components/FxPanel.tsx", type: "tsx" },
+          { name: "FxWeatherPanel", path: "components/FxWeatherPanel.tsx", type: "tsx" },
+          { name: "GuidedSetup", path: "components/GuidedSetup.tsx", type: "tsx" },
+          { name: "HelpOverlay", path: "components/HelpOverlay.tsx", type: "tsx" },
+          { name: "InspectorPanel", path: "components/InspectorPanel.tsx", type: "tsx" },
+          { name: "LayerPanel", path: "components/LayerPanel.tsx", type: "tsx" },
+          { name: "LayerPanelNew", path: "components/LayerPanelNew.tsx", type: "tsx" },
+          { name: "MainLayout", path: "components/MainLayout.tsx", type: "tsx" },
+          { name: "PlaybackControls", path: "components/PlaybackControls.tsx", type: "tsx" },
+          { name: "RightPanel", path: "components/RightPanel.tsx", type: "tsx" },
+          { name: "SceneViewport", path: "components/SceneViewport.tsx", type: "tsx" },
+          { name: "TemplateGrid", path: "components/TemplateGrid.tsx", type: "tsx" },
+          { name: "TemplatePicker", path: "components/TemplatePicker.tsx", type: "tsx" },
+          { name: "TopToolbar", path: "components/TopToolbar.tsx", type: "tsx" },
+          { name: "VariantSwitcher", path: "components/VariantSwitcher.tsx", type: "tsx" },
+          { name: "Viewer", path: "viewer/Viewer.tsx", type: "tsx" }
+        ]
+      },
+      "errl_vibecheck": {
+        path: "errl_vibecheck",
+        components: [
+          { name: "App", path: "App.tsx", type: "tsx" },
+          { name: "Collection", path: "Collection.tsx", type: "tsx" },
+          { name: "FeedItem", path: "FeedItem.tsx", type: "tsx" },
+          { name: "FullscreenOverlay", path: "FullscreenOverlay.tsx", type: "tsx" },
+          { name: "Header", path: "Header.tsx", type: "tsx" },
+          { name: "HighlightCarousel", path: "HighlightCarousel.tsx", type: "tsx" },
+          { name: "Intro", path: "Intro.tsx", type: "tsx" },
+          { name: "ModelOutput", path: "ModelOutput.tsx", type: "tsx" },
+          { name: "Renderer", path: "Renderer.tsx", type: "tsx" },
+          { name: "Result", path: "Result.tsx", type: "tsx" },
+          { name: "Screensaver", path: "Screensaver.tsx", type: "tsx" }
+        ]
+      },
+      "errl-club-ui": {
+        path: "errl-club-ui",
+        components: [
+          { name: "AssetAttributionPanel", path: "AssetAttributionPanel.js", type: "js" },
+          { name: "AssetManagerUI", path: "AssetManagerUI.js", type: "js" },
+          { name: "AudioPlayer", path: "AudioPlayer.js", type: "js" },
+          { name: "AudioSettingsUI", path: "AudioSettingsUI.js", type: "js" },
+          { name: "BasePanel", path: "BasePanel.js", type: "js" },
+          { name: "CameraIntensityIndicator", path: "CameraIntensityIndicator.js", type: "js" },
+          { name: "CameraSettingsUI", path: "CameraSettingsUI.js", type: "js" },
+          { name: "CollectionGoalsUI", path: "CollectionGoalsUI.js", type: "js" },
+          { name: "CollectionProgressUI", path: "CollectionProgressUI.js", type: "js" },
+          { name: "CollectionStreakUI", path: "CollectionStreakUI.js", type: "js" },
+          { name: "ControlDock", path: "ControlDock.js", type: "js" },
+          { name: "ControlsReferenceUI", path: "ControlsReferenceUI.js", type: "js" },
+          { name: "DiscoveryMap", path: "DiscoveryMap.js", type: "js" },
+          { name: "EmoteWheel", path: "EmoteWheel.js", type: "js" },
+          { name: "ErrlLoader", path: "ErrlLoader.js", type: "js" },
+          { name: "ErrlPhone", path: "ErrlPhone.js", type: "js" },
+          { name: "HelpPanel", path: "HelpPanel.js", type: "js" },
+          { name: "HelpSystem", path: "HelpSystem.js", type: "js" },
+          { name: "InteractionFeedback", path: "InteractionFeedback.js", type: "js" },
+          { name: "InteractionPrompt", path: "InteractionPrompt.js", type: "js" },
+          { name: "LoadingScreen", path: "LoadingScreen.js", type: "js" },
+          { name: "MainMenu", path: "MainMenu.js", type: "js" },
+          { name: "MenuSystem", path: "MenuSystem.js", type: "js" },
+          { name: "NotificationSystem", path: "NotificationSystem.js", type: "js" },
+          { name: "QuickSettingsMenu", path: "QuickSettingsMenu.js", type: "js" },
+          { name: "ReadyPrompt", path: "ReadyPrompt.js", type: "js" },
+          { name: "ReplayLibraryUI", path: "ReplayLibraryUI.js", type: "js" },
+          { name: "ReplayRecordingIndicator", path: "ReplayRecordingIndicator.js", type: "js" },
+          { name: "RoomTransitionUI", path: "RoomTransitionUI.js", type: "js" },
+          { name: "TutorialOverlay", path: "TutorialOverlay.js", type: "js" },
+          { name: "TutorialSystem", path: "TutorialSystem.js", type: "js" },
+          { name: "UIManager", path: "UIManager.js", type: "js" },
+          { name: "UIScalingSystem", path: "UIScalingSystem.js", type: "js" },
+          { name: "VibeMeter", path: "VibeMeter.js", type: "js" },
+          { name: "VisualEffectSettingsUI", path: "VisualEffectSettingsUI.js", type: "js" },
+          { name: "VisualizerStylePicker", path: "VisualizerStylePicker.js", type: "js" },
+          { name: "VisualRecorderUI", path: "VisualRecorderUI.js", type: "js" },
+          { name: "Button", path: "components/Button.js", type: "js" },
+          { name: "Dropdown", path: "components/Dropdown.js", type: "js" },
+          { name: "InputField", path: "components/InputField.js", type: "js" },
+          { name: "Modal", path: "components/Modal.js", type: "js" },
+          { name: "Slider", path: "components/Slider.js", type: "js" },
+          { name: "VibesLiquidBar", path: "components/VibesLiquidBar.js", type: "js" },
+          { name: "VibesMarquee", path: "components/VibesMarquee.js", type: "js" },
+          { name: "FriendsList", path: "screens/FriendsList.js", type: "js" },
+          { name: "MainMenuScreen", path: "screens/MainMenu.js", type: "js" },
+          { name: "ProfileScreen", path: "screens/ProfileScreen.js", type: "js" },
+          { name: "RoomBrowser", path: "screens/RoomBrowser.js", type: "js" },
+          { name: "SettingsScreen", path: "screens/SettingsScreen.js", type: "js" }
+        ]
+      },
+      "errl-forge": {
+        path: "errl-forge",
+        components: [
+          { name: "AnimationGenerator", path: "AnimationGenerator.tsx", type: "tsx" },
+          { name: "ArchivedTab", path: "ArchivedTab.tsx", type: "tsx" },
+          { name: "AssetEditor", path: "AssetEditor.tsx", type: "tsx" },
+          { name: "AssetLibrary", path: "AssetLibrary.tsx", type: "tsx" },
+          { name: "BatchGenerator", path: "BatchGenerator.tsx", type: "tsx" },
+          { name: "CategorySelector", path: "CategorySelector.tsx", type: "tsx" },
+          { name: "DownloadButton", path: "DownloadButton.tsx", type: "tsx" },
+          { name: "HitboxEditor", path: "HitboxEditor.tsx", type: "tsx" },
+          { name: "MyAssetsTab", path: "MyAssetsTab.tsx", type: "tsx" },
+          { name: "PresetsTab", path: "PresetsTab.tsx", type: "tsx" },
+          { name: "Settings", path: "Settings.tsx", type: "tsx" },
+          { name: "VersionSelector", path: "VersionSelector.tsx", type: "tsx" }
+        ]
+      },
+      "errl-portal": {
+        path: "errl-portal",
+        components: [
+          { name: "Button", path: "ui/button.tsx", type: "tsx" },
+          { name: "Card", path: "ui/card.tsx", type: "tsx" },
+          { name: "Input", path: "ui/input.tsx", type: "tsx" },
+          { name: "ScrollArea", path: "ui/scroll-area.tsx", type: "tsx" },
+          { name: "Tabs", path: "ui/tabs.tsx", type: "tsx" }
+        ]
+      },
+      "errl-portal-shared": {
+        path: "errl-portal-shared",
+        components: [
+          { name: "Badge", path: "ui/badge.tsx", type: "tsx" },
+          { name: "Button", path: "ui/button.tsx", type: "tsx" },
+          { name: "Card", path: "ui/card.tsx", type: "tsx" },
+          { name: "Input", path: "ui/input.tsx", type: "tsx" },
+          { name: "ScrollArea", path: "ui/scroll-area.tsx", type: "tsx" },
+          { name: "Tabs", path: "ui/tabs.tsx", type: "tsx" },
+          { name: "BubbleMouseTrail", path: "projects/bubble-mouse-trail/BubbleMouseTrail.tsx", type: "tsx" },
+          { name: "GravityStickerField", path: "projects/gravity-sticker-field/GravityStickerField.tsx", type: "tsx" },
+          { name: "InteractiveCanvas", path: "projects/interactive-canvas/InteractiveCanvas.tsx", type: "tsx" },
+          { name: "ParticleSystem", path: "projects/particle-system/ParticleSystem.tsx", type: "tsx" },
+          { name: "WaveGenerator", path: "projects/wave-generator/WaveGenerator.tsx", type: "tsx" }
+        ]
+      },
+      "figma-clone-engine": {
+        path: "figma-clone-engine",
+        components: [
+          { name: "AlignmentGuides", path: "AlignmentGuides.tsx", type: "tsx" },
+          { name: "BottomDock", path: "BottomDock.tsx", type: "tsx" },
+          { name: "ContextMenu", path: "ContextMenu.tsx", type: "tsx" },
+          { name: "DockPopOutMenu", path: "DockPopOutMenu.tsx", type: "tsx" },
+          { name: "FileMenu", path: "FileMenu.tsx", type: "tsx" },
+          { name: "FloatingTopNav", path: "FloatingTopNav.tsx", type: "tsx" },
+          { name: "InspectorPanel", path: "InspectorPanel.tsx", type: "tsx" },
+          { name: "LayersPanel", path: "LayersPanel.tsx", type: "tsx" },
+          { name: "Rulers", path: "Rulers.tsx", type: "tsx" },
+          { name: "RootFrameInspector", path: "inspector/RootFrameInspector.tsx", type: "tsx" },
+          { name: "EmptySelectionInspector", path: "inspector/EmptySelectionInspector.tsx", type: "tsx" },
+          { name: "InspectorHeader", path: "inspector/InspectorHeader.tsx", type: "tsx" },
+          { name: "MultiSelectionInspector", path: "inspector/MultiSelectionInspector.tsx", type: "tsx" },
+          { name: "DevModeInspector", path: "inspector/DevModeInspector.tsx", type: "tsx" },
+          { name: "SingleSelectionInspector", path: "inspector/SingleSelectionInspector.tsx", type: "tsx" },
+          { name: "InspectorTabs", path: "inspector/InspectorTabs.tsx", type: "tsx" },
+          { name: "ZoomDropdown", path: "inspector/ZoomDropdown.tsx", type: "tsx" },
+          { name: "ImageControls", path: "inspector/controls/ImageControls.tsx", type: "tsx" },
+          { name: "ShapeControls", path: "inspector/controls/ShapeControls.tsx", type: "tsx" },
+          { name: "ComponentSection", path: "inspector/controls/ComponentSection.tsx", type: "tsx" },
+          { name: "FrameControls", path: "inspector/controls/FrameControls.tsx", type: "tsx" },
+          { name: "VectorControls", path: "inspector/controls/VectorControls.tsx", type: "tsx" },
+          { name: "InstanceSection", path: "inspector/controls/InstanceSection.tsx", type: "tsx" },
+          { name: "RectangleControls", path: "inspector/controls/RectangleControls.tsx", type: "tsx" },
+          { name: "StrokeSection", path: "inspector/sections/StrokeSection.tsx", type: "tsx" },
+          { name: "SectionWrapper", path: "inspector/sections/SectionWrapper.tsx", type: "tsx" },
+          { name: "ExportSection", path: "inspector/sections/ExportSection.tsx", type: "tsx" },
+          { name: "FillSection", path: "inspector/sections/FillSection.tsx", type: "tsx" },
+          { name: "AppearanceSection", path: "inspector/sections/AppearanceSection.tsx", type: "tsx" },
+          { name: "LayoutSection", path: "inspector/sections/LayoutSection.tsx", type: "tsx" },
+          { name: "PrototypeTabContent", path: "inspector/sections/PrototypeTabContent.tsx", type: "tsx" },
+          { name: "TypographySection", path: "inspector/sections/TypographySection.tsx", type: "tsx" },
+          { name: "ConstraintsSection", path: "inspector/sections/ConstraintsSection.tsx", type: "tsx" },
+          { name: "StylesSection", path: "inspector/sections/StylesSection.tsx", type: "tsx" },
+          { name: "PositionSection", path: "inspector/sections/PositionSection.tsx", type: "tsx" },
+          { name: "VariablesSection", path: "inspector/sections/VariablesSection.tsx", type: "tsx" },
+          { name: "EffectsSection", path: "inspector/sections/EffectsSection.tsx", type: "tsx" }
+        ]
+      },
+      "errl-design-system": {
+        path: "errl-design-system",
+        components: [
+          { name: "ErrlWrapper", path: "src/components/ErrlWrapper.tsx", type: "tsx" },
+          { name: "ThemeControls", path: "src/components/ThemeControls.tsx", type: "tsx" },
+          { name: "ThemeProvider", path: "src/core/ThemeProvider.tsx", type: "tsx" },
+          { name: "useErrlTheme", path: "src/core/useErrlTheme.ts", type: "ts" },
+          { name: "errlDesignSystem", path: "src/core/errlDesignSystem.ts", type: "ts" }
+        ]
+      }
+    }; // Fallback embedded data
+
+    // Filter and sort state
+    let activeFilters = {
+      projects: new Set(),
+      types: new Set()
+    };
+    let currentSort = 'name-asc';
+    let currentProjectView = null;
+    let showDisabledList = false;
+    let currentSearchFilter = '';
+    
+    // Search index for performance
+    let searchIndex = null;
+    
+    // Preview state management
+    const previewCache = new Map(); // Cache successful preview loads
+    const previewCacheBuster = Date.now().toString();
+    const expandedPreviews = new Set(); // Track expanded previews
+    const MAX_CONCURRENT_PREVIEWS = 5; // Limit concurrent previews
+    const ENABLE_DEV_SERVER_CHECK = false;
+    let previewLoadQueue = []; // Queue for preview loads
+    
+    function buildSearchIndex() {
+      const index = new Map();
+      Object.entries(components).forEach(([projectName, project]) => {
+        project.components.forEach(comp => {
+          const searchableText = `${comp.name} ${comp.path} ${projectName}`.toLowerCase();
+          const words = searchableText.split(/\s+/);
+          words.forEach(word => {
+            if (!index.has(word)) {
+              index.set(word, []);
+            }
+            index.get(word).push({ projectName, component: comp });
+          });
+        });
+      });
+      return index;
+    }
+    
+    function searchWithIndex(query) {
+      if (!searchIndex) {
+        searchIndex = buildSearchIndex();
+      }
+      
+      const terms = query.toLowerCase().split(/\s+/).filter(t => t.length > 0);
+      if (terms.length === 0) {
+        return null; // Return all
+      }
+      
+      const matches = new Map();
+      terms.forEach(term => {
+        searchIndex.forEach((components, word) => {
+          if (word.includes(term) || term.includes(word)) {
+            components.forEach(({ projectName, component }) => {
+              const key = `${projectName}:${component.name}`;
+              if (!matches.has(key)) {
+                matches.set(key, { projectName, component });
+              }
+            });
+          }
+        });
+      });
+      
+      return Array.from(matches.values());
+    }
+
+    // Initialize filter chips
+    function initFilters() {
+      const projectFilters = document.getElementById('project-filters');
+      const typeFilters = document.getElementById('type-filters');
+      
+      // Get unique projects and types
+      const projects = Object.keys(components);
+      const types = new Set();
+      Object.values(components).forEach(project => {
+        project.components.forEach(comp => types.add(comp.type));
+      });
+
+      // Create project filter chips
+      projects.forEach(projectName => {
+        const chip = document.createElement('button');
+        chip.className = 'filter-chip';
+        chip.textContent = projectName;
+        chip.dataset.project = projectName;
+        chip.addEventListener('click', () => toggleProjectFilter(projectName));
+        projectFilters.appendChild(chip);
+      });
+
+      // Create type filter chips
+      Array.from(types).sort().forEach(type => {
+        const chip = document.createElement('button');
+        chip.className = 'filter-chip';
+        chip.textContent = type.toUpperCase();
+        chip.dataset.type = type;
+        chip.addEventListener('click', () => toggleTypeFilter(type));
+        typeFilters.appendChild(chip);
+      });
+    }
+
+    function toggleProjectFilter(projectName) {
+      if (currentProjectView && currentProjectView !== projectName) {
+        currentProjectView = null;
+      } else if (currentProjectView === projectName && activeFilters.projects.has(projectName)) {
+        currentProjectView = null;
+      }
+
+      if (activeFilters.projects.has(projectName)) {
+        activeFilters.projects.delete(projectName);
+      } else {
+        activeFilters.projects.add(projectName);
+      }
+      updateFilterUI();
+      updateProjectViewUI();
+      renderComponents();
+    }
+
+    function toggleTypeFilter(type) {
+      if (activeFilters.types.has(type)) {
+        activeFilters.types.delete(type);
+      } else {
+        activeFilters.types.add(type);
+      }
+      updateFilterUI();
+      renderComponents();
+    }
+
+    function updateFilterUI() {
+      document.querySelectorAll('[data-project]').forEach(chip => {
+        if (activeFilters.projects.has(chip.dataset.project)) {
+          chip.classList.add('active');
+        } else {
+          chip.classList.remove('active');
+        }
+      });
+
+      document.querySelectorAll('[data-type]').forEach(chip => {
+        if (activeFilters.types.has(chip.dataset.type)) {
+          chip.classList.add('active');
+        } else {
+          chip.classList.remove('active');
+        }
+      });
+    }
+
+    function updateProjectViewUI() {
+      const viewToggle = document.getElementById('project-view-toggle');
+      const disabledToggle = document.getElementById('disabled-toggle');
+      const currentPill = document.getElementById('current-project-pill');
+
+      if (currentProjectView) {
+        viewToggle.textContent = 'Back to Projects';
+        currentPill.style.display = 'inline-flex';
+        currentPill.textContent = `Viewing: ${currentProjectView}`;
+        disabledToggle.style.display = 'none';
+      } else {
+        viewToggle.textContent = 'Projects';
+        currentPill.style.display = 'none';
+        currentPill.textContent = '';
+        disabledToggle.style.display = 'inline-flex';
+        disabledToggle.textContent = showDisabledList ? 'Hide Disabled List' : 'Show Disabled List';
+      }
+    }
+
+    function setProjectView(projectName) {
+      currentProjectView = projectName || null;
+      activeFilters.projects.clear();
+      if (currentProjectView) {
+        activeFilters.projects.add(currentProjectView);
+      }
+      updateFilterUI();
+      updateProjectViewUI();
+      renderComponents(currentSearchFilter);
+      renderHtmlDemos();
+    }
+
+    function renderProjectIndex(projectMetrics) {
+      const projectIndex = document.getElementById('project-index');
+      if (!projectIndex) return;
+
+      if (currentProjectView) {
+        projectIndex.style.display = 'none';
+        projectIndex.innerHTML = '';
+        return;
+      }
+
+      projectIndex.style.display = 'block';
+      projectIndex.innerHTML = '';
+
+      const section = document.createElement('section');
+      section.className = 'project-index';
+
+      const header = document.createElement('div');
+      header.className = 'project-index-header';
+
+      const title = document.createElement('h2');
+      title.className = 'project-index-title';
+      title.textContent = 'Projects';
+      header.appendChild(title);
+
+      const count = document.createElement('span');
+      count.className = 'component-count';
+      count.textContent = `${Object.keys(projectMetrics).length} projects`;
+      header.appendChild(count);
+
+      section.appendChild(header);
+
+      const grid = document.createElement('div');
+      grid.className = 'project-index-grid';
+
+      const entries = Object.entries(projectMetrics).sort(([a], [b]) => a.localeCompare(b));
+      if (entries.length === 0) {
+        const empty = document.createElement('div');
+        empty.className = 'empty-state';
+        empty.innerHTML = '<h2>No projects found</h2><p>Try adjusting your filters or search term.</p>';
+        section.appendChild(empty);
+        projectIndex.appendChild(section);
+        return;
+      }
+
+      entries.forEach(([projectName, metrics]) => {
+        const card = document.createElement('div');
+        card.className = 'project-index-card';
+        card.addEventListener('click', () => {
+          setProjectView(projectName);
+        });
+
+        const name = document.createElement('div');
+        name.className = 'project-index-name';
+        name.textContent = projectName;
+
+        const meta = document.createElement('div');
+        meta.className = 'project-index-meta';
+        meta.textContent = metrics.path ? metrics.path : '';
+
+        const counts = document.createElement('div');
+        counts.className = 'project-index-counts';
+
+        const totalPill = document.createElement('span');
+        totalPill.className = 'project-index-pill primary';
+        totalPill.textContent = `${metrics.total} total`;
+
+        const previewPill = document.createElement('span');
+        previewPill.className = 'project-index-pill';
+        previewPill.textContent = `${metrics.previewable} previewable`;
+
+        const disabledPill = document.createElement('span');
+        disabledPill.className = 'project-index-pill';
+        disabledPill.textContent = `${metrics.disabled} disabled`;
+
+        counts.appendChild(totalPill);
+        counts.appendChild(previewPill);
+        counts.appendChild(disabledPill);
+
+        card.appendChild(name);
+        if (metrics.path) {
+          card.appendChild(meta);
+        }
+        card.appendChild(counts);
+        grid.appendChild(card);
+      });
+
+      section.appendChild(grid);
+      projectIndex.appendChild(section);
+    }
+
+    function clearAllFilters() {
+      activeFilters.projects.clear();
+      activeFilters.types.clear();
+      document.getElementById('search-input').value = '';
+      currentSearchFilter = '';
+      currentProjectView = null;
+      updateFilterUI();
+      updateProjectViewUI();
+      renderComponents();
+    }
+
+    function sortComponents(componentsArray) {
+      const [sortBy, direction] = currentSort.split('-');
+      
+      return componentsArray.sort((a, b) => {
+        let comparison = 0;
+        
+        switch(sortBy) {
+          case 'name':
+            comparison = a.name.localeCompare(b.name);
+            break;
+          case 'project':
+            comparison = a.project.localeCompare(b.project);
+            break;
+          case 'type':
+            comparison = a.type.localeCompare(b.type);
+            break;
+        }
+        
+        return direction === 'desc' ? -comparison : comparison;
+      });
+    }
+
+    // Component Category Detection
+    function detectCategory(component, projectName) {
+      const path = component.path.toLowerCase();
+      const name = component.name.toLowerCase();
+      
+      // UI Components
+      if (path.includes('ui/') || path.includes('button') || path.includes('card') || 
+          path.includes('input') || path.includes('modal') || path.includes('dropdown')) {
+        return 'UI';
+      }
+      
+      // Editor Components
+      if (path.includes('inspector') || path.includes('panel') || path.includes('editor') ||
+          name.includes('panel') || name.includes('editor')) {
+        return 'Editor';
+      }
+      
+      // Scene/Canvas Components
+      if (path.includes('scene') || path.includes('canvas') || path.includes('viewport') ||
+          name.includes('scene') || name.includes('canvas') || name.includes('viewport')) {
+        return 'Scene';
+      }
+      
+      // WebGL/3D Components
+      if (path.includes('webgl') || path.includes('three') || name.includes('mesh') ||
+          name.includes('rig') || name.includes('system') || name.includes('bubble')) {
+        return 'WebGL';
+      }
+      
+      // Screen/Page Components
+      if (path.includes('screen') || path.includes('page') || name.includes('screen') ||
+          name.includes('page') || name.includes('menu')) {
+        return 'Screen';
+      }
+      
+      // Utility Components
+      if (path.includes('util') || path.includes('helper') || name.includes('util') ||
+          name.includes('helper') || name.includes('manager')) {
+        return 'Utility';
+      }
+      
+      // Default category
+      return 'Component';
+    }
+
+    function isPreviewableCategory(category) {
+      return category === 'UI' || category === 'Editor' || category === 'Screen';
+    }
+
+    function isTestComponent(component) {
+      const normalizedPath = `/${component.path.toLowerCase()}`;
+      const normalizedName = component.name.toLowerCase();
+
+      if (normalizedPath.includes('/tests/') || normalizedPath.includes('/__tests__/') || normalizedPath.includes('/spec/')) {
+        return true;
+      }
+
+      return normalizedName.endsWith('.spec') || normalizedName.endsWith('.test');
+    }
+
+    function renderComponents(searchFilter = '') {
+      if (typeof searchFilter === 'string') {
+        currentSearchFilter = searchFilter;
+      }
+      const effectiveSearch = currentSearchFilter || '';
+      const container = document.getElementById('components-container');
+      const disabledContainer = document.getElementById('disabled-components');
+      const projectIndex = document.getElementById('project-index');
+      container.innerHTML = '';
+      disabledContainer.innerHTML = '';
+
+      let totalComponents = 0;
+      let totalFiles = 0;
+      let totalDisabled = 0;
+      const allFilteredComponents = [];
+      
+      // Use search index if available and query is provided
+      let searchResults = null;
+      if (effectiveSearch && searchIndex) {
+        searchResults = searchWithIndex(effectiveSearch);
+      }
+
+      Object.entries(components).forEach(([projectName, project]) => {
+        if (currentProjectView && projectName !== currentProjectView) {
+          return;
+        }
+
+        // Apply project filter
+        if (activeFilters.projects.size > 0 && !activeFilters.projects.has(projectName)) {
+          return;
+        }
+
+        const filteredComponents = project.components.filter(comp => {
+          // Apply type filter
+          if (activeFilters.types.size > 0 && !activeFilters.types.has(comp.type)) {
+            return false;
+          }
+
+          // Apply search filter (use index if available)
+          if (effectiveSearch) {
+            if (searchResults) {
+              // Use indexed search results
+              const found = searchResults.find(r => 
+                r.projectName === projectName && r.component.name === comp.name
+              );
+              if (!found) return false;
+            } else {
+              // Fallback to simple search
+              const searchTerm = effectiveSearch.toLowerCase();
+              if (!comp.name.toLowerCase().includes(searchTerm) &&
+                  !comp.path.toLowerCase().includes(searchTerm) &&
+                  !projectName.toLowerCase().includes(searchTerm)) {
+                return false;
+              }
+            }
+          }
+
+          return true;
+        });
+
+        if (filteredComponents.length === 0) return;
+
+        // Add project info and category to components for sorting
+        filteredComponents.forEach(comp => {
+          const category = detectCategory(comp, projectName);
+          const previewable = !isTestComponent(comp) && (
+            comp.previewable === true || isPreviewableCategory(category)
+          );
+
+          allFilteredComponents.push({
+            ...comp,
+            project: projectName,
+            projectPath: project.path,
+            category,
+            previewable
+          });
+        });
+      });
+
+      // Sort components
+      const sortedComponents = sortComponents(allFilteredComponents);
+
+      // Group by project for display
+      const groupedByProject = {};
+      const disabledByProject = {};
+      const projectMetrics = {};
+      sortedComponents.forEach(comp => {
+        if (!projectMetrics[comp.project]) {
+          projectMetrics[comp.project] = {
+            total: 0,
+            previewable: 0,
+            disabled: 0,
+            path: comp.projectPath
+          };
+        }
+
+        projectMetrics[comp.project].total += 1;
+
+        if (comp.previewable) {
+          projectMetrics[comp.project].previewable += 1;
+          if (!groupedByProject[comp.project]) {
+            groupedByProject[comp.project] = [];
+          }
+          groupedByProject[comp.project].push(comp);
+        } else {
+          projectMetrics[comp.project].disabled += 1;
+          if (!disabledByProject[comp.project]) {
+            disabledByProject[comp.project] = [];
+          }
+          disabledByProject[comp.project].push(comp);
+        }
+      });
+
+      renderProjectIndex(projectMetrics);
+
+      const showComponents = Boolean(currentProjectView);
+      container.style.display = showComponents ? 'block' : 'none';
+
+      // Render grouped components
+      Object.entries(groupedByProject).forEach(([projectName, projectComponents]) => {
+        totalComponents += projectComponents.length;
+        totalFiles += projectComponents.length;
+
+        if (!showComponents) {
+          return;
+        }
+
+        const section = document.createElement('div');
+        section.className = 'project-section';
+
+        const header = document.createElement('div');
+        header.className = 'project-header';
+
+        const title = document.createElement('h2');
+        title.className = 'project-title';
+        title.textContent = projectName;
+
+        const count = document.createElement('span');
+        count.className = 'component-count';
+        count.textContent = `${projectComponents.length} components`;
+
+        header.appendChild(title);
+        header.appendChild(count);
+        section.appendChild(header);
+
+        const grid = document.createElement('div');
+        grid.className = 'components-grid';
+
+        projectComponents.forEach(comp => {
+          const card = document.createElement('div');
+          const canPreview = comp.previewable === true;
+          card.className = canPreview ? 'component-card' : 'component-card preview-disabled';
+          const componentId = `${projectName}:${comp.name}`;
+          card.dataset.componentId = componentId;
+          
+          // Handle card click - toggle preview or open modal
+          let clickTimeout;
+          card.addEventListener('click', (e) => {
+            // If clicking on interactive elements, don't toggle
+            if (e.target.closest('button, .component-preview-container, .component-actions')) {
+              return;
+            }
+            if (!canPreview) {
+              showToast('Preview disabled for non-UI components.');
+              return;
+            }
+            clearTimeout(clickTimeout);
+            clickTimeout = setTimeout(() => {
+              // Single click - toggle preview
+              toggleComponentPreview(card, comp, projectName);
+            }, 200);
+          });
+          
+          // Double click opens modal
+          card.addEventListener('dblclick', (e) => {
+            clearTimeout(clickTimeout);
+            openComponentModal(comp, projectName);
+          });
+
+          const favoriteBtn = document.createElement('button');
+          favoriteBtn.className = 'favorite-button';
+          favoriteBtn.innerHTML = '☆';
+          favoriteBtn.title = 'Add to favorites';
+          // componentId already declared above at line 1447
+          if (isFavorite(componentId)) {
+            favoriteBtn.classList.add('active');
+            favoriteBtn.innerHTML = '★';
+          }
+          favoriteBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleFavorite(componentId);
+            favoriteBtn.classList.toggle('active');
+            favoriteBtn.innerHTML = favoriteBtn.classList.contains('active') ? '★' : '☆';
+          });
+
+          const name = document.createElement('div');
+          name.className = 'component-name';
+          name.textContent = comp.name;
+
+          const path = document.createElement('div');
+          path.className = 'component-path';
+          path.textContent = `${comp.projectPath}/${comp.path}`;
+
+          const type = document.createElement('span');
+          type.className = `component-type ${comp.type}`;
+          type.textContent = comp.type.toUpperCase();
+
+          const category = document.createElement('span');
+          category.className = 'component-category';
+          category.textContent = comp.category || 'Component';
+          category.style.cssText = `
+            display: inline-block;
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            margin-left: 0.5rem;
+          `;
+
+          const actions = document.createElement('div');
+          actions.className = 'component-actions';
+          
+          if (canPreview) {
+            const previewBtn = document.createElement('button');
+            previewBtn.className = 'action-button';
+            previewBtn.textContent = '👁️ Preview';
+            previewBtn.title = 'Open in React preview system';
+            previewBtn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              openComponentPreview(comp, projectName);
+            });
+            actions.appendChild(previewBtn);
+          }
+
+          const copyPathBtn = document.createElement('button');
+          copyPathBtn.className = 'action-button';
+          copyPathBtn.textContent = '📋 Copy Path';
+          copyPathBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            copyToClipboard(`${comp.projectPath}/${comp.path}`);
+          });
+
+          const copyNameBtn = document.createElement('button');
+          copyNameBtn.className = 'action-button';
+          copyNameBtn.textContent = '📝 Copy Name';
+          copyNameBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            copyToClipboard(comp.name);
+          });
+
+          actions.appendChild(copyPathBtn);
+          actions.appendChild(copyNameBtn);
+
+          // Preview container
+          const previewContainer = document.createElement('div');
+          previewContainer.className = 'component-preview-container';
+          previewContainer.setAttribute('data-component-id', componentId);
+
+          let previewToggle = null;
+          if (canPreview) {
+            previewToggle = document.createElement('button');
+            previewToggle.className = 'component-preview-toggle';
+            previewToggle.textContent = '▶ Preview';
+            previewToggle.title = 'Click card to toggle preview';
+            previewToggle.addEventListener('click', (e) => {
+              e.stopPropagation();
+              toggleComponentPreview(card, comp, projectName);
+            });
+          }
+
+          card.appendChild(favoriteBtn);
+          card.appendChild(name);
+          card.appendChild(path);
+          const typeContainer = document.createElement('div');
+          typeContainer.style.cssText = 'display: flex; align-items: center; margin-top: 0.5rem;';
+          typeContainer.appendChild(type);
+          typeContainer.appendChild(category);
+          if (!canPreview) {
+            const previewBadge = document.createElement('span');
+            previewBadge.className = 'component-preview-badge';
+            previewBadge.textContent = 'Preview Disabled';
+            typeContainer.appendChild(previewBadge);
+          }
+          card.appendChild(typeContainer);
+          card.appendChild(actions);
+          card.appendChild(previewContainer);
+          if (previewToggle) {
+            card.appendChild(previewToggle);
+          }
+          grid.appendChild(card);
+        });
+
+        section.appendChild(grid);
+        container.appendChild(section);
+      });
+
+      Object.values(disabledByProject).forEach(list => {
+        totalDisabled += list.length;
+      });
+
+      document.getElementById('total-components').textContent = totalComponents;
+      const displayedProjects = currentProjectView
+        ? (projectMetrics[currentProjectView] ? 1 : 0)
+        : Object.keys(projectMetrics).length;
+      document.getElementById('total-projects').textContent = displayedProjects;
+      document.getElementById('total-files').textContent = totalFiles;
+      document.getElementById('disabled-components-count').textContent = totalDisabled;
+
+      if (totalComponents === 0 && showComponents) {
+        const hasFilters = activeFilters.projects.size > 0 || activeFilters.types.size > 0 || effectiveSearch;
+        container.innerHTML = '<div class="empty-state"><h2>No components found</h2><p>' + 
+          (hasFilters ? 'Try adjusting your filters or search term' : 'No components available') + '</p></div>';
+      }
+
+      if (totalDisabled > 0 && showDisabledList && !currentProjectView) {
+        disabledContainer.style.display = 'block';
+        const title = document.createElement('h3');
+        title.textContent = 'Preview Disabled Components';
+        disabledContainer.appendChild(title);
+
+        const list = document.createElement('div');
+        list.className = 'disabled-list';
+
+        Object.entries(disabledByProject).forEach(([projectName, comps]) => {
+          comps.forEach(comp => {
+            const item = document.createElement('div');
+            item.className = 'disabled-item';
+            item.innerHTML = `<strong>${projectName}: ${comp.name}</strong>${comp.projectPath}/${comp.path}`;
+            list.appendChild(item);
+          });
+        });
+
+        disabledContainer.appendChild(list);
+      } else {
+        disabledContainer.style.display = 'none';
+      }
+
+      renderHtmlDemos();
+    }
+
+    // Theme Management
+    function initTheme() {
+      const savedTheme = localStorage.getItem('theme');
+      const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const theme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+      updateThemeUI(theme);
+    }
+
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme');
+      const newTheme = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      updateThemeUI(newTheme);
+    }
+
+    function updateThemeUI(theme) {
+      const icon = document.getElementById('theme-icon');
+      const text = document.getElementById('theme-text');
+      if (theme === 'dark') {
+        icon.textContent = '☀️';
+        text.textContent = 'Light';
+      } else {
+        icon.textContent = '🌙';
+        text.textContent = 'Dark';
+      }
+    }
+
+    // Watch for system theme changes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      if (!localStorage.getItem('theme')) {
+        document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+        updateThemeUI(e.matches ? 'dark' : 'light');
+      }
+    });
+
+    // Search with debounce and index
+    let searchTimeout;
+    const searchInput = document.getElementById('search-input');
+    searchInput.addEventListener('input', (e) => {
+      clearTimeout(searchTimeout);
+      const query = e.target.value;
+      currentSearchFilter = query;
+      
+      // Show loading for long queries
+      if (query.length > 2) {
+        // Small delay for better UX
+        searchTimeout = setTimeout(() => {
+          renderComponents(query);
+        }, 200);
+      } else {
+        // Immediate for short queries
+        renderComponents(query);
+      }
+    });
+
+    // Sort control
+    document.getElementById('sort-select').addEventListener('change', (e) => {
+      currentSort = e.target.value;
+      const currentSearch = searchInput.value;
+      renderComponents(currentSearch);
+      localStorage.setItem('sortPreference', currentSort);
+    });
+
+    let autoPreviewRunning = false;
+    let autoPreviewAbort = false;
+
+    async function autoPreviewAll() {
+      const cards = Array.from(document.querySelectorAll('.component-card'))
+        .filter(card => !card.classList.contains('preview-disabled'));
+
+      if (cards.length === 0) {
+        showToast('No previewable components found.');
+        return;
+      }
+
+      autoPreviewRunning = true;
+      autoPreviewAbort = false;
+      const button = document.getElementById('auto-preview');
+      button.textContent = 'Stop Auto Preview';
+
+      const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+      for (const card of cards) {
+        if (autoPreviewAbort) break;
+
+        const componentId = card.dataset.componentId;
+        if (!componentId) continue;
+
+        const [projectName, componentName] = componentId.split(':');
+        const project = components[projectName];
+        if (!project) continue;
+        const component = project.components.find(c => c.name === componentName);
+        if (!component) continue;
+
+        toggleComponentPreview(card, component, projectName);
+        await wait(700);
+        if (autoPreviewAbort) break;
+        toggleComponentPreview(card, component, projectName);
+        await wait(200);
+      }
+
+      autoPreviewRunning = false;
+      autoPreviewAbort = false;
+      button.textContent = 'Auto Preview';
+      showToast('Auto preview complete.');
+    }
+
+    function toggleAutoPreview() {
+      if (autoPreviewRunning) {
+        autoPreviewAbort = true;
+        return;
+      }
+      autoPreviewAll();
+    }
+
+    // Clear filters
+    document.getElementById('clear-filters').addEventListener('click', clearAllFilters);
+    document.getElementById('auto-preview').addEventListener('click', toggleAutoPreview);
+    document.getElementById('project-view-toggle').addEventListener('click', () => {
+      setProjectView(null);
+    });
+    document.getElementById('disabled-toggle').addEventListener('click', () => {
+      showDisabledList = !showDisabledList;
+      updateProjectViewUI();
+      renderComponents(currentSearchFilter);
+    });
+
+    // Load sort preference
+    const savedSort = localStorage.getItem('sortPreference');
+    if (savedSort) {
+      currentSort = savedSort;
+      document.getElementById('sort-select').value = savedSort;
+    }
+
+    // Component Preview Functions
+    function openComponentPreview(component, projectName) {
+      if (component.previewable !== true) {
+        showToast('Preview disabled for non-UI components.');
+        return;
+      }
+      // React preview system uses componentId format: "projectName:componentName"
+      const componentId = `${projectName}:${component.name}`;
+      
+      // Use built version (works when served statically)
+      // For dev server, user can manually open http://localhost:5174
+      const previewUrl = `../preview/dist/index.html?component=${encodeURIComponent(componentId)}`;
+      
+      // Open in new tab
+      window.open(previewUrl, '_blank');
+      
+      // Show helpful message
+      showToast('Opening preview...');
+    }
+
+    // Toggle inline preview in card
+    function toggleComponentPreview(card, component, projectName) {
+      if (component.previewable !== true) {
+        showToast('Preview disabled for non-UI components.');
+        return;
+      }
+      const previewContainer = card.querySelector('.component-preview-container');
+      const previewToggle = card.querySelector('.component-preview-toggle');
+      const isVisible = card.classList.contains('preview-visible');
+      const componentId = `${projectName}:${component.name}`;
+      
+      if (isVisible) {
+        // Hide preview
+        card.classList.remove('preview-visible');
+        previewToggle.textContent = '▶ Preview';
+        expandedPreviews.delete(componentId);
+        
+        // Unload iframe to save memory (but keep in DOM if cached for faster re-expand)
+        const iframe = previewContainer.querySelector('iframe');
+        if (iframe) {
+          // Don't remove iframe if it's cached - just hide it
+          // This allows faster re-expansion
+          if (previewCache.has(componentId)) {
+            iframe.style.display = 'none';
+          } else {
+            iframe.src = 'about:blank';
+            iframe.remove();
+          }
+        }
+        
+        // CSS handles the collapse via max-height transition (no need to set display)
+        
+        // Save state
+        savePreviewState();
+      } else {
+        // Check concurrent preview limit
+        if (expandedPreviews.size >= MAX_CONCURRENT_PREVIEWS) {
+          // Collapse oldest preview
+          const oldestId = Array.from(expandedPreviews)[0];
+          const oldestCard = document.querySelector(`[data-component-id="${oldestId}"]`)?.closest('.component-card');
+          if (oldestCard) {
+            const [oldProjName, oldCompName] = oldestId.split(':');
+            const oldProject = components[oldProjName];
+            if (oldProject) {
+              const oldComp = oldProject.components.find(c => c.name === oldCompName);
+              if (oldComp) {
+                toggleComponentPreview(oldestCard, oldComp, oldProjName);
+              }
+            }
+          }
+        }
+        
+        // Show preview
+        card.classList.add('preview-visible');
+        previewToggle.textContent = '▼ Hide';
+        expandedPreviews.add(componentId);
+        // CSS handles the expand via max-height transition
+        
+        // Check cache first
+        if (previewCache.has(componentId)) {
+          const cachedContent = previewCache.get(componentId);
+          previewContainer.innerHTML = cachedContent;
+          
+          // Re-attach event listeners if needed
+          const showMoreBtn = previewContainer.querySelector('.action-button');
+          if (showMoreBtn) {
+            showMoreBtn.addEventListener('click', () => {
+              window.open(`../${projectName}/${component.path}`, '_blank');
+            });
+          }
+          
+          // Re-show iframe if it was hidden
+          const iframe = previewContainer.querySelector('iframe');
+          if (iframe) {
+            iframe.style.display = 'block';
+            // Re-set src if needed (in case it was cleared)
+            if (!iframe.src || iframe.src === 'about:blank' || !iframe.src.includes('component=') || iframe.src.includes('/preview/index.html') && !iframe.src.includes('/preview/dist/')) {
+              // Always use built version for cached previews (dev server check is async)
+              const correctUrl = '../preview/dist/index.html?component=' + encodeURIComponent(componentId) + '&embed=true&hideDisabled=true&v=' + previewCacheBuster;
+              iframe.src = correctUrl;
+              
+              // Optionally check for dev server (but use built version as default)
+              fetch('http://localhost:5174', { method: 'HEAD', mode: 'no-cors' })
+                .then(() => {
+                  // Dev server available - switch to it
+                  iframe.src = `http://localhost:5174?component=${encodeURIComponent(componentId)}&embed=true&hideDisabled=true&v=${previewCacheBuster}`;
+                })
+                .catch(() => {
+                  // Dev server not available - keep using built version
+                });
+            }
+          }
+          
+          // Re-apply syntax highlighting for code previews
+          const codeElement = previewContainer.querySelector('code[class*="language-"]');
+          if (codeElement && window.Prism) {
+            setTimeout(() => {
+              try {
+                Prism.highlightElement(codeElement);
+              } catch (e) {
+                console.warn('Prism highlighting failed:', e);
+              }
+            }, 150);
+          }
+        } else {
+          // Load preview
+          loadComponentPreview(previewContainer, component, projectName);
+        }
+        
+        // Save state
+        savePreviewState();
+      }
+    }
+    
+    // Save preview state to localStorage
+    function savePreviewState() {
+      localStorage.setItem('expandedPreviews', JSON.stringify(Array.from(expandedPreviews)));
+    }
+    
+    // Restore preview state from localStorage
+    function restorePreviewState() {
+      try {
+        const saved = localStorage.getItem('expandedPreviews');
+        if (saved) {
+          const savedIds = JSON.parse(saved);
+          // Will be restored after components are rendered
+          return savedIds;
+        }
+      } catch (e) {
+        console.warn('Failed to restore preview state:', e);
+      }
+      return [];
+    }
+
+    // Get file extension from path
+    function getFileExtension(path) {
+      const match = path.match(/\.([^.]+)$/);
+      return match ? match[1].toLowerCase() : '';
+    }
+
+    // Load component preview based on type
+    async function loadComponentPreview(container, component, projectName) {
+      container.innerHTML = '<div class="component-preview-loading">Loading preview...</div>';
+      
+      const componentId = `${projectName}:${component.name}`;
+      const fileExt = getFileExtension(component.path);
+      
+      // Different handling based on component type and file extension
+      if (component.type === 'tsx' || component.type === 'jsx') {
+        // React components - use iframe to React preview system
+        await loadReactComponentPreview(container, componentId, component, projectName);
+      } else if (component.type === 'ts' || component.type === 'js') {
+        // TypeScript/JavaScript files - show code preview
+        await loadCodeComponentPreview(container, component, projectName, 'typescript');
+      } else if (fileExt === 'glsl') {
+        // GLSL shader files - show with GLSL syntax highlighting
+        await loadCodeComponentPreview(container, component, projectName, 'glsl');
+      } else if (fileExt === 'css') {
+        // CSS files - show with CSS syntax highlighting
+        await loadCodeComponentPreview(container, component, projectName, 'css');
+      } else if (fileExt === 'json') {
+        // JSON files - show formatted JSON
+        await loadCodeComponentPreview(container, component, projectName, 'json');
+      } else if (fileExt === 'md' || fileExt === 'markdown') {
+        // Markdown files - render as markdown
+        await loadMarkdownPreview(container, component, projectName);
+      } else {
+        // Try to show as code preview with generic highlighting
+        await loadCodeComponentPreview(container, component, projectName, 'text');
+      }
+    }
+
+    // Load React component preview via iframe
+    async function loadReactComponentPreview(container, componentId, component, projectName) {
+      // Note: We never use the source preview/index.html - always use dist/ or dev server
+      
+      // Check cache first
+      if (previewCache.has(componentId)) {
+        const cached = previewCache.get(componentId);
+        container.innerHTML = cached;
+        
+        // Re-attach iframe if cached (for React previews)
+        const iframe = container.querySelector('iframe');
+        if (iframe) {
+          // Ensure iframe is visible and has correct src
+          iframe.style.display = 'block';
+          const currentSrc = iframe.src;
+          const distUrl = '../preview/dist/index.html?component=' + encodeURIComponent(componentId) + '&embed=true&hideDisabled=true&v=' + previewCacheBuster;
+          const devUrl = `http://localhost:5174?component=${encodeURIComponent(componentId)}&embed=true&hideDisabled=true&v=${previewCacheBuster}`;
+
+          if (currentSrc.includes('localhost:5174')) {
+            if (!ENABLE_DEV_SERVER_CHECK) {
+              iframe.src = distUrl;
+              return;
+            }
+            // Avoid console spam if dev server is down
+            iframe.src = distUrl;
+            fetch('http://localhost:5174', { method: 'HEAD', mode: 'no-cors' })
+              .then(() => {
+                iframe.src = devUrl;
+              })
+              .catch(() => {
+                iframe.src = distUrl;
+              });
+            return;
+          }
+
+          // Check if src needs updating (missing, blank, or pointing to source instead of built version)
+          if (!currentSrc || currentSrc === 'about:blank' || !currentSrc.includes('component=') || 
+              (currentSrc.includes('/preview/index.html') && !currentSrc.includes('/preview/dist/'))) {
+            // Always use built version for cached previews
+            iframe.src = distUrl;
+            
+            // Optionally check for dev server (async, won't block)
+            if (ENABLE_DEV_SERVER_CHECK) {
+              fetch('http://localhost:5174', { method: 'HEAD', mode: 'no-cors' })
+                .then(() => {
+                  // Dev server available - switch to it
+                  iframe.src = devUrl;
+                })
+                .catch(() => {
+                  // Dev server not available - keep using built version
+                });
+            }
+          }
+        }
+        
+        return;
+      }
+      
+      // Check if preview system is available
+      let retryCount = 0;
+      const maxRetries = 2;
+      
+      async function attemptLoad() {
+        try {
+          // Try to check if preview system is available
+          // Priority: 1) Dev server, 2) Built version (dist), never use source index.html
+          let previewSystemUrl = null;
+          let isDevServer = false;
+          
+          // Prefer built version; only check dev server when enabled
+          try {
+            const distCheck = await fetch('../preview/dist/index.html', { method: 'HEAD' });
+            if (distCheck.ok) {
+              // Use built version - assets are relative to dist/, so use dist/ as base
+              previewSystemUrl = `../preview/dist/index.html?component=${encodeURIComponent(componentId)}&embed=true&hideDisabled=true&v=${previewCacheBuster}`;
+            } else {
+              throw new Error('Built preview not found in dist/');
+            }
+          } catch (distError) {
+            if (ENABLE_DEV_SERVER_CHECK) {
+              try {
+                const devCheck = await fetch('http://localhost:5174', { method: 'HEAD', mode: 'no-cors' });
+                // If we can reach it, use dev server
+                previewSystemUrl = `http://localhost:5174?component=${encodeURIComponent(componentId)}&embed=true&hideDisabled=true&v=${previewCacheBuster}`;
+                isDevServer = true;
+              } catch (e) {
+                // Dev server not running
+              }
+            }
+
+            if (!previewSystemUrl) {
+              // Built version not available - show helpful error
+              throw new Error('Preview system not available. Build it with: cd preview && npm run build');
+            }
+          }
+          
+          // If we still don't have a URL, throw error
+          if (!previewSystemUrl) {
+            throw new Error('Could not determine preview system URL');
+          }
+          
+          // Create iframe for preview
+          // previewSystemUrl is always set correctly by this point (either dev server or built version)
+          const iframe = document.createElement('iframe');
+          iframe.className = 'component-preview-frame';
+          iframe.src = previewSystemUrl;
+          iframe.title = `${component.name} Preview`;
+          
+          let loaded = false;
+          let timeoutId;
+          
+          iframe.onload = () => {
+            loaded = true;
+            clearTimeout(timeoutId);
+            
+            // Cache the iframe HTML after a short delay to ensure it's fully loaded
+            // Only cache if the src is correct (dist or dev server, not source)
+            setTimeout(() => {
+              const currentSrc = iframe.src;
+              if (currentSrc && (currentSrc.includes('/preview/dist/') || currentSrc.includes('localhost:5174'))) {
+                const iframeHtml = iframe.outerHTML;
+                previewCache.set(componentId, iframeHtml);
+              } else {
+                // Don't cache if src is wrong - will force reload with correct path
+                previewCache.delete(componentId);
+              }
+            }, 100);
+          };
+          
+          iframe.onerror = () => {
+            clearTimeout(timeoutId);
+            if (retryCount < maxRetries) {
+              retryCount++;
+              setTimeout(attemptLoad, 1000);
+          } else {
+            showEnhancedError(container, component, projectName, 
+              'Failed to load preview. The React preview system needs to be running.<br><br>' +
+              '<strong>Option 1 (Dev Server):</strong> Run <code>cd preview && npm run dev</code> in a terminal<br>' +
+              '<strong>Option 2 (Built Version):</strong> Run <code>cd preview && npm run build</code> to build static version'
+            );
+          }
+          };
+          
+          // Timeout fallback
+          timeoutId = setTimeout(() => {
+            if (!loaded) {
+              if (retryCount < maxRetries) {
+                retryCount++;
+                attemptLoad();
+              } else {
+                showEnhancedError(container, component, projectName, 
+                  'Preview loading timeout. The React preview system needs to be running.<br><br>' +
+                  '<strong>Option 1 (Dev Server):</strong> Run <code>cd preview && npm run dev</code> in a terminal<br>' +
+                  '<strong>Option 2 (Built Version):</strong> Run <code>cd preview && npm run build</code> to build static version'
+                );
+              }
+            }
+          }, 5000);
+          
+          container.innerHTML = '';
+          container.appendChild(iframe);
+        } catch (error) {
+          if (retryCount < maxRetries) {
+            retryCount++;
+            setTimeout(attemptLoad, 1000);
+          } else {
+            showEnhancedError(container, component, projectName, `React preview system not available. Start it with: <code>cd preview && npm run dev</code><br><small>Error: ${error.message}</small>`, error);
+          }
+        }
+      }
+      
+      attemptLoad();
+    }
+    
+    // Show enhanced error message
+    function showEnhancedError(container, component, projectName, message, error = null) {
+      const errorDiv = document.createElement('div');
+      errorDiv.className = 'component-preview-error';
+      
+      let errorHtml = message;
+      
+      // Add component-specific help
+      if (component.type === 'tsx' || component.type === 'jsx') {
+        errorHtml += '<br><br><strong>Tips:</strong><ul style="text-align: left; margin-top: 0.5rem;">';
+        errorHtml += '<li>Make sure the React preview system is running</li>';
+        errorHtml += '<li>Check that the component exists in the preview catalog</li>';
+        errorHtml += '<li>Some components may require additional dependencies</li>';
+        errorHtml += '</ul>';
+      }
+      
+      // Add error details for debugging
+      if (error && error.message) {
+        errorHtml += `<br><small style="opacity: 0.7;">Debug: ${error.message}</small>`;
+      }
+      
+      errorDiv.innerHTML = errorHtml;
+      container.innerHTML = '';
+      container.appendChild(errorDiv);
+      
+      // Log to console for debugging
+      console.error('Preview error:', { component, projectName, error });
+    }
+
+    // Load code component preview (show code with syntax highlighting)
+    async function loadCodeComponentPreview(container, component, projectName, language = 'typescript') {
+      const componentId = `${projectName}:${component.name}`;
+      const filePath = `${projectName}/${component.path}`;
+      
+      // Check cache first
+      if (previewCache.has(componentId)) {
+        const cached = previewCache.get(componentId);
+        container.innerHTML = cached;
+        
+        // Re-attach event listeners
+        const showMoreBtn = container.querySelector('.action-button');
+        if (showMoreBtn) {
+          showMoreBtn.addEventListener('click', () => {
+            window.open(`../${filePath}`, '_blank');
+          });
+        }
+        
+        // Re-apply syntax highlighting
+        const codeElement = container.querySelector('code[class*="language-"]');
+        if (codeElement && window.Prism) {
+          setTimeout(() => {
+            try {
+              Prism.highlightElement(codeElement);
+            } catch (e) {
+              console.warn('Prism highlighting failed:', e);
+            }
+          }, 150);
+        }
+        return;
+      }
+      
+      let retryCount = 0;
+      const maxRetries = 2;
+      
+      async function attemptLoad() {
+        try {
+          // Try to fetch the component file
+          const response = await fetch(`../${filePath}`);
+          if (response.ok) {
+            let code = await response.text();
+            const isTruncated = code.length > 5000;
+            
+            if (isTruncated) {
+              code = code.substring(0, 5000);
+            }
+            
+            // Format JSON if needed
+            if (language === 'json') {
+              try {
+                const parsed = JSON.parse(code);
+                code = JSON.stringify(parsed, null, 2);
+              } catch (e) {
+                // Not valid JSON, show as-is
+              }
+            }
+            
+            // Create code preview container
+            const codeContainer = document.createElement('div');
+            codeContainer.style.cssText = 'position: relative;';
+            
+            // Show code preview with language class for syntax highlighting
+            const codePreview = document.createElement('pre');
+            codePreview.className = 'component-preview-code';
+            codePreview.setAttribute('data-language', language);
+            const codeElement = document.createElement('code');
+            codeElement.className = `language-${language}`;
+            codeElement.textContent = code;
+            codePreview.appendChild(codeElement);
+            
+            // Add "Show more" button if truncated
+            if (isTruncated) {
+              const showMoreBtn = document.createElement('button');
+              showMoreBtn.className = 'action-button';
+              showMoreBtn.style.cssText = 'margin-top: 0.5rem; width: 100%;';
+              showMoreBtn.textContent = '📄 Show Full File (opens in new tab)';
+              showMoreBtn.addEventListener('click', () => {
+                window.open(`../${filePath}`, '_blank');
+              });
+              codeContainer.appendChild(showMoreBtn);
+            }
+            
+            codeContainer.appendChild(codePreview);
+            
+            container.innerHTML = '';
+            container.appendChild(codeContainer);
+            
+            // Cache the HTML
+            previewCache.set(componentId, codeContainer.outerHTML);
+            
+            // Apply syntax highlighting if library is loaded
+            if (window.Prism) {
+              // Wait for Prism to be ready and ensure language is loaded
+              setTimeout(() => {
+                try {
+                  // Trigger Prism to load language if needed
+                  if (window.Prism.plugins && window.Prism.plugins.autoloader) {
+                    // Autoloader will handle language loading
+                  }
+                  Prism.highlightElement(codeElement);
+                } catch (e) {
+                  console.warn('Prism highlighting failed:', e);
+                }
+              }, 150);
+            } else if (window.hljs) {
+              hljs.highlightElement(codeElement);
+            }
+          } else if (response.status === 404 && retryCount < maxRetries) {
+            // Retry on 404 (might be timing issue)
+            retryCount++;
+            setTimeout(attemptLoad, 500);
+          } else {
+            throw new Error(`File not found (${response.status})`);
+          }
+        } catch (error) {
+          if (retryCount < maxRetries && error.message.includes('Failed to fetch')) {
+            retryCount++;
+            setTimeout(attemptLoad, 1000);
+          } else {
+            showEnhancedError(container, component, projectName, 
+              `Code preview not available. File may not be accessible via HTTP.<br><small>Path: ${filePath}</small>`, 
+              error
+            );
+          }
+        }
+      }
+      
+      attemptLoad();
+    }
+
+    // Load markdown preview
+    async function loadMarkdownPreview(container, component, projectName) {
+      const filePath = `${projectName}/${component.path}`;
+      
+      try {
+        const response = await fetch(`../${filePath}`);
+        if (response.ok) {
+          const markdown = await response.text();
+          
+          // Simple markdown rendering (basic conversion)
+          // For full markdown support, would need a library like marked.js
+          let html = markdown
+            .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+            .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+            .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+            .replace(/^\* (.*$)/gim, '<li>$1</li>')
+            .replace(/^\d+\. (.*$)/gim, '<li>$1</li>')
+            .replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>')
+            .replace(/\*(.*?)\*/gim, '<em>$1</em>')
+            .replace(/`(.*?)`/gim, '<code>$1</code>')
+            .replace(/\n\n/gim, '</p><p>')
+            .replace(/^(.*)$/gim, '<p>$1</p>');
+          
+          const markdownPreview = document.createElement('div');
+          markdownPreview.className = 'component-preview-code';
+          markdownPreview.style.cssText += 'white-space: normal; padding: 1rem; background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: 8px;';
+          markdownPreview.innerHTML = html;
+          
+          container.innerHTML = '';
+          container.appendChild(markdownPreview);
+        } else {
+          throw new Error('File not found');
+        }
+      } catch (error) {
+        container.innerHTML = `<div class="component-preview-error">Markdown preview not available.<br><small>Error: ${error.message}</small></div>`;
+      }
+    }
+
+    // Component Modal Functions
+    function openComponentModal(component, projectName) {
+      const modal = document.getElementById('component-modal');
+      const modalTitle = document.getElementById('modal-title');
+      const modalBody = document.getElementById('modal-body');
+      const project = components[projectName];
+
+      modalTitle.textContent = component.name;
+      
+      const category = detectCategory(component, projectName);
+      modalBody.innerHTML = `
+        <div class="modal-info">
+          <div class="modal-info-item">
+            <span class="modal-info-label">Project:</span>
+            <span class="modal-info-value">${projectName}</span>
+          </div>
+          <div class="modal-info-item">
+            <span class="modal-info-label">Path:</span>
+            <span class="modal-info-value">${project.path}/${component.path}</span>
+          </div>
+          <div class="modal-info-item">
+            <span class="modal-info-label">Type:</span>
+            <span class="modal-info-value">${component.type.toUpperCase()}</span>
+          </div>
+          <div class="modal-info-item">
+            <span class="modal-info-label">Category:</span>
+            <span class="modal-info-value">${category}</span>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button class="modal-button primary" onclick="window.openComponentPreview(${JSON.stringify(component)}, '${projectName.replace(/'/g, "\\'")}')">
+            👁️ Open Preview
+          </button>
+          <button class="modal-button" onclick="window.copyToClipboard('${project.path}/${component.path}')">
+            📋 Copy Path
+          </button>
+          <button class="modal-button" onclick="window.copyToClipboard('${component.name}')">
+            📝 Copy Name
+          </button>
+          <button class="modal-button" onclick="window.openFileInEditor('${project.path}/${component.path}')">
+            🔗 Open File
+          </button>
+        </div>
+      `;
+
+      modal.classList.add('active');
+    }
+
+    // Make openComponentPreview available globally for onclick handlers
+    // (copyToClipboard and openFileInEditor are defined later and assigned to window there)
+    window.openComponentPreview = openComponentPreview;
+
+    function closeComponentModal() {
+      const modal = document.getElementById('component-modal');
+      modal.classList.remove('active');
+    }
+
+    // Close modal on backdrop click
+    document.getElementById('component-modal').addEventListener('click', (e) => {
+      if (e.target.id === 'component-modal') {
+        closeComponentModal();
+      }
+    });
+
+    // Close modal on close button
+    document.getElementById('modal-close').addEventListener('click', closeComponentModal);
+
+    // Close modal on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeComponentModal();
+      }
+      
+      // Keyboard shortcuts
+      if (e.key === '/' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+        e.preventDefault();
+        searchInput.focus();
+      }
+      
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        searchInput.focus();
+      }
+    });
+
+    // Favorites Management
+    function getFavorites() {
+      return JSON.parse(localStorage.getItem('favorites') || '[]');
+    }
+
+    function saveFavorites(favorites) {
+      localStorage.setItem('favorites', JSON.stringify(favorites));
+    }
+
+    function isFavorite(componentId) {
+      return getFavorites().includes(componentId);
+    }
+
+    function toggleFavorite(componentId) {
+      const favorites = getFavorites();
+      const index = favorites.indexOf(componentId);
+      if (index > -1) {
+        favorites.splice(index, 1);
+      } else {
+        favorites.push(componentId);
+      }
+      saveFavorites(favorites);
+    }
+
+    // Export Functions
+    function exportToJSON() {
+      const filtered = getAllFilteredComponents();
+      const dataStr = JSON.stringify(filtered, null, 2);
+      downloadFile(dataStr, 'components-export.json', 'application/json');
+    }
+
+    function exportToCSV() {
+      const filtered = getAllFilteredComponents();
+      const headers = ['Name', 'Project', 'Path', 'Type', 'Category'];
+      const rows = filtered.map(comp => [
+        comp.name,
+        comp.project,
+        `${comp.projectPath}/${comp.path}`,
+        comp.type,
+        comp.category || 'Component'
+      ]);
+      
+      const csv = [
+        headers.join(','),
+        ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
+      ].join('\n');
+      
+      downloadFile(csv, 'components-export.csv', 'text/csv');
+    }
+
+    function exportToMarkdown() {
+      const filtered = getAllFilteredComponents();
+      const grouped = {};
+      
+      filtered.forEach(comp => {
+        if (!grouped[comp.project]) {
+          grouped[comp.project] = [];
+        }
+        grouped[comp.project].push(comp);
+      });
+      
+      let md = '# Component Catalog Export\n\n';
+      md += `Generated: ${new Date().toLocaleString()}\n`;
+      md += `Total Components: ${filtered.length}\n\n`;
+      
+      Object.entries(grouped).forEach(([project, components]) => {
+        md += `## ${project}\n\n`;
+        components.forEach(comp => {
+          md += `- **${comp.name}** (${comp.type})\n`;
+          md += `  - Path: \`${comp.projectPath}/${comp.path}\`\n`;
+          if (comp.category) {
+            md += `  - Category: ${comp.category}\n`;
+          }
+          md += '\n';
+        });
+      });
+      
+      downloadFile(md, 'components-export.md', 'text/markdown');
+    }
+
+    function getAllFilteredComponents() {
+      const allComponents = [];
+      const searchFilter = (currentSearchFilter || '').toLowerCase();
+      
+      Object.entries(components).forEach(([projectName, project]) => {
+        if (currentProjectView && projectName !== currentProjectView) {
+          return;
+        }
+
+        if (activeFilters.projects.size > 0 && !activeFilters.projects.has(projectName)) {
+          return;
+        }
+        
+        project.components.forEach(comp => {
+          if (activeFilters.types.size > 0 && !activeFilters.types.has(comp.type)) {
+            return;
+          }
+          
+          if (searchFilter) {
+            if (!comp.name.toLowerCase().includes(searchFilter) &&
+                !comp.path.toLowerCase().includes(searchFilter) &&
+                !projectName.toLowerCase().includes(searchFilter)) {
+              return;
+            }
+          }
+          
+          allComponents.push({
+            ...comp,
+            project: projectName,
+            projectPath: project.path,
+            category: detectCategory(comp, projectName)
+          });
+        });
+      });
+      
+      return sortComponents(allComponents);
+    }
+
+    function downloadFile(content, filename, mimeType) {
+      const blob = new Blob([content], { type: mimeType });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast(`Exported to ${filename}`);
+    }
+
+    // Export button handler
+    document.getElementById('export-button').addEventListener('click', () => {
+      const menu = document.createElement('div');
+      menu.style.cssText = `
+        position: absolute;
+        background: var(--bg-primary);
+        border: 2px solid var(--border-color);
+        border-radius: 8px;
+        padding: 0.5rem;
+        box-shadow: var(--shadow-md);
+        z-index: 1000;
+        margin-top: 0.5rem;
+        min-width: 150px;
+      `;
+      
+      const jsonBtn = document.createElement('button');
+      jsonBtn.className = 'modal-button';
+      jsonBtn.style.cssText = 'width: 100%; margin-bottom: 0.25rem;';
+      jsonBtn.textContent = 'Export as JSON';
+      jsonBtn.onclick = () => {
+        exportToJSON();
+        document.body.removeChild(menu);
+      };
+      
+      const csvBtn = document.createElement('button');
+      csvBtn.className = 'modal-button';
+      csvBtn.style.cssText = 'width: 100%; margin-bottom: 0.25rem;';
+      csvBtn.textContent = 'Export as CSV';
+      csvBtn.onclick = () => {
+        exportToCSV();
+        document.body.removeChild(menu);
+      };
+      
+      const mdBtn = document.createElement('button');
+      mdBtn.className = 'modal-button';
+      mdBtn.style.cssText = 'width: 100%;';
+      mdBtn.textContent = 'Export as Markdown';
+      mdBtn.onclick = () => {
+        exportToMarkdown();
+        document.body.removeChild(menu);
+      };
+      
+      menu.appendChild(jsonBtn);
+      menu.appendChild(csvBtn);
+      menu.appendChild(mdBtn);
+      
+      const exportBtn = document.getElementById('export-button');
+      const rect = exportBtn.getBoundingClientRect();
+      menu.style.position = 'fixed';
+      menu.style.top = (rect.bottom + 5) + 'px';
+      menu.style.right = (window.innerWidth - rect.right) + 'px';
+      
+      document.body.appendChild(menu);
+      
+      // Close on outside click
+      setTimeout(() => {
+        document.addEventListener('click', function closeMenu(e) {
+          if (!menu.contains(e.target) && e.target !== exportBtn) {
+            document.body.removeChild(menu);
+            document.removeEventListener('click', closeMenu);
+          }
+        });
+      }, 0);
+    });
+
+    // Clipboard Functions
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        showToast('Copied to clipboard!');
+      }).catch(() => {
+        // Fallback for older browsers
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+          document.execCommand('copy');
+          showToast('Copied to clipboard!');
+        } catch (err) {
+          showToast('Failed to copy');
+        }
+        document.body.removeChild(textarea);
+      });
+    }
+
+    // Make copyToClipboard available globally for onclick handlers
+    window.copyToClipboard = copyToClipboard;
+
+    function openFileInEditor(filePath) {
+      // Try to open file:// URL (works in some IDEs/editors)
+      const fileUrl = `file://${window.location.pathname.split('/').slice(0, -1).join('/')}/${filePath}`;
+      window.open(fileUrl, '_blank');
+      showToast('Attempting to open file...');
+    }
+
+    window.openFileInEditor = openFileInEditor;
+
+    function showToast(message) {
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = `<div class="toast-message">${message}</div>`;
+      document.body.appendChild(toast);
+
+      setTimeout(() => {
+        toast.style.animation = 'slideInRight 0.3s ease reverse';
+        setTimeout(() => {
+          if (document.body.contains(toast)) {
+            document.body.removeChild(toast);
+          }
+        }, 300);
+      }, 2000);
+    }
+
+    // Make functions available globally (after they're defined)
+    window.copyToClipboard = copyToClipboard;
+    window.openFileInEditor = openFileInEditor;
+    window.showToast = showToast;
+
+    // Theme toggle event
+    document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+
+    let htmlDemos = [];
+    let htmlDemoFilter = '';
+
+    // Load component data
+    async function loadComponents() {
+      const container = document.getElementById('components-container');
+      container.innerHTML = '<div class="loading-state"><div class="loading-spinner"></div><p>Loading components...</p></div>';
+
+      // Check if page is loaded via file:// protocol
+      if (window.location.protocol === 'file:') {
+        console.warn('⚠️ Page loaded via file:// protocol. Some features may not work.');
+        console.warn('Please use an HTTP server: python3 -m http.server 8000');
+        
+        // Show warning to user
+        const warning = document.createElement('div');
+        warning.style.cssText = 'position: fixed; top: 20px; right: 20px; background: #ff6b6b; color: white; padding: 1rem; border-radius: 8px; z-index: 10000; max-width: 400px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); font-size: 0.9rem;';
+        warning.innerHTML = `
+          <strong>⚠️ File Protocol Detected</strong><br>
+          This page needs to be served via HTTP.<br><br>
+          Run: <code style="background: rgba(0,0,0,0.2); padding: 2px 4px; border-radius: 4px; font-size: 0.85rem;">python3 -m http.server 8000</code><br><br>
+          Then open: <code style="background: rgba(0,0,0,0.2); padding: 2px 4px; border-radius: 4px; font-size: 0.85rem;">http://localhost:8000/preview.html</code>
+          <button onclick="this.parentElement.remove()" style="margin-top: 0.5rem; padding: 0.25rem 0.5rem; background: white; color: #ff6b6b; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">Dismiss</button>
+        `;
+        document.body.appendChild(warning);
+      }
+
+      try {
+        const response = await fetch('components-data.json');
+        if (response.ok) {
+          const data = await response.json();
+          components = data;
+          container.innerHTML = '';
+          // Build search index after loading
+          searchIndex = buildSearchIndex();
+          initFilters();
+          updateProjectViewUI();
+          renderComponents();
+          await loadHtmlDemos();
+          return Promise.resolve();
+        } else {
+          throw new Error('Failed to load components-data.json');
+        }
+      } catch (error) {
+        console.warn('Could not load components-data.json, using embedded data:', error);
+        // Use embedded data as fallback
+        if (Object.keys(components).length > 0) {
+          container.innerHTML = '';
+          // Build search index with embedded data
+          searchIndex = buildSearchIndex();
+          initFilters();
+          updateProjectViewUI();
+          renderComponents();
+          await loadHtmlDemos();
+          return Promise.resolve();
+        } else {
+          // No embedded data either - show error
+          container.innerHTML = `
+            <div class="empty-state">
+              <h3>⚠️ Unable to load components</h3>
+              <p>Please serve this page via HTTP:</p>
+              <code style="display: block; margin: 1rem 0; padding: 0.5rem; background: var(--bg-secondary); border-radius: 4px;">
+                python3 -m http.server 8000
+              </code>
+              <p>Then open: <code>http://localhost:8000/preview.html</code></p>
+            </div>
+          `;
+        }
+      }
+    }
+
+    function renderHtmlDemos() {
+      const htmlContainer = document.getElementById('html-demos-container');
+      if (!htmlContainer) return;
+
+      if (currentProjectView || htmlDemos.length === 0) {
+        htmlContainer.style.display = 'none';
+        return;
+      }
+
+      const filter = htmlDemoFilter.trim().toLowerCase();
+      const filtered = filter
+        ? htmlDemos.filter((demo) =>
+          demo.name.toLowerCase().includes(filter) ||
+          demo.path.toLowerCase().includes(filter)
+        )
+        : htmlDemos;
+
+      htmlContainer.style.display = 'block';
+      htmlContainer.innerHTML = '';
+
+      const section = document.createElement('section');
+      section.className = 'html-demo-section';
+
+      const header = document.createElement('div');
+      header.className = 'html-demo-header';
+
+      const title = document.createElement('h2');
+      title.textContent = 'HTML Demos';
+      header.appendChild(title);
+
+      const searchWrap = document.createElement('div');
+      searchWrap.className = 'html-demo-search';
+
+      const searchInput = document.createElement('input');
+      searchInput.type = 'text';
+      searchInput.placeholder = 'Search HTML demos...';
+      searchInput.value = htmlDemoFilter;
+      searchInput.addEventListener('input', (e) => {
+        htmlDemoFilter = e.target.value || '';
+        renderHtmlDemos();
+      });
+      searchWrap.appendChild(searchInput);
+      header.appendChild(searchWrap);
+
+      const count = document.createElement('span');
+      count.className = 'html-demo-count';
+      count.textContent = `${filtered.length} / ${htmlDemos.length}`;
+      header.appendChild(count);
+
+      section.appendChild(header);
+
+      const grid = document.createElement('div');
+      grid.className = 'html-demo-grid';
+
+      if (filtered.length === 0) {
+        const empty = document.createElement('div');
+        empty.className = 'html-demo-empty';
+        empty.textContent = 'No HTML demos match this search.';
+        grid.appendChild(empty);
+      } else {
+        filtered.forEach((demo) => {
+        const card = document.createElement('div');
+        card.className = 'html-demo-card';
+
+        const name = document.createElement('div');
+        name.className = 'html-demo-title';
+        name.textContent = demo.name;
+
+        const path = document.createElement('div');
+        path.className = 'html-demo-path';
+        path.textContent = `errl-html-demos/${demo.path}`;
+
+        const iframe = document.createElement('iframe');
+        iframe.className = 'html-demo-frame';
+        iframe.loading = 'lazy';
+        iframe.src = `errl-html-demos/${demo.path}`;
+        iframe.title = demo.name;
+
+        const actions = document.createElement('div');
+        actions.className = 'html-demo-actions';
+
+        const openBtn = document.createElement('button');
+        openBtn.className = 'action-button';
+        openBtn.textContent = '↗ Open';
+        openBtn.addEventListener('click', () => {
+          window.open(`errl-html-demos/${demo.path}`, '_blank');
+        });
+
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'action-button';
+        copyBtn.textContent = '📋 Copy Path';
+        copyBtn.addEventListener('click', () => {
+          copyToClipboard(`errl-html-demos/${demo.path}`);
+        });
+
+        actions.appendChild(openBtn);
+        actions.appendChild(copyBtn);
+
+        card.appendChild(name);
+        card.appendChild(path);
+        card.appendChild(iframe);
+        card.appendChild(actions);
+        grid.appendChild(card);
+        });
+      }
+
+      section.appendChild(grid);
+      htmlContainer.appendChild(section);
+    }
+
+    async function loadHtmlDemos() {
+      const htmlContainer = document.getElementById('html-demos-container');
+      if (!htmlContainer) return;
+
+      try {
+        const response = await fetch('errl-html-demos/errl-html-demos.json');
+        if (!response.ok) {
+          htmlContainer.style.display = 'none';
+          return;
+        }
+        const data = await response.json();
+        htmlDemos = Array.isArray(data?.demos) ? data.demos : [];
+      } catch (error) {
+        console.warn('Could not load HTML demos:', error);
+        htmlDemos = [];
+      }
+
+      renderHtmlDemos();
+    }
+
+    // Initialize theme
+    initTheme();
+
+    // Restore preview state after components are loaded
+    const savedPreviewIds = restorePreviewState();
+    
+    // Load components and initialize
+    loadComponents().then(() => {
+      // Restore expanded previews after render
+      if (savedPreviewIds.length > 0) {
+        setTimeout(() => {
+          savedPreviewIds.forEach(componentId => {
+            const [projName, compName] = componentId.split(':');
+            const card = document.querySelector(`[data-component-id="${componentId}"]`)?.closest('.component-card');
+            if (card) {
+              // Find component in the loaded data
+              const project = components[projName];
+              if (project) {
+                const comp = project.components.find(c => c.name === compName);
+                if (comp) {
+                  // Don't toggle, just expand directly to avoid double-toggle
+                  const previewContainer = card.querySelector('.component-preview-container');
+                  const previewToggle = card.querySelector('.component-preview-toggle');
+                  if (previewContainer && previewToggle) {
+                    card.classList.add('preview-visible');
+                    previewToggle.textContent = '▼ Hide';
+                    expandedPreviews.add(componentId);
+                    loadComponentPreview(previewContainer, comp, projName);
+                  }
+                }
+              }
+            }
+          });
+        }, 200);
+      }
+    });
+  </script>
+</body>
+</html>

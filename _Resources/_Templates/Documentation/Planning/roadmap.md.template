@@ -1,0 +1,93 @@
+# Roadmap
+
+**Project:** [Project Name]  
+**Last Updated:** [Date]  
+**Planning Horizon:** [Timeframe]
+
+## Overview
+
+[Brief overview of roadmap]
+
+## Current Status
+
+**Version:** [Current version]  
+**Status:** [Status]  
+**Release Date:** [Date]
+
+## Roadmap Timeline
+
+### Q[Quarter] [Year] - [Theme/Goal]
+
+**Focus Areas:**
+- [Focus area 1]
+- [Focus area 2]
+
+**Planned Features:**
+- [Feature 1] - [Description]
+- [Feature 2] - [Description]
+
+**Target Release:** [Date]
+
+### Q[Quarter] [Year] - [Theme/Goal]
+
+**Focus Areas:**
+- [Focus area 1]
+- [Focus area 2]
+
+**Planned Features:**
+- [Feature 1] - [Description]
+- [Feature 2] - [Description]
+
+**Target Release:** [Date]
+
+## Feature Categories
+
+### Core Features
+- [Feature 1] - [Priority] - [ETA]
+- [Feature 2] - [Priority] - [ETA]
+
+### Enhancements
+- [Enhancement 1] - [Priority] - [ETA]
+- [Enhancement 2] - [Priority] - [ETA]
+
+### Technical Debt
+- [Debt item 1] - [Priority] - [ETA]
+- [Debt item 2] - [Priority] - [ETA]
+
+## Milestones
+
+### [Milestone Name]
+**Date:** [Date]  
+**Goals:**
+- [Goal 1]
+- [Goal 2]
+
+### [Milestone Name]
+**Date:** [Date]  
+**Goals:**
+- [Goal 1]
+- [Goal 2]
+
+## Dependencies
+
+### External Dependencies
+- [Dependency 1] - [Impact]
+- [Dependency 2] - [Impact]
+
+### Internal Dependencies
+- [Dependency 1] - [Impact]
+- [Dependency 2] - [Impact]
+
+## Risks and Considerations
+
+### Risks
+- [Risk 1] - [Mitigation]
+- [Risk 2] - [Mitigation]
+
+### Considerations
+- [Consideration 1]
+- [Consideration 2]
+
+## Notes
+
+[Additional notes about roadmap]

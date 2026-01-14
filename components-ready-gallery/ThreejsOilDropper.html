@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Three.js Oil Dropper</title>
+    <style>
+        body { margin: 0; overflow: hidden; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://esm.run/three",
+                "three/addons/": "https://esm.run/three/examples/jsm/"
+            }
+        }
+    </script>
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        // Scene setup
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0xdddddd);
+
+        // Camera setup
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 5, 15);
+
+        // Renderer setup
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(2);
+        document.body.appendChild(renderer.domElement);
+
+        // Orbit Controls
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+        scene.add(ambientLight);
+
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
+        directionalLight.position.set(5, 10, 7.5);
+        scene.add(directionalLight);
+        
+        // Materials
+        const glassMaterial = new THREE.MeshPhysicalMaterial({
+            color: 0xcccccc,
+            transmission: 1.0,
+            roughness: 0.1,
+            metalness: 0.0,
+            ior: 1.5,
+            thickness: 0.5,
+            transparent: true,
+            opacity: 0.8
+        });
+
+        const rubberMaterial = new THREE.MeshStandardMaterial({
+            color: 0x111111,
+            roughness: 0.8,
+            metalness: 0.1
+        });
+
+        const oilMaterial = new THREE.MeshPhysicalMaterial({
+            color: 0xFFAA44,
+            transmission: 0.9,
+            roughness: 0.2,
+            metalness: 0.0,
+            ior: 1.47,
+            thickness: 1.0,
+            transparent: true,
+            opacity: 0.95
+        });
+
+        // Create Dropper
+        const dropper = new THREE.Group();
+        scene.add(dropper);
+        dropper.rotation.x = -Math.PI / 16;
+
+        // Bulb
+        const bulbGeometry = new THREE.SphereGeometry(1.5, 32, 32);
+        const bulb = new THREE.Mesh(bulbGeometry, rubberMaterial);
+        bulb.position.y = 7;
+        bulb.scale.y = 1.2;
+        dropper.add(bulb);
+
+        // Glass Tube
+        const tubeGeometry = new THREE.CylinderGeometry(1, 1, 6, 32);
+        const tube = new THREE.Mesh(tubeGeometry, glassMaterial);
+        tube.position.y = 3.5;
+        dropper.add(tube);
+        
+        // Tip
+        const tipGeometry = new THREE.CylinderGeometry(1, 0.1, 2, 32);
+        const tip = new THREE.Mesh(tipGeometry, glassMaterial);
+        tip.position.y = -0.5;
+        dropper.add(tip);
+        const tipPosition = new THREE.Vector3(0, -1.5, 0);
+
+        // Create Drop
+        const dropGeometry = new THREE.SphereGeometry(0.5, 32, 32);
+        const drop = new THREE.Mesh(dropGeometry, oilMaterial);
+        dropper.add(drop);
+
+        // Animation state
+        let isHolding = false;
+        let dropState = 'idle'; // idle, growing, falling
+        const MIN_DROP_SCALE = 0.01;
+        const MAX_DROP_SCALE = 1.8;
+        const GROWTH_RATE = 1.5;
+        const FALL_ACCELERATION = 20.0;
+        let fallVelocity = 0;
+
+        const resetDrop = () => {
+            drop.scale.set(MIN_DROP_SCALE, MIN_DROP_SCALE, MIN_DROP_SCALE);
+            drop.position.copy(tipPosition);
+            fallVelocity = 0;
+            dropState = 'idle';
+        };
+
+        resetDrop();
+
+        // Event Listeners
+        window.addEventListener('pointerdown', () => {
+            if (dropState === 'idle') {
+                isHolding = true;
+                dropState = 'growing';
+            }
+        });
+
+        window.addEventListener('pointerup', () => {
+            isHolding = false;
+            if (dropState === 'growing') {
+                dropState = 'falling';
+                // Detach from parent for world-space fall
+                scene.attach(drop);
+            }
+        });
+
+        // Handle Window Resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        const clock = new THREE.Clock();
+        
+        // Animation Loop
+        function animate() {
+            requestAnimationFrame(animate);
+            const delta = clock.getDelta();
+
+            if (isHolding && dropState === 'growing') {
+                let currentScale = drop.scale.y;
+                if (currentScale < MAX_DROP_SCALE) {
+                    currentScale += GROWTH_RATE * delta;
+                    currentScale = Math.min(currentScale, MAX_DROP_SCALE);
+
+                    drop.scale.set(
+                        currentScale * 0.8, // Make it wider as it grows
+                        currentScale,
+                        currentScale * 0.8
+                    );
+                    
+                    // Keep the top of the drop attached to the tip
+                    const dropHeight = drop.geometry.parameters.radius * 2;
+                    drop.position.y = tipPosition.y - (drop.scale.y * dropHeight) / 2 + 0.5;
+                }
+            }
+            
+            if (dropState === 'falling') {
+                fallVelocity += FALL_ACCELERATION * delta;
+                drop.position.y -= fallVelocity * delta;
+
+                if (drop.position.y < -30) {
+                    // Re-attach to parent and reset
+                    dropper.attach(drop);
+                    resetDrop();
+                }
+            }
+
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        animate();
+    </script>
+</body>
+</html>

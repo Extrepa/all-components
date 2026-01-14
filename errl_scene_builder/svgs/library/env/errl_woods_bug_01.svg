@@ -1,0 +1,13 @@
+<!-- 84) errl_woods_bug_01 – beetle / ladybug (prop/char) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="char" data-name="errl_woods_bug_01">
+  <g fill="none">
+    <ellipse cx="32" cy="34" rx="4" ry="3.5" fill="#ef4444"/>
+    <line x1="32" y1="30" x2="32" y2="38" stroke="#020617" stroke-width="1.1"/>
+    <circle cx="30.5" cy="33" r="0.6" fill="#020617"/>
+    <circle cx="33.5" cy="35" r="0.6" fill="#020617"/>
+    <!-- little antennae -->
+    <line x1="31" y1="30" x2="30" y2="28" stroke="#020617" stroke-width="1"/>
+    <line x1="33" y1="30" x2="34" y2="28" stroke="#020617" stroke-width="1"/>
+  </g>
+</svg>

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Overview</title>
+  <style>
+    :root {
+      --bg: #0b1220;
+      --panel: rgba(10, 18, 32, 0.92);
+      --muted: #9bb0c4;
+      --text: #e6f2ff;
+      --accent: #3da9fc;
+      --border: rgba(61, 169, 252, 0.35);
+      --shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at 20% 20%, rgba(61, 169, 252, 0.2), transparent 45%),
+        radial-gradient(circle at 80% 0%, rgba(109, 99, 240, 0.25), transparent 40%),
+        var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    .layout {
+      max-width: 1700px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
+      gap: 1.5rem;
+    }
+
+    header {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1.5rem;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      color: var(--accent);
+    }
+
+    header .meta {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .sidebar,
+    .preview {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.25rem;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      min-height: 70vh;
+    }
+
+    .sidebar input,
+    .sidebar select {
+      width: 100%;
+      padding: 0.65rem 0.85rem;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(10, 18, 32, 0.7);
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+
+    .component-list {
+      display: grid;
+      gap: 0.75rem;
+      overflow: auto;
+      padding-right: 0.25rem;
+    }
+
+    .component-item {
+      border: 1px solid transparent;
+      border-radius: 12px;
+      padding: 0.75rem;
+      background: rgba(12, 22, 38, 0.8);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .component-item.active {
+      border-color: var(--accent);
+      box-shadow: 0 0 16px rgba(61, 169, 252, 0.3);
+    }
+
+    .component-item small {
+      color: var(--muted);
+      display: block;
+      margin-top: 0.3rem;
+      font-family: "Monaco", "Menlo", monospace;
+    }
+
+    .preview iframe {
+      width: 100%;
+      height: 640px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #0a1929;
+    }
+
+    .details {
+      display: grid;
+      gap: 0.6rem;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    .details strong {
+      color: var(--text);
+    }
+
+    .actions {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .actions button {
+      padding: 0.5rem 0.75rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: rgba(61, 169, 252, 0.12);
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .actions button:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 12px rgba(61, 169, 252, 0.3);
+    }
+
+    .placeholder {
+      padding: 2rem;
+      text-align: center;
+      color: var(--muted);
+      border: 1px dashed var(--border);
+      border-radius: 12px;
+    }
+
+    @media (max-width: 1100px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      body {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <header>
+      <div>
+        <h1 id="project-title">Project Overview</h1>
+        <div class="meta" id="project-meta">Loading...</div>
+      </div>
+      <div class="actions">
+        <button id="copy-project-path">Copy Project Path</button>
+        <button id="open-project-root">Open Project Root</button>
+      </div>
+    </header>
+
+    <aside class="sidebar">
+      <input type="text" id="search-input" placeholder="Search components..." />
+      <select id="type-filter">
+        <option value="">All Types</option>
+        <option value="tsx">TSX</option>
+        <option value="jsx">JSX</option>
+        <option value="ts">TS</option>
+        <option value="js">JS</option>
+      </select>
+      <div class="component-list" id="component-list">
+        <div class="placeholder">Loading components...</div>
+      </div>
+    </aside>
+
+    <section class="preview">
+      <iframe id="preview-frame" title="Component preview"></iframe>
+      <div class="details" id="component-details">
+        <div><strong>Component:</strong> <span id="detail-name">None</span></div>
+        <div><strong>Path:</strong> <span id="detail-path">-</span></div>
+        <div><strong>Type:</strong> <span id="detail-type">-</span></div>
+      </div>
+      <div class="actions">
+        <button id="copy-component-path">Copy Component Path</button>
+        <button id="open-component-source">Open Source File</button>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const projectName = urlParams.get('project') || 'errlstory_pivot_v8';
+    const basePath = '..';
+    const dataUrl = `${basePath}/components-data.json`;
+    const previewUrl = `${basePath}/preview/dist/index.html`;
+
+    const projectTitle = document.getElementById('project-title');
+    const projectMeta = document.getElementById('project-meta');
+    const componentList = document.getElementById('component-list');
+    const searchInput = document.getElementById('search-input');
+    const typeFilter = document.getElementById('type-filter');
+    const previewFrame = document.getElementById('preview-frame');
+    const detailName = document.getElementById('detail-name');
+    const detailPath = document.getElementById('detail-path');
+    const detailType = document.getElementById('detail-type');
+
+    let projectData = null;
+    let selected = null;
+
+    function setComponent(component) {
+      selected = component;
+      if (!component) {
+        previewFrame.src = '';
+        detailName.textContent = 'None';
+        detailPath.textContent = '-';
+        detailType.textContent = '-';
+        return;
+      }
+
+      const componentId = `${projectName}:${component.name}`;
+      previewFrame.src = `${previewUrl}?component=${encodeURIComponent(componentId)}&embed=true`;
+      detailName.textContent = component.name;
+      detailPath.textContent = `${projectData.path}/${component.path}`;
+      detailType.textContent = component.type.toUpperCase();
+    }
+
+    function renderList() {
+      if (!projectData) return;
+      const query = (searchInput.value || '').toLowerCase();
+      const type = typeFilter.value;
+      const filtered = projectData.components.filter((component) => {
+        if (type && component.type !== type) return false;
+        if (!query) return true;
+        return (
+          component.name.toLowerCase().includes(query) ||
+          component.path.toLowerCase().includes(query)
+        );
+      });
+
+      componentList.innerHTML = '';
+      if (filtered.length === 0) {
+        const empty = document.createElement('div');
+        empty.className = 'placeholder';
+        empty.textContent = 'No components match.';
+        componentList.appendChild(empty);
+        return;
+      }
+
+      filtered.forEach((component) => {
+        const item = document.createElement('div');
+        item.className = 'component-item' + (selected?.name === component.name ? ' active' : '');
+        item.innerHTML = `<strong>${component.name}</strong><small>${component.path}</small>`;
+        item.addEventListener('click', () => {
+          document.querySelectorAll('.component-item').forEach((el) => el.classList.remove('active'));
+          item.classList.add('active');
+          setComponent(component);
+        });
+        componentList.appendChild(item);
+      });
+    }
+
+    function copyToClipboard(text) {
+      navigator.clipboard?.writeText(text);
+    }
+
+    document.getElementById('copy-project-path').addEventListener('click', () => {
+      if (!projectData) return;
+      copyToClipboard(projectData.path);
+    });
+
+    document.getElementById('open-project-root').addEventListener('click', () => {
+      if (!projectData) return;
+      window.open(`${basePath}/${projectData.path}`, '_blank');
+    });
+
+    document.getElementById('copy-component-path').addEventListener('click', () => {
+      if (!projectData || !selected) return;
+      copyToClipboard(`${projectData.path}/${selected.path}`);
+    });
+
+    document.getElementById('open-component-source').addEventListener('click', () => {
+      if (!projectData || !selected) return;
+      window.open(`${basePath}/${projectData.path}/${selected.path}`, '_blank');
+    });
+
+    searchInput.addEventListener('input', renderList);
+    typeFilter.addEventListener('change', renderList);
+
+    fetch(dataUrl)
+      .then((res) => res.json())
+      .then((data) => {
+        projectData = data[projectName];
+        if (!projectData) {
+          projectTitle.textContent = `Project "${projectName}" not found`;
+          projectMeta.textContent = 'Try ?project=svg_editor or another project name.';
+          componentList.innerHTML = '<div class="placeholder">No data available.</div>';
+          return;
+        }
+        projectTitle.textContent = `${projectName} Overview`;
+        projectMeta.textContent = `${projectData.components.length} components · ${projectData.path}`;
+        if (projectData.components.length > 0) {
+          setComponent(projectData.components[0]);
+        }
+        renderList();
+      })
+      .catch(() => {
+        projectTitle.textContent = 'Project Overview';
+        projectMeta.textContent = 'Failed to load components-data.json.';
+        componentList.innerHTML = '<div class="placeholder">Unable to load data.</div>';
+      });
+  </script>
+</body>
+</html>

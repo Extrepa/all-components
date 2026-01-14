@@ -1,0 +1,378 @@
+/**
+ * Base Styles - Errl Club Design System
+ * 
+ * Global styles, resets, and base element styling.
+ */
+
+/* ============================================
+   CSS Variables (Design Tokens)
+   ============================================ */
+
+:root {
+    /* Colors */
+    --color-primary-cyan: #00ffff;
+    --color-primary-magenta: #ff00ff;
+    --color-primary-green: #00ff00;
+    
+    --color-background-dark: rgba(20, 20, 20, 0.9);
+    --color-background-darker: rgba(10, 10, 10, 0.95);
+    --color-background-darkest: #000000;
+    --color-background-overlay: rgba(0, 0, 0, 0.8);
+    
+    --color-text-primary: #ffffff;
+    --color-text-accent: #00ffff;
+    --color-text-error: #ff0000;
+    --color-text-disabled: #666666;
+    
+    --color-border-primary: #00ffff;
+    --color-border-secondary: #ff00ff;
+    --color-border-hover: #00ff00;
+    --color-border-disabled: #666666;
+    --color-border-error: #ff0000;
+    
+    /* Typography */
+    --font-family-primary: 'Arial', sans-serif;
+    --font-family-bold: 'Arial Black', 'Arial Bold', sans-serif;
+    
+    --font-size-xs: 0.7rem;
+    --font-size-sm: 0.75rem;
+    --font-size-base: 0.9rem;
+    --font-size-md: 14px;
+    --font-size-lg: 18px;
+    --font-size-xl: 20px;
+    --font-size-2xl: 1.5rem;
+    --font-size-3xl: 3rem;
+    
+    /* Spacing */
+    --spacing-xs: 5px;
+    --spacing-sm: 8px;
+    --spacing-md: 10px;
+    --spacing-lg: 12px;
+    --spacing-xl: 16px;
+    --spacing-2xl: 20px;
+    
+    /* Border Radius */
+    --radius-sm: 3px;
+    --radius-md: 4px;
+    --radius-lg: 5px;
+    --radius-xl: 8px;
+    --radius-full: 50%;
+    --radius-pill: 999px;
+    
+    /* Shadows */
+    --shadow-cyan-subtle: 0 0 10px rgba(0, 255, 255, 0.6);
+    --shadow-cyan-normal: 0 0 20px rgba(0, 255, 255, 0.6);
+    --shadow-cyan-strong: 0 0 30px rgba(0, 255, 255, 0.8);
+    --shadow-magenta-subtle: 0 0 10px rgba(255, 0, 255, 0.4);
+    --shadow-magenta-normal: 0 0 20px rgba(255, 0, 255, 0.4);
+    --shadow-neon-normal: 0 0 20px rgba(0, 255, 255, 0.6), 0 0 40px rgba(255, 0, 255, 0.4);
+    --shadow-panel: 0 4px 20px rgba(0, 255, 255, 0.3);
+    --shadow-modal: 0 8px 32px rgba(0, 255, 255, 0.5);
+    
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.5s ease;
+}
+
+/* ============================================
+   Global Resets
+   ============================================ */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    font-family: var(--font-family-primary);
+}
+
+/* ============================================
+   Background Gradient Animation
+   ============================================ */
+
+@keyframes hueShift {
+    0% {
+        filter: hue-rotate(0deg);
+    }
+    100% {
+        filter: hue-rotate(360deg);
+    }
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite, hueShift 20s linear infinite;
+}
+
+/* ============================================
+   Canvas
+   ============================================ */
+
+#club-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    z-index: 1;
+}
+
+/* ============================================
+   HUD Container
+   ============================================ */
+
+#hud {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--spacing-2xl);
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+/* ============================================
+   Title (Hidden by default - 3D version in scene)
+   ============================================ */
+
+#title {
+    color: var(--color-text-primary);
+    font-size: var(--font-size-3xl);
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    text-shadow: 
+        0 0 10px rgba(255, 255, 255, 0.5),
+        0 0 20px rgba(255, 255, 255, 0.3),
+        0 0 30px rgba(255, 255, 255, 0.2);
+    margin: var(--spacing-2xl) 0;
+    animation: titleGlow 2s ease-in-out infinite alternate;
+    display: none; /* Hidden - 3D version in scene */
+}
+
+@keyframes titleGlow {
+    0% {
+        text-shadow: 
+            0 0 10px rgba(255, 255, 255, 0.5),
+            0 0 20px rgba(255, 255, 255, 0.3),
+            0 0 30px rgba(255, 255, 255, 0.2);
+    }
+    100% {
+        text-shadow: 
+            0 0 20px rgba(255, 255, 255, 0.8),
+            0 0 30px rgba(255, 255, 255, 0.5),
+            0 0 40px rgba(255, 255, 255, 0.3);
+    }
+}
+
+/* ============================================
+   Controls
+   ============================================ */
+
+#controls {
+    pointer-events: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+#controls * {
+    pointer-events: auto;
+}
+
+#control-dock-row {
+    width: 100%;
+}
+
+/* ============================================
+   Reticle
+   ============================================ */
+
+#reticle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 15;
+}
+
+.reticle-dot {
+    width: 8px;
+    height: 8px;
+    border: 2px solid var(--color-primary-green);
+    border-radius: var(--radius-full);
+    background: rgba(0, 255, 0, 0.3);
+    box-shadow: var(--shadow-cyan-normal);
+    margin: 0 auto;
+    animation: reticlePulse 1s ease-in-out infinite;
+}
+
+@keyframes reticlePulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.8;
+    }
+}
+
+.reticle-label {
+    color: var(--color-primary-green);
+    font-size: var(--font-size-base);
+    text-align: center;
+    margin-top: 15px;
+    text-shadow: 0 0 10px rgba(0, 255, 0, 0.8);
+    background: rgba(0, 0, 0, 0.5);
+    padding: var(--spacing-xs) var(--spacing-md);
+    border-radius: var(--radius-lg);
+    backdrop-filter: blur(5px);
+}
+
+/* ============================================
+   Progress Bar
+   ============================================ */
+
+#fragment-progress {
+    width: 100%;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    flex-direction: column;
+}
+
+.control-fragment-progress .progress-bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(0, 0, 0, 0.35);
+    border: 2px solid rgba(0, 255, 255, 0.7);
+    border-radius: var(--radius-pill);
+    overflow: hidden;
+    box-shadow: inset 0 0 12px rgba(0, 255, 255, 0.3);
+}
+
+.control-fragment-progress .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #00ffff, #0099ff, #00ffff);
+    transition: width var(--transition-normal);
+    box-shadow: 0 0 12px rgba(0, 255, 255, 0.6);
+}
+
+.control-fragment-progress .progress-label {
+    color: var(--color-text-primary);
+    font-size: var(--font-size-sm);
+    text-align: center;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.55);
+}
+
+/* ============================================
+   Emote Wheel
+   ============================================ */
+
+.emote-wheel {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 300px;
+    pointer-events: all;
+    z-index: 100;
+}
+
+.emote-wheel.hidden {
+    display: none;
+}
+
+.emote-button {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    border-radius: var(--radius-full);
+    background: rgba(0, 0, 0, 0.8);
+    border: 2px solid var(--color-primary-cyan);
+    color: var(--color-primary-cyan);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+    backdrop-filter: blur(10px);
+    left: 50%;
+    top: 50%;
+    margin-left: -30px;
+    margin-top: -30px;
+}
+
+.emote-button:hover,
+.emote-button.highlighted {
+    background: rgba(0, 255, 255, 0.3);
+    border-color: var(--color-primary-magenta);
+    color: var(--color-primary-magenta);
+    transform: scale(1.2);
+    box-shadow: var(--shadow-cyan-strong);
+}
+
+.emote-icon {
+    font-size: var(--font-size-2xl);
+    line-height: 1;
+}
+
+.emote-label {
+    font-size: var(--font-size-xs);
+    margin-top: 2px;
+    text-align: center;
+}
+
+.emote-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-full);
+    background: rgba(255, 0, 255, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-size-2xl);
+    border: 2px solid var(--color-primary-magenta);
+    pointer-events: none;
+}
+

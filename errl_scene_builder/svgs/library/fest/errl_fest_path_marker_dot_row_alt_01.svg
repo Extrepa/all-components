@@ -1,0 +1,11 @@
+<!-- Example 179 | errl_fest_path_marker_dot_row_alt_01 (ui/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="ui" data-name="errl_fest_path_marker_dot_row_alt_01">
+  <g fill="none">
+    <circle cx="20" cy="44" r="1.4" fill="#fb7185"/>
+    <circle cx="26" cy="44" r="1.4" fill="#22d3ee"/>
+    <circle cx="32" cy="44" r="1.4" fill="#facc15"/>
+    <circle cx="38" cy="44" r="1.4" fill="#22d3ee"/>
+    <circle cx="44" cy="44" r="1.4" fill="#a855f7"/>
+  </g>
+</svg>

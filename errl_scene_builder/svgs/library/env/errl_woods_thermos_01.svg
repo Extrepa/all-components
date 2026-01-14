@@ -1,0 +1,10 @@
+<!-- 67) errl_woods_thermos_01 – thermos bottle (prop) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="prop" data-name="errl_woods_thermos_01">
+  <g fill="none">
+    <rect x="30" y="22" width="4" height="4" rx="1" fill="#e5e7eb"/>
+    <rect x="28" y="26" width="8" height="14" rx="3" fill="#0f766e"/>
+    <rect x="29" y="28" width="6" height="8" rx="2.5" fill="#22c55e" opacity="0.6"/>
+    <ellipse cx="32" cy="42" rx="5" ry="1.8" fill="#111827" opacity="0.35"/>
+  </g>
+</svg>

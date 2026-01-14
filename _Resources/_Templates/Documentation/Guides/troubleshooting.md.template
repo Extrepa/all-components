@@ -1,0 +1,102 @@
+# Troubleshooting Guide
+
+**Project:** [Project Name]  
+**Last Updated:** [Date]
+
+## Common Issues
+
+### Issue: [Problem Title]
+
+**Symptoms:**
+- [Symptom 1]
+- [Symptom 2]
+
+**Cause:**
+[Cause description]
+
+**Solution:**
+[Step-by-step solution]
+
+**Prevention:**
+[How to prevent this issue]
+
+---
+
+### Issue: [Problem Title]
+
+**Symptoms:**
+- [Symptom 1]
+
+**Cause:**
+[Cause description]
+
+**Solution:**
+[Step-by-step solution]
+
+---
+
+## Build Issues
+
+### Build Fails
+
+**Possible Causes:**
+- Missing dependencies
+- TypeScript errors
+- Configuration issues
+
+**Solutions:**
+1. [Solution 1]
+2. [Solution 2]
+3. [Solution 3]
+
+### TypeScript Errors
+
+**Common Errors:**
+- [Error type 1] - [Solution]
+- [Error type 2] - [Solution]
+
+---
+
+## Runtime Issues
+
+### Application Won't Start
+
+**Check:**
+- [Check 1]
+- [Check 2]
+- [Check 3]
+
+**Solutions:**
+- [Solution 1]
+- [Solution 2]
+
+### Performance Issues
+
+**Symptoms:**
+- [Symptom 1]
+- [Symptom 2]
+
+**Solutions:**
+- [Solution 1]
+- [Solution 2]
+
+---
+
+## Getting Help
+
+### Documentation
+- [User Guide](user-guide.md.template)
+- [Developer Guide](developer-guide.md.template)
+- [API Documentation](api.md) (if applicable)
+
+### Support
+- [Support channel/contact]
+- [Issue tracker]
+
+---
+
+## Related Documentation
+
+- [User Guide](user-guide.md.template)
+- [Developer Guide](developer-guide.md.template)
+- [Project Status](../PROJECT_STATUS.md.template)

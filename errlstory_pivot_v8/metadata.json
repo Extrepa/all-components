@@ -1,0 +1,5 @@
+{
+  "name": "ErrlStory_Pivot",
+  "description": "A neon-drippy side-scroller prototype inspired by MapleStory, built with a custom game loop in React.",
+  "requestFramePermissions": []
+}

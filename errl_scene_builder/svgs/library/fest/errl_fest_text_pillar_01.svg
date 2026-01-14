@@ -1,0 +1,12 @@
+<!-- Example 150 | errl_fest_text_pillar_01 (env/ui) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="env" data-name="errl_fest_text_pillar_01">
+  <g fill="none">
+    <rect x="26" y="20" width="12" height="26" rx="3" fill="#111827"/>
+    <rect x="28" y="22" width="8" height="3" rx="1.5" fill="#22d3ee" opacity="0.9"/>
+    <rect x="28" y="27" width="8" height="2" rx="1" fill="#4b5563"/>
+    <rect x="28" y="31" width="8" height="2" rx="1" fill="#4b5563"/>
+    <rect x="28" y="35" width="8" height="2" rx="1" fill="#4b5563"/>
+    <ellipse cx="32" cy="48" rx="9" ry="2.4" fill="#020617" opacity="0.45"/>
+  </g>
+</svg>

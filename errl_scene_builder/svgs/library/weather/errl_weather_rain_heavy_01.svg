@@ -1,0 +1,16 @@
+<!-- errl_weather_rain_heavy_01 – denser rainfall (fx) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_weather" data-cat="fx" data-name="errl_weather_rain_heavy_01">
+  <g fill="none">
+    <!-- cloud -->
+    <circle cx="24" cy="22" r="5" fill="#e5e7eb"/>
+    <circle cx="32" cy="20" r="6" fill="#e5e7eb"/>
+    <circle cx="40" cy="22" r="5" fill="#e5e7eb"/>
+    <rect x="22" y="22" width="20" height="5" rx="2.5" fill="#e5e7eb"/>
+    <!-- drops -->
+    <path d="M24 28 V36" stroke="#0ea5e9" stroke-width="1.8" stroke-linecap="round"/>
+    <path d="M30 30 V38" stroke="#0ea5e9" stroke-width="1.8" stroke-linecap="round"/>
+    <path d="M36 28 V36" stroke="#0ea5e9" stroke-width="1.8" stroke-linecap="round"/>
+    <path d="M42 30 V38" stroke="#0ea5e9" stroke-width="1.8" stroke-linecap="round"/>
+  </g>
+</svg>

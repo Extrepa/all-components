@@ -1,0 +1,125 @@
+# Architecture Documentation
+
+**Project:** [Project Name]  
+**Type:** [Web App / Desktop App / Library / etc.]  
+**Last Updated:** [Date]
+
+## Technical Architecture
+
+### Technology Stack
+
+- **[Technology 1]** - [Purpose]
+- **[Technology 2]** - [Purpose]
+- **[Technology 3]** - [Purpose]
+
+### Project Type
+
+[Brief description of project type]
+
+## Architecture Overview
+
+[High-level overview of the system architecture]
+
+### System Components
+
+1. **[Component Name]**
+   - [Description]
+   - [Key responsibilities]
+   - [Location in codebase]
+
+2. **[Component Name]**
+   - [Description]
+   - [Key responsibilities]
+   - [Location in codebase]
+
+3. **[Component Name]**
+   - [Description]
+   - [Key responsibilities]
+   - [Location in codebase]
+
+## Design Decisions
+
+### [Decision 1]
+**Rationale:** [Why this decision was made]  
+**Alternatives Considered:** [Other options considered]  
+**Trade-offs:** [What was gained/lost]
+
+### [Decision 2]
+**Rationale:** [Why this decision was made]  
+**Alternatives Considered:** [Other options considered]  
+**Trade-offs:** [What was gained/lost]
+
+## Data Flow
+
+### [Feature/Process Name]
+1. [Step 1]
+2. [Step 2]
+3. [Step 3]
+
+### [Feature/Process Name]
+1. [Step 1]
+2. [Step 2]
+3. [Step 3]
+
+## Key Directories
+
+### `src/`
+- [Description of src directory structure]
+- [Key subdirectories]
+
+### `public/`
+- [Description of public directory]
+- [Static assets]
+
+### `docs/`
+- [Description of documentation structure]
+
+## Dependencies
+
+### Core Dependencies
+- **[Package Name]** - [Version] - [Purpose]
+
+### Development Dependencies
+- **[Package Name]** - [Version] - [Purpose]
+
+## API Structure
+
+### [API Endpoint/Function Name]
+**Purpose:** [What it does]  
+**Parameters:** [Input parameters]  
+**Returns:** [Return value]  
+**Example:**
+```typescript
+// Example usage
+```
+
+## State Management
+
+### [State Management Approach]
+- [How state is managed]
+- [State structure]
+- [State updates]
+
+## Security Considerations
+
+- [Security measure 1]
+- [Security measure 2]
+- [Security measure 3]
+
+## Performance Considerations
+
+- [Performance optimization 1]
+- [Performance optimization 2]
+- [Performance metrics]
+
+## Future Considerations
+
+- [Future enhancement 1]
+- [Future enhancement 2]
+- [Technical debt to address]
+
+## Related Documentation
+
+- [Project Structure](project-structure.md)
+- [Developer Guide](../Guides/developer-guide.md.template)
+- [API Documentation](api.md) (if applicable)

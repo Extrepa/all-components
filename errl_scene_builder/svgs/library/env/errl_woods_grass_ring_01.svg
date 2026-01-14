@@ -1,0 +1,8 @@
+<!-- 49) errl_woods_grass_ring_01 – circular grass patch (env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="env" data-name="errl_woods_grass_ring_01">
+  <g fill="none">
+    <circle cx="32" cy="42" r="14" fill="#22c55e" opacity="0.7"/>
+    <circle cx="32" cy="42" r="9" fill="#166534" opacity="0.25"/>
+  </g>
+</svg>

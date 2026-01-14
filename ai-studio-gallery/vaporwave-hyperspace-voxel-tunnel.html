@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vaporwave Hyperspace Voxel Tunnel</title>
+    <style>
+        body { margin: 0; overflow: hidden; background-color: #050011; }
+        canvas { display: block; width: 100vw; height: 100vh; }
+    </style>
+</head>
+<body>
+<script type="module">
+    import * as THREE from 'https://esm.run/three';
+    import { OrbitControls } from 'https://esm.run/three/examples/jsm/controls/OrbitControls.js';
+
+    // Scene Setup
+    const scene = new THREE.Scene();
+    // Vaporwave background color (Deep Dark Purple)
+    scene.background = new THREE.Color(0x050011);
+    // Add fog to hide the end of the tunnel
+    scene.fog = new THREE.Fog(0x050011, 10, 60);
+
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    // Position camera inside the tunnel
+    camera.position.set(0, 0, 5);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: false }); // False for more "pixel/voxel" feel
+    renderer.setPixelRatio(2); // High DPI
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    // Controls
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+    controls.autoRotate = true; 
+    controls.autoRotateSpeed = 2.0; // Adds to the chaotic travel feel
+    controls.enablePan = false;
+    
+    // Lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(ambientLight);
+
+    const pointLight = new THREE.PointLight(0xff00ff, 2, 50);
+    pointLight.position.set(0, 0, 5);
+    scene.add(pointLight);
+
+    const pointLight2 = new THREE.PointLight(0x00ffff, 2, 50);
+    pointLight2.position.set(0, 0, -10);
+    scene.add(pointLight2);
+
+    // Voxel Tunnel Configuration
+    const tunnelRadius = 8;
+    const segments = 32;  // Voxels around the ring
+    const rings = 60;     // Voxels deep
+    const voxelSize = 0.8; 
+    const spacing = 1.0;  // Distance between voxel centers (creates grid gaps)
+
+    const totalInstances = segments * rings;
+    
+    // Geometry & Material
+    const geometry = new THREE.BoxGeometry(voxelSize, voxelSize, voxelSize);
+    // Using Standard material for lighting reaction, but with emissive for neon glow
+    const material = new THREE.MeshStandardMaterial({
+        roughness: 0.2,
+        metalness: 0.8,
+        emissiveIntensity: 0.5
+    });
+
+    const mesh = new THREE.InstancedMesh(geometry, material, totalInstances);
+    scene.add(mesh);
+
+    const dummy = new THREE.Object3D();
+    const color = new THREE.Color();
+
+    // Resize Handler
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    // Animation Variables
+    let time = 0;
+    
+    // Vaporwave Palette Generator
+    function getVaporwaveColor(t, zRatio) {
+        // Oscillate between Cyan (0.5), Pink (0.83), and Purple (0.75)
+        // t affects shift over time, zRatio affects shift down the tunnel
+        const hueBase = 0.5 + 0.35 * (Math.sin(t * 0.5 + zRatio * 5) * 0.5 + 0.5); 
+        const saturation = 0.8 + 0.2 * Math.sin(t * 2);
+        const lightness = 0.5 + 0.2 * Math.cos(zRatio * 10 + t);
+        color.setHSL(hueBase, saturation, lightness);
+        return color;
+    }
+
+    function animate() {
+        requestAnimationFrame(animate);
+
+        time += 0.015; // Speed of travel simulation
+
+        // We want to simulate the tunnel moving towards the camera (+Z)
+        // Or camera moving -Z. Let's move voxels +Z.
+        
+        let instanceIdx = 0;
+
+        for (let r = 0; r < rings; r++) {
+            // Calculate Z position.
+            // (r * spacing) is static position.
+            // We add (time * speed) to move it.
+            // We modulus by tunnel length to loop.
+            const tunnelLength = rings * spacing;
+            const speed = 15.0;
+            
+            // Current Z pos relative to start, wrapping around
+            let currentZ = (r * spacing + time * speed) % tunnelLength;
+            // Shift so the tunnel extends from behind camera to far in front
+            // Let's place camera at roughly z=5. We want tunnel from z=5 down to z=-55
+            currentZ = 5 - currentZ; 
+            
+            // Distortion Factors based on Depth and Time
+            // Warp the radius and center
+            const zNorm = Math.abs(currentZ) / tunnelLength; // 0 to 1
+            
+            // Twist effect
+            const twist = Math.sin(currentZ * 0.1 + time) * 2.0;
+            // Pulsating radius
+            const radiusPulse = Math.cos(currentZ * 0.3 - time * 3) * 1.5;
+            // Center wobble (snakelike movement)
+            const centerX = Math.sin(currentZ * 0.15 + time * 1.5) * 3;
+            const centerY = Math.cos(currentZ * 0.12 + time * 1.2) * 3;
+
+            for (let s = 0; s < segments; s++) {
+                // Angle for the ring
+                const segmentAngle = (s / segments) * Math.PI * 2;
+                
+                // Calculate Grid Position with distortion
+                const effectiveAngle = segmentAngle + twist * (zNorm + 0.1);
+                const effectiveRadius = tunnelRadius + radiusPulse;
+
+                const x = centerX + Math.cos(effectiveAngle) * effectiveRadius;
+                const y = centerY + Math.sin(effectiveAngle) * effectiveRadius;
+                
+                dummy.position.set(x, y, currentZ);
+                
+                // Rotate voxels to look chaotic or aligned with flow
+                dummy.rotation.z = effectiveAngle;
+                dummy.rotation.x = time + zNorm;
+                dummy.rotation.y = time * 0.5;
+
+                dummy.updateMatrix();
+                mesh.setMatrixAt(instanceIdx, dummy.matrix);
+
+                // Color Logic
+                // Use the angle and depth to determine color
+                const colorRef = getVaporwaveColor(time, zNorm + (s/segments)*0.2);
+                mesh.setColorAt(instanceIdx, colorRef);
+
+                instanceIdx++;
+            }
+        }
+
+        mesh.instanceMatrix.needsUpdate = true;
+        mesh.instanceColor.needsUpdate = true;
+
+        controls.update(); // Update orbit controls (auto-rotate)
+        renderer.render(scene, camera);
+    }
+
+    animate();
+</script>
+</body>
+</html>

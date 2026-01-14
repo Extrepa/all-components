@@ -1,0 +1,8 @@
+<!-- errl_concert_spotlight_beams_01 – crossing downlights (fx) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_concert" data-cat="fx" data-name="errl_concert_spotlight_beams_01">
+  <g fill="none">
+    <path d="M18 20 L30 44 L14 44 Z" fill="#22d3ee" opacity="0.2"/>
+    <path d="M46 20 L34 44 L50 44 Z" fill="#fb7185" opacity="0.2"/>
+  </g>
+</svg>

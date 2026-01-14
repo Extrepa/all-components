@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <g id="FG_orbs_small" fill="#2c6274" opacity="0.6">
+    <circle cx="180" cy="520" r="70" />
+    <circle cx="420" cy="600" r="60" />
+    <circle cx="660" cy="560" r="70" />
+    <circle cx="840" cy="520" r="60" />
+  </g>
+  <g id="FG_sparkles" fill="none" stroke="#696874" stroke-width="10" stroke-linecap="round" opacity="0.7">
+    <path d="M240 720v60M210 750h60" />
+    <path d="M520 740v70M485 775h70" />
+    <path d="M780 700v60M750 730h60" />
+  </g>
+  <g id="FG_drip_frame" fill="#6d5c37" stroke="#0e0f1b" stroke-width="10" stroke-linejoin="round" opacity="0.22">
+    <path d="M0 0h1024v120c-120 60-240 40-320 0-90-44-180-44-270 0-80 40-200 60-434 0z" />
+  </g>
+</svg>

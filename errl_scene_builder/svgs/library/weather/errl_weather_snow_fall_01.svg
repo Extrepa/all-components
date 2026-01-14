@@ -1,0 +1,17 @@
+<!-- errl_weather_snow_fall_01 – snow from soft cloud (fx) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_weather" data-cat="fx" data-name="errl_weather_snow_fall_01">
+  <g fill="none">
+    <!-- cloud -->
+    <circle cx="26" cy="22" r="5" fill="#e5e7eb"/>
+    <circle cx="34" cy="20" r="6" fill="#e5e7eb"/>
+    <circle cx="42" cy="22" r="5" fill="#e5e7eb"/>
+    <rect x="24" y="22" width="20" height="5" rx="2.5" fill="#e5e7eb"/>
+    <!-- flakes -->
+    <circle cx="26" cy="30" r="1.2" fill="#e5e7eb"/>
+    <circle cx="32" cy="32" r="1.2" fill="#e5e7eb"/>
+    <circle cx="38" cy="30" r="1.2" fill="#e5e7eb"/>
+    <circle cx="30" cy="36" r="1.2" fill="#e5e7eb"/>
+    <circle cx="36" cy="36" r="1.2" fill="#e5e7eb"/>
+  </g>
+</svg>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <g id="FG_grass" fill="#6be9bf" opacity="0.85">
+    <path d="M0 820c140 60 320 70 520 40 220-34 360-24 504 10V1024H0z" />
+  </g>
+  <g id="FG_fence" fill="none" stroke="#64646e" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" opacity="0.7">
+    <path d="M40 780h944" />
+    <path d="M40 810h944" />
+    <path d="M140 760v80M320 760v80M500 760v80M680 760v80M860 760v80" />
+  </g>
+  <g id="FG_cables" fill="none" stroke="#94ebff" stroke-width="8" stroke-linecap="round" opacity="0.5">
+    <path d="M60 720c160-80 420-80 600 0 120 60 260 60 360 0" />
+  </g>
+</svg>

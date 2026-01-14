@@ -1,0 +1,11 @@
+<!-- errl_weather_sun_rays_01 – sun with subtle beams (fx/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_weather" data-cat="fx" data-name="errl_weather_sun_rays_01">
+  <g fill="none">
+    <circle cx="32" cy="24" r="6" fill="#facc15"/>
+    <path d="M32 14 V18 M32 30 V34 M22 24 H26 M38 24 H42
+             M25 17 L27 19 M37 29 L39 31
+             M25 31 L27 29 M37 19 L39 17"
+      stroke="#facc15" stroke-width="1.4" stroke-linecap="round" opacity="0.8"/>
+  </g>
+</svg>

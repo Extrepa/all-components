@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" id="icon-9hzmjym13">
+  <g xmlns="http://www.w3.org/2000/svg" fill="none">
+    <!-- stand -->
+    <rect x="20" y="32" width="24" height="12" rx="3" fill="#0f172a"/>
+    <!-- jug -->
+    <rect x="26" y="26" width="12" height="10" rx="3" fill="#22d3ee" opacity="0.9"/>
+    <rect x="28" y="28" width="8" height="6" rx="2" fill="#e0f2fe" opacity="0.9"/>
+    <!-- droplet icon -->
+    <path d="M32 27 C30.8 28.5 30 30 30 31a2 2 0 0 0 4 0c0-1-0.8-2.5-2-4z" fill="#0ea5e9"/>
+    <ellipse cx="32" cy="46" rx="14" ry="2.6" fill="#020617" opacity="0.45"/>
+  </g>
+</svg>

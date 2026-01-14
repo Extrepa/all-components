@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <g id="FG_cables" fill="none" stroke="#5be0ff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" opacity="0.6">
+    <path d="M100 260c80 120 200 140 320 120" />
+    <path d="M924 220c-90 110-210 140-324 120" />
+  </g>
+  <g id="FG_drips" fill="#ffd166" stroke="#101020" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" opacity="0.9">
+    <path d="M160 120c-20 26-18 80 6 110 18 24 42 24 58 2 14-18 20-54 16-80-4-22-34-34-80-32z" />
+    <path d="M864 120c20 26 18 80-6 110-18 24-42 24-58 2-14-18-20-54-16-80 4-22 34-34 80-32z" />
+  </g>
+</svg>

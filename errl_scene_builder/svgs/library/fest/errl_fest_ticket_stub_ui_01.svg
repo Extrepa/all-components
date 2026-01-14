@@ -1,0 +1,15 @@
+<!-- Example 112 | errl_fest_ticket_stub_ui_01 (ui) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="ui" data-name="errl_fest_ticket_stub_ui_01">
+  <g fill="none">
+    <path d="M20 30 h24 a2 2 0 0 1 2 2 v2
+             a3 3 0 0 0 -3 3 3 3 0 0 0 3 3 v2
+             a2 2 0 0 1 -2 2 h-24
+             a2 2 0 0 1 -2 -2 v-2
+             a3 3 0 0 0 3 -3 3 3 0 0 0 -3 -3 v-2
+             a2 2 0 0 1 2 -2 z"
+      fill="#22d3ee"/>
+    <rect x="22" y="32" width="10" height="2.5" rx="1.2" fill="#0f172a" opacity="0.8"/>
+    <circle cx="38" cy="36" r="1.6" fill="#0f172a"/>
+  </g>
+</svg>

@@ -1,0 +1,8 @@
+<!-- errl_weather_horizon_glow_01 – soft horizon bar (fx/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_weather" data-cat="fx" data-name="errl_weather_horizon_glow_01">
+  <g fill="none">
+    <rect x="12" y="40" width="40" height="4" rx="2" fill="#facc15" opacity="0.6"/>
+    <rect x="16" y="42" width="32" height="3" rx="1.5" fill="#facc15" opacity="0.4"/>
+  </g>
+</svg>

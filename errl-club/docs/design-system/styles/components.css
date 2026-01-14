@@ -1,0 +1,336 @@
+/**
+ * Component Styles - Errl Club Design System
+ * 
+ * Styles for reusable UI components.
+ */
+
+/* ============================================
+   Button Component
+   ============================================ */
+
+.ui-button {
+    padding: var(--spacing-md) var(--spacing-2xl);
+    background: #333333;
+    color: var(--color-text-primary);
+    border: 2px solid var(--color-border-primary);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-size: var(--font-size-md);
+    font-family: var(--font-family-primary);
+    transition: all var(--transition-fast);
+    outline: none;
+}
+
+.ui-button:hover {
+    background: #444444;
+    border-color: var(--color-border-hover);
+    transform: scale(1.05);
+}
+
+.ui-button:active {
+    background: #222222;
+    border-color: var(--color-border-primary);
+    transform: scale(0.95);
+}
+
+.ui-button:disabled {
+    background: #1a1a1a;
+    border-color: var(--color-border-disabled);
+    color: var(--color-text-disabled);
+    cursor: not-allowed;
+    transform: scale(1);
+}
+
+/* ============================================
+   Modal Component
+   ============================================ */
+
+.ui-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--color-background-overlay);
+    display: none;
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+}
+
+.ui-modal {
+    background: var(--color-background-modal);
+    border: 2px solid var(--color-border-primary);
+    border-radius: var(--radius-xl);
+    width: 600px;
+    max-width: 90vw;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shadow-modal);
+}
+
+.ui-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-xl);
+    border-bottom: 1px solid var(--color-border-primary);
+}
+
+.ui-modal-header h2 {
+    color: var(--color-text-accent);
+    font-size: var(--font-size-xl);
+    font-weight: bold;
+    margin: 0;
+    font-family: var(--font-family-primary);
+}
+
+.ui-modal-header button {
+    background: transparent;
+    border: none;
+    color: var(--color-text-primary);
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color var(--transition-fast);
+}
+
+.ui-modal-header button:hover {
+    color: var(--color-text-accent);
+}
+
+.ui-modal-content {
+    padding: var(--spacing-xl);
+    overflow-y: auto;
+    flex: 1;
+    color: var(--color-text-primary);
+    font-family: var(--font-family-primary);
+}
+
+/* ============================================
+   Panel Component
+   ============================================ */
+
+.ui-panel {
+    position: fixed;
+    background: var(--color-background-panel);
+    border: 2px solid var(--color-border-primary);
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-xl);
+    color: var(--color-text-primary);
+    font-family: var(--font-family-primary);
+    display: none;
+    box-shadow: var(--shadow-panel);
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.ui-panel-title {
+    font-size: var(--font-size-lg);
+    font-weight: bold;
+    margin-bottom: var(--spacing-lg);
+    color: var(--color-text-accent);
+    border-bottom: 1px solid var(--color-border-primary);
+    padding-bottom: var(--spacing-sm);
+}
+
+.ui-panel-content {
+    /* Content area - no default styles */
+}
+
+.ui-panel:focus {
+    border-color: var(--color-border-hover);
+    box-shadow: 0 4px 20px rgba(0, 255, 0, 0.5);
+}
+
+/* ============================================
+   Input Field Component
+   ============================================ */
+
+.ui-input-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    margin: var(--spacing-sm) 0;
+}
+
+.ui-input-field label {
+    color: var(--color-text-primary);
+    font-size: var(--font-size-md);
+    font-family: var(--font-family-primary);
+}
+
+.ui-input-field input {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    background: #333333;
+    color: var(--color-text-primary);
+    border: 2px solid var(--color-border-primary);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-md);
+    font-family: var(--font-family-primary);
+    outline: none;
+    transition: border-color var(--transition-fast);
+}
+
+.ui-input-field input:focus {
+    border-color: var(--color-border-primary);
+}
+
+.ui-input-field input:invalid,
+.ui-input-field input.error {
+    border-color: var(--color-border-error);
+}
+
+.ui-input-field input:disabled {
+    background: #1a1a1a;
+    border-color: var(--color-border-disabled);
+    color: var(--color-text-disabled);
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.ui-input-error {
+    color: var(--color-text-error);
+    font-size: var(--font-size-sm);
+    font-family: var(--font-family-primary);
+    display: none;
+}
+
+.ui-input-field.has-error .ui-input-error {
+    display: block;
+}
+
+/* ============================================
+   Dropdown Component
+   ============================================ */
+
+.ui-dropdown {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    margin: var(--spacing-sm) 0;
+}
+
+.ui-dropdown label {
+    color: var(--color-text-primary);
+    font-size: var(--font-size-md);
+    font-family: var(--font-family-primary);
+}
+
+.ui-dropdown select {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    background: #333333;
+    color: var(--color-text-primary);
+    border: 2px solid var(--color-border-primary);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-md);
+    font-family: var(--font-family-primary);
+    cursor: pointer;
+    outline: none;
+    transition: border-color var(--transition-fast);
+}
+
+.ui-dropdown select:hover {
+    border-color: var(--color-border-hover);
+}
+
+.ui-dropdown select:focus {
+    border-color: var(--color-border-primary);
+}
+
+.ui-dropdown select:disabled {
+    background: #1a1a1a;
+    border-color: var(--color-border-disabled);
+    color: var(--color-text-disabled);
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+/* ============================================
+   Slider Component
+   ============================================ */
+
+.ui-slider {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    margin: var(--spacing-sm) 0;
+}
+
+.ui-slider label {
+    color: var(--color-text-primary);
+    font-size: var(--font-size-md);
+    font-family: var(--font-family-primary);
+}
+
+.ui-slider-container {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+}
+
+.ui-slider input[type="range"] {
+    flex: 1;
+    height: 6px;
+    background: #333333;
+    border-radius: var(--radius-sm);
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.ui-slider input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background: var(--color-primary-cyan);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    box-shadow: var(--shadow-cyan-subtle);
+}
+
+.ui-slider input[type="range"]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background: var(--color-primary-cyan);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    border: none;
+    box-shadow: var(--shadow-cyan-subtle);
+}
+
+.ui-slider-value {
+    color: var(--color-text-accent);
+    font-size: var(--font-size-md);
+    font-family: var(--font-family-primary);
+    min-width: 50px;
+    text-align: right;
+}
+
+/* ============================================
+   Loading Screen
+   ============================================ */
+
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at center, #1a0a1a 0%, #0a0a0a 50%, #000000 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    pointer-events: none;
+    overflow: hidden;
+}
+

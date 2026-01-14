@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <g id="cluster" fill="#f4f0ff" opacity="0.9">
+    <circle cx="420" cy="420" r="20" />
+    <circle cx="520" cy="400" r="16" />
+    <circle cx="600" cy="460" r="14" />
+    <circle cx="460" cy="500" r="18" />
+    <circle cx="540" cy="520" r="22" />
+    <circle cx="620" cy="560" r="18" />
+    <circle cx="500" cy="600" r="14" />
+    <circle cx="560" cy="640" r="16" />
+  </g>
+  <g id="cluster_outline" fill="none" stroke="#101020" stroke-width="8" opacity="0.6">
+    <circle cx="420" cy="420" r="20" />
+    <circle cx="520" cy="400" r="16" />
+    <circle cx="600" cy="460" r="14" />
+    <circle cx="460" cy="500" r="18" />
+    <circle cx="540" cy="520" r="22" />
+    <circle cx="620" cy="560" r="18" />
+    <circle cx="500" cy="600" r="14" />
+    <circle cx="560" cy="640" r="16" />
+  </g>
+</svg>

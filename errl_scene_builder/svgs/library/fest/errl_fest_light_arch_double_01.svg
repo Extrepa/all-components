@@ -1,0 +1,10 @@
+<!-- Example 206 | errl_fest_light_arch_double_01 (fx/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="fx" data-name="errl_fest_light_arch_double_01">
+  <g fill="none">
+    <path d="M14 40 C18 28 24 22 32 22s14 6 18 18"
+      stroke="#22d3ee" stroke-width="3" stroke-linecap="round" opacity="0.85"/>
+    <path d="M18 40 C22 30 26 26 32 26s10 4 14 14"
+      stroke="#facc15" stroke-width="2" stroke-linecap="round" opacity="0.9"/>
+  </g>
+</svg>

@@ -1,0 +1,476 @@
+We have officially entered the “this is a full-on toolchain” zone.
+Let’s add FX Dice and Frame Tags so you can explore chaos and keep it organized. 🎲🫠
+
+Two upgrades:
+	1.	FX Randomizer (“Dice” panel) – smart random wobble/FX generator with optional locks.
+	2.	Frame Tags – tag captured frames as idle / walk / jump / fx etc, baked into the spritesheet manifest.
+
+Same patch style: drop these into your existing index.html.
+
+⸻
+
+1. FX Dice – smart randomizer for p5 + HTML FX
+
+1.1 Add the “FX Dice” panel (HTML)
+
+In the right sidebar, near the p5 controls / HTML FX controls, add this block.
+
+A good spot: under p5 FX controls, above Captured Frames.
+
+Something like:
+
+      <!-- p5 FX controls -->
+      <div class="border-t ...">
+        ...
+      </div>
+
+      <!-- FX Dice (Randomizer) -->
+      <div class="border-t border-slate-800/70 px-3 py-2 text-[11px] text-slate-200">
+        <div class="flex items-center justify-between mb-1">
+          <span class="font-semibold text-slate-100">FX Dice</span>
+          <span id="fxDiceStatus" class="text-[10px] text-slate-500">
+            Roll safe random FX
+          </span>
+        </div>
+
+        <p class="text-[10px] text-slate-400 mb-1">
+          Randomize wobble, zoom, glow, and HTML filters. Use locks to keep certain things stable.
+        </p>
+
+        <div class="flex flex-wrap items-center gap-2 mb-1 text-[10px] text-slate-300">
+          <label class="inline-flex items-center gap-1">
+            <input
+              id="lockBgHue"
+              type="checkbox"
+              class="bg-slate-900 border-slate-600"
+            />
+            <span>Lock BG hue</span>
+          </label>
+          <label class="inline-flex items-center gap-1">
+            <input
+              id="lockZoom"
+              type="checkbox"
+              class="bg-slate-900 border-slate-600"
+            />
+            <span>Lock zoom</span>
+          </label>
+          <label class="inline-flex items-center gap-1">
+            <input
+              id="lockGlow"
+              type="checkbox"
+              class="bg-slate-900 border-slate-600"
+            />
+            <span>Lock glow</span>
+          </label>
+        </div>
+
+        <div class="flex items-center gap-2 mb-1">
+          <button
+            id="fxDiceSoftBtn"
+            class="px-2 py-1 rounded-md border border-slate-600 text-slate-200 text-[10px] hover:bg-slate-900/80"
+          >
+            Soft roll
+          </button>
+          <button
+            id="fxDiceWildBtn"
+            class="px-2 py-1 rounded-md border border-rose-500/80 text-rose-200 text-[10px] hover:bg-rose-500/15"
+          >
+            Wild roll
+          </button>
+        </div>
+
+        <p class="text-[9px] text-slate-500">
+          Soft keeps current vibe and nudges. Wild goes full chaos (but still within reasonable ranges).
+        </p>
+      </div>
+
+
+⸻
+
+1.2 Wire DOM refs (JS)
+
+In your big DOM-lookup section:
+
+    // FX Dice
+    const fxDiceStatusEl = document.getElementById("fxDiceStatus");
+    const lockBgHueEl = document.getElementById("lockBgHue");
+    const lockZoomEl = document.getElementById("lockZoom");
+    const lockGlowEl = document.getElementById("lockGlow");
+    const fxDiceSoftBtn = document.getElementById("fxDiceSoftBtn");
+    const fxDiceWildBtn = document.getElementById("fxDiceWildBtn");
+
+
+⸻
+
+1.3 Randomizer helpers
+
+Add these helpers somewhere near your p5/FX helpers:
+
+    function randRange(min, max) {
+      return min + Math.random() * (max - min);
+    }
+
+    function randChoice(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function applyFxDice({ wild = false } = {}) {
+      // Base off current config so it feels like mutation rather than total reset
+      const cfg = { ...p5Config };
+
+      const hueLocked = lockBgHueEl?.checked;
+      const zoomLocked = lockZoomEl?.checked;
+      const glowLocked = lockGlowEl?.checked;
+
+      // p5 wobble
+      if (wild) {
+        cfg.wobbleAmplitude = randRange(10, 90);
+        cfg.wobbleSpeed = randRange(0.2, 4.5);
+      } else {
+        cfg.wobbleAmplitude *= randRange(0.7, 1.3);
+        cfg.wobbleAmplitude = Math.max(5, Math.min(100, cfg.wobbleAmplitude));
+        cfg.wobbleSpeed *= randRange(0.7, 1.3);
+        cfg.wobbleSpeed = Math.max(0.1, Math.min(5, cfg.wobbleSpeed));
+      }
+
+      // Zoom
+      if (!zoomLocked) {
+        if (wild) {
+          cfg.sceneZoom = randRange(0.6, 1.8);
+        } else {
+          cfg.sceneZoom *= randRange(0.85, 1.2);
+          cfg.sceneZoom = Math.max(0.6, Math.min(1.8, cfg.sceneZoom));
+        }
+      }
+
+      // Glow
+      if (!glowLocked) {
+        if (wild) {
+          cfg.glowStrength = randRange(0.1, 1.0);
+        } else {
+          cfg.glowStrength *= randRange(0.7, 1.3);
+          cfg.glowStrength = Math.max(0.1, Math.min(1.0, cfg.glowStrength));
+        }
+      }
+
+      // Background hue
+      if (!hueLocked) {
+        if (wild) {
+          cfg.bgHue = Math.floor(randRange(0, 360));
+        } else {
+          cfg.bgHue = (cfg.bgHue + randRange(-40, 40) + 360) % 360;
+        }
+      }
+
+      // Apply p5 config (assuming you have a function like updateP5FromConfig)
+      Object.assign(p5Config, cfg);
+      if (typeof updateP5FromConfig === "function") {
+        updateP5FromConfig();
+      }
+
+      // HTML FX: pick a random preset for wild, soft random nudge for now = small no-op
+      if (wild) {
+        const presetIds = Object.keys(htmlFxPresets);
+        if (presetIds.length > 0) {
+          const chosen = randChoice(presetIds);
+          htmlFxPresetSelect.value = chosen;
+          applyHtmlFxPreset(chosen);
+        }
+      }
+
+      updateSandboxSnippet();
+      updateSessionJsonOutput();
+
+      if (fxDiceStatusEl) {
+        fxDiceStatusEl.textContent = wild
+          ? "Wild roll applied (p5 + HTML FX)."
+          : "Soft roll applied.";
+      }
+    }
+
+Note: this assumes you have an updateP5FromConfig() or similar that re-applies slider values to the sketch. If you don’t, you can instead manually set the slider DOM elements and trigger your existing handlers.
+
+Example minimal fallback if you don’t have that helper:
+
+      // Fallback idea if you control sliders directly:
+      bgHueSlider.value = cfg.bgHue;
+      wobbleAmplitudeSlider.value = cfg.wobbleAmplitude;
+      wobbleSpeedSlider.value = cfg.wobbleSpeed;
+      sceneZoomSlider.value = cfg.sceneZoom;
+      glowStrengthSlider.value = cfg.glowStrength;
+      // and call your existing onInput handlers manually…
+
+But you likely already had some mapping from sliders→p5Config→p5.
+
+⸻
+
+1.4 Wire the dice buttons
+
+Add listeners:
+
+    fxDiceSoftBtn.addEventListener("click", () => {
+      applyFxDice({ wild: false });
+      flashStatus("FX Dice: soft roll 🎲", "info");
+      playBeep(760, 0.08, "triangle");
+    });
+
+    fxDiceWildBtn.addEventListener("click", () => {
+      applyFxDice({ wild: true });
+      flashStatus("FX Dice: wild roll 🔥", "info");
+      playBeep(880, 0.09, "triangle");
+    });
+
+Optional keyboard binding (inside your keydown handler, near others):
+
+      if (key === "d") {
+        applyFxDice({ wild: event.shiftKey });
+        return;
+      }
+
+So d = soft roll, Shift+D = wild roll.
+
+⸻
+
+2. Frame Tags – mark captured frames as idle/walk/jump/etc.
+
+You already have capturedFrames with metadata. We’ll add:
+	•	A tag field per frame.
+	•	A quick selector in the spritesheet panel.
+	•	Include tags in the spritesheet manifest and session JSON.
+
+2.1 Extend frame structure with tag
+
+Anywhere you create frame objects (in captureCurrentFrameToGallery and rebuildCapturedFramesFromSnapshot), we add tag.
+
+Update both frame constructors:
+
+        const frame = {
+          id,
+          url: dataUrl,
+          favorite: false,
+          el: null,
+          source,
+          modeLabel,
+          createdAt: Date.now(),
+          tag: null, // "idle" | "walk" | "jump" | "fx" | etc
+        };
+
+And in the rebuild helper:
+
+        const frame = {
+          id: data.id || ...,
+          url: data.url,
+          favorite: !!data.favorite,
+          el: null,
+          source: data.source || "p5",
+          modeLabel: data.modeLabel || "p5 FX",
+          createdAt: data.createdAt || Date.now(),
+          tag: data.tag || null,
+        };
+
+2.2 Extend Session Snapshot to include tag
+
+In collectSessionSnapshot(), where you build frames.all:
+
+        frames: {
+          all: capturedFrames.map((f) => ({
+            id: f.id,
+            url: f.url,
+            favorite: f.favorite,
+            source: f.source,
+            modeLabel: f.modeLabel,
+            createdAt: f.createdAt,
+            tag: f.tag || null,
+          })),
+          favorites: capturedFrames
+            .filter((f) => f.favorite)
+            .map((f) => f.id),
+        },
+
+Now tags persist.
+
+⸻
+
+2.3 Frame tag selector in spritesheet panel
+
+Update the Spritesheet Export panel HTML to include a tag selector, under the source radios:
+
+Change this part:
+
+        <div class="flex flex-wrap items-center gap-2 mb-2 text-[10px] text-slate-300">
+          <label ...>All frames</label>
+          <label ...>Favorites only</label>
+
+          <div class="flex items-center gap-1 ml-auto">
+            ...
+          </div>
+        </div>
+
+to:
+
+        <div class="flex flex-wrap items-center gap-2 mb-1 text-[10px] text-slate-300">
+          <label class="inline-flex items-center gap-1">
+            <input
+              type="radio"
+              name="spritesheetSource"
+              value="all"
+              checked
+              class="bg-slate-900 border-slate-600"
+              id="spritesheetSourceAll"
+            />
+            <span>All frames</span>
+          </label>
+          <label class="inline-flex items-center gap-1">
+            <input
+              type="radio"
+              name="spritesheetSource"
+              value="favorites"
+              class="bg-slate-900 border-slate-600"
+              id="spritesheetSourceFavorites"
+            />
+            <span>Favorites only</span>
+          </label>
+
+          <div class="flex items-center gap-1 ml-auto">
+            <label for="spritesheetMaxCols" class="text-slate-400">Max cols:</label>
+            <input
+              id="spritesheetMaxCols"
+              type="number"
+              min="1"
+              max="20"
+              value="8"
+              class="w-12 px-1 py-0.5 rounded-md bg-slate-950 border border-slate-700 text-[10px] text-slate-100"
+            />
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 mb-2 text-[10px] text-slate-300">
+          <span class="text-slate-400">Tag subset:</span>
+          <select
+            id="spritesheetTagFilter"
+            class="px-1 py-0.5 rounded-md bg-slate-950 border border-slate-700 text-[10px] text-slate-100"
+          >
+            <option value="">(any)</option>
+            <option value="idle">idle</option>
+            <option value="walk">walk</option>
+            <option value="jump">jump</option>
+            <option value="fx">fx</option>
+          </select>
+          <span class="text-[9px] text-slate-500">
+            (Use tags on frames to group animations)
+          </span>
+        </div>
+
+Then add a ref:
+
+    const spritesheetTagFilter = document.getElementById("spritesheetTagFilter");
+
+2.4 Let spritesheet selection respect tag filter
+
+Update getSpritesheetFramesSelection():
+
+    function getSpritesheetFramesSelection() {
+      const useFavorites = spritesheetSourceFavorites?.checked;
+      let frames = capturedFrames;
+
+      if (useFavorites) {
+        frames = frames.filter((f) => f.favorite);
+      }
+
+      const tagFilter = spritesheetTagFilter?.value || "";
+      if (tagFilter) {
+        frames = frames.filter((f) => f.tag === tagFilter);
+      }
+
+      frames = frames.filter((f) => !!f.url);
+      return frames;
+    }
+
+Now you can export:
+	•	All frames
+	•	Favorites only
+	•	Filtered by idle / walk / jump / fx tag.
+
+⸻
+
+2.5 Tagging individual frames from the gallery
+
+We’ll add a simple right-click context tagging:
+Right-click a thumbnail → prompt for tag.
+
+In both thumbnail creation functions (capture + rebuild), after the existing listeners on img and favBtn, add:
+
+        // Right-click to tag frame
+        wrapper.addEventListener("contextmenu", (e) => {
+          e.preventDefault();
+          const current = frame.tag || "";
+          const next = prompt(
+            "Tag this frame (e.g., idle, walk, jump, fx). Leave empty to clear.",
+            current
+          );
+          if (next === null) return; // cancelled
+
+          const trimmed = next.trim();
+          frame.tag = trimmed || null;
+
+          if (trimmed) {
+            wrapper.setAttribute("data-tag", trimmed);
+            flashStatus(`Frame tagged as "${trimmed}".`, "info");
+          } else {
+            wrapper.removeAttribute("data-tag");
+            flashStatus("Frame tag cleared.", "info");
+          }
+          updateSessionJsonOutput();
+        });
+
+Optional: add a tiny visual tag chip in the corner. For now, the data-tag attribute is enough for CSS later if you want.
+
+⸻
+
+2.6 Include tag in spritesheet manifest
+
+In buildSpritesheet(...), where we push frame info into manifest.frames.push({ ... }), add tag:
+
+                  manifest.frames.push({
+                    id: frame.id,
+                    source: frame.source,
+                    modeLabel: frame.modeLabel,
+                    favorite: !!frame.favorite,
+                    createdAt: frame.createdAt,
+                    tag: frame.tag || null,
+                    x,
+                    y,
+                    width: w,
+                    height: h,
+                    col,
+                    row,
+                  });
+
+Now your spritesheet manifest knows which cells are idle, walk, jump, etc.
+
+⸻
+
+What you’ve upgraded
+
+New toys:
+	•	FX Dice panel
+	•	Soft roll = gentle mutation of current wobble/zoom/glow.
+	•	Wild roll = full generative chaos within sane ranges.
+	•	Lock toggles so you can keep BG hue, zoom, or glow fixed.
+	•	Optional keyboard: D = soft, Shift+D = wild.
+	•	Frame Tags
+	•	Each captured frame can be tagged (right-click → idle / walk / jump / fx / whatever).
+	•	Tag info persists in:
+	•	Session JSON
+	•	Spritesheet manifest
+	•	Spritesheet export can:
+	•	Use all frames vs favorites
+	•	Filter by tag (so you can export an “idle.png” sheet, “walk.png”, “fx.png”, etc).
+
+So now Errl Lab is not just a visual playground, but an animation authoring pipeline:
+	•	Roll FX until you like the vibe.
+	•	Capture frames from any view (p5, 3D, voxels).
+	•	Tag frames into animation sets.
+	•	Export spritesheets + manifests that say exactly which frames are which.
+
+Perfect fodder for ErrlStory, Maple clones, or whatever future game engine you throw at it.

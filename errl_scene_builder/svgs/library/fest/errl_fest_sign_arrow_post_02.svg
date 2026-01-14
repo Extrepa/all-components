@@ -1,0 +1,9 @@
+<!-- Example 128 | errl_fest_sign_arrow_post_02 (ui/prop) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="ui" data-name="errl_fest_sign_arrow_post_02">
+  <g fill="none">
+    <rect x="30" y="24" width="4" height="20" rx="1.5" fill="#78350f"/>
+    <path d="M40 30 H24 L28 34 H40 Z" fill="#fb7185"/>
+    <ellipse cx="32" cy="46" rx="8" ry="2.5" fill="#020617" opacity="0.45"/>
+  </g>
+</svg>

@@ -1,0 +1,42 @@
+{
+  "name": "errl-scene-builder",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest run --passWithNoTests",
+    "test:watch": "vitest",
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint src --ext .ts,.tsx",
+    "lint:assets": "node scripts/lint_assets.cjs",
+    "generate:assets": "node scripts/generate-library-assets.mjs",
+    "generate:thumbnails": "node scripts/generate_variant_thumbnails.cjs",
+    "generate:group-thumbnails": "node scripts/generate_variant_group_thumbnails.cjs"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.1.17",
+    "html-to-image": "^1.11.11",
+    "lucide-react": "^0.554.0",
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1",
+    "react-router-dom": "^6.20.1",
+    "zustand": "^5.0.8"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.1.0",
+    "@testing-library/user-event": "^14.5.2",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.47.0",
+    "@vitejs/plugin-react": "^4.3.2",
+    "eslint": "^8.56.0",
+    "eslint-plugin-react": "^7.37.5",
+    "jsdom": "^24.0.0",
+    "puppeteer": "^24.31.0",
+    "tailwindcss": "^4.1.17",
+    "typescript": "^5.3.3",
+    "vite": "^7.2.4",
+    "vitest": "^4.0.13"
+  }
+}

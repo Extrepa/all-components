@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" id="icon-ctvl3kp86">
+  <g xmlns="http://www.w3.org/2000/svg" fill="none">
+    <!-- deck -->
+    <rect x="14" y="38" width="32" height="5" rx="2" fill="#020617"/>
+    <!-- front -->
+    <rect x="14" y="43" width="32" height="5" rx="1.5" fill="#0f172a"/>
+    <!-- two posts -->
+    <rect x="18" y="24" width="3" height="14" rx="1" fill="#111827"/>
+    <rect x="39" y="24" width="3" height="14" rx="1" fill="#111827"/>
+    <!-- small banner between posts -->
+    <path d="M21 26 Q29 30 37 26 L37 30 Q29 34 21 30 Z" fill="#22d3ee"/>
+    <ellipse cx="30" cy="50" rx="18" ry="2.8" fill="#020617" opacity="0.4"/>
+  </g>
+</svg>

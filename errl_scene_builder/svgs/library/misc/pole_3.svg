@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" id="icon-y8y5d3lxq">
+  <g xmlns="http://www.w3.org/2000/svg" fill="none">
+    <!-- pole -->
+    <rect x="30" y="20" width="4" height="24" rx="1.5" fill="#78350f"/>
+    <!-- signs -->
+    <path d="M22 22 H36 L40 26 H22 Z" fill="#22d3ee"/>
+    <path d="M24 30 H42 L38 34 H24 Z" fill="#fb7185"/>
+    <ellipse cx="32" cy="48" rx="9" ry="2.4" fill="#020617" opacity="0.45"/>
+  </g>
+</svg>

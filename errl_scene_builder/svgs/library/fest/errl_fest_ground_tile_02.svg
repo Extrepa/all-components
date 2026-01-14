@@ -1,0 +1,9 @@
+<!-- Example 131 | errl_fest_ground_tile_02 (env/ui) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="env" data-name="errl_fest_ground_tile_02">
+  <g fill="none">
+    <rect x="20" y="40" width="24" height="6" rx="2" fill="#0f172a"/>
+    <path d="M22 42 H30 M34 42 H42"
+      stroke="#22d3ee" stroke-width="1.2" stroke-linecap="round"/>
+  </g>
+</svg>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" id="icon-usg87sqfs">
+  <g xmlns="http://www.w3.org/2000/svg" fill="none">
+    <!-- back tent -->
+    <path d="M14 34 L26 22 38 34 Z" fill="#22d3ee" opacity="0.85"/>
+    <!-- front smaller -->
+    <path d="M22 38 L32 26 44 38 Z" fill="#fb7185"/>
+    <!-- rug -->
+    <ellipse cx="32" cy="44" rx="16" ry="4.5" fill="#020617"/>
+  </g>
+</svg>

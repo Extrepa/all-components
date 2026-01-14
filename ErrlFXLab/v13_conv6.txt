@@ -1,0 +1,359 @@
+Alright, Errl OS, let’s wire up navigation + side buttons so this thing feels like a real little desktop app instead of a very fancy HTML brick. 🧪🧠
+
+You already have:
+	•	p5 FX, HTML FX, Wire, Voxels
+	•	Captured frames + favorites
+	•	VS Mode
+	•	Sandbox export
+
+Now we’ll:
+	1.	Make the left sidebar “Gallery / Favorites / Versus Mode” buttons actually work.
+	2.	Add smooth scrolling + quick highlight for the relevant sections.
+	3.	Add keyboard shortcuts for switching tabs/modes (Q/W/E/R/T etc.).
+
+Patch-style, so you can drop this into your existing file.
+
+⸻
+
+1. Give the sidebar nav buttons IDs + real labels
+
+Find this chunk in the left sidebar:
+
+      <div class="mt-4">
+        <h2 class="text-[11px] uppercase tracking-[0.16em] text-slate-400 mb-1">
+          Views
+        </h2>
+        <div class="flex flex-col gap-1 text-xs">
+          <button
+            class="flex items-center gap-2 px-2 py-1.5 rounded-md hover:bg-slate-900/80 border border-slate-700/70 text-slate-200"
+          >
+            <span>📚</span>
+            <span>Gallery (later)</span>
+          </button>
+          <button
+            class="flex items-center gap-2 px-2 py-1.5 rounded-md hover:bg-slate-900/80 border border-slate-700/70 text-slate-200"
+          >
+            <span>❤️</span>
+            <span>Favorites (later)</span>
+          </button>
+          <button
+            class="flex items-center gap-2 px-2 py-1.5 rounded-md hover:bg-slate-900/80 border border-slate-700/70 text-slate-200"
+          >
+            <span>⚔️</span>
+            <span>Versus Mode (later)</span>
+          </button>
+        </div>
+      </div>
+
+Replace it with this:
+
+      <div class="mt-4">
+        <h2 class="text-[11px] uppercase tracking-[0.16em] text-slate-400 mb-1">
+          Views
+        </h2>
+        <div class="flex flex-col gap-1 text-xs">
+          <button
+            id="navGalleryBtn"
+            class="flex items-center gap-2 px-2 py-1.5 rounded-md hover:bg-slate-900/80 border border-slate-700/70 text-slate-200"
+          >
+            <span>📚</span>
+            <span>Gallery</span>
+          </button>
+          <button
+            id="navFavoritesBtn"
+            class="flex items-center gap-2 px-2 py-1.5 rounded-md hover:bg-slate-900/80 border border-slate-700/70 text-slate-200"
+          >
+            <span>❤️</span>
+            <span>Favorites</span>
+          </button>
+          <button
+            id="navVsBtn"
+            class="flex items-center gap-2 px-2 py-1.5 rounded-md hover:bg-slate-900/80 border border-slate-700/70 text-slate-200"
+          >
+            <span>⚔️</span>
+            <span>Versus Mode</span>
+          </button>
+        </div>
+      </div>
+
+Now they’re addressable from JS.
+
+⸻
+
+2. Give the Gallery & VS sections IDs so we can scroll to them
+
+In the right column, find:
+
+      <!-- Captured frames (p5 only for now) -->
+      <div class="border-t border-slate-800/70 px-3 py-2 text-[10px] text-slate-200">
+
+Change it to:
+
+      <!-- Captured frames (p5 only for now) -->
+      <div
+        id="capturedFramesSection"
+        class="border-t border-slate-800/70 px-3 py-2 text-[10px] text-slate-200"
+      >
+
+And for the VS block we added last time, change its outer <div> to include id="vsSection":
+
+      <!-- VS Mode -->
+      <div
+        id="vsSection"
+        class="border-t border-slate-800/70 px-3 py-2 text-[11px] text-slate-200"
+      >
+
+
+⸻
+
+3. Grab the new DOM elements in JS
+
+In your <script> where you grab other elements, add these:
+
+    const thumbGallery = document.getElementById("thumbGallery");
+    const thumbCountEl = document.getElementById("thumbCount");
+
+    // Sections
+    const capturedFramesSection = document.getElementById("capturedFramesSection");
+    const vsSection = document.getElementById("vsSection");
+
+    // Sidebar nav buttons
+    const navGalleryBtn = document.getElementById("navGalleryBtn");
+    const navFavoritesBtn = document.getElementById("navFavoritesBtn");
+    const navVsBtn = document.getElementById("navVsBtn");
+
+(If you already added the VS elements from our last round, just merge these lines in.)
+
+⸻
+
+4. Track DOM elements per captured frame (for favorites highlighting)
+
+In your captureCurrentFrameToGallery() function, we already build a frame object:
+
+        const frame = {
+          id,
+          url: dataUrl,
+          favorite: false,
+        };
+        capturedFrames.unshift(frame);
+
+Update that to also store the wrapper DOM element:
+
+        const frame = {
+          id,
+          url: dataUrl,
+          favorite: false,
+          el: null,
+        };
+        capturedFrames.unshift(frame);
+
+Then, after you create wrapper and append children, assign it:
+
+        wrapper.appendChild(img);
+        wrapper.appendChild(favBtn);
+        thumbGallery.prepend(wrapper);
+
+        frame.el = wrapper; // link DOM to data
+
+Now each frame knows its own thumbnail DOM node, so we can flash/highlight favorites.
+
+⸻
+
+5. Sidebar nav behaviors
+
+Under your VS helpers or near the bottom with other button listeners, add:
+
+    // ---- Sidebar "Views" navigation ----
+    function smoothScrollTo(element) {
+      if (!element) return;
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+      });
+    }
+
+    function flashSectionBorder(el) {
+      if (!el) return;
+      el.classList.add("ring-2", "ring-cyan-400/80");
+      setTimeout(() => {
+        el.classList.remove("ring-2", "ring-cyan-400/80");
+      }, 500);
+    }
+
+    navGalleryBtn.addEventListener("click", () => {
+      smoothScrollTo(capturedFramesSection);
+      flashSectionBorder(capturedFramesSection);
+      hintLabel.textContent = "Gallery: click frames to download · Shift = VS Left · Alt = VS Right.";
+      playBeep(620, 0.07, "triangle");
+    });
+
+    navFavoritesBtn.addEventListener("click", () => {
+      smoothScrollTo(capturedFramesSection);
+      flashSectionBorder(capturedFramesSection);
+      // Briefly highlight favorite frames
+      const favorites = capturedFrames.filter((f) => f.favorite && f.el);
+      if (!favorites.length) {
+        vsStatusEl.textContent = "No favorites yet. Click ★ on frames to mark them.";
+        flashStatus("Mark frames as ★ favorites to use this view.", "info");
+        playBeep(300, 0.08, "square");
+        return;
+      }
+
+      favorites.forEach((f) => {
+        f.el.classList.add("ring-2", "ring-amber-400/80");
+        setTimeout(() => {
+          f.el.classList.remove("ring-2", "ring-amber-400/80");
+        }, 900);
+      });
+
+      vsStatusEl.textContent = "Favorites highlighted in gallery.";
+      hintLabel.textContent = "Use 'Use first 2 favorites' below VS to auto-fill both slots.";
+      playBeep(780, 0.07, "triangle");
+    });
+
+    navVsBtn.addEventListener("click", () => {
+      smoothScrollTo(vsSection);
+      flashSectionBorder(vsSection);
+      hintLabel.textContent = "VS: Shift-click = Left, Alt-click = Right, then 'Download VS image'.";
+      playBeep(700, 0.07, "triangle");
+    });
+
+Now the left sidebar is actually a navigation panel:
+	•	Gallery → scroll to thumbnails, flash border, update hint
+	•	Favorites → scroll to gallery, briefly highlight ★ thumbs
+	•	VS → scroll to VS block, flash border, hint about usage
+
+⸻
+
+6. Keyboard shortcuts for tab switching
+
+We already have a big window.addEventListener("keydown"... that handles:
+	•	Space → pause/play p5
+	•	1 / 2 → cycle presets
+	•	c → capture frame
+	•	s → save FX preset
+
+Let’s extend that to also switch preview tabs:
+	•	q = SVG tab
+	•	w = p5 tab
+	•	e = HTML FX tab
+	•	r = 3D Wire tab
+	•	t = Voxels tab
+	•	g = Gallery section
+	•	v = VS section
+
+First, we want a tiny helper to programmatically “click” a tab button. Above the keydown handler, add:
+
+    function activatePreviewTab(tabName) {
+      const btn = Array.from(tabButtons).find((b) => b.dataset.tab === tabName);
+      if (btn) {
+        btn.click();
+      }
+    }
+
+Then, in your window.addEventListener("keydown", (event) => { ... }), extend the key handling.
+
+You already have:
+
+      const key = event.key.toLowerCase();
+
+      // Space: pause/play
+      if (event.code === "Space") { ... }
+
+      // 1/2: cycle p5 presets
+      if (key === "1" || key === "2") { ... }
+
+      // C: capture (p5)
+      if (key === "c") { ... }
+
+      // S: quick-save FX preset pack
+      if (key === "s") { ... }
+
+Right after the key line, insert the tab shortcuts:
+
+      const key = event.key.toLowerCase();
+
+      // Tab shortcuts: Q/W/E/R/T switch preview tabs
+      if (key === "q") {
+        activatePreviewTab("svg");
+        return;
+      }
+      if (key === "w") {
+        activatePreviewTab("p5");
+        return;
+      }
+      if (key === "e") {
+        activatePreviewTab("htmlfx");
+        return;
+      }
+      if (key === "r") {
+        activatePreviewTab("wire3d");
+        return;
+      }
+      if (key === "t") {
+        activatePreviewTab("voxel");
+        return;
+      }
+
+      // Section shortcuts: G = Gallery, V = VS section
+      if (key === "g") {
+        smoothScrollTo(capturedFramesSection);
+        flashSectionBorder(capturedFramesSection);
+        hintLabel.textContent = "Gallery via keyboard · Shift thumb = Left, Alt = Right.";
+        playBeep(640, 0.07, "triangle");
+        return;
+      }
+      if (key === "v") {
+        smoothScrollTo(vsSection);
+        flashSectionBorder(vsSection);
+        hintLabel.textContent = "VS via keyboard · fill slots, then export.";
+        playBeep(720, 0.07, "triangle");
+        return;
+      }
+
+The rest of the key handling (space / 1 / 2 / c / s) stays exactly as-is, just below those blocks.
+
+⸻
+
+7. Reset nav-related things on Clear
+
+In your clearBtn.addEventListener("click", ...) handler, you already clear:
+	•	SVG
+	•	p5
+	•	3D wire
+	•	thumbnails
+	•	VS slots
+etc.
+
+Add a tiny hint reset near the end:
+
+      if (vsStatusEl) {
+        vsStatusEl.textContent = "Shift-click thumb = Left · Alt-click = Right";
+      }
+      hintLabel.textContent = "Hint: Upload Errl, tune FX, capture frames, then VS or sandbox.";
+
+Just to avoid stale “VS exported” messages when you wipe.
+
+⸻
+
+What this gives you now
+
+On top of all the visual stuff, your Errl FX Megaforge now has actual navigation + ergonomics:
+	•	Left sidebar nav buttons:
+	•	Gallery → scroll/highlight the captured frames section.
+	•	Favorites → flash ★ frames so your eye finds them.
+	•	Versus Mode → jump straight to VS block.
+	•	Keyboard layout:
+	•	Q → SVG tab
+	•	W → p5 FX tab
+	•	E → HTML FX tab
+	•	R → 3D Wire tab
+	•	T → Voxels tab
+	•	G → Gallery section
+	•	V → VS section
+	•	Space → pause/resume p5
+	•	1 / 2 → cycle wobble presets
+	•	C → capture frame
+	•	S → save FX pack
+
+You’ve basically got an Errl desktop app living inside one HTML file now: modes, views, gallery, favorites, export, VS, navigation, shortcuts, audio. The rest (multi-file projects, shader packs, real-time 3D voxel cubes) can plug into this skeleton like new “cards” in your existing OS.

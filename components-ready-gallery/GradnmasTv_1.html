@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Grandma TV – v0.4</title>
+  <style>
+    :root {
+      --tv-width: 70vw;
+      --tv-height: calc(var(--tv-width) * 0.8);
+      --bg-color: #222;
+      --wood-color: #4a2a1a;
+      --wood-dark-color: #2f1b10;
+      --plastic-color: #c0c0c0;
+      --plastic-dark-color: #9a9a9a;
+      --speaker-grille-color: #333;
+
+      --grain-intensity: 0.25;
+      --scanline-opacity: 0.22;
+      --vignette-strength: 0.45;
+      --screen-curvature: 0.08;
+      --color-bleed: 1.4;
+      --glow-strength: 0.5;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: var(--bg-color);
+      background-image: radial-gradient(circle, #444 0, #111 70%);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        sans-serif;
+      color: #eee;
+    }
+
+    .app-container {
+      max-width: 1200px;
+      width: 100%;
+      display: flex;
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    .tv-set {
+      position: relative;
+      width: var(--tv-width);
+      max-width: 820px;
+      height: var(--tv-height);
+      max-height: 580px;
+      background: linear-gradient(
+        135deg,
+        var(--wood-color),
+        var(--wood-dark-color)
+      );
+      border-radius: 26px;
+      padding: 3%;
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      box-shadow:
+        inset 0 0 40px rgba(0, 0, 0, 0.8),
+        10px 18px 40px rgba(0, 0, 0, 0.7),
+        0 0 0 10px #1a110a;
+    }
+
+    .screen-container {
+      position: relative;
+      flex: 1;
+      height: 90%;
+      background: #050505;
+      border-radius: 26px;
+      box-shadow: inset 0 0 24px #000;
+      overflow: hidden;
+      transform: perspective(900px) rotateY(-1.6deg) rotateX(1deg);
+    }
+
+    .screen-inner {
+      position: absolute;
+      inset: 0;
+      border-radius: calc(30px + 120px * var(--screen-curvature));
+      overflow: hidden;
+    }
+
+    #tv-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: contrast(1.1) saturate(1.1);
+      transition: opacity 0.18s ease-out, filter 0.15s ease-out,
+        transform 0.15s ease-out;
+    }
+
+    .test-pattern {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.2s ease-out;
+      pointer-events: none;
+    }
+
+    .scanlines {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image: repeating-linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0),
+        rgba(0, 0, 0, 0) 2px,
+        rgba(0, 0, 0, var(--scanline-opacity)) 3px
+      );
+      mix-blend-mode: multiply;
+    }
+
+    .noise {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: var(--grain-intensity);
+      background-image: url("https://upload.wikimedia.org/wikipedia/commons/5/5f/White_Noise_Animated.gif");
+      background-size: cover;
+      mix-blend-mode: soft-light;
+      animation: noiseShift 1s steps(2, end) infinite;
+    }
+
+    .vignette {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      box-shadow: inset 0 0 120px rgba(0, 0, 0, var(--vignette-strength));
+    }
+
+    .glass-reflection {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(
+        circle at 18% 0%,
+        rgba(255, 255, 255, 0.28) 0,
+        transparent 45%
+      );
+      mix-blend-mode: screen;
+      opacity: 0.55;
+    }
+
+    .glow {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      box-shadow: 0 0 calc(40px + 40px * var(--glow-strength))
+        rgba(110, 255, 210, calc(0.18 + 0.34 * var(--glow-strength)));
+    }
+
+    .power-flash,
+    .channel-static {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0;
+    }
+
+    .power-flash {
+      background: #fff;
+    }
+
+    .channel-static {
+      background-image: url("https://upload.wikimedia.org/wikipedia/commons/5/5f/White_Noise_Animated.gif");
+      background-size: cover;
+    }
+
+    .channel-label {
+      position: absolute;
+      bottom: 6px;
+      right: 10px;
+      padding: 3px 8px;
+      font-size: 11px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.7);
+      color: #e5ffef;
+      border: 1px solid rgba(180, 255, 220, 0.5);
+      pointer-events: none;
+    }
+
+    @keyframes noiseShift {
+      0% {
+        transform: translate(0, 0);
+      }
+      25% {
+        transform: translate(-1%, 1%);
+      }
+      50% {
+        transform: translate(2%, -1%);
+      }
+      75% {
+        transform: translate(-2%, 2%);
+      }
+      100% {
+        transform: translate(0, 0);
+      }
+    }
+
+    @keyframes powerOn {
+      0% {
+        opacity: 1;
+        transform: scaleY(0.02);
+      }
+      50% {
+        opacity: 1;
+        transform: scaleY(0.2);
+      }
+      100% {
+        opacity: 0;
+        transform: scaleY(1);
+      }
+    }
+
+    @keyframes powerOff {
+      0% {
+        opacity: 0.8;
+        transform: scaleY(1);
+      }
+      70% {
+        opacity: 1;
+        transform: scaleY(0.03);
+      }
+      100% {
+        opacity: 0;
+        transform: scaleY(0);
+      }
+    }
+
+    .controls-panel {
+      height: 90%;
+      width: 160px;
+      background: linear-gradient(
+        90deg,
+        var(--plastic-color),
+        var(--plastic-dark-color)
+      );
+      border-radius: 14px;
+      padding: 18px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.45);
+    }
+
+    #power-button {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 2px solid #661515;
+      background: radial-gradient(circle, #ff6b6b, #aa2222);
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(255, 0, 0, 0);
+      transition: all 0.25s;
+    }
+
+    #power-button.on {
+      border-color: #1c6b1c;
+      background: radial-gradient(circle, #6bff8a, #1f8a3a);
+      box-shadow:
+        0 0 18px rgba(120, 255, 160, 0.9),
+        inset 0 0 4px rgba(255, 255, 255, 0.7);
+    }
+
+    .knob-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .knob {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #f0f0f0, #888);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow:
+        2px 2px 4px rgba(0, 0, 0, 0.6),
+        inset 0 0 6px rgba(0, 0, 0, 0.4);
+      cursor: pointer;
+      transition: transform 0.1s ease-out;
+    }
+
+    .knob::after {
+      content: "";
+      position: absolute;
+      top: 9px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 9px;
+      height: 2px;
+      border-radius: 999px;
+      background: #111;
+    }
+
+    .knob-label {
+      font-size: 11px;
+      color: #222;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .speaker-grille {
+      width: 100%;
+      height: 78px;
+      border-radius: 6px;
+      background-color: var(--speaker-grille-color);
+      background-image: repeating-linear-gradient(
+        45deg,
+        rgba(0, 0, 0, 0.2),
+        rgba(0, 0, 0, 0.2) 2px,
+        rgba(0, 0, 0, 0.65) 4px
+      );
+      box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.7);
+    }
+
+    .effects-panel {
+      min-width: 260px;
+      background: #3f3f3f;
+      padding: 18px 16px;
+      border-radius: 12px;
+      box-shadow:
+        5px 5px 15px rgba(0, 0, 0, 0.6),
+        inset 0 0 8px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .effects-panel h3 {
+      margin: 0 0 8px;
+      font-size: 15px;
+      text-align: center;
+      border-bottom: 1px solid #666;
+      padding-bottom: 6px;
+    }
+
+    .effect-slider {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .effect-slider label {
+      font-size: 13px;
+    }
+
+    .effect-slider input[type="range"] {
+      width: 100%;
+    }
+
+    .meta-row {
+      font-size: 11px;
+      opacity: 0.7;
+      text-align: center;
+      margin-top: 4px;
+    }
+
+    .play-row {
+      margin-top: 10px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      opacity: 0.9;
+    }
+
+    .play-row button {
+      border-radius: 999px;
+      border: 1px solid #777;
+      padding: 4px 10px;
+      background: #111;
+      color: #eee;
+      cursor: pointer;
+    }
+
+    .play-row button:hover {
+      background: #222;
+    }
+
+    .badge {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      border: 1px solid #aaa;
+      text-transform: uppercase;
+    }
+
+    .channel-select-row {
+      display: flex;
+      gap: 6px;
+      margin-top: 4px;
+      align-items: center;
+      font-size: 12px;
+    }
+
+    .channel-select-row select {
+      flex: 1;
+      background: #222;
+      color: #eee;
+      border-radius: 6px;
+      border: 1px solid #555;
+      padding: 3px 6px;
+    }
+
+    @media (max-width: 900px) {
+      .app-container {
+        flex-direction: column;
+        align-items: center;
+      }
+      .tv-set {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 4 / 3;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- TV -->
+    <div class="tv-set">
+      <div class="screen-container" id="screen-container">
+        <div class="screen-inner">
+          <video id="tv-video" playsinline muted></video>
+          <div class="test-pattern" id="test-pattern"></div>
+          <div class="scanlines"></div>
+          <div class="noise"></div>
+          <div class="glass-reflection"></div>
+          <div class="vignette"></div>
+          <div class="glow"></div>
+          <div class="power-flash" id="power-flash"></div>
+          <div class="channel-static" id="channel-static"></div>
+          <div class="channel-label" id="channel-label"></div>
+        </div>
+      </div>
+
+      <!-- side controls -->
+      <div class="controls-panel">
+        <div id="power-button" title="Power"></div>
+
+        <div class="knob-block">
+          <div class="knob" id="channel-knob"></div>
+          <div class="knob-label">Channel</div>
+        </div>
+
+        <div class="knob-block">
+          <div class="knob" id="volume-knob"></div>
+          <div class="knob-label">Volume</div>
+        </div>
+
+        <div class="speaker-grille"></div>
+      </div>
+    </div>
+
+    <!-- effects panel -->
+    <div class="effects-panel">
+      <h3>Effects Panel</h3>
+
+      <div class="channel-select-row">
+        <span>Channel:</span>
+        <select id="channel-select"></select>
+      </div>
+
+      <div class="effect-slider">
+        <label for="grain-slider">Grain</label>
+        <input
+          type="range"
+          id="grain-slider"
+          min="0"
+          max="0.6"
+          step="0.01"
+          value="0.25"
+        />
+      </div>
+
+      <div class="effect-slider">
+        <label for="scan-slider">Scanlines</label>
+        <input
+          type="range"
+          id="scan-slider"
+          min="0"
+          max="0.6"
+          step="0.01"
+          value="0.22"
+        />
+      </div>
+
+      <div class="effect-slider">
+        <label for="vignette-slider">Vignette</label>
+        <input
+          type="range"
+          id="vignette-slider"
+          min="0"
+          max="1"
+          step="0.01"
+          value="0.45"
+        />
+      </div>
+
+      <div class="effect-slider">
+        <label for="curvature-slider">Curvature</label>
+        <input
+          type="range"
+          id="curvature-slider"
+          min="0"
+          max="0.12"
+          step="0.005"
+          value="0.08"
+        />
+      </div>
+
+      <div class="effect-slider">
+        <label for="bleed-slider">Color Bleed</label>
+        <input
+          type="range"
+          id="bleed-slider"
+          min="0"
+          max="3"
+          step="0.05"
+          value="1.4"
+        />
+      </div>
+
+      <div class="effect-slider">
+        <label for="glow-slider">Glow</label>
+        <input
+          type="range"
+          id="glow-slider"
+          min="0"
+          max="1"
+          step="0.01"
+          value="0.5"
+        />
+      </div>
+
+      <div class="effect-slider">
+        <label for="vhold-slider">V-Hold (drift)</label>
+        <input
+          type="range"
+          id="vhold-slider"
+          min="-1"
+          max="1"
+          step="0.01"
+          value="0"
+        />
+      </div>
+
+      <div class="effect-slider">
+        <label for="hhold-slider">H-Hold (jitter)</label>
+        <input
+          type="range"
+          id="hhold-slider"
+          min="0"
+          max="8"
+          step="0.1"
+          value="0"
+        />
+      </div>
+
+      <div class="effect-slider">
+        <label for="fine-slider">Fine Tuning (skew)</label>
+        <input
+          type="range"
+          id="fine-slider"
+          min="-0.3"
+          max="0.3"
+          step="0.01"
+          value="0"
+        />
+      </div>
+
+      <div class="play-row">
+        <button id="play-btn">▶ Play / Resume</button>
+        <button id="mute-btn">🔇 Unmute</button>
+        <span class="badge">Autoplay-safe</span>
+      </div>
+
+      <div class="meta-row">
+        Click right side of a knob to increase, left to decrease.<br />
+        If you only see colors, that channel’s video failed to load (fallback
+        test pattern).
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const video = document.getElementById("tv-video");
+    const testPattern = document.getElementById("test-pattern");
+    const channelLabel = document.getElementById("channel-label");
+
+    const powerBtn = document.getElementById("power-button");
+    const powerFlash = document.getElementById("power-flash");
+    const channelStatic = document.getElementById("channel-static");
+
+    const channelKnob = document.getElementById("channel-knob");
+    const volumeKnob = document.getElementById("volume-knob");
+
+    const channelSelect = document.getElementById("channel-select");
+
+    const grainSlider = document.getElementById("grain-slider");
+    const scanSlider = document.getElementById("scan-slider");
+    const vignetteSlider = document.getElementById("vignette-slider");
+    const curvatureSlider = document.getElementById("curvature-slider");
+    const bleedSlider = document.getElementById("bleed-slider");
+    const glowSlider = document.getElementById("glow-slider");
+    const vHoldSlider = document.getElementById("vhold-slider");
+    const hHoldSlider = document.getElementById("hhold-slider");
+    const fineSlider = document.getElementById("fine-slider");
+
+    const playBtn = document.getElementById("play-btn");
+    const muteBtn = document.getElementById("mute-btn");
+
+    const root = document.documentElement;
+
+    // Each channel has a label, a video src, and a fallback pattern
+    const CHANNELS = [
+      {
+        label: "NASA / Space",
+        src: "https://archive.org/download/BigBuckBunny_328/BigBuckBunny_512kb.mp4",
+        pattern:
+          "linear-gradient(90deg,#ff5555 0 16%,#ffaa33 16% 32%,#ffee55 32% 48%,#33dd77 48% 64%,#3399ff 64% 80%,#aa55ff 80% 100%)",
+      },
+      {
+        label: "Vintage Cartoon",
+        src: "https://archive.org/download/CartoonClassics/KrazyKat.mp4",
+        pattern:
+          "repeating-linear-gradient(135deg,#222 0 20px,#555 20px 40px,#999 40px 60px)",
+      },
+      {
+        label: "1960s Commercial",
+        src: "https://archive.org/download/tvcommercials1960s/TVC_1965_01.mp4",
+        pattern:
+          "repeating-linear-gradient(90deg,#003366 0 15px,#336699 15px 30px,#6699cc 30px 45px)",
+      },
+      {
+        label: "Clouds Placeholder",
+        src: "https://archive.org/download/stock_footage_clouds/stock_footage_clouds.mp4",
+        pattern:
+          "radial-gradient(circle at 50% 20%,#ffffff 0 20%,#87ceeb 35%,#004477 100%)",
+      },
+    ];
+
+    const state = {
+      power: false,
+      channelIndex: 0,
+      volume: 0.7,
+      muted: true,
+      raf: null,
+    };
+
+    function setCSSVar(name, value) {
+      root.style.setProperty(name, value);
+    }
+
+    function hookSlider(slider, varName, transform = (v) => v) {
+      const apply = () => {
+        setCSSVar(varName, transform(parseFloat(slider.value)));
+      };
+      slider.addEventListener("input", apply);
+      apply();
+    }
+
+    hookSlider(grainSlider, "--grain-intensity");
+    hookSlider(scanSlider, "--scanline-opacity");
+    hookSlider(vignetteSlider, "--vignette-strength");
+    hookSlider(curvatureSlider, "--screen-curvature");
+    hookSlider(glowSlider, "--glow-strength");
+
+    // populate dropdown
+    CHANNELS.forEach((ch, i) => {
+      const opt = document.createElement("option");
+      opt.value = i;
+      opt.textContent = ch.label;
+      channelSelect.appendChild(opt);
+    });
+
+    channelSelect.addEventListener("change", (e) =>
+      setChannel(parseInt(e.target.value, 10))
+    );
+
+    function updateChannelLabel() {
+      channelLabel.textContent = CHANNELS[state.channelIndex].label;
+    }
+
+    function setTestPattern(index, visible) {
+      const ch = CHANNELS[index];
+      testPattern.style.background = ch.pattern;
+      testPattern.style.opacity = visible ? "1" : "0";
+      // dim video slightly if pattern showing
+      video.style.opacity = visible ? "0.25" : "1";
+    }
+
+    function setChannel(idx) {
+      const max = CHANNELS.length;
+      const newIndex = (idx + max) % max;
+      state.channelIndex = newIndex;
+
+      channelSelect.value = String(newIndex);
+      updateChannelLabel();
+
+      // Static flash
+      channelStatic.style.opacity = "1";
+      channelStatic.style.transition = "opacity 0.18s";
+      setTimeout(() => {
+        channelStatic.style.opacity = "0";
+      }, 180);
+
+      const ch = CHANNELS[newIndex];
+      // show pattern as "loading" immediately
+      setTestPattern(newIndex, true);
+
+      video.src = ch.src;
+      video.load();
+
+      // on success, hide pattern once video is ready to play
+      const handleCanPlay = () => {
+        setTestPattern(newIndex, false);
+        if (state.power) {
+          video
+            .play()
+            .then(() => {})
+            .catch(() => {});
+        }
+        video.removeEventListener("canplay", handleCanPlay);
+        video.removeEventListener("error", handleError);
+      };
+
+      const handleError = () => {
+        // keep the pattern visible; it's our fallback
+        setTestPattern(newIndex, true);
+        video.removeEventListener("canplay", handleCanPlay);
+        video.removeEventListener("error", handleError);
+      };
+
+      video.addEventListener("canplay", handleCanPlay);
+      video.addEventListener("error", handleError);
+
+      updateKnobVisuals();
+    }
+
+    function setVolume(v) {
+      const vol = Math.max(0, Math.min(1, v));
+      state.volume = vol;
+      video.volume = vol;
+      updateKnobVisuals();
+    }
+
+    function setMuted(m) {
+      state.muted = m;
+      video.muted = m;
+      muteBtn.textContent = m ? "🔇 Unmute" : "🔊 Mute";
+    }
+
+    function updateKnobVisuals() {
+      const maxIdx = CHANNELS.length - 1 || 1;
+      const t = state.channelIndex / maxIdx;
+      const angleChan = -120 + t * 240;
+      channelKnob.style.transform = `rotate(${angleChan}deg)`;
+
+      const angleVol = -130 + state.volume * 260;
+      volumeKnob.style.transform = `rotate(${angleVol}deg)`;
+    }
+
+    function setPower(on) {
+      if (on === state.power) return;
+      state.power = on;
+      if (on) {
+        powerBtn.classList.add("on");
+        powerFlash.style.animation = "powerOn 0.5s forwards";
+        setTimeout(() => {
+          powerFlash.style.animation = "";
+        }, 500);
+        video
+          .play()
+          .then(() => {})
+          .catch(() => {});
+        startRenderLoop();
+      } else {
+        powerBtn.classList.remove("on");
+        powerFlash.style.animation = "powerOff 0.45s forwards";
+        setTimeout(() => {
+          powerFlash.style.animation = "";
+        }, 450);
+        video.pause();
+        stopRenderLoop();
+      }
+    }
+
+    function startRenderLoop() {
+      if (state.raf != null) return;
+      const loop = (time) => {
+        const vHold = parseFloat(vHoldSlider.value);
+        const hHold = parseFloat(hHoldSlider.value);
+        const fine = parseFloat(fineSlider.value);
+        const bleed = parseFloat(bleedSlider.value);
+
+        const driftY = vHold * Math.sin(time / 420);
+        const jitterX = (Math.random() - 0.5) * hHold;
+        const skew = fine * 10;
+
+        video.style.transform = `translate(${jitterX}px, ${driftY}px) skewX(${skew}deg)`;
+        video.style.filter = `contrast(1.1) saturate(1.1) blur(${
+          bleed * 0.9
+        }px)`;
+
+        state.raf = requestAnimationFrame(loop);
+      };
+      state.raf = requestAnimationFrame(loop);
+    }
+
+    function stopRenderLoop() {
+      if (state.raf != null) {
+        cancelAnimationFrame(state.raf);
+        state.raf = null;
+      }
+      video.style.transform = "translate(0,0) skewX(0deg)";
+    }
+
+    // knob interactions: click left/right to step
+    channelKnob.addEventListener("click", (e) => {
+      const rect = channelKnob.getBoundingClientRect();
+      const isRight = e.clientX > rect.left + rect.width / 2;
+      setChannel(state.channelIndex + (isRight ? 1 : -1));
+    });
+
+    volumeKnob.addEventListener("click", (e) => {
+      const rect = volumeKnob.getBoundingClientRect();
+      const isRight = e.clientX > rect.left + rect.width / 2;
+      const step = 0.1;
+      setVolume(state.volume + (isRight ? step : -step));
+    });
+
+    powerBtn.addEventListener("click", () => setPower(!state.power));
+
+    playBtn.addEventListener("click", () => {
+      video
+        .play()
+        .then(() => {})
+        .catch(() => {});
+      setPower(true);
+    });
+
+    muteBtn.addEventListener("click", () => setMuted(!state.muted));
+
+    // init
+    video.playsInline = true;
+    setChannel(0);
+    setVolume(state.volume);
+    setMuted(true);
+    setPower(true); // starts ON but muted for autoplay-friendliness
+  </script>
+</body>
+</html>

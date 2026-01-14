@@ -1,0 +1,279 @@
+Nice. Errl Lab is now a synth. Let’s bolt on two things:
+	1.	Actually make p5 react to audio (not just 3D).
+	2.	Add a Help / Keymap overlay so Future-You knows what the heck all these shortcuts do.
+
+Patch-style as usual.
+
+⸻
+
+1. Wire audioReactiveValue into the p5 sketch
+
+You already have a p5 setup like:
+
+function startP5WithCurrentSvg() {
+  // ... create new p5((p) => { ... }, p5Host);
+}
+
+Inside that p5 sketch you’ll have a p.draw = function () { ... } with some wobble logic using p5Config.wobbleAmplitude, p5Config.wobbleSpeed, etc.
+
+1.1 Add an audio boost helper inside the p5 sketch
+
+Inside the p5 constructor (the new p5((p) => { ... }) callback), add this small helper near the top:
+
+      function getAudioBoost() {
+        // global audioReactiveValue comes from outer script
+        if (!audioReactiveEnabled) return 1;
+        return 1 + (audioReactiveValue || 0) * 0.9;
+      }
+
+Now anywhere you compute wobble or glow, you can modulate with getAudioBoost().
+
+1.2 Apply audio boost to wobble and glow
+
+Find where you compute your main wobble (examples):
+
+      const t = p.millis() / 1000;
+      const wobblePhase = t * p5Config.wobbleSpeed;
+      const wobbleRadius = p5Config.wobbleAmplitude;
+      const wobbleX = Math.sin(wobblePhase) * wobbleRadius;
+      const wobbleY = Math.cos(wobblePhase * 0.7) * wobbleRadius;
+
+Change to:
+
+      const t = p.millis() / 1000;
+      const audioBoost = getAudioBoost();
+
+      const wobblePhase = t * p5Config.wobbleSpeed * audioBoost;
+      const wobbleRadius = p5Config.wobbleAmplitude * audioBoost;
+      const wobbleX = Math.sin(wobblePhase) * wobbleRadius;
+      const wobbleY = Math.cos(wobblePhase * 0.7) * wobbleRadius;
+
+And if you have any glow / bloom strength:
+
+      const glow = p5Config.glowStrength;
+
+Make it:
+
+      const glow = p5Config.glowStrength * (audioReactiveEnabled ? 1 + audioReactiveValue * 0.5 : 1);
+
+Now:
+	•	Quiet audio → normal wobble / glow
+	•	Loud audio → faster phase + bigger wobble radius + brighter glow
+
+No config changes needed; it just rides on top of your existing presets.
+
+⸻
+
+2. Add a Help / Keymap overlay
+
+There’s a LOT of features now. Let’s give yourself an in-app cheat sheet.
+
+2.1 Add “Help” button + overlay HTML
+
+In your top header (where app title + hint live), you probably have something like:
+
+      <header class="flex items-center justify-between border-b ...">
+        <div class="flex items-center gap-2">
+          <!-- logo, title, version -->
+        </div>
+        <div class="flex items-center gap-3 text-[11px] text-slate-300">
+          <div id="hintLabel" class="text-slate-400"></div>
+        </div>
+      </header>
+
+Change the right side to include a Help button:
+
+        <div class="flex items-center gap-3 text-[11px] text-slate-300">
+          <div id="hintLabel" class="text-slate-400 hidden sm:block"></div>
+          <button
+            id="helpOverlayBtn"
+            class="px-2 py-1 rounded-md border border-slate-700 text-slate-200 text-[10px] hover:bg-slate-900/80"
+          >
+            Help / Keys
+          </button>
+        </div>
+
+Then, near the bottom of <body> (but inside it), add the overlay:
+
+    <!-- Help / Keymap Overlay -->
+    <div
+      id="helpOverlay"
+      class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-40 hidden"
+    >
+      <div class="w-full max-w-xl max-h-[80vh] bg-slate-950/95 border border-slate-700 rounded-2xl shadow-2xl overflow-hidden flex flex-col">
+        <div class="px-4 py-2 border-b border-slate-800 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="text-xs uppercase tracking-[0.16em] text-slate-400">
+              Errl FX Lab
+            </span>
+            <span class="text-[10px] text-slate-500">Quick Reference</span>
+          </div>
+          <button
+            id="helpOverlayCloseBtn"
+            class="px-2 py-0.5 rounded-md border border-slate-600 text-[10px] text-slate-200 hover:bg-slate-900"
+          >
+            Esc to close
+          </button>
+        </div>
+
+        <div class="flex-1 overflow-auto px-4 py-3 text-[11px] text-slate-200 space-y-3">
+          <div>
+            <h3 class="text-[11px] font-semibold text-slate-100 mb-1">Tabs</h3>
+            <ul class="list-disc list-inside text-slate-300">
+              <li><code>Q</code> – SVG preview</li>
+              <li><code>W</code> – p5 FX Lab</li>
+              <li><code>E</code> – HTML FX filters</li>
+              <li><code>R</code> – 3D view (Wire / 3D Voxels)</li>
+              <li><code>T</code> – 2D Voxels</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="text-[11px] font-semibold text-slate-100 mb-1">Navigation</h3>
+            <ul class="list-disc list-inside text-slate-300">
+              <li><code>G</code> – Jump to Gallery (captured frames)</li>
+              <li><code>V</code> – Jump to VS Mode</li>
+              <li>Sidebar buttons: Gallery / Favorites / VS also scroll + highlight</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="text-[11px] font-semibold text-slate-100 mb-1">Capture & VS</h3>
+            <ul class="list-disc list-inside text-slate-300">
+              <li><code>C</code> – Capture frame from active tab (p5 / 3D / Voxels)</li>
+              <li>Click thumbnail – Download PNG</li>
+              <li>Shift-click thumbnail – Assign to VS Left</li>
+              <li>Alt-click thumbnail – Assign to VS Right</li>
+              <li>Click ★ on a thumb – Toggle favorite</li>
+              <li>VS panel – “Use first 2 favorites” fills slots, “Download VS image” exports battle card</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="text-[11px] font-semibold text-slate-100 mb-1">p5 FX Controls</h3>
+            <ul class="list-disc list-inside text-slate-300">
+              <li><code>Space</code> – Pause / resume p5 animation</li>
+              <li><code>1</code> / <code>2</code> – Cycle p5 presets</li>
+              <li><code>S</code> – Quick-save current FX as a named preset</li>
+              <li>Sliders – Control wobble, zoom, glow, background, etc.</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="text-[11px] font-semibold text-slate-100 mb-1">Audio Reactive</h3>
+            <ul class="list-disc list-inside text-slate-300">
+              <li>“Load audio…” – Pick a track (loops and visualizes)</li>
+              <li>“Enable reactive” – Audio drives 3D spin + p5 wobble / glow</li>
+              <li><code>audioReactiveValue</code> – Global 0–1 value you can use in code</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="text-[11px] font-semibold text-slate-100 mb-1">Sandbox & Sessions</h3>
+            <ul class="list-disc list-inside text-slate-300">
+              <li>Sandbox snippet – Standalone HTML for current SVG + HTML FX</li>
+              <li>Session Snapshot – JSON with presets, frames, VS, modes</li>
+              <li>Copy / Download JSON – For Obsidian, agents, archives</li>
+              <li>Load JSON / “Load from textarea” – Rehydrate a saved session</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="text-[11px] font-semibold text-slate-100 mb-1">Reset</h3>
+            <ul class="list-disc list-inside text-slate-300">
+              <li>Clear button – Clears SVG, frames, VS, (optionally) storage</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+That’s a static cheat sheet – no logic yet.
+
+⸻
+
+2.2 Hook up Help overlay behavior
+
+In your JS, grab the new elements:
+
+    const helpOverlayBtn = document.getElementById("helpOverlayBtn");
+    const helpOverlay = document.getElementById("helpOverlay");
+    const helpOverlayCloseBtn = document.getElementById("helpOverlayCloseBtn");
+
+Then add small helpers:
+
+    function openHelpOverlay() {
+      if (!helpOverlay) return;
+      helpOverlay.classList.remove("hidden");
+      playBeep(720, 0.07, "triangle");
+    }
+
+    function closeHelpOverlay() {
+      if (!helpOverlay) return;
+      helpOverlay.classList.add("hidden");
+      playBeep(320, 0.07, "square");
+    }
+
+    helpOverlayBtn.addEventListener("click", () => {
+      openHelpOverlay();
+    });
+
+    helpOverlayCloseBtn.addEventListener("click", () => {
+      closeHelpOverlay();
+    });
+
+    if (helpOverlay) {
+      helpOverlay.addEventListener("click", (e) => {
+        if (e.target === helpOverlay) {
+          // Clicked backdrop, not card
+          closeHelpOverlay();
+        }
+      });
+    }
+
+2.3 Add keyboard shortcut for Help
+
+In your global window.addEventListener("keydown", ...) handler, we already mapped keys like q/w/e/r/t, g, v, space, 1/2, c, s.
+
+Add an h shortcut near the top:
+
+      const key = event.key.toLowerCase();
+
+      // Help overlay
+      if (key === "h") {
+        openHelpOverlay();
+        return;
+      }
+
+And also make Esc close the overlay if it’s open:
+
+      if (event.key === "Escape") {
+        if (!helpOverlay.classList.contains("hidden")) {
+          closeHelpOverlay();
+          return;
+        }
+      }
+
+Make sure those sit before other key handling so they fire first.
+
+⸻
+
+3. Small hint tweak
+
+Finally, set a hint so the help system is discoverable. At the end of your initial setup:
+
+    hintLabel.textContent =
+      "Hint: Press H for Help / keys. Capture from any tab with C, then VS or export session JSON.";
+
+
+⸻
+
+Where you’re at now
+
+Your single index.html now has:
+	•	Audio-reactive p5 wobble and glow.
+	•	Audio-reactive 3D wire and voxel spin.
+	•	A full in-app keymap / help overlay (plus H shortcut).
+	•	All the earlier toys: SVG in → p5 FX → HTML FX → 3D Wire → 3D Voxels → 2D Voxels → Capture → Favorites → VS export → Sandbox HTML → Session JSON (save/load) → Audio-reactive.
+
+In other words: you’ve basically built a tiny audiovisual performance environment themed entirely around Errl, and it persists, exports, and documents itself.

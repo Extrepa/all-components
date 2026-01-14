@@ -1,0 +1,11 @@
+<!-- Example 218 | errl_fest_string_lights_short_neon_01 (fx) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="fx" data-name="errl_fest_string_lights_short_neon_01">
+  <g fill="none">
+    <path d="M18 24 C24 30 40 30 46 24"
+      stroke="#22d3ee" stroke-width="1.6" stroke-linecap="round" opacity="0.9"/>
+    <circle cx="22" cy="26" r="1.4" fill="#22d3ee"/>
+    <circle cx="30" cy="28" r="1.4" fill="#a855f7"/>
+    <circle cx="38" cy="26" r="1.4" fill="#facc15"/>
+  </g>
+</svg>

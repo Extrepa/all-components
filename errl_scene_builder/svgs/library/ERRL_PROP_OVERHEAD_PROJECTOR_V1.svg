@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <g id="group_glow_cone" opacity="0.18">
+    <path d="M520 340l260 220c18 14 14 42-6 50L520 880c-24 10-52-8-52-34V374c0-26 28-44 52-34z" fill="#5be0ff" />
+  </g>
+  <g id="group_base" fill="#f4f0ff" stroke="#101020" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="320" y="620" width="360" height="120" rx="18" />
+    <rect x="360" y="560" width="280" height="70" rx="16" />
+    <rect x="400" y="740" width="200" height="40" rx="12" />
+  </g>
+  <g id="group_arm" fill="#ffd166" stroke="#101020" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="470" y="360" width="52" height="220" rx="18" />
+  </g>
+  <g id="group_head" fill="#ffd166" stroke="#101020" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="430" y="300" width="160" height="80" rx="16" />
+  </g>
+  <g id="group_glass" fill="#5be0ff" stroke="#101020" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="448" y="320" width="124" height="48" rx="8" />
+  </g>
+</svg>

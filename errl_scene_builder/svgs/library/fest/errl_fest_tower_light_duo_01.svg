@@ -1,0 +1,13 @@
+<!-- Example 171 | errl_fest_tower_light_duo_01 (fx/prop) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="fx" data-name="errl_fest_tower_light_duo_01">
+  <g fill="none">
+    <!-- base tower -->
+    <rect x="30" y="26" width="4" height="20" rx="2" fill="#111827"/>
+    <!-- two heads -->
+    <rect x="26" y="22" width="6" height="4" rx="1.5" fill="#020617"/>
+    <rect x="32" y="22" width="6" height="4" rx="1.5" fill="#020617"/>
+    <circle cx="29" cy="24" r="1.2" fill="#22d3ee"/>
+    <circle cx="35" cy="24" r="1.2" fill="#facc15"/>
+  </g>
+</svg>

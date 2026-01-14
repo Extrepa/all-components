@@ -1,0 +1,11 @@
+<!-- 70) errl_woods_cooler_01 – tiny cooler box (prop/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="prop" data-name="errl_woods_cooler_01">
+  <g fill="none">
+    <rect x="22" y="32" width="20" height="10" rx="3" fill="#22d3ee"/>
+    <rect x="22" y="30" width="20" height="4" rx="2" fill="#e5e7eb"/>
+    <rect x="26" y="34" width="4" height="2" rx="1" fill="#0f172a" opacity="0.7"/>
+    <rect x="34" y="34" width="4" height="2" rx="1" fill="#0f172a" opacity="0.7"/>
+    <ellipse cx="32" cy="44" rx="12" ry="2.6" fill="#020617" opacity="0.4"/>
+  </g>
+</svg>

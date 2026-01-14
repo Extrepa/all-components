@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Tapestry</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #050508;
+            overflow: hidden;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        #canvas-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            max-width: 100vw; 
+            max-height: 100vh;
+            /* While we design for 4:3, we allow full fill to be immersive */
+        }
+
+        canvas {
+            display: block;
+        }
+
+        .overlay {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 12px;
+            pointer-events: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <div id="canvas-container">
+        <canvas id="cosmos"></canvas>
+    </div>
+    <div class="overlay">Weaving Starlight</div>
+
+    <script>
+        const canvas = document.getElementById('cosmos');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        let stars = [];
+        let explosions = [];
+        
+        // Configuration
+        const STAR_COUNT_FACTOR = 10000; // Area per star
+        const CONNECTION_DIST = 150;
+        const MOUSE_INFLUENCE_DIST = 200;
+
+        // Color palettes (HSL)
+        const PALETTE = [
+            { h: 220, s: 80, l: 60 }, // Blue
+            { h: 260, s: 70, l: 65 }, // Purple
+            { h: 320, s: 80, l: 70 }, // Pink/Magenta
+            { h: 40, s: 90, l: 60 },  // Gold
+            { h: 180, s: 80, l: 70 }  // Cyan
+        ];
+
+        let mouse = { x: -1000, y: -1000 };
+
+        window.addEventListener('resize', resize);
+        window.addEventListener('mousemove', e => {
+            const rect = canvas.getBoundingClientRect();
+            mouse.x = e.clientX - rect.left;
+            mouse.y = e.clientY - rect.top;
+        });
+        window.addEventListener('mousedown', e => {
+             const rect = canvas.getBoundingClientRect();
+             createSupernova(e.clientX - rect.left, e.clientY - rect.top, true);
+        });
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            initStars();
+        }
+
+        class Star {
+            constructor(x, y) {
+                this.init(x, y);
+            }
+
+            init(x, y) {
+                this.x = x || Math.random() * width;
+                this.y = y || Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                
+                // Genetics
+                this.colorBase = PALETTE[Math.floor(Math.random() * PALETTE.length)];
+                this.radiusBase = Math.random() * 2 + 0.5;
+                this.radius = 0; // Starts at 0 for birth
+                
+                // Lifecycle
+                this.age = 0;
+                this.lifespan = 300 + Math.random() * 600; // Frames
+                this.state = 'born'; // born, living, dying
+                this.opacity = 0;
+            }
+
+            update() {
+                // Physics
+                this.x += this.vx;
+                this.y += this.vy;
+
+                // Wall wrap
+                if (this.x < 0) this.x = width;
+                if (this.x > width) this.x = 0;
+                if (this.y < 0) this.y = height;
+                if (this.y > height) this.y = 0;
+
+                // Mouse interaction (Gentle push)
+                const dx = this.x - mouse.x;
+                const dy = this.y - mouse.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < MOUSE_INFLUENCE_DIST) {
+                    const force = (MOUSE_INFLUENCE_DIST - dist) / MOUSE_INFLUENCE_DIST;
+                    this.vx += (dx / dist) * force * 0.05;
+                    this.vy += (dy / dist) * force * 0.05;
+                }
+
+                // Drag
+                this.vx *= 0.99;
+                this.vy *= 0.99;
+
+                // Lifecycle Logic
+                this.age++;
+
+                if (this.state === 'born') {
+                    this.opacity += 0.02;
+                    this.radius += 0.05;
+                    if (this.radius >= this.radiusBase && this.opacity >= 1) {
+                        this.state = 'living';
+                        this.opacity = 1;
+                        this.radius = this.radiusBase;
+                    }
+                } else if (this.state === 'living') {
+                    // Slight twinkle
+                    this.radius = this.radiusBase + Math.sin(this.age * 0.1) * 0.3;
+                    
+                    if (this.age > this.lifespan) {
+                        this.state = 'dying';
+                        // Random chance of supernova vs quiet death
+                        this.deathType = Math.random() > 0.8 ? 'supernova' : 'fade';
+                    }
+                } else if (this.state === 'dying') {
+                    if (this.deathType === 'fade') {
+                        this.opacity -= 0.01;
+                        this.radius *= 0.99;
+                        if (this.opacity <= 0) this.respawn();
+                    } else {
+                        // Trigger supernova effect then respawn
+                        createSupernova(this.x, this.y);
+                        this.respawn();
+                    }
+                }
+            }
+
+            respawn() {
+                this.init();
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `hsla(${this.colorBase.h}, ${this.colorBase.s}%, ${this.colorBase.l}%, ${this.opacity})`;
+                ctx.fill();
+            }
+        }
+
+        class Shockwave {
+            constructor(x, y, big) {
+                this.x = x;
+                this.y = y;
+                this.radius = 1;
+                this.maxRadius = big ? 200 : 100;
+                this.speed = big ? 8 : 4;
+                this.opacity = 1;
+                this.color = { h: 200, s: 100, l: 80 }; // White-ish blue
+            }
+
+            update() {
+                this.radius += this.speed;
+                this.opacity -= 0.02;
+                
+                // Influence nearby stars
+                for (let s of stars) {
+                    const dx = s.x - this.x;
+                    const dy = s.y - this.y;
+                    const dist = Math.sqrt(dx*dx + dy*dy);
+                    
+                    // If the shockwave ring hits a star
+                    if (Math.abs(dist - this.radius) < 20) {
+                        const force = 2; // Push force
+                        const angle = Math.atan2(dy, dx);
+                        s.vx += Math.cos(angle) * force * (s.radiusBase * 0.2);
+                        s.vy += Math.sin(angle) * force * (s.radiusBase * 0.2);
+                        // Make hit stars glow briefly
+                        s.opacity = 1;
+                        s.state = 'living'; // Reset dying stars if hit
+                        s.age = s.age * 0.5; // Rejuvenate slightly
+                    }
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.strokeStyle = `hsla(${this.color.h}, ${this.color.s}%, ${this.color.l}%, ${this.opacity})`;
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
+        }
+
+        function createSupernova(x, y, big = false) {
+            explosions.push(new Shockwave(x, y, big));
+        }
+
+        function initStars() {
+            stars = [];
+            const area = width * height;
+            const count = Math.floor(area / STAR_COUNT_FACTOR);
+            for (let i = 0; i < count; i++) {
+                const s = new Star();
+                // Randomize initial age so they don't all die at once
+                s.age = Math.random() * s.lifespan; 
+                s.state = 'living';
+                s.opacity = 1;
+                stars.push(s);
+            }
+        }
+
+        function drawTapestry() {
+            // Use additive blending for glowing effect
+            ctx.globalCompositeOperation = 'lighter';
+
+            // Draw connections (The Weaving)
+            // Optimize: Spatial partitioning is better, but O(N^2) is fine for N < 200
+            for (let i = 0; i < stars.length; i++) {
+                const s1 = stars[i];
+                if (s1.opacity <= 0.1) continue;
+
+                for (let j = i + 1; j < stars.length; j++) {
+                    const s2 = stars[j];
+                    if (s2.opacity <= 0.1) continue;
+
+                    const dx = s1.x - s2.x;
+                    const dy = s1.y - s2.y;
+                    const distSq = dx * dx + dy * dy;
+
+                    if (distSq < CONNECTION_DIST * CONNECTION_DIST) {
+                        const dist = Math.sqrt(distSq);
+                        const alpha = (1 - dist / CONNECTION_DIST) * s1.opacity * s2.opacity * 0.4;
+                        
+                        ctx.beginPath();
+                        ctx.moveTo(s1.x, s1.y);
+                        ctx.lineTo(s2.x, s2.y);
+                        
+                        // Create gradient for the thread
+                        const grad = ctx.createLinearGradient(s1.x, s1.y, s2.x, s2.y);
+                        grad.addColorStop(0, `hsla(${s1.colorBase.h}, ${s1.colorBase.s}%, 50%, ${alpha})`);
+                        grad.addColorStop(1, `hsla(${s2.colorBase.h}, ${s2.colorBase.s}%, 50%, ${alpha})`);
+                        
+                        ctx.strokeStyle = grad;
+                        ctx.lineWidth = 0.8; // Thin threads
+                        ctx.stroke();
+                    }
+                }
+            }
+            
+            ctx.globalCompositeOperation = 'source-over';
+        }
+
+        function loop() {
+            // Background trail effect
+            ctx.fillStyle = 'rgba(5, 5, 8, 0.2)'; 
+            ctx.fillRect(0, 0, width, height);
+
+            drawTapestry();
+
+            // Draw Stars
+            ctx.globalCompositeOperation = 'lighter';
+            stars.forEach(star => {
+                star.update();
+                star.draw();
+            });
+
+            // Handle Explosions
+            for (let i = explosions.length - 1; i >= 0; i--) {
+                const ex = explosions[i];
+                ex.update();
+                ex.draw();
+                if (ex.opacity <= 0) {
+                    explosions.splice(i, 1);
+                }
+            }
+
+            ctx.globalCompositeOperation = 'source-over';
+            requestAnimationFrame(loop);
+        }
+
+        // Start
+        resize();
+        loop();
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <g id="group_shadow" opacity="0.14">
+    <ellipse cx="512" cy="620" rx="200" ry="54" fill="#101020" />
+  </g>
+  <g id="group_fill" fill="#ffd166">
+    <ellipse cx="512" cy="600" rx="210" ry="70" />
+  </g>
+  <g id="group_inner_highlights" fill="#ffffff" opacity="0.6">
+    <ellipse cx="460" cy="576" rx="80" ry="20" />
+    <ellipse cx="580" cy="606" rx="60" ry="16" />
+  </g>
+  <g id="group_outline" fill="none" stroke="#101020" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
+    <ellipse cx="512" cy="600" rx="210" ry="70" />
+  </g>
+</svg>

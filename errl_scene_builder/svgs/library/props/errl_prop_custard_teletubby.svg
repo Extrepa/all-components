@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_prop" data-cat="prop" data-name="errl_prop_custard_teletubby">
+  <rect width="64" height="64" rx="12" fill="none"/>
+  <path d="M18 44h28l-2 8H20z" fill="#6d28d9" stroke="#4c1d95" stroke-width="2" stroke-linejoin="round"/>
+  <rect x="22" y="30" width="20" height="14" rx="4" fill="#f4d879" stroke="#d97706" stroke-width="2"/>
+  <circle cx="32" cy="24" r="6" fill="#fde68a" stroke="#d97706" stroke-width="2"/>
+  <path d="M30 18c2-2.5 4-2.5 6 0" stroke="#fbbf24" stroke-width="2" stroke-linecap="round"/>
+</svg>

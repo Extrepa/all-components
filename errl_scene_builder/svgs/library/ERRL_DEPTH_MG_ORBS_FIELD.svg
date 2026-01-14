@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <g id="orbs" fill="#5be0ff" opacity="0.4">
+    <circle cx="180" cy="420" r="80" />
+    <circle cx="360" cy="300" r="60" />
+    <circle cx="540" cy="380" r="90" />
+    <circle cx="720" cy="320" r="70" />
+    <circle cx="860" cy="420" r="60" />
+  </g>
+  <g id="orbs_outline" fill="none" stroke="#101020" stroke-width="8" opacity="0.3">
+    <circle cx="180" cy="420" r="80" />
+    <circle cx="360" cy="300" r="60" />
+    <circle cx="540" cy="380" r="90" />
+    <circle cx="720" cy="320" r="70" />
+    <circle cx="860" cy="420" r="60" />
+  </g>
+</svg>

@@ -1,0 +1,11 @@
+<!-- Example 157 | errl_fest_exit_pylon_01 (ui/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="ui" data-name="errl_fest_exit_pylon_01">
+  <g fill="none">
+    <rect x="28" y="26" width="8" height="18" rx="2" fill="#111827"/>
+    <rect x="26" y="24" width="12" height="4" rx="2" fill="#f97316"/>
+    <path d="M30 32 H35" stroke="#facc15" stroke-width="1.6" stroke-linecap="round"/>
+    <path d="M35 30 L38 32 L35 34 Z" fill="#facc15"/>
+    <ellipse cx="32" cy="46" rx="8" ry="2.4" fill="#020617" opacity="0.45"/>
+  </g>
+</svg>

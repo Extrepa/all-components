@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <g id="group_leaves" fill="#1cdd9c" stroke="#101020" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M512 180c-34 60-30 142 8 196 24-76 18-158-8-196z" />
+    <path d="M470 210c-56 24-96 96-92 154 44-44 86-108 92-154z" />
+    <path d="M554 214c64 18 108 96 106 160-46-46-86-112-106-160z" />
+    <path d="M480 310c-48 40-74 110-60 170 38-40 78-110 60-170z" />
+    <path d="M548 318c46 32 70 108 58 160-38-36-70-98-58-160z" />
+  </g>
+  <g id="group_pot" fill="#ffd166" stroke="#101020" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="420" y="480" width="188" height="120" rx="18" />
+    <rect x="396" y="450" width="236" height="36" rx="14" />
+  </g>
+</svg>

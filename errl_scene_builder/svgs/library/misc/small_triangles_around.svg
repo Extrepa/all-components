@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" id="icon-o1u4t9aje">
+  <g xmlns="http://www.w3.org/2000/svg" fill="none">
+    <circle cx="32" cy="32" r="16" stroke="#e5e7eb" stroke-width="1.3" stroke-dasharray="3 3"/>
+    <!-- small triangles around -->
+    <path d="M32 16 L34 20 L30 20 Z" fill="#fb7185"/>
+    <path d="M44 24 L40 26 L42 22 Z" fill="#22d3ee"/>
+    <path d="M20 24 L22 28 L18 26 Z" fill="#facc15"/>
+    <path d="M42 40 L38 38 L42 36 Z" fill="#a855f7"/>
+    <path d="M22 40 L20 36 L24 38 Z" fill="#fb7185"/>
+  </g>
+</svg>

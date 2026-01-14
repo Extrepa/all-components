@@ -1,0 +1,8 @@
+<!-- Example 234 | errl_fest_foam_hand_icon_01 (ui/prop) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="ui" data-name="errl_fest_foam_hand_icon_01">
+  <g fill="none">
+    <path d="M28 24 L36 24 38 36 30 38 Z" fill="#22d3ee"/>
+    <rect x="32" y="20" width="2" height="6" rx="1" fill="#0f172a"/>
+  </g>
+</svg>

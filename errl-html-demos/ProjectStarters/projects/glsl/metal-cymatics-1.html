@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>metal cymatics - GLSL Shader</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0a0a0a;
+      color: #fff;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .header {
+      padding: 1.5rem 2rem;
+      background: #1a1a1a;
+      border-bottom: 1px solid #333;
+    }
+    .header h1 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .header p {
+      color: #b0b0b0;
+      font-size: 0.875rem;
+    }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 1rem;
+      color: #6366f1;
+      text-decoration: none;
+      font-size: 0.875rem;
+    }
+    .back-link:hover {
+      text-decoration: underline;
+    }
+    #canvas-container {
+      flex: 1;
+      position: relative;
+      width: 100%;
+      height: calc(100vh - 200px);
+    }
+    .info {
+      padding: 1.5rem 2rem;
+      background: #1a1a1a;
+      border-top: 1px solid #333;
+      font-size: 0.875rem;
+    }
+    .info-item {
+      margin-bottom: 0.5rem;
+      display: flex;
+    }
+    .info-label {
+      width: 120px;
+      color: #b0b0b0;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="../index.html" class="back-link">← Back to Gallery</a>
+      <h1>metal cymatics</h1>
+      <p>GLSL Fragment Shader</p>
+    </div>
+    <div id="canvas-container"></div>
+    <div class="info">
+      <div class="info-item">
+        <span class="info-label">Prompt:</span>
+        <span>metal cymatics</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Model:</span>
+        <span>threePro</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Generation Time:</span>
+        <span>54.8s</span>
+      </div>
+    </div>
+  </div>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="../js/glsl-viewer.js"></script>
+  <script>
+    const shaderCode = "precision mediump float;\n\nuniform vec2 u_resolution;\nuniform float u_time;\n\n// Calculate the height of the wave pattern at a specific coordinate\nfloat cymaticWave(vec2 p) {\n    float t = u_time * 0.5;\n    float len = length(p);\n    float ang = atan(p.y, p.x);\n    \n    // Base Standing Wave (Radial)\n    float wave = sin(len * 20.0 - t * 4.0);\n    \n    // Angular interference (Chladni figures style)\n    // The frequency changes slowly over time to simulate changing resonance tones\n    float mode = 6.0 + sin(t * 0.2) * 2.0; \n    wave += sin(ang * mode) * cos(len * 12.0);\n    \n    // Linear interference to create grid-like nodal points\n    wave += sin(p.x * 25.0 + t) * sin(p.y * 25.0 - t) * 0.4;\n    \n    // Harmonic detail\n    wave += sin(len * 50.0 - t * 8.0) * 0.1;\n    \n    return wave * 0.5;\n}\n\n// Pseudo-chromatic aberration and iridescence palette\nvec3 palette(float t) {\n    vec3 a = vec3(0.5, 0.5, 0.5);\n    vec3 b = vec3(0.5, 0.5, 0.5);\n    vec3 c = vec3(1.0, 1.0, 1.0);\n    vec3 d = vec3(0.00, 0.33, 0.67);\n    return a + b * cos(6.28318 * (c * t + d));\n}\n\nvoid main() {\n    // Normalize coordinates -1 to 1, correcting for aspect ratio\n    vec2 uv = (gl_FragCoord.xy - 0.5 * u_resolution.xy) / min(u_resolution.y, u_resolution.x);\n    \n    // Calculate Surface Normal using Finite Difference\n    float eps = 0.005;\n    float h = cymaticWave(uv);\n    float h_x = cymaticWave(uv + vec2(eps, 0.0));\n    float h_y = cymaticWave(uv + vec2(0.0, eps));\n    \n    // Construct normal vector from the slope of the wave\n    // The z-component controls the perceived flatness of the metal plate\n    vec3 normal = normalize(vec3(h - h_x, h - h_y, eps * 8.0));\n    \n    // Lighting Setup\n    vec3 viewDir = vec3(0.0, 0.0, 1.0);\n    \n    // Rotating light source\n    vec3 lightDir = normalize(vec3(sin(u_time), cos(u_time), 1.0));\n    \n    // Ambient metallic base\n    vec3 col = vec3(0.15, 0.18, 0.25);\n    \n    // Diffuse lighting\n    float diff = max(dot(normal, lightDir), 0.0);\n    col += diff * vec3(0.2, 0.25, 0.3);\n    \n    // Specular highlights (Sharpness gives the metal look)\n    vec3 reflectDir = reflect(-lightDir, normal);\n    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);\n    col += spec * vec3(1.0, 0.9, 0.8); // Golden highlight\n    \n    // Environment Reflection Mapping (Approximation)\n    // Maps the normal angle to a color palette to simulate reflection of an environment\n    float refAngle = dot(normal, viewDir);\n    vec3 envColor = palette(refAngle * 2.0 + u_time * 0.1);\n    \n    // Fresnel effect: Edges are more reflective\n    float fresnel = pow(1.0 - max(dot(normal, viewDir), 0.0), 2.0);\n    col += envColor * fresnel * 2.0;\n    \n    // Add subtle chromatic dispersion based on wave height\n    col.r += h * 0.1;\n    col.b -= h * 0.1;\n    \n    // Vignette\n    float dist = length(uv);\n    col *= smoothstep(1.2, 0.5, dist);\n\n    // Gamma correction\n    col = pow(col, vec3(0.4545));\n    \n    gl_FragColor = vec4(col, 1.0);\n}";
+    const container = document.getElementById('canvas-container');
+    const viewer = new GLSLViewer(container, shaderCode);
+    
+    window.addEventListener('resize', () => {
+      viewer.handleResize();
+    });
+  </script>
+</body>
+</html>

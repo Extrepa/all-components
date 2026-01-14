@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Dangerously Cool Math Toys</title>
+<style>
+  :root{
+    --bg:#0a0c12; --ink:#eaf2ff; --mut:#8fa3bf; --accent:#56c2ff; --accent2:#b8ff3b;
+    --card:#0f141d; --tab:#111826; --btn:#152033;
+  }
+  html,body{margin:0;background:var(--bg);color:var(--ink);font:500 14px/1.4 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto}
+  .bar{position:sticky;top:0;z-index:10;background:var(--tab);display:flex;flex-wrap:wrap;gap:.5rem;padding:.6rem .6rem;border-bottom:1px solid #0d1522}
+  .tab{appearance:none;border:0;border-radius:.6rem;background:var(--btn);color:var(--ink);padding:.55rem .75rem;font-weight:600}
+  .tab.active{background:linear-gradient(90deg,var(--accent) 0,var(--accent2) 100%);color:#04101a}
+  .wrap{padding:.6rem}
+  .panel{display:none;background:var(--card);border:1px solid #0d1522;border-radius:.8rem;overflow:hidden}
+  .panel.active{display:block}
+  header{padding:.8rem 1rem;border-bottom:1px solid #0d1522;display:flex;align-items:center;justify-content:space-between;gap:.5rem}
+  header h2{margin:0;font-size:1rem}
+  header small{color:var(--mut)}
+  .tools{display:flex;gap:.5rem;flex-wrap:wrap}
+  .slider{display:flex;align-items:center;gap:.4rem;background:#0c1420;border:1px solid #0e1a2a;border-radius:.5rem;padding:.35rem .5rem}
+  .slider input{width:32vw}
+  .btn{appearance:none;border:0;border-radius:.5rem;background:#152033;color:var(--ink);padding:.4rem .6rem;font-weight:600}
+  canvas,svg{display:block;width:100%;height:65vh;background:#0b0f16}
+  .full{height:70vh}
+  .hint{padding:.6rem 1rem;color:var(--mut);font-size:.9rem;border-top:1px solid #0d1522}
+  /* prefer-reduced-motion */
+  @media (prefers-reduced-motion: reduce){
+    .spin,*{animation:none!important;transition:none!important}
+  }
+</style>
+
+<div class="bar" id="tabs"></div>
+<div class="wrap" id="panels"></div>
+
+<script>
+const demos=[
+  {id:49, name:"Reaction–Diffusion (Fake)", desc:"Feedback blur + high-pass + threshold = zebra-coral skins."},
+  {id:50, name:"Soap Film", desc:"Multi-conic spectral shimmer like museum bubble."},
+  {id:51, name:"Conformal Grid", desc:"SVG lattice with faux f(z)=z+α/z lensing."},
+  {id:52, name:"Iso Cubes", desc:"Three repeating-linear-gradients interlock."},
+  {id:53, name:"SuperShape", desc:"Gielis curve drifting through alien flower modes."},
+  {id:54, name:"Domain Coloring", desc:"f(z)=z³−1 painted by phase and magnitude bands."},
+  {id:55, name:"Rule 110", desc:"Edge-of-chaos cellular automaton woven canvas."},
+  {id:56, name:"Impossible Triangle", desc:"Clip-path + gradient Escher limb."},
+  {id:57, name:"Magnetic Orbs", desc:"Particles repel your cursor, ease back like mercury."},
+  {id:58, name:"Chromaburst Text", desc:"bg-clip:text with conic diffraction and tilt."},
+  {id:59, name:"Recursive Mask Tunnel", desc:"XOR radial masks spin into a void."},
+  {id:60, name:"Poincaré Vibes", desc:"Arcs hinting at hyperbolic tilings inside a disk."}
+];
+
+const tabs = document.getElementById('tabs');
+const panels = document.getElementById('panels');
+
+demos.forEach(d=>{
+  const b=document.createElement('button'); b.className='tab'; b.textContent=`${d.id}. ${d.name}`; b.onclick=()=>activate(d.id);
+  tabs.appendChild(b);
+  const p=document.createElement('section'); p.className='panel'; p.id='panel-'+d.id;
+  p.innerHTML=`
+    <header>
+      <div><h2>${d.id}. ${d.name}</h2><small>${d.desc}</small></div>
+      <div class="tools" id="tools-${d.id}"></div>
+    </header>
+    <div class="stage" id="stage-${d.id}"></div>
+    <div class="hint">Tip: Use finger to drag / tap. Resize-safe on mobile. Performance sliders above when relevant.</div>
+  `;
+  panels.appendChild(p);
+});
+
+function activate(id){
+  [...document.querySelectorAll('.tab')].forEach((t,i)=>t.classList.toggle('active', demos[i].id===id));
+  [...document.querySelectorAll('.panel')].forEach(p=>p.classList.remove('active'));
+  const el=document.getElementById('panel-'+id); el.classList.add('active');
+  if(!el.dataset.init){ initDemo(id); el.dataset.init=1; }
+}
+activate(49); // default
+
+/* DEMOS */
+
+function appendStage(id, node){ document.getElementById('stage-'+id).appendChild(node); }
+function appendTool(id, node){ document.getElementById('tools-'+id).appendChild(node); }
+
+/* 49 Reaction–Diffusion (Fake) */
+function initDemo49(){
+  const c=document.createElement('canvas'); c.className='full'; appendStage(49,c);
+  const ctx=c.getContext('2d');
+  let W,H; function resize(){W=c.width=c.clientWidth;H=c.height=c.clientHeight} resize(); addEventListener('resize',resize);
+  const kernel=[1,2,1,2,4,2,1,2,1];
+  function blur(img){
+    const out = ctx.createImageData(img.width,img.height);
+    const w=img.width,h=img.height,d=img.data,o=out.data; const norm=kernel.reduce((a,b)=>a+b,0);
+    for(let y=1;y<h-1;y++) for(let x=1;x<w-1;x++){
+      let acc=0, i=(y*w+x)*4, k=0;
+      for(let j=-1;j<=1;j++) for(let i2=-1;i2<=1;i2++){ const p=((y+j)*w+(x+i2))*4; acc+=d[p]*kernel[k++]; }
+      const v=acc/norm; o[i]=o[i+1]=o[i+2]=v; o[i+3]=255;
+    }
+    return out;
+  }
+  const params={seed:0.004, blur:2, hp:0.9, th:0.52, decay:0.995};
+  const img0=()=>{const img=ctx.createImageData(W,H),d=img.data;
+    for(let i=0;i<d.length;i+=4){const n=Math.random()<params.seed?255:0; d[i]=d[i+1]=d[i+2]=n; d[i+3]=255;} return img;}
+  let base;
+  function step(){
+    if(W*H===0) return requestAnimationFrame(step);
+    let img = ctx.getImageData(0,0,W,H); for(let p=0;p<params.blur;p++) img=blur(img);
+    base = base || img0(); ctx.putImageData(base,0,0);
+    const d=base.data, b=img.data;
+    for(let i=0;i<d.length;i+=4){
+      const hp=Math.max(0, d[i]*params.hp - b[i]*(1-params.hp));
+      const v=hp*params.decay + (Math.random()<params.seed*0.2 ? 16 : 0);
+      const t=v/255;
+      const out=t>params.th?255:(t>params.th*0.9?180:24);
+      d[i]=out; d[i+1]=out*0.95; d[i+2]=out*0.8;
+    }
+    ctx.putImageData(base,0,0);
+    requestAnimationFrame(step);
+  }
+  ctx.putImageData(img0(),0,0); step();
+  const s=document.createElement('div'); s.className='slider';
+  s.innerHTML=`<label>Blur</label><input type="range" min="0" max="5" step="1" value="${params.blur}">`;
+  s.querySelector('input').oninput=e=>params.blur=+e.target.value;
+  appendTool(49,s);
+}
+
+/* 50 Soap Film */
+function initDemo50(){
+  const bubble=document.createElement('div');
+  bubble.style.width='80vmin'; bubble.style.aspectRatio='1'; bubble.style.borderRadius='50%';
+  bubble.style.background=`
+    conic-gradient(from 0deg,
+      rgba(255,255,255,.0) 0 10%, rgba(255,255,255,.15) 12% 14%, transparent 16% 100%),
+    conic-gradient(from 210deg,
+      #ff0068 0 11%, #ffd500 12% 23%, #66ff00 24% 35%, #00e1ff 36% 47%, #b100ff 48% 59%, #ff0068 60% 71%, #ffd500 72% 83%, #66ff00 84% 95%, #00e1ff 96% 100%)
+  `;
+  bubble.style.filter='saturate(120%) contrast(110%)';
+  bubble.style.position='relative';
+  const shine=document.createElement('div');
+  shine.style.position='absolute'; shine.style.inset='0'; shine.style.borderRadius='50%';
+  shine.style.background=`
+    radial-gradient(120% 120% at 15% 20%, rgba(255,255,255,.5), transparent 40%),
+    radial-gradient(80% 80% at 70% 75%, rgba(255,255,255,.35), transparent 45%)
+  `;
+  shine.style.mixBlendMode='screen';
+  bubble.appendChild(shine);
+  bubble.classList.add('spin');
+  bubble.style.animation='spinFilm 12s linear infinite';
+  const style=document.createElement('style'); style.textContent=`@keyframes spinFilm{to{transform:rotate(360deg)}}`; document.head.appendChild(style);
+  appendStage(50,bubble);
+}
+
+/* 51 Conformal Grid */
+function initDemo51(){
+  const svg=document.createElementNS('http://www.w3.org/2000/svg','svg'); svg.setAttribute('viewBox','-1 -1 2 2');
+  svg.style.width='100%'; svg.style.height='65vh'; svg.style.background='#0b0f16';
+  const α=0.18;
+  function f([x,y]){const r2=x*x+y*y; const inv=r2>1e-6?[x/r2,y/r2]:[0,0]; return [x+α*inv[0], y+α*inv[1]];}
+  function line(u0,u1,steps=120){
+    const pts=[]; for(let i=0;i<=steps;i++){const t=i/steps; const x=u0[0]*(1-t)+u1[0]*t, y=u0[1]*(1-t)+u1[1]*t; const [X,Y]=f([x,y]); pts.push(`${X},${Y}`);}
+    const el=document.createElementNS(svg.namespaceURI,'polyline'); el.setAttribute('points',pts.join(' '));
+    el.setAttribute('fill','none'); el.setAttribute('stroke','#8fd'); el.setAttribute('stroke-width','.01'); el.setAttribute('opacity','.9'); return el;
+  }
+  const N=22; for(let i=0;i<N;i++){const s=-0.95+1.9*i/(N-1); svg.appendChild(line([-0.95,s],[0.95,s])); svg.appendChild(line([s,-0.95],[s,0.95]));}
+  appendStage(51,svg);
+}
+
+/* 52 Iso Cubes */
+function initDemo52(){
+  const iso=document.createElement('div'); iso.style.width='100%'; iso.style.height='65vh';
+  iso.style.background=`
+    repeating-linear-gradient(150deg, #15253e 0 36px, transparent 36px 72px),
+    repeating-linear-gradient(30deg,  #1f3a5f 0 36px, transparent 36px 72px),
+    repeating-linear-gradient(90deg,  #2b4f7f 0 36px, transparent 36px 72px)
+  `;
+  appendStage(52,iso);
+}
+
+/* 53 SuperShape */
+function initDemo53(){
+  const c=document.createElement('canvas'); c.className='full'; appendStage(53,c);
+  const ctx=c.getContext('2d'); let W,H; function resize(){W=c.width=c.clientWidth;H=c.height=c.clientHeight} resize(); addEventListener('resize',resize);
+  function r(phi,m=6,a=1,b=1,n1=0.3,n2=0.3,n3=0.3){
+    const t1=Math.pow(Math.abs(Math.cos(m*phi/4)/a),n2); const t2=Math.pow(Math.abs(Math.sin(m*phi/4)/b),n3); return Math.pow(t1+t2,-1/n1);
+  }
+  let t=0; (function draw(){
+    t+=0.008; const m=3+3*Math.sin(t*0.37), n1=0.2+0.9*(0.5+0.5*Math.sin(t*0.23)), n2=0.2+1.1*(0.5+0.5*Math.sin(t*0.31+1.3)), n3=0.2+1.1*(0.5+0.5*Math.sin(t*0.29-0.8));
+    ctx.clearRect(0,0,W,H); ctx.save(); ctx.translate(W/2,H/2); const S=Math.min(W,H)*0.35; ctx.scale(S,S);
+    ctx.beginPath(); const steps=800;
+    for(let i=0;i<=steps;i++){const phi=i/steps*Math.PI*2; const rad=r(phi,m,1,1,n1,n2,n3); const x=rad*Math.cos(phi), y=rad*Math.sin(phi); i?ctx.lineTo(x,y):ctx.moveTo(x,y);}
+    ctx.closePath(); const hue=(t*40)%360; ctx.fillStyle=`hsla(${hue},70%,55%,0.4)`; ctx.strokeStyle=`hsla(${(hue+180)%360},80%,70%,0.9)`; ctx.lineWidth=0.01; ctx.fill(); ctx.stroke(); ctx.restore();
+    requestAnimationFrame(draw);
+  })();
+}
+
+/* 54 Domain Coloring z^3-1 */
+function initDemo54(){
+  const c=document.createElement('canvas'); c.className='full'; appendStage(54,c);
+  const ctx=c.getContext('2d'); let W,H; function resize(){W=c.width=c.clientWidth;H=c.height=c.clientHeight; plot()} resize(); addEventListener('resize',resize);
+  function hsl(h,s,l){s/=100;l/=100;const C=(1-Math.abs(2*l-1))*s,hh=h/60,X=C*(1-Math.abs(hh%2-1));let r=0,g=0,b=0;
+    if(hh>=0&&hh<1){r=C;g=X}else if(hh<2){r=X;g=C}else if(hh<3){g=C;b=X}else if(hh<4){g=X;b=C}else if(hh<5){r=X;b=C}else{r=C;b=X}
+    const m=l-C/2; return [(r+m)*255,(g+m)*255,(b+m)*255];
+  }
+  function plot(){
+    if(W*H===0) return; const img=ctx.createImageData(W,H),d=img.data; const scale=3/Math.min(W,H), cx=W/2, cy=H/2;
+    for(let y=0;y<H;y++) for(let x=0;x<W;x++){
+      const re=(x-cx)*scale, im=(y-cy)*scale, a=re, b=im;
+      const a2=a*a-b*b, b2=2*a*b; const a3=a2*a-b2*b, b3=a2*b+b2*a;
+      const fr=a3-1, fi=b3; const mag=Math.hypot(fr,fi); const arg=Math.atan2(fi,fr);
+      const hue=((arg/(2*Math.PI))+0.5)*360; const bands=Math.log2(mag+1e-9); const light=50+25*Math.sin(bands*Math.PI), sat=95;
+      const col=hsl(hue,sat,light); const i=(y*W+x)*4; d[i]=col[0]; d[i+1]=col[1]; d[i+2]=col[2]; d[i+3]=255;
+    }
+    ctx.putImageData(img,0,0);
+  }
+  plot();
+}
+
+/* 55 Rule 110 */
+function initDemo55(){
+  const c=document.createElement('canvas'); c.className='full'; appendStage(55,c);
+  const ctx=c.getContext('2d'); let W,H,cell=2; function resize(){W=c.width=c.clientWidth;H=c.height=c.clientHeight; cols=Math.floor(W/cell); rows=Math.floor(H/cell);} resize(); addEventListener('resize',resize);
+  let cols,rows; let row=new Array(Math.floor(W/cell)).fill(0); for(let i=0;i<row.length;i++) if(Math.random()<0.5) row[i]=1;
+  function rule110(a,b,c){const n=(a<<2)|(b<<1)|c; return (0b01101110>>n)&1;}
+  let y=0; (function step(){
+    const next=new Array(cols).fill(0);
+    for(let x=0;x<cols;x++){const a=row[(x-1+cols)%cols], b=row[x], c2=row[(x+1)%cols]; next[x]=rule110(a,b,c2); const v=next[x]*255; ctx.fillStyle=`rgb(${v},${v*0.6},${v*0.2})`; ctx.fillRect(x*cell,y*cell,cell,cell);}
+    row=next; y++; if(y>=rows){y=0; ctx.clearRect(0,0,W,H);}
+    requestAnimationFrame(step);
+  })();
+}
+
+/* 56 Impossible Triangle */
+function initDemo56(){
+  const tri=document.createElement('div'); tri.style.width='80vmin'; tri.style.aspectRatio='1';
+  tri.style.background=`
+    linear-gradient(135deg,#7bd 0 50%,transparent 0),
+    linear-gradient(315deg,#59a 0 50%,transparent 0),
+    linear-gradient(45deg,#9fe 0 50%,transparent 0)
+  `;
+  tri.style.clipPath='polygon(50% 4%, 96% 29%, 96% 31%, 55% 8%, 55% 42%, 53% 43%, 53% 8%, 9% 32%, 9% 29%)';
+  tri.style.filter='drop-shadow(0 2vmin 3vmin rgba(0,0,0,.5))'; tri.style.position='relative'; tri.style.margin='2rem auto';
+  const fx=document.createElement('div'); fx.style.position='absolute'; fx.style.inset='0'; fx.style.background=`
+    linear-gradient(90deg,rgba(0,0,0,.15),transparent 20% 80%,rgba(0,0,0,.15)),
+    linear-gradient(0deg,rgba(255,255,255,.25),transparent 30% 70%,rgba(0,0,0,.2))
+  `; fx.style.mixBlendMode='multiply'; fx.style.clipPath='inherit'; tri.appendChild(fx);
+  appendStage(56,tri);
+}
+
+/* 57 Magnetic Orbs */
+function initDemo57(){
+  const c=document.createElement('canvas'); c.className='full'; appendStage(57,c);
+  const ctx=c.getContext('2d'); function resize(){c.width=c.clientWidth;c.height=c.clientHeight} resize(); addEventListener('resize',resize);
+  const N=220, parts=[]; let mouse={x:c.width/2,y:c.height/2,r:120,strength:10};
+  class P{constructor(){this.reset(true);} reset(center=false){this.x=center?mouse.x:Math.random()*c.width; this.y=center?mouse.y:Math.random()*c.height;
+    const sp=0.6+Math.random()*0.6, ang=Math.random()*Math.PI*2; this.vx=Math.cos(ang)*sp; this.vy=Math.sin(ang)*sp; this.size=1.6+Math.random()*1.6; this.color=`hsl(${Math.random()*360},90%,60%)`;}
+    update(){const dx=this.x-mouse.x,dy=this.y-mouse.y,dist=Math.hypot(dx,dy);
+      if(dist<mouse.r){const force=(mouse.r-dist)/mouse.r*mouse.strength; const ang=Math.atan2(dy,dx); this.vx+=Math.cos(ang)*force*0.03; this.vy+=Math.sin(ang)*force*0.03; this.size+=0.02;}
+      else{this.size+=(1.8-this.size)*0.02;} this.vx*=0.98; this.vy*=0.98; this.x+=this.vx; this.y+=this.vy;
+      if(this.x<-80||this.x>c.width+80||this.y<-80||this.y>c.height+80) this.reset();}
+    draw(){ctx.beginPath(); ctx.fillStyle=this.color; ctx.shadowColor=this.color; ctx.shadowBlur=12; ctx.arc(this.x,this.y,this.size,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=0;}
+  }
+  for(let i=0;i<N;i++) parts.push(new P());
+  (function loop(){ctx.fillStyle='rgba(11,13,18,0.18)'; ctx.fillRect(0,0,c.width,c.height); const t=Date.now()*0.001; mouse.r=120+Math.sin(t)*36; parts.forEach(p=>{p.update();p.draw();}); requestAnimationFrame(loop);})();
+  addEventListener('pointermove',e=>{const r=c.getBoundingClientRect(); mouse.x=e.clientX-r.left; mouse.y=e.clientY-r.top});
+  addEventListener('touchmove',e=>{const t=e.touches[0], r=c.getBoundingClientRect(); mouse.x=t.clientX-r.left; mouse.y=t.clientY-r.top},{passive:true});
+}
+
+/* 58 Chromaburst Text */
+function initDemo58(){
+  const wrap=document.createElement('div'); wrap.style.display='grid'; wrap.style.placeItems='center'; wrap.style.height='65vh'; wrap.style.background='#0a0e14';
+  const h=document.createElement('h1'); h.textContent='CHROMABURST';
+  h.style.font='900 14vmin/1 system-ui'; h.style.letterSpacing='.02em'; h.style.color='transparent'; h.style.webkitBackgroundClip='text'; h.style.backgroundClip='text';
+  h.style.background=`
+    conic-gradient(from 270deg at 50% 50%, #fff 265deg, #ff647f 269deg 271deg, #fff 275deg) left/0% 1em no-repeat,
+    radial-gradient(circle at 50% 50%, hsl(200 100% 60% / .5), hsl(280 100% 60% / .5), hsl(60 100% 60% / .5)) 0/200% 200%
+  `;
+  h.style.mixBlendMode='screen'; wrap.appendChild(h); appendStage(58,wrap);
+  wrap.onpointermove=e=>{const r=h.getBoundingClientRect(), x=(e.clientX-r.left)/r.width*100, y=(e.clientY-r.top)/r.height*100;
+    h.style.background=`
+      conic-gradient(from 270deg at ${x}% ${y}%, #fff 265deg, #ff647f 269deg 271deg, #fff 275deg) left/0% 1em no-repeat,
+      radial-gradient(circle at ${x}% ${y}%, hsl(200 100% 60% / .5), hsl(280 100% 60% / .5), hsl(60 100% 60% / .5)) 0/300% 300%
+    `;
+  };
+}
+
+/* 59 Recursive Mask Tunnel */
+function initDemo59(){
+  const box=document.createElement('div'); box.style.width='100%'; box.style.height='65vh'; box.style.display='grid'; box.style.placeItems='center'; box.style.background='#05070a';
+  const hole=document.createElement('div'); hole.style.width='70vmin'; hole.style.aspectRatio='1'; hole.style.animation='spinTunnel 12s linear infinite';
+  const style=document.createElement('style'); style.textContent=`@keyframes spinTunnel{to{transform:rotate(360deg)}}`; document.head.appendChild(style);
+  hole.style.webkitMaskComposite='xor';
+  hole.style.webkitMaskImage=`
+    radial-gradient(closest-side, transparent 35%, black 36%),
+    radial-gradient(closest-side, transparent 45%, black 46%),
+    radial-gradient(closest-side, transparent 55%, black 56%),
+    radial-gradient(closest-side, transparent 65%, black 66%),
+    radial-gradient(closest-side, transparent 75%, black 76%),
+    radial-gradient(closest-side, transparent 85%, black 86%)
+  `;
+  hole.style.webkitMaskPosition='50% 50%'; hole.style.webkitMaskRepeat='no-repeat';
+  const inner=document.createElement('div'); inner.style.width='100%'; inner.style.height='100%';
+  inner.style.background=`
+    radial-gradient(closest-side,#0e1623,transparent 60%),
+    conic-gradient(from 0deg, #1a2b44, #0e1623, #1a2b44)
+  `;
+  inner.style.filter='contrast(120%) saturate(120%)';
+  hole.appendChild(inner); box.appendChild(hole); appendStage(59,box);
+}
+
+/* 60 Poincaré Vibes */
+function initDemo60(){
+  const svg=document.createElementNS('http://www.w3.org/2000/svg','svg'); svg.setAttribute('viewBox','-1 -1 2 2'); svg.style.width='100%'; svg.style.height='65vh';
+  const circle=document.createElementNS(svg.namespaceURI,'circle'); circle.setAttribute('cx',0); circle.setAttribute('cy',0); circle.setAttribute('r',1);
+  circle.setAttribute('fill','none'); circle.setAttribute('stroke','#446'); circle.setAttribute('stroke-width','.01'); svg.appendChild(circle);
+  function arcThrough(p1,p2){const [x1,y1]=p1,[x2,y2]=p2; const den=x1*y2-x2*y1;
+    if(Math.abs(den)<1e-6){const el=document.createElementNS(svg.namespaceURI,'line'); el.setAttribute('x1',x1); el.setAttribute('y1',y1); el.setAttribute('x2',x2); el.setAttribute('y2',y2);
+      el.setAttribute('stroke','#58c'); el.setAttribute('stroke-width','.01'); return el;}
+    const s1=(1+x1*x1+y1*y1)/2, s2=(1+x2*x2+y2*y2)/2; const cx=(s1*y2-s2*y1)/den, cy=(x1*s2-x2*s1)/den; const r=Math.sqrt(cx*cx+cy*cy-1);
+    const steps=120, pts=[]; const tA=Math.atan2(y1-cy,x1-cx), tB=Math.atan2(y2-cy,x2-cx); let d=tB-tA; if(d>Math.PI) d-=2*Math.PI; if(d<-Math.PI) d+=2*Math.PI;
+    for(let i=0;i<=steps;i++){const t=tA+d*i/steps; const x=cx+r*Math.cos(t), y=cy+r*Math.sin(t); pts.push(`${x},${y}`);}
+    const el=document.createElementNS(svg.namespaceURI,'polyline'); el.setAttribute('points',pts.join(' ')); el.setAttribute('fill','none'); el.setAttribute('stroke','#58c'); el.setAttribute('stroke-width','.01'); return el;
+  }
+  const P=12, pts=[]; for(let i=0;i<P;i++){const a=i/P*2*Math.PI; pts.push([Math.cos(a)*0.98, Math.sin(a)*0.98]);}
+  for(let i=0;i<P;i++){svg.appendChild(arcThrough(pts[i], pts[(i+2)%P])); svg.appendChild(arcThrough(pts[i], pts[(i+3)%P]));}
+  appendStage(60,svg);
+}
+
+/* 52 has no tools; others add minimal controls where sensible */
+function initDemo(id){
+  ({49:initDemo49,50:initDemo50,51:initDemo51,52:initDemo52,53:initDemo53,54:initDemo54,55:initDemo55,56:initDemo56,57:initDemo57,58:initDemo58,59:initDemo59,60:initDemo60})[id]();
+}
+</script>

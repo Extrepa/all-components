@@ -1,0 +1,8 @@
+<!-- errl_weather_snow_glow_01 – snowy ground orb (fx/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_weather" data-cat="fx" data-name="errl_weather_snow_glow_01">
+  <g fill="none">
+    <circle cx="32" cy="40" r="6" fill="#e5e7eb"/>
+    <circle cx="32" cy="40" r="10" fill="#e5e7eb" opacity="0.18"/>
+  </g>
+</svg>

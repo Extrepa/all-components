@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Components - Errl Club Design System</title>
+    <link rel="stylesheet" href="../styles/base.css">
+    <link rel="stylesheet" href="../styles/components.css">
+    <link rel="stylesheet" href="../styles/utilities.css">
+    <style>
+        body {
+            padding: 40px;
+            background: #0a0a0a;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: #00ffff;
+            font-size: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            text-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+            margin-bottom: 40px;
+        }
+        
+        h2 {
+            color: #00ffff;
+            font-size: 2rem;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        .section {
+            background: rgba(20, 20, 20, 0.9);
+            border: 2px solid #00ffff;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .component-demo {
+            margin-bottom: 30px;
+        }
+        
+        .demo-label {
+            color: #ff00ff;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 15px;
+        }
+        
+        .code-block {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #00ffff;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 15px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: #00ffff;
+            overflow-x: auto;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .demo-result {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid #00ffff;
+            border-radius: 4px;
+            padding: 10px;
+            margin-top: 10px;
+            color: #00ffff;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Components</h1>
+        
+        <div class="section">
+            <h2>Button</h2>
+            
+            <div class="component-demo">
+                <div class="demo-label">Normal Button</div>
+                <button class="ui-button">Click Me</button>
+                <div class="code-block">
+&lt;button class="ui-button"&gt;Click Me&lt;/button&gt;
+                </div>
+            </div>
+            
+            <div class="component-demo">
+                <div class="demo-label">Button States</div>
+                <div class="button-group">
+                    <button class="ui-button">Normal</button>
+                    <button class="ui-button" style="background: #444444; border-color: #00ff00;">Hover</button>
+                    <button class="ui-button" style="background: #222222;">Pressed</button>
+                    <button class="ui-button" disabled>Disabled</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Input Field</h2>
+            
+            <div class="component-demo">
+                <div class="demo-label">Text Input</div>
+                <div class="ui-input-field">
+                    <label>Username</label>
+                    <input type="text" placeholder="Enter username" value="">
+                </div>
+                <div class="code-block">
+&lt;div class="ui-input-field"&gt;
+  &lt;label&gt;Username&lt;/label&gt;
+  &lt;input type="text" placeholder="Enter username"&gt;
+&lt;/div&gt;
+                </div>
+            </div>
+            
+            <div class="component-demo">
+                <div class="demo-label">Input States</div>
+                <div class="ui-input-field">
+                    <label>Normal</label>
+                    <input type="text" value="Normal input">
+                </div>
+                <div class="ui-input-field">
+                    <label>Error</label>
+                    <input type="text" value="Error input" style="border-color: #ff0000;">
+                    <div class="ui-input-error" style="display: block;">This field is required</div>
+                </div>
+                <div class="ui-input-field">
+                    <label>Disabled</label>
+                    <input type="text" value="Disabled" disabled>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Dropdown</h2>
+            
+            <div class="component-demo">
+                <div class="demo-label">Select Dropdown</div>
+                <div class="ui-dropdown">
+                    <label>Theme</label>
+                    <select>
+                        <option value="dark">Dark</option>
+                        <option value="light">Light</option>
+                        <option value="auto">Auto</option>
+                    </select>
+                </div>
+                <div class="code-block">
+&lt;div class="ui-dropdown"&gt;
+  &lt;label&gt;Theme&lt;/label&gt;
+  &lt;select&gt;
+    &lt;option value="dark"&gt;Dark&lt;/option&gt;
+    &lt;option value="light"&gt;Light&lt;/option&gt;
+  &lt;/select&gt;
+&lt;/div&gt;
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Slider</h2>
+            
+            <div class="component-demo">
+                <div class="demo-label">Range Slider</div>
+                <div class="ui-slider">
+                    <label>Volume</label>
+                    <div class="ui-slider-container">
+                        <input type="range" min="0" max="100" value="50" style="flex: 1;">
+                        <span class="ui-slider-value">50</span>
+                    </div>
+                </div>
+                <div class="code-block">
+&lt;div class="ui-slider"&gt;
+  &lt;label&gt;Volume&lt;/label&gt;
+  &lt;div class="ui-slider-container"&gt;
+    &lt;input type="range" min="0" max="100" value="50"&gt;
+    &lt;span class="ui-slider-value"&gt;50&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+                </div>
+            </div>
+            
+            <div class="component-demo">
+                <div class="demo-label">Interactive Slider</div>
+                <div class="ui-slider">
+                    <label>Brightness</label>
+                    <div class="ui-slider-container">
+                        <input type="range" id="brightness-slider" min="0" max="100" value="75" style="flex: 1;">
+                        <span class="ui-slider-value" id="brightness-value">75</span>
+                    </div>
+                </div>
+                <div class="demo-result" id="brightness-result">Brightness: 75%</div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Modal</h2>
+            
+            <div class="component-demo">
+                <div class="demo-label">Modal Example</div>
+                <button class="ui-button" onclick="openModal()">Open Modal</button>
+                <div class="code-block">
+const modal = new Modal({
+    title: 'Settings',
+    content: '&lt;p&gt;Modal content here&lt;/p&gt;',
+    size: 'medium',
+    closable: true,
+    onClose: () => console.log('Modal closed')
+});
+modal.show();
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Panel</h2>
+            
+            <div class="component-demo">
+                <div class="demo-label">Panel Example</div>
+                <div class="ui-panel" style="display: block; position: relative; width: 400px; height: 300px;">
+                    <div class="ui-panel-title">Settings Panel</div>
+                    <div class="ui-panel-content">
+                        <p>This is a panel with a title and content area.</p>
+                        <p>Panels can be positioned anywhere on the screen.</p>
+                    </div>
+                </div>
+                <div class="code-block">
+&lt;div class="ui-panel"&gt;
+  &lt;div class="ui-panel-title"&gt;Settings Panel&lt;/div&gt;
+  &lt;div class="ui-panel-content"&gt;
+    &lt;p&gt;Content here&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Progress Bar</h2>
+            
+            <div class="component-demo">
+                <div class="demo-label">Progress Bar</div>
+                <div class="control-fragment-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 65%;"></div>
+                    </div>
+                    <div class="progress-label">65% Complete</div>
+                </div>
+                <div class="code-block">
+&lt;div class="control-fragment-progress"&gt;
+  &lt;div class="progress-bar"&gt;
+    &lt;div class="progress-fill" style="width: 65%;"&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="progress-label"&gt;65% Complete&lt;/div&gt;
+&lt;/div&gt;
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal Overlay (hidden by default) -->
+    <div id="demo-modal" class="ui-modal-overlay" style="display: none;">
+        <div class="ui-modal" style="width: 500px;">
+            <div class="ui-modal-header">
+                <h2>Example Modal</h2>
+                <button onclick="closeModal()">×</button>
+            </div>
+            <div class="ui-modal-content">
+                <p>This is an example modal dialog.</p>
+                <p>Click the × button or outside the modal to close it.</p>
+                <button class="ui-button" onclick="closeModal()" style="margin-top: 20px;">Close</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Slider interaction
+        const brightnessSlider = document.getElementById('brightness-slider');
+        const brightnessValue = document.getElementById('brightness-value');
+        const brightnessResult = document.getElementById('brightness-result');
+        
+        if (brightnessSlider) {
+            brightnessSlider.addEventListener('input', (e) => {
+                const value = e.target.value;
+                brightnessValue.textContent = value;
+                brightnessResult.textContent = `Brightness: ${value}%`;
+            });
+        }
+        
+        // Modal functions
+        function openModal() {
+            document.getElementById('demo-modal').style.display = 'flex';
+        }
+        
+        function closeModal() {
+            document.getElementById('demo-modal').style.display = 'none';
+        }
+        
+        // Close modal on overlay click
+        document.getElementById('demo-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'demo-modal') {
+                closeModal();
+            }
+        });
+        
+        // Close modal on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
+

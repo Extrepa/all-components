@@ -1,0 +1,14 @@
+<!-- 81) errl_woods_bunny_01 – stylized bunny silhouette (char) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="char" data-name="errl_woods_bunny_01">
+  <g fill="none">
+    <!-- body -->
+    <circle cx="32" cy="36" r="4.5" fill="#e5e7eb"/>
+    <circle cx="29" cy="33" r="2.4" fill="#e5e7eb"/>
+    <!-- ears -->
+    <path d="M28 29 C28 26 29 24 30 23 L31 24 30.8 29Z" fill="#e5e7eb"/>
+    <path d="M30 29 C30 25.5 31 23.5 32 22.5 L33 24 32.8 29Z" fill="#e5e7eb"/>
+    <!-- eye -->
+    <circle cx="30" cy="33" r="0.6" fill="#020617"/>
+  </g>
+</svg>

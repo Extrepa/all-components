@@ -1,0 +1,364 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" id="icon-83c22h6sq">Nice, we officially have a 400-asset Errl Scene Bible now. 🧪🌲🎪🎶
+Let’s treat what you already wrote in Examples_1.txt as the canonical manifest for all 400 assets (woods, fest, concert, etc.).  
+
+To “work together to complete all 400”, the smartest path is:
+	1.	Use Examples_1.txt as the master list of IDs + descriptions.
+	2.	Use your existing woods SVGs (examples_2.txt, Examples_2a.txt, examples_2b.txt) as style reference.
+	3.	Fill in the missing themes (Festival, Concert, Weather, Backgrounds) with SVGs that follow the same constraints:
+	•	viewBox="0 0 64 64"
+	•	data-pack="errl_fest" / "errl_concert" / etc.
+	•	data-cat="env" | "prop" | "fx" | "ui" | "char"
+	•	Flat colors, 3–10 shapes each.
+
+You’ve already got a ton of woods coverage implemented (trees, leaves, bushes, vines, moss, stones, rings, etc.), so I’m going to push us into the next theme: Festival and start knocking those down as real SVGs.
+
+⸻
+
+Phase 2: Start implementing FESTIVAL pack SVGs
+
+From the manifest, Festival is errl_fest_* with tents, stages, string lights, banners, art structures, etc.  
+
+I’ll give you a first batch of concrete SVGs in that style. You can paste these straight into your combined txt file under a // FESTIVAL SVGs section.
+
+Palette (from your spec, plus matching woods vibe):
+	•	Warm lights: #facc15, #f97316
+	•	Tents: #fb7185, #22d3ee, #a855f7
+	•	Night/ground: #020617, #0f172a, #166534, #4b5563
+
+⸻
+
+1) errl_fest_tent_big_top_01 – big circus-style tent (env)
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="env" data-name="errl_fest_tent_big_top_01">
+  <g fill="none">
+    <!-- base -->
+    <path d="M10 42 L54 42 50 50 14 50 Z" fill="#0f172a"/>
+    <!-- main tent body -->
+    <path d="M12 42 L32 16 52 42 Z" fill="#fb7185"/>
+    <!-- central stripe -->
+    <path d="M30 18 L34 18 46 42 18 42 Z" fill="#f97316" opacity="0.85"/>
+    <!-- tiny flag -->
+    <path d="M32 14 L32 10" stroke="#facc15" stroke-width="1.4" stroke-linecap="round"/>
+    <path d="M32 10 L36 11.5 32 13 Z" fill="#22d3ee"/>
+    <!-- ground shadow -->
+    <ellipse cx="32" cy="52" rx="20" ry="3" fill="#111827" opacity="0.35"/>
+  </g>
+</svg>
+
+
+⸻
+
+2) errl_fest_tent_small_01 – small merch tent (env/prop)
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="env" data-name="errl_fest_tent_small_01">
+  <g fill="none">
+    <!-- roof -->
+    <path d="M16 34 L32 22 48 34 Z" fill="#22d3ee"/>
+    <!-- scalloped front edge -->
+    <path d="M16 34 C20 38 24 38 28 34 32 38 36 38 40 34 44 38 48 38 52 34" stroke="#0f172a" stroke-width="1.2" fill="none"/>
+    <!-- front wall -->
+    <rect x="18" y="34" width="28" height="11" rx="2" fill="#020617" opacity="0.9"/>
+    <!-- counter -->
+    <rect x="20" y="38" width="24" height="4" rx="1" fill="#f97316"/>
+    <ellipse cx="32" cy="48" rx="16" ry="3" fill="#111827" opacity="0.35"/>
+  </g>
+</svg>
+
+
+⸻
+
+3) errl_fest_tent_food_01 – food stall tent (env/prop)
+
+Goes with food icons later (you can slap little burger/taco glyphs on the front in your app or in a variant).
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="env" data-name="errl_fest_tent_food_01">
+  <g fill="none">
+    <!-- roof -->
+    <path d="M14 32 L32 20 50 32 Z" fill="#a855f7"/>
+    <!-- stripes -->
+    <path d="M18 32 L24 20 M24 32 L30 20 M30 32 L36 20 M36 32 L42 20 M42 32 L46 22" stroke="#f9a8ff" stroke-width="1.2" stroke-linecap="round" opacity="0.9"/>
+    <!-- stall body -->
+    <rect x="16" y="32" width="32" height="12" rx="2" fill="#020617"/>
+    <!-- serving window -->
+    <rect x="18.5" y="34.5" width="27" height="5.5" rx="1.5" fill="#111827"/>
+    <!-- small sign panel -->
+    <rect x="26" y="29" width="12" height="3" rx="1" fill="#facc15"/>
+    <ellipse cx="32" cy="48" rx="17" ry="3" fill="#111827" opacity="0.35"/>
+  </g>
+</svg>
+
+
+⸻
+
+4) errl_fest_stage_main_01 – main stage platform (env)
+
+Straight front, good as the anchor for concert/fest mashups.
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="env" data-name="errl_fest_stage_main_01">
+  <g fill="none">
+    <!-- stage deck -->
+    <rect x="10" y="36" width="44" height="6" rx="2" fill="#020617"/>
+    <!-- front face -->
+    <rect x="10" y="42" width="44" height="6" rx="1.5" fill="#0f172a"/>
+    <!-- little lights along front -->
+    <circle cx="16" cy="45" r="0.9" fill="#22d3ee"/>
+    <circle cx="22" cy="45" r="0.9" fill="#a855f7"/>
+    <circle cx="28" cy="45" r="0.9" fill="#facc15"/>
+    <circle cx="34" cy="45" r="0.9" fill="#22d3ee"/>
+    <circle cx="40" cy="45" r="0.9" fill="#a855f7"/>
+    <circle cx="46" cy="45" r="0.9" fill="#facc15"/>
+    <!-- backdrop frame -->
+    <rect x="14" y="18" width="36" height="16" rx="2" fill="#020617"/>
+    <!-- minimal “screen” -->
+    <rect x="16" y="20" width="32" height="12" rx="1.5" fill="#111827"/>
+    <ellipse cx="32" cy="50" rx="22" ry="3.2" fill="#020617" opacity="0.45"/>
+  </g>
+</svg>
+
+
+⸻
+
+5) errl_fest_stage_side_01 – small side stage (env/prop)
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="env" data-name="errl_fest_stage_side_01">
+  <g fill="none">
+    <!-- deck -->
+    <rect x="14" y="38" width="32" height="5" rx="2" fill="#020617"/>
+    <!-- front -->
+    <rect x="14" y="43" width="32" height="5" rx="1.5" fill="#0f172a"/>
+    <!-- two posts -->
+    <rect x="18" y="24" width="3" height="14" rx="1" fill="#111827"/>
+    <rect x="39" y="24" width="3" height="14" rx="1" fill="#111827"/>
+    <!-- small banner between posts -->
+    <path d="M21 26 Q29 30 37 26 L37 30 Q29 34 21 30 Z" fill="#22d3ee"/>
+    <ellipse cx="30" cy="50" rx="18" ry="2.8" fill="#020617" opacity="0.4"/>
+  </g>
+</svg>
+
+
+⸻
+
+6) errl_fest_dome_01 – geodesic dome silhouette (env)
+
+This can double as a chill dome or weird art structure depending on color tint.
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="env" data-name="errl_fest_dome_01">
+  <g fill="none">
+    <!-- dome base -->
+    <ellipse cx="32" cy="40" rx="18" ry="10" fill="#0f172a"/>
+    <!-- highlight front -->
+    <ellipse cx="32" cy="40" rx="14" ry="7.5" fill="#111827"/>
+    <!-- geodesic lines -->
+    <path d="M18 40 H46" stroke="#22d3ee" stroke-width="1" opacity="0.6"/>
+    <path d="M22 34 L32 40 42 34" stroke="#a855f7" stroke-width="1" opacity="0.7" fill="none"/>
+    <path d="M26 32 L32 36 38 32" stroke="#facc15" stroke-width="1" opacity="0.7" fill="none"/>
+    <ellipse cx="32" cy="50" rx="19" ry="3" fill="#020617" opacity="0.5"/>
+  </g>
+</svg>
+
+
+⸻
+
+7) errl_fest_gate_01 – festival entrance arch (env/ui-ish)
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="env" data-name="errl_fest_gate_01">
+  <g fill="none">
+    <!-- posts -->
+    <rect x="14" y="26" width="5" height="22" rx="2" fill="#0f172a"/>
+    <rect x="45" y="26" width="5" height="22" rx="2" fill="#0f172a"/>
+    <!-- arch -->
+    <path d="M16.5 26 C20 18 26 14 32 14s12 4 15.5 12" stroke="#facc15" stroke-width="3" stroke-linecap="round" fill="none"/>
+    <!-- banner slab -->
+    <rect x="20" y="22" width="24" height="6" rx="3" fill="#fb7185"/>
+    <!-- tiny sparkle -->
+    <circle cx="32" cy="20" r="1.2" fill="#22d3ee"/>
+    <ellipse cx="32" cy="50" rx="18" ry="3" fill="#020617" opacity="0.45"/>
+  </g>
+</svg>
+
+
+⸻
+
+8) errl_fest_tower_light_01 – light tower structure (prop/env)
+
+Useful to flank stages or gates.
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="prop" data-name="errl_fest_tower_light_01">
+  <g fill="none">
+    <!-- truss tower -->
+    <rect x="28" y="20" width="8" height="24" rx="2" fill="#111827"/>
+    <path d="M30 22 L34 26 M30 26 L34 30 M30 30 L34 34 M30 34 L34 38" stroke="#22d3ee" stroke-width="1" opacity="0.7"/>
+    <!-- light head -->
+    <rect x="26" y="16" width="12" height="4" rx="1.5" fill="#020617"/>
+    <circle cx="29" cy="18" r="1.3" fill="#22d3ee"/>
+    <circle cx="32" cy="18" r="1.3" fill="#a855f7"/>
+    <circle cx="35" cy="18" r="1.3" fill="#facc15"/>
+    <!-- base -->
+    <rect x="26" y="44" width="12" height="4" rx="1.5" fill="#020617"/>
+    <ellipse cx="32" cy="50" rx="10" ry="2.6" fill="#020617" opacity="0.45"/>
+  </g>
+</svg>
+
+
+⸻
+
+9) errl_fest_string_lights_01 – gentle arc of lights (fx/prop)
+
+Good to hang between trees, tents, or towers.
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="fx" data-name="errl_fest_string_lights_01">
+  <g fill="none">
+    <path d="M10 22 C22 32 42 32 54 22" stroke="#e5e7eb" stroke-width="1.4" stroke-linecap="round"/>
+    <circle cx="14" cy="24" r="1.3" fill="#facc15"/>
+    <circle cx="20" cy="27" r="1.3" fill="#22d3ee"/>
+    <circle cx="26" cy="29" r="1.3" fill="#a855f7"/>
+    <circle cx="32" cy="30" r="1.3" fill="#f97316"/>
+    <circle cx="38" cy="29" r="1.3" fill="#22d3ee"/>
+    <circle cx="44" cy="27" r="1.3" fill="#a855f7"/>
+    <circle cx="50" cy="24" r="1.3" fill="#facc15"/>
+  </g>
+</svg>
+
+
+⸻
+
+10) errl_fest_flags_line_01 – triangle pennant string (fx/prop/ui)
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="fx" data-name="errl_fest_flags_line_01">
+  <g fill="none">
+    <path d="M8 20 C20 26 44 26 56 20" stroke="#e5e7eb" stroke-width="1.2" stroke-linecap="round"/>
+    <!-- triangles -->
+    <path d="M12 21 L16 25 L20 21 Z" fill="#fb7185"/>
+    <path d="M20 23 L24 27 L28 23 Z" fill="#22d3ee"/>
+    <path d="M28 24 L32 28 L36 24 Z" fill="#facc15"/>
+    <path d="M36 23 L40 27 L44 23 Z" fill="#a855f7"/>
+    <path d="M44 21 L48 25 L52 21 Z" fill="#fb7185"/>
+  </g>
+</svg>
+
+
+⸻
+
+How this gets us to “complete all 400”
+
+We now have:
+	•	A full manifest for all 400 assets across Woods, Festival, Concert, etc.  
+	•	A big chunk of Woods already implemented as SVGs spread across examples_2.txt, Examples_2a.txt, examples_2b.txt.
+	•	A seed batch of Festival SVGs (IDs 1–10 from the Festival list) in proper format, which Codex can copy the style from for the remaining errl_fest_* items.
+
+Next moves that fit nicely into your workflow:
+	1.	Paste these errl_fest_* snippets into your combined .txt file under a clearly labeled FESTIVAL section.
+	2.	Use Codex with a prompt like:
+“Using these festival SVG examples and the manifest in Examples_1.txt, generate matching SVGs for errl_fest_tent_chill_01 through errl_fest_hammock_01 with the same visual style and attributes.”
+	3.	After Festival is filled out, repeat the exact pattern for:
+	•	errl_concert_* (concert gear, crowd, UI)
+	•	errl_weather_* (rain, clouds, snow, sunbeams, storms)
+	•	errl_bg_* (skies, horizons, gradient panels, parallax cards)
+
+In other words: you now have a canonical list + working style samples for each theme. That’s the hard design work. The rest is letting your AI helpers pump out the remaining variations using the same rules, so the scene builder ends up with a ridiculously deep asset library for Errl to wander around in.
+
+Here’s a first follow‑up batch of FESTIVAL SVGs, matching the style and constraints you set (64×64, flat colors, same palette, minimal shapes).
+
+You can drop these under a `// FESTIVAL SVGs` section right after the first 10.
+
+---
+
+### 11) `errl_fest_tent_chill_01` – low chill tent with open front (env)
+
+```xml
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="env" data-name="errl_fest_tent_chill_01">
+  <g fill="none">
+    <!-- ground strip -->
+    <rect x="10" y="40" width="44" height="3" rx="1.5" fill="#022c22" opacity="0.9"/>
+    <!-- back wall / canopy -->
+    <path d="M14 28 L50 28 48 40 16 40 Z" fill="#020617"/>
+    <!-- roof -->
+    <path d="M12 28 L32 18 52 28 Z" fill="#22d3ee"/>
+    <!-- center gradient-ish stripe -->
+    <path d="M28 19 L36 19 46 28 18 28 Z" fill="#fb7185" opacity="0.85"/>
+    <!-- open front flap -->
+    <path d="M18 28 L22 40 18 40 Z" fill="#0f172a"/>
+    <path d="M46 28 L42 40 46 40 Z" fill="#0f172a"/>
+    <!-- floor rug -->
+    <rect x="20" y="36" width="24" height="3" rx="1.2" fill="#4b5563"/>
+    <!-- soft shadow -->
+    <ellipse cx="32" cy="49" rx="20" ry="3.2" fill="#020617" opacity="0.45"/>
+  </g>
+</svg>
+```
+---
+
+### 12) `errl_fest_tent_chill_02` – triangular chill canopy with pillows (env/prop)
+
+```xml
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="env" data-name="errl_fest_tent_chill_02">
+  <g fill="none">
+    <!-- support poles -->
+    <rect x="18" y="26" width="3" height="16" rx="1.2" fill="#0f172a"/>
+    <rect x="43" y="26" width="3" height="16" rx="1.2" fill="#0f172a"/>
+    <!-- canopy -->
+    <path d="M16 26 L32 16 48 26 Z" fill="#a855f7"/>
+    <!-- inner lighter panel -->
+    <path d="M20 26 L32 18 44 26 Z" fill="#22d3ee" opacity="0.9"/>
+    <!-- hanging tassel -->
+    <circle cx="32" cy="20.5" r="1.3" fill="#facc15"/>
+    <!-- floor mat -->
+    <rect x="18" y="38" width="26" height="4" rx="1.5" fill="#166534"/>
+    <!-- two pillows -->
+    <rect x="22" y="36" width="6" height="3" rx="1.5" fill="#fb7185"/>
+    <rect x="34" y="36" width="6" height="3" rx="1.5" fill="#f97316"/>
+    <!-- shadow -->
+    <ellipse cx="32" cy="49" rx="18" ry="3" fill="#020617" opacity="0.45"/>
+  </g>
+</svg>
+```
+---
+
+### 13) `errl_fest_chill_circle_01` – low seating circle / rug cluster (env/prop)
+
+```xml
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="env" data-name="errl_fest_chill_circle_01">
+  <g fill="none">
+    <!-- main rug -->
+    <ellipse cx="32" cy="38" rx="18" ry="8" fill="#111827"/>
+    <!-- inner ring -->
+    <ellipse cx="32" cy="38" rx="13" ry="5.5" fill="#020617"/>
+    <!-- small cushions -->
+    <circle cx="20" cy="36" r="2.4" fill="#fb7185"/>
+    <circle cx="26" cy="32" r="2.2" fill="#22d3ee"/>
+    <circle cx="38" cy="32" r="2.3" fill="#a855f7"/>
+    <circle cx="44" cy="36" r="2.4" fill="#f97316"/>
+    <!-- lantern in center -->
+    <rect x="30" y="34" width="4" height="5" rx="1.3" fill="#020617"/>
+    <circle cx="32" cy="35.5" r="1.4" fill="#facc15"/>
+    <!-- shadow -->
+    <ellipse cx="32" cy="48" rx="17" ry="3" fill="#020617" opacity="0.5"/>
+  </g>
+</svg>
+```
+---
+
+### 14) `errl_fest_hammock_01` – tree‑to‑tree hammock (env/prop)
+
+```xml
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="env" data-name="errl_fest_hammock_01">
+  <g fill="none">
+    <!-- left post -->
+    <rect x="14" y="20" width="4" height="26" rx="1.5" fill="#166534"/>
+    <!-- right post -->
+    <rect x="46" y="20" width="4" height="26" rx="1.5" fill="#166534"/>
+    <!-- hammock fabric -->
+    <path d="M18 26 C24 38 40 38 46 26" fill="#22d3ee"/>
+    <!-- inner stripe -->
+    <path d="M20 27 C25 35 39 35 44 27" fill="#fb7185" opacity="0.85"/>
+    <!-- ropes -->
+    <path d="M18 26 L22 24" stroke="#e5e7eb" stroke-width="1.2" stroke-linecap="round"/>
+    <path d="M46 26 L42 24" stroke="#e5e7eb" stroke-width="1.2" stroke-linecap="round"/>
+    <!-- subtle ground -->
+    <ellipse cx="32" cy="49" rx="20" ry="3.2" fill="#020617" opacity="0.5"/>
+  </g>
+</svg>
+```
+---
+
+If you paste me the exact FESTIVAL slice from `Examples_1.txt` (names/order from `errl_fest_*` 1–N), I can systematically go down that list and generate the rest in batches that match your manifest exactly.</svg>

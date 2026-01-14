@@ -1,0 +1,426 @@
+{
+  "generatedAt": "2026-01-14T18:51:26.986Z",
+  "count": 105,
+  "demos": [
+    {
+      "name": "ai studio gallery overview",
+      "path": "project-overviews/ai-studio-gallery-overview.html"
+    },
+    {
+      "name": "chromatic flow",
+      "path": "NexusPortfolio/projects/chromatic-flow.html"
+    },
+    {
+      "name": "Chromatic Flow",
+      "path": "Chromatic-Flow.html"
+    },
+    {
+      "name": "component vault overview",
+      "path": "project-overviews/component-vault-overview.html"
+    },
+    {
+      "name": "errl",
+      "path": "Errl_Snippet_Pack_Supercharged/Errl_Snippet_Pack_Supercharged/chroma-bloom-button/errl.html"
+    },
+    {
+      "name": "errl",
+      "path": "Errl_Snippet_Pack_Supercharged/Errl_Snippet_Pack_Supercharged/iridescent-goo-card/errl.html"
+    },
+    {
+      "name": "errl",
+      "path": "Errl_Snippet_Pack_Supercharged/Errl_Snippet_Pack_Supercharged/liquid-crystal-text/errl.html"
+    },
+    {
+      "name": "errl",
+      "path": "Errl_Snippet_Pack_Supercharged/Errl_Snippet_Pack_Supercharged/orbit-knots-canvas/errl.html"
+    },
+    {
+      "name": "errl",
+      "path": "Errl_Snippet_Pack_Supercharged/Errl_Snippet_Pack_Supercharged/quantum-slime-halo/errl.html"
+    },
+    {
+      "name": "errl",
+      "path": "Errl_Snippet_Pack_Supercharged/Errl_Snippet_Pack_Supercharged/temporal-kaleido-rings/errl.html"
+    },
+    {
+      "name": "errl ai chatbot overview",
+      "path": "project-overviews/errl-ai-chatbot-overview.html"
+    },
+    {
+      "name": "errl club overview",
+      "path": "project-overviews/errl-club-overview.html"
+    },
+    {
+      "name": "errl club ui overview",
+      "path": "project-overviews/errl-club-ui-overview.html"
+    },
+    {
+      "name": "Errl Components overview",
+      "path": "project-overviews/Errl_Components-overview.html"
+    },
+    {
+      "name": "errl design system overview",
+      "path": "project-overviews/errl-design-system-overview.html"
+    },
+    {
+      "name": "errl fluid overview",
+      "path": "project-overviews/errl-fluid-overview.html"
+    },
+    {
+      "name": "errl forge asset remixer overview",
+      "path": "project-overviews/errl-forge-asset-remixer-overview.html"
+    },
+    {
+      "name": "errl forge overview",
+      "path": "project-overviews/errl-forge-overview.html"
+    },
+    {
+      "name": "errl galaxy overview",
+      "path": "project-overviews/errl-galaxy-overview.html"
+    },
+    {
+      "name": "errl mom tribute",
+      "path": "errl_mom_tribute.html"
+    },
+    {
+      "name": "errl portal overview",
+      "path": "project-overviews/errl-portal-overview.html"
+    },
+    {
+      "name": "errl portal shared overview",
+      "path": "project-overviews/errl-portal-shared-overview.html"
+    },
+    {
+      "name": "errl scene builder overview",
+      "path": "project-overviews/errl_scene_builder-overview.html"
+    },
+    {
+      "name": "Errl Shapes",
+      "path": "html_css_sheets/Errl_Shapes.html"
+    },
+    {
+      "name": "errl sound loops BROKEN",
+      "path": "errl_sound_loops_BROKEN.html"
+    },
+    {
+      "name": "errl vibecheck overview",
+      "path": "project-overviews/errl_vibecheck-overview.html"
+    },
+    {
+      "name": "ErrlFXLab overview",
+      "path": "project-overviews/ErrlFXLab-overview.html"
+    },
+    {
+      "name": "ErrlOS Plugin overview",
+      "path": "project-overviews/ErrlOS-Plugin-overview.html"
+    },
+    {
+      "name": "errlstory pivot v8 overview",
+      "path": "project-overviews/errlstory_pivot_v8-overview.html"
+    },
+    {
+      "name": "figma clone engine overview",
+      "path": "project-overviews/figma-clone-engine-overview.html"
+    },
+    {
+      "name": "html css sheets",
+      "path": "html_css_sheets/html_css_sheets.html"
+    },
+    {
+      "name": "html css sheets (1)",
+      "path": "html_css_sheets/html_css_sheets (1).html"
+    },
+    {
+      "name": "html css sheets (2)",
+      "path": "html_css_sheets/html_css_sheets (2).html"
+    },
+    {
+      "name": "html css sheets (3)",
+      "path": "html_css_sheets/html_css_sheets (3).html"
+    },
+    {
+      "name": "html css sheets (4)",
+      "path": "html_css_sheets/html_css_sheets (4).html"
+    },
+    {
+      "name": "html css sheets (5)",
+      "path": "html_css_sheets/html_css_sheets (5).html"
+    },
+    {
+      "name": "html css sheets (6)",
+      "path": "html_css_sheets/html_css_sheets (6).html"
+    },
+    {
+      "name": "html css sheets (7)",
+      "path": "html_css_sheets/html_css_sheets (7).html"
+    },
+    {
+      "name": "html css sheets (8)",
+      "path": "html_css_sheets/html_css_sheets (8).html"
+    },
+    {
+      "name": "hypnotic",
+      "path": "ProjectStarters/projects/glsl/hypnotic.html"
+    },
+    {
+      "name": "index",
+      "path": "Errl_Snippet_Pack_Supercharged/Errl_Snippet_Pack_Supercharged/index.html"
+    },
+    {
+      "name": "index",
+      "path": "NexusPortfolio/index.html"
+    },
+    {
+      "name": "index",
+      "path": "ProjectStarters/index.html"
+    },
+    {
+      "name": "index",
+      "path": "VJPortfolio/index.html"
+    },
+    {
+      "name": "infinite zoom",
+      "path": "NexusPortfolio/projects/infinite-zoom.html"
+    },
+    {
+      "name": "Infinite Zoom",
+      "path": "Infinite-Zoom.html"
+    },
+    {
+      "name": "kaleidoscope singularity",
+      "path": "NexusPortfolio/projects/kaleidoscope-singularity.html"
+    },
+    {
+      "name": "Kaleidoscope Singularity",
+      "path": "Kaleidoscope-Singularity.html"
+    },
+    {
+      "name": "lava lamp",
+      "path": "ProjectStarters/projects/glsl/lava-lamp.html"
+    },
+    {
+      "name": "liquid light show simulator overview",
+      "path": "project-overviews/liquid-light-show-simulator-overview.html"
+    },
+    {
+      "name": "menger void",
+      "path": "NexusPortfolio/projects/menger-void.html"
+    },
+    {
+      "name": "menger void",
+      "path": "ProjectStarters/projects/glsl/menger-void.html"
+    },
+    {
+      "name": "Menger Void",
+      "path": "Menger-Void.html"
+    },
+    {
+      "name": "metal cymatics 1",
+      "path": "ProjectStarters/projects/glsl/metal-cymatics-1.html"
+    },
+    {
+      "name": "metal cymatics 2",
+      "path": "ProjectStarters/projects/glsl/metal-cymatics-2.html"
+    },
+    {
+      "name": "minimal",
+      "path": "Errl_Snippet_Pack_Supercharged/Errl_Snippet_Pack_Supercharged/chroma-bloom-button/minimal.html"
+    },
+    {
+      "name": "minimal",
+      "path": "Errl_Snippet_Pack_Supercharged/Errl_Snippet_Pack_Supercharged/iridescent-goo-card/minimal.html"
+    },
+    {
+      "name": "minimal",
+      "path": "Errl_Snippet_Pack_Supercharged/Errl_Snippet_Pack_Supercharged/liquid-crystal-text/minimal.html"
+    },
+    {
+      "name": "minimal",
+      "path": "Errl_Snippet_Pack_Supercharged/Errl_Snippet_Pack_Supercharged/orbit-knots-canvas/minimal.html"
+    },
+    {
+      "name": "minimal",
+      "path": "Errl_Snippet_Pack_Supercharged/Errl_Snippet_Pack_Supercharged/quantum-slime-halo/minimal.html"
+    },
+    {
+      "name": "minimal",
+      "path": "Errl_Snippet_Pack_Supercharged/Errl_Snippet_Pack_Supercharged/temporal-kaleido-rings/minimal.html"
+    },
+    {
+      "name": "multi tool app overview",
+      "path": "project-overviews/multi-tool-app-overview.html"
+    },
+    {
+      "name": "neural lattice",
+      "path": "NexusPortfolio/projects/neural-lattice.html"
+    },
+    {
+      "name": "NeuralLattice",
+      "path": "NeuralLattice.html"
+    },
+    {
+      "name": "NexusPortfolio overview",
+      "path": "project-overviews/NexusPortfolio-overview.html"
+    },
+    {
+      "name": "oil water 1",
+      "path": "ProjectStarters/projects/p5/oil-water-1.html"
+    },
+    {
+      "name": "oil water 2",
+      "path": "ProjectStarters/projects/p5/oil-water-2.html"
+    },
+    {
+      "name": "oil water 3",
+      "path": "ProjectStarters/projects/p5/oil-water-3.html"
+    },
+    {
+      "name": "oil water 4",
+      "path": "ProjectStarters/projects/p5/oil-water-4.html"
+    },
+    {
+      "name": "oil water 5",
+      "path": "ProjectStarters/projects/p5/oil-water-5.html"
+    },
+    {
+      "name": "oil water 6",
+      "path": "ProjectStarters/projects/p5/oil-water-6.html"
+    },
+    {
+      "name": "oil water 7",
+      "path": "ProjectStarters/projects/p5/oil-water-7.html"
+    },
+    {
+      "name": "oil water 8",
+      "path": "ProjectStarters/projects/p5/oil-water-8.html"
+    },
+    {
+      "name": "overhead projector 1",
+      "path": "ProjectStarters/projects/p5/overhead-projector-1.html"
+    },
+    {
+      "name": "overhead projector 2",
+      "path": "ProjectStarters/projects/p5/overhead-projector-2.html"
+    },
+    {
+      "name": "overhead projector 3",
+      "path": "ProjectStarters/projects/p5/overhead-projector-3.html"
+    },
+    {
+      "name": "overhead projector 4",
+      "path": "ProjectStarters/projects/p5/overhead-projector-4.html"
+    },
+    {
+      "name": "project overview",
+      "path": "project-overview.html"
+    },
+    {
+      "name": "ProjectStarters overview",
+      "path": "project-overviews/ProjectStarters-overview.html"
+    },
+    {
+      "name": "psychedelic liquid light show overview",
+      "path": "project-overviews/psychedelic-liquid-light-show-overview.html"
+    },
+    {
+      "name": "remix",
+      "path": "Errl_Snippet_Pack_Supercharged/Errl_Snippet_Pack_Supercharged/chroma-bloom-button/remix.html"
+    },
+    {
+      "name": "remix",
+      "path": "Errl_Snippet_Pack_Supercharged/Errl_Snippet_Pack_Supercharged/iridescent-goo-card/remix.html"
+    },
+    {
+      "name": "remix",
+      "path": "Errl_Snippet_Pack_Supercharged/Errl_Snippet_Pack_Supercharged/liquid-crystal-text/remix.html"
+    },
+    {
+      "name": "remix",
+      "path": "Errl_Snippet_Pack_Supercharged/Errl_Snippet_Pack_Supercharged/orbit-knots-canvas/remix.html"
+    },
+    {
+      "name": "remix",
+      "path": "Errl_Snippet_Pack_Supercharged/Errl_Snippet_Pack_Supercharged/quantum-slime-halo/remix.html"
+    },
+    {
+      "name": "remix",
+      "path": "Errl_Snippet_Pack_Supercharged/Errl_Snippet_Pack_Supercharged/temporal-kaleido-rings/remix.html"
+    },
+    {
+      "name": "rgb tracer",
+      "path": "NexusPortfolio/projects/rgb-tracer.html"
+    },
+    {
+      "name": "rgb tracer",
+      "path": "rgb-tracer.html"
+    },
+    {
+      "name": "shared overview",
+      "path": "project-overviews/shared-overview.html"
+    },
+    {
+      "name": "src overview",
+      "path": "project-overviews/src-overview.html"
+    },
+    {
+      "name": "svg editor overview",
+      "path": "project-overviews/svg_editor-overview.html"
+    },
+    {
+      "name": "theme lab overview",
+      "path": "project-overviews/theme-lab-overview.html"
+    },
+    {
+      "name": "universal component extractor overview",
+      "path": "project-overviews/universal-component-extractor-overview.html"
+    },
+    {
+      "name": "VJPortfolio overview",
+      "path": "project-overviews/VJPortfolio-overview.html"
+    },
+    {
+      "name": "VJsynthlab",
+      "path": "VJPortfolio/projects/VJsynthlab.html"
+    },
+    {
+      "name": "VJsynthlab",
+      "path": "VJsynthmixer/VJsynthlab.html"
+    },
+    {
+      "name": "VJsynthmixer 2",
+      "path": "VJPortfolio/projects/VJsynthmixer_2.html"
+    },
+    {
+      "name": "VJsynthmixer 2",
+      "path": "VJsynthmixer/VJsynthmixer_2.html"
+    },
+    {
+      "name": "VJsynthmixer 3",
+      "path": "VJPortfolio/projects/VJsynthmixer_3.html"
+    },
+    {
+      "name": "VJsynthmixer 3",
+      "path": "VJsynthmixer/VJsynthmixer_3.html"
+    },
+    {
+      "name": "VJsynthmixer 4",
+      "path": "VJsynthmixer/VJsynthmixer_4.html"
+    },
+    {
+      "name": "VJsynthmixer 5",
+      "path": "VJPortfolio/projects/VJsynthmixer_5.html"
+    },
+    {
+      "name": "VJsynthmixer 5",
+      "path": "VJsynthmixer/VJsynthmixer_5.html"
+    },
+    {
+      "name": "VJsynthmixer 6",
+      "path": "VJPortfolio/projects/VJsynthmixer_6.html"
+    },
+    {
+      "name": "VJsynthmixer 6",
+      "path": "VJsynthmixer/VJsynthmixer_6.html"
+    }
+  ]
+}

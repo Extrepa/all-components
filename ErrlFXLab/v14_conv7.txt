@@ -1,0 +1,234 @@
+Cool, Errl OS is now strong enough that we should stop losing progress every time the page reloads.
+Next upgrade: state persistence – your lab remembers its presets and some UI state.
+
+We’ll add:
+	•	Saving / loading FX presets to localStorage
+	•	Remembering the last selected tab + HTML FX preset
+	•	Auto-rehydrating on load so it feels like a little app, not a disposable toy
+
+All as patches on top of what you already have.
+
+⸻
+
+1. Add storage helpers + constants
+
+In your <script>, near the top (after the big pile of const ... = document.getElementById(...) and your global vars), add these constants + helpers:
+
+    // ---- Persistence keys ----
+    const STORAGE_KEYS = {
+      fxPresets: "errlFxMegaforge_fxPresets_v1",
+      uiState: "errlFxMegaforge_uiState_v1",
+    };
+
+    function safeParseJSON(text, fallback) {
+      try {
+        const val = JSON.parse(text);
+        return val ?? fallback;
+      } catch {
+        return fallback;
+      }
+    }
+
+    function saveStateToStorage() {
+      // Save FX presets
+      try {
+        const payload = {
+          presets: fxPresets,
+        };
+        localStorage.setItem(
+          STORAGE_KEYS.fxPresets,
+          JSON.stringify(payload)
+        );
+      } catch (err) {
+        console.warn("Could not save FX presets to storage:", err);
+      }
+
+      // Save lightweight UI state
+      try {
+        const uiState = {
+          lastTab: (document.querySelector(".preview-tab.bg-slate-800/80")?.dataset.tab) || "svg",
+          lastHtmlFxPreset: htmlFxPresetSelect.value,
+        };
+        localStorage.setItem(
+          STORAGE_KEYS.uiState,
+          JSON.stringify(uiState)
+        );
+      } catch (err) {
+        console.warn("Could not save UI state:", err);
+      }
+    }
+
+    function loadStateFromStorage() {
+      // Load FX presets
+      try {
+        const raw = localStorage.getItem(STORAGE_KEYS.fxPresets);
+        if (raw) {
+          const parsed = safeParseJSON(raw, null);
+          if (parsed && Array.isArray(parsed.presets)) {
+            fxPresets = parsed.presets.map((p) => ({
+              ...p,
+              // ensure each one has an id
+              id: p.id || Date.now() + "-" + Math.random().toString(16).slice(2),
+            }));
+            renderFxPresetList();
+          }
+        }
+      } catch (err) {
+        console.warn("Could not load FX presets from storage:", err);
+      }
+
+      // Load UI state
+      try {
+        const rawUi = localStorage.getItem(STORAGE_KEYS.uiState);
+        if (rawUi) {
+          const uiState = safeParseJSON(rawUi, null);
+          if (uiState) {
+            const { lastTab, lastHtmlFxPreset } = uiState;
+            if (lastHtmlFxPreset && htmlFxPresets[lastHtmlFxPreset]) {
+              htmlFxPresetSelect.value = lastHtmlFxPreset;
+              applyHtmlFxPreset(lastHtmlFxPreset, false);
+            }
+            if (lastTab) {
+              // delay until DOM is ready and initial tab styles are set
+              setTimeout(() => {
+                activatePreviewTab(lastTab);
+              }, 0);
+            }
+          }
+        }
+      } catch (err) {
+        console.warn("Could not load UI state from storage:", err);
+      }
+    }
+
+Note: this uses activatePreviewTab, which you already added in the previous step (for keyboard shortcuts). If you don’t have it yet, you’ll add it in step 3.
+
+⸻
+
+2. Call saveStateToStorage in the right places
+
+Anywhere the “long-term” state changes, we drop a save.
+
+2.1 Saving / deleting presets
+
+In saveCurrentPresetFromUi(), after renderFxPresetList(); add:
+
+      renderFxPresetList();
+      saveStateToStorage();
+
+In the delete handler inside renderFxPresetList() (where you remove a preset):
+
+        deleteBtn.addEventListener("click", () => {
+          fxPresets = fxPresets.filter((p) => p.id !== preset.id);
+          renderFxPresetList();
+          saveStateToStorage();
+          playBeep(240, 0.08, "square");
+        });
+
+2.2 Export/import preset pack
+
+In exportPresetsBtn.addEventListener("click", ...), after a successful export you can call saveStateToStorage() but it’s not actually required. Still harmless:
+
+      flashStatus("Exported FX preset pack JSON 💾");
+      playBeep(780, 0.09, "triangle");
+      saveStateToStorage();
+
+In the import handler (importPresetsInput.addEventListener("change", ...)), after you push the imported presets and call renderFxPresetList(); add:
+
+          renderFxPresetList();
+          saveStateToStorage();
+          flashStatus(`Imported ${data.presets.length} presets ✅`);
+
+2.3 When HTML FX preset changes
+
+In:
+
+    htmlFxPresetSelect.addEventListener("change", () => {
+      const id = htmlFxPresetSelect.value;
+      applyHtmlFxPreset(id);
+    });
+
+Change it to:
+
+    htmlFxPresetSelect.addEventListener("change", () => {
+      const id = htmlFxPresetSelect.value;
+      applyHtmlFxPreset(id);
+      saveStateToStorage();
+    });
+
+This way, the last chosen HTML FX preset comes back next time.
+
+⸻
+
+3. Make sure activatePreviewTab exists (if not already)
+
+From the last step we added keyboard shortcuts; that included:
+
+    function activatePreviewTab(tabName) {
+      const btn = Array.from(tabButtons).find((b) => b.dataset.tab === tabName);
+      if (btn) {
+        btn.click();
+      }
+    }
+
+If for some reason that helper isn’t in your file yet, drop it somewhere above the window.addEventListener("keydown", ...) handler so both keyboard shortcuts and state loader can use it.
+
+⸻
+
+4. Load state at startup
+
+Once everything is defined (after you finish setting up sliders, presets, etc.), call the loader so the app rehydrates.
+
+Near the end of your <script>, after initial setup like:
+
+    applyPreset("wobbleChill", false);
+    applyHtmlFxPreset("clean", false);
+    updateSandboxSnippet();
+    renderFxPresetList();
+
+Add:
+
+    // Load any stored presets / UI layout
+    loadStateFromStorage();
+
+If your order is slightly different, just make sure:
+	•	fxPresets exists
+	•	renderFxPresetList is defined
+	•	htmlFxPresetSelect + htmlFxPresets exist
+before calling loadStateFromStorage().
+
+⸻
+
+5. Clear also wipes storage (optional)
+
+If you want the big Clear button to also nuke persisted state, add this at the end of the clearBtn handler:
+
+      try {
+        localStorage.removeItem(STORAGE_KEYS.fxPresets);
+        localStorage.removeItem(STORAGE_KEYS.uiState);
+      } catch (err) {
+        console.warn("Could not clear storage:", err);
+      }
+
+That turns Clear into a full “reset universe” button.
+If you’d rather keep presets across clears, skip this part (or only remove uiState to keep layout fresh but preserve FX packs).
+
+⸻
+
+What this does for you
+
+Now your Errl FX Megaforge:
+	•	Remembers your FX packs across refreshes
+	•	Keeps your last tab and last HTML FX preset
+	•	Feels like a tiny installed app rather than a disposable web toy
+
+Stacked on top of everything else (p5 wobble lab, HTML FX, 3D wire, voxel view, sandbox export, gallery, favorites, VS export, nav, keyboard shortcuts), you now basically have “Errl Visual Workstation v1.0” in a single index.html.
+
+Next power-ups after this could be:
+	•	A tiny “Project Info” overlay that spits out JSON describing:
+	•	current FX config
+	•	favorite frames
+	•	VS matchups
+	•	Or a mini “code export” that generates ready-to-drop React / TSX components for a chosen FX preset.
+
+But right now, your lab is finally sticky — it remembers how you like your goo.

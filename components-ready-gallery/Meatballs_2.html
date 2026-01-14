@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meatballs_2</title>
+    <style>
+        :root{--canvas-bg-color:#000;--canvas-width:100%;--canvas-height:100vh}body,html{margin:0;padding:0;overflow:hidden}#metaballs-canvas{display:block;width:var(--canvas-width);height:var(--canvas-height);background-color:var(--canvas-bg-color)}
+    </style>
+</head>
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script><div id="root"></div><canvas id="metaballs-canvas"></canvas>
+    
+    <script>document.addEventListener('DOMContentLoaded', () => {
+  const canvas = document.getElementById('metaballs-canvas');
+  if (!canvas) {
+    console.error('Canvas element not found!');
+    return;
+  }
+
+  const fragmentShader = `
+precision mediump float;
+
+uniform vec2 u_resolution;
+uniform float u_time;
+
+// Smooth minimum function for metaball blending
+float smin(float a, float b, float k) {
+    float h = clamp(0.5 + 0.5 * (b - a) / k, 0.0, 1.0);
+    return mix(b, a, h) - k * h * (1.0 - h);
+}
+
+// 2D Rotation matrix
+mat2 rot(float a) {
+    float s = sin(a);
+    float c = cos(a);
+    return mat2(c, -s, s, c);
+}
+
+// Signed Distance Function for the scene
+float map(vec3 p) {
+    // Time variables for movement
+    float t = u_time;
+    
+    // Define sphere centers with orbital movement
+    vec3 p1 = vec3(sin(t * 1.1) * 1.2, cos(t * 0.9) * 1.0, sin(t * 0.7));
+    vec3 p2 = vec3(cos(t * 1.3) * 1.5, sin(t * 1.2) * 1.2, cos(t * 0.8) * 1.3);
+    vec3 p3 = vec3(sin(t * 0.5) * -1.0, cos(t * 1.5 + 2.0) * 0.8, sin(t * 1.1) * 1.5);
+    vec3 p4 = vec3(0.0, sin(t * 2.0) * 0.5, 0.0); // Center pulsing ball
+
+    // Calculate distances to spheres
+    float d1 = length(p - p1) - 0.6;
+    float d2 = length(p - p2) - 0.5;
+    float d3 = length(p - p3) - 0.45;
+    float d4 = length(p - p4) - 0.3;
+
+    // Blend distances using smooth min
+    float d = smin(d1, d2, 0.6);
+    d = smin(d, d3, 0.6);
+    d = smin(d, d4, 0.5);
+
+    return d;
+}
+
+// Calculate surface normal
+vec3 calcNormal(vec3 p) {
+    vec2 e = vec2(0.001, 0.0);
+    float d = map(p);
+    vec3 n = d - vec3(
+        map(p - e.xyy),
+        map(p - e.yxy),
+        map(p - e.yyx)
+    );
+    return normalize(n);
+}
+
+// Ray marching loop
+float rayMarch(vec3 ro, vec3 rd) {
+    float dO = 0.0;
+    for(int i = 0; i < 100; i++) {
+        vec3 p = ro + rd * dO;
+        float dS = map(p);
+        dO += dS;
+        if(dO > 20.0 || dS < 0.001) break;
+    }
+    return dO;
+}
+
+void main() {
+    // Normalize coordinates
+    vec2 uv = (gl_FragCoord.xy * 2.0 - u_resolution.xy) / min(u_resolution.x, u_resolution.y);
+
+    // Camera setup
+    vec3 ro = vec3(0.0, 0.0, 5.0); // Ray origin
+    vec3 rd = normalize(vec3(uv, -1.5)); // Ray direction
+
+    // Camera rotation
+    ro.xz *= rot(u_time * 0.2);
+    rd.xz *= rot(u_time * 0.2);
+    ro.yz *= rot(sin(u_time * 0.3) * 0.2);
+    rd.yz *= rot(sin(u_time * 0.3) * 0.2);
+
+    // Render background (gradient)
+    vec3 col = vec3(0.1, 0.05, 0.2) * (1.0 - length(uv) * 0.5);
+
+    // Ray march
+    float d = rayMarch(ro, rd);
+
+    if(d < 20.0) {
+        vec3 p = ro + rd * d;
+        vec3 n = calcNormal(p);
+        vec3 r = reflect(rd, n);
+
+        // Dynamic coloring based on position and normal
+        vec3 baseCol = 0.5 + 0.5 * cos(u_time * 0.5 + p.xyx + vec3(0, 2, 4));
+        
+        // Lighting setup
+        vec3 lightPos = vec3(2.0, 4.0, 3.0);
+        vec3 l = normalize(lightPos - p);
+        
+        float diff = max(dot(n, l), 0.0);
+        float spec = pow(max(dot(r, l), 0.0), 32.0);
+        float fresnel = pow(1.0 + dot(rd, n), 3.0);
+        
+        // Combine lighting terms
+        col = baseCol * diff;              // Diffuse
+        col += vec3(1.0) * spec * 0.8;     // Specular
+        col += vec3(0.2, 0.5, 1.0) * fresnel; // Rim light / Fresnel
+        col += baseCol * 0.1;              // Ambient
+    }
+
+    // Gamma correction
+    col = pow(col, vec3(0.4545));
+
+    gl_FragColor = vec4(col, 1.0);
+}
+`;
+
+  let renderer, scene, camera, material, mesh;
+
+  function init() {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    renderer = new THREE.WebGLRenderer({ canvas: canvas });
+    renderer.setSize(width, height);
+
+    scene = new THREE.Scene();
+
+    // Orthographic camera for full-screen quad rendering
+    camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+
+    const geometry = new THREE.PlaneGeometry(2, 2);
+    material = new THREE.ShaderMaterial({
+      uniforms: {
+        u_resolution: { value: new THREE.Vector2(width, height) },
+        u_time: { value: 0.0 },
+      },
+      fragmentShader: fragmentShader,
+    });
+
+    mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
+
+    window.addEventListener('resize', onWindowResize);
+    onWindowResize(); // Initial call to set uniforms
+
+    animate();
+  }
+
+  function onWindowResize() {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    renderer.setSize(width, height);
+    material.uniforms.u_resolution.value.x = width;
+    material.uniforms.u_resolution.value.y = height;
+  }
+
+  function animate() {
+    material.uniforms.u_time.value = performance.now() / 1000;
+    renderer.render(scene, camera);
+    requestAnimationFrame(animate);
+  }
+
+  init();
+});</script>
+    
+    <!-- If vanillaJs is empty, check if there is script content in TSX or elsewhere that needs migration -->
+    <!-- For now, simply dumping what we found. -->
+</body>
+</html>

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" id="icon-3g2l4wcm5">
+  <g xmlns="http://www.w3.org/2000/svg" fill="none">
+    <!-- poles -->
+    <rect x="16" y="26" width="3" height="20" rx="1.4" fill="#e5e7eb"/>
+    <rect x="45" y="26" width="3" height="20" rx="1.4" fill="#e5e7eb"/>
+    <!-- arc rope -->
+    <path d="M17.5 28 C24 20 40 20 46.5 28" stroke="#e5e7eb" stroke-width="1.6" stroke-linecap="round"/>
+    <!-- tiny flags -->
+    <path d="M20 27 L23 30 L20 31 Z" fill="#fb7185"/>
+    <path d="M28 24 L31 27 L28 28 Z" fill="#22d3ee"/>
+    <path d="M36 24 L39 27 L36 28 Z" fill="#facc15"/>
+    <path d="M44 27 L47 30 L44 31 Z" fill="#a855f7"/>
+  </g>
+</svg>

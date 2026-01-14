@@ -1,0 +1,9 @@
+<!-- 65) errl_woods_crate_food_01 – food crate (prop/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="prop" data-name="errl_woods_crate_food_01">
+  <g fill="none">
+    <rect x="20" y="30" width="24" height="14" rx="2" fill="#78350f"/>
+    <rect x="22" y="32" width="20" height="10" rx="1.5" fill="#92400e"/>
+    <path d="M22 36h20" stroke="#a16207" stroke-width="1.6"/>
+  </g>
+</svg>

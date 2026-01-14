@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <pattern id="grain" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+      <circle cx="6" cy="10" r="1.2" fill="#101020" opacity="0.12" />
+      <circle cx="18" cy="4" r="1" fill="#101020" opacity="0.12" />
+      <circle cx="26" cy="20" r="1.2" fill="#101020" opacity="0.12" />
+      <circle cx="12" cy="26" r="1" fill="#101020" opacity="0.12" />
+    </pattern>
+  </defs>
+  <rect id="grain_overlay" x="0" y="0" width="1024" height="1024" fill="url(#grain)" />
+</svg>

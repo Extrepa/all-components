@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Blob</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #EEF2FF; /* Soft light background to contrast */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            font-family: sans-serif;
+        }
+
+        /* Container to maintain rough 4:3 aspect ratio and center content */
+        #container {
+            width: 80vmin;
+            height: 60vmin;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+            /* Overflow visible so blob doesn't clip when bouncing */
+            overflow: visible; 
+            cursor: none; /* We have our own character logic */
+        }
+
+        /* The Gooey Filter Magic */
+        .blob-layer {
+            filter: url(#goo);
+        }
+
+        .blob-part {
+            fill: #2E266F; /* The deep purple/blue from the image */
+        }
+
+        .face-feature {
+            fill: #2E266F;
+        }
+        
+        .face-bg {
+            fill: #FFFFFF;
+        }
+
+        /* Hint text */
+        #hint {
+            position: absolute;
+            bottom: 10px;
+            color: #2E266F;
+            opacity: 0.5;
+            font-size: 14px;
+            pointer-events: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="container">
+        <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet" id="stage">
+            <defs>
+                <!-- This filter creates the liquid/gooey effect by blurring shapes and then contrasting them sharply -->
+                <filter id="goo">
+                    <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="blur" />
+                    <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="goo" />
+                    <feComposite in="SourceGraphic" in2="goo" operator="atop"/>
+                </filter>
+            </defs>
+
+            <!-- The Body Group (Gooey Effect Applied) -->
+            <g class="blob-layer">
+                <!-- Main Head -->
+                <circle id="head-blob" class="blob-part" cx="200" cy="130" r="70" />
+                
+                <!-- The Drips and Legs -->
+                <!-- Left Drip -->
+                <rect class="blob-part leg" x="135" y="130" width="20" height="60" rx="10" />
+                <!-- Left Leg -->
+                <rect class="blob-part leg" x="165" y="130" width="26" height="100" rx="13" />
+                <!-- Right Leg -->
+                <rect class="blob-part leg" x="209" y="130" width="26" height="100" rx="13" />
+                <!-- Right Drip -->
+                <rect class="blob-part leg" x="245" y="130" width="20" height="70" rx="10" />
+            </g>
+
+            <!-- The Face Group (Not Gooey, sits on top) -->
+            <g id="face-group">
+                <!-- White Face Mask -->
+                <ellipse id="face-bg" class="face-bg" cx="200" cy="130" rx="55" ry="50" />
+                
+                <!-- Eyes Container -->
+                <g id="eyes">
+                    <ellipse class="face-feature eye" cx="180" cy="120" rx="10" ry="14" />
+                    <ellipse class="face-feature eye" cx="220" cy="120" rx="10" ry="14" />
+                </g>
+
+                <!-- Mouth -->
+                <ellipse id="mouth" class="face-feature" cx="200" cy="155" rx="12" ry="5" />
+            </g>
+        </svg>
+        <div id="hint">Move & Click</div>
+    </div>
+
+    <script>
+        // Configuration
+        const svg = document.getElementById('stage');
+        const headBlob = document.getElementById('head-blob');
+        const faceGroup = document.getElementById('face-group');
+        const legs = document.querySelectorAll('.leg');
+        const eyes = document.querySelectorAll('.eye');
+        const mouth = document.getElementById('mouth');
+
+        // State
+        let mouse = { x: 200, y: 150 };
+        let charPos = { x: 200, y: 150 };
+        let velocity = { x: 0, y: 0 };
+        let isMouseDown = false;
+        
+        // Physics constants
+        const SPRING = 0.08;
+        const FRICTION = 0.85;
+        const LEG_LAG = 0.15; // How much legs trail behind
+        
+        // Leg initial offsets (relative to center 200, 130)
+        const legOffsets = [
+            { x: -65, y: 0, h: 60, w: 20 },  // Left Drip
+            { x: -35, y: 0, h: 100, w: 26 }, // Left Leg
+            { x: 9, y: 0, h: 100, w: 26 },   // Right Leg
+            { x: 45, y: 0, h: 70, w: 20 }    // Right Drip
+        ];
+
+        // Capture Mouse/Touch
+        const updateMouse = (e) => {
+            const pt = svg.createSVGPoint();
+            // Handle touch or mouse
+            pt.x = e.clientX || (e.touches && e.touches[0].clientX);
+            pt.y = e.clientY || (e.touches && e.touches[0].clientY);
+            
+            // Transform to SVG coordinates
+            const svgP = pt.matrixTransform(svg.getScreenCTM().inverse());
+            mouse.x = svgP.x;
+            mouse.y = svgP.y;
+        };
+
+        window.addEventListener('mousemove', updateMouse);
+        window.addEventListener('touchmove', (e) => { e.preventDefault(); updateMouse(e); }, {passive: false});
+        
+        window.addEventListener('mousedown', () => { isMouseDown = true; });
+        window.addEventListener('mouseup', () => { isMouseDown = false; });
+        window.addEventListener('touchstart', () => { isMouseDown = true; });
+        window.addEventListener('touchend', () => { isMouseDown = false; });
+
+        // Animation Loop
+        function animate() {
+            // 1. Physics for Main Body (Head)
+            // Calculate distance to target (mouse)
+            const dx = mouse.x - charPos.x;
+            const dy = mouse.y - charPos.y;
+            
+            // Spring force
+            velocity.x += dx * SPRING;
+            velocity.y += dy * SPRING;
+            
+            // Friction
+            velocity.x *= FRICTION;
+            velocity.y *= FRICTION;
+            
+            // Apply velocity
+            charPos.x += velocity.x;
+            charPos.y += velocity.y;
+
+            // Clamp to view roughly
+            if(charPos.x < 50) charPos.x = 50;
+            if(charPos.x > 350) charPos.x = 350;
+            if(charPos.y < 50) charPos.y = 50;
+            if(charPos.y > 250) charPos.y = 250;
+
+            // 2. Update Head Position
+            // Add a subtle idle "breathing" vertical motion
+            const time = Date.now() * 0.003;
+            const hoverY = Math.sin(time) * 5;
+            
+            // Click reaction: Squash/Stretch
+            let scaleX = 1;
+            let scaleY = 1;
+            if (isMouseDown) {
+                scaleX = 1.15; // Fat
+                scaleY = 0.85; // Short
+            } else {
+                // Stretch based on velocity (jelly effect)
+                const speed = Math.abs(velocity.y);
+                scaleY = 1 + Math.min(speed * 0.01, 0.2);
+                scaleX = 1 - Math.min(speed * 0.01, 0.2);
+            }
+
+            headBlob.setAttribute('cx', charPos.x);
+            headBlob.setAttribute('cy', charPos.y + hoverY);
+            // Adjust radius for squash effect roughly
+            headBlob.setAttribute('r', 70 * ((scaleX + scaleY)/2));
+
+            // 3. Update Legs (Drag behind head)
+            legs.forEach((leg, i) => {
+                const offset = legOffsets[i];
+                
+                // The top of the leg is attached to the head
+                // The bottom drags behind based on velocity
+                
+                // X position: Follow head + offset + drag
+                // We create a lag effect by opposing velocity
+                const legX = charPos.x + offset.x - (velocity.x * 1.5); 
+                
+                // Y position: Attached to head centerline
+                const legY = charPos.y + hoverY; 
+
+                // Height: Stretch when moving down, compress moving up
+                // Plus interaction click squash
+                let currentHeight = offset.h * scaleY;
+                
+                // Add dangling physics: skew effect via rotation or simple offset
+                // Since these are rects, we just move x/y. 
+                // The goo filter makes them look like they are stretching.
+                
+                leg.setAttribute('x', legX);
+                leg.setAttribute('y', legY);
+                leg.setAttribute('height', currentHeight);
+                
+                // Wiggle legs slightly independently
+                const wiggle = Math.sin(time + i) * 2;
+                leg.setAttribute('rx', 10 + Math.abs(wiggle));
+            });
+
+            // 4. Face Positioning
+            // The face follows the head but leads slightly into the turn (anticipation)
+            // or lags slightly. Let's make it centered but shifted by look direction.
+            
+            const faceX = charPos.x + (velocity.x * 0.5);
+            const faceY = charPos.y + hoverY + (velocity.y * 0.5);
+            
+            // Transform group
+            // Apply scaling to face too for consistency
+            const transformList = `translate(${faceX - 200}, ${faceY - 130}) scale(${scaleX}, ${scaleY})`; 
+            // Note: Translate accounts for initial SVG position of face components at 200,130
+            faceGroup.setAttribute('transform', `translate(${faceX}, ${faceY}) scale(${scaleX}, ${scaleY}) translate(-200, -130)`);
+
+            // 5. Eye Tracking
+            // Calculate angle to mouse from current head position
+            const eyeLimit = 6; // max pixels eyes can move
+            
+            eyes.forEach((eye, i) => {
+                // Default positions
+                const defX = (i === 0) ? 180 : 220;
+                const defY = 120;
+
+                // Vector from eye default to mouse
+                // We use the 'mouse' global, but relative to the *current* face position
+                const dxEye = mouse.x - (faceX + (defX - 200));
+                const dyEye = mouse.y - (faceY + (defY - 130));
+                const dist = Math.sqrt(dxEye*dxEye + dyEye*dyEye);
+                
+                // Normalize and scale
+                let moveX = 0;
+                let moveY = 0;
+                if (dist > 0) {
+                    moveX = (dxEye / dist) * Math.min(dist, eyeLimit);
+                    moveY = (dyEye / dist) * Math.min(dist, eyeLimit);
+                }
+
+                eye.setAttribute('cx', defX + moveX);
+                eye.setAttribute('cy', defY + moveY);
+                
+                // Blink logic
+                // Occasional blink
+                if (Math.random() < 0.01) {
+                   eye.setAttribute('ry', 0.5); // Close eye
+                } else {
+                   eye.setAttribute('ry', 14); // Open eye
+                }
+            });
+
+            // 6. Mouth Interaction
+            if (isMouseDown) {
+                // Open mouth "O" shape
+                mouth.setAttribute('ry', 15);
+                mouth.setAttribute('rx', 10);
+            } else {
+                // Normal small oval
+                mouth.setAttribute('ry', 5);
+                mouth.setAttribute('rx', 12 + Math.sin(time*2)*2); // Slight mumble
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+    </script>
+</body>
+</html>

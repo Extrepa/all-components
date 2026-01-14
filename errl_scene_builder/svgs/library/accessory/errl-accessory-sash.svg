@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <g id="sash" fill="none" stroke="#0e0b1e" stroke-width="14" stroke-linejoin="round">
+    <path fill="#c13d4b" d="M 220 700 C 360 646 540 620 760 632 L 742 690 C 560 676 420 696 260 736 Z"/>
+    <path fill="#e85f74" d="M 742 690 C 770 706 792 730 806 760 C 766 748 730 728 704 708 Z"/>
+  </g>
+</svg>

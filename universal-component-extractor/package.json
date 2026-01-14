@@ -1,0 +1,89 @@
+{
+  "name": "universal-component-extractor",
+  "private": true,
+  "version": "2.0.5",
+  "type": "module",
+  "main": "dist-electron/main.cjs",
+  "author": "Your Name",
+  "description": "Universal Component Extractor - Desktop App",
+  "scripts": {
+    "dev": "vite",
+    "build": "npm run build:electron && electron-builder",
+    "build:electron": "node scripts/copy-libs.js && node scripts/verify-libs.js && tsc -p electron/tsconfig.json && node scripts/rename-electron.js && vite build",
+    "electron:dev": "node scripts/copy-libs.js && concurrently \"vite\" \"wait-on http://localhost:3000 && electron dist-electron/main.cjs\"",
+    "electron:build": "npm run build:electron && electron-builder",
+    "preview": "vite preview",
+    "copy-libs": "node scripts/copy-libs.js",
+    "verify-libs": "node scripts/verify-libs.js",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.27.0",
+    "@babel/standalone": "^7.23.10",
+    "@google/genai": "^1.30.0",
+    "@types/react-syntax-highlighter": "^15.5.13",
+    "diff": "^8.0.2",
+    "electron-store": "^10.1.0",
+    "jszip": "^3.10.1",
+    "openai": "^4.47.1",
+    "p5": "^1.9.0",
+    "prismjs": "^1.30.0",
+    "react": "^19.2.1",
+    "react-diff-view": "^3.3.2",
+    "react-dom": "^19.2.1",
+    "react-syntax-highlighter": "^16.1.0",
+    "three": "^0.160.0"
+  },
+  "devDependencies": {
+    "@testing-library/dom": "^10.0.0",
+    "@testing-library/jest-dom": "^6.1.5",
+    "@testing-library/react": "^16.0.0",
+    "@testing-library/user-event": "^14.5.1",
+    "@types/diff": "^7.0.2",
+    "@types/node": "^22.14.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "@vitest/coverage-v8": "^1.0.4",
+    "@vitest/ui": "^1.0.4",
+    "concurrently": "^9.0.1",
+    "electron": "^30.0.0",
+    "electron-builder": "^24.13.3",
+    "jsdom": "^23.0.1",
+    "typescript": "~5.8.2",
+    "vite": "^6.2.0",
+    "vitest": "^1.0.4",
+    "wait-on": "^7.2.0"
+  },
+  "build": {
+    "appId": "com.universal.component.extractor",
+    "productName": "Universal Component Extractor",
+    "mac": {
+      "category": "public.app-category.developer-tools",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ]
+    },
+    "files": [
+      "dist/**/*",
+      "dist-electron/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "public/libs",
+        "to": "libs",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ]
+  }
+}

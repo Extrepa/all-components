@@ -1,0 +1,14 @@
+<!-- errl_weather_cloud_storm_01 – storm cloud with lightning (fx/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_weather" data-cat="fx" data-name="errl_weather_cloud_storm_01">
+  <g fill="none">
+    <!-- darker cloud -->
+    <circle cx="24" cy="24" r="5" fill="#0f172a"/>
+    <circle cx="32" cy="22" r="6" fill="#020617"/>
+    <circle cx="40" cy="24" r="5" fill="#0f172a"/>
+    <rect x="22" y="24" width="20" height="5" rx="2.5" fill="#020617"/>
+    <!-- lightning -->
+    <path d="M32 29 L28 36 H31 L27 43 L36 34 H33 L36 29 Z"
+      fill="#facc15"/>
+  </g>
+</svg>

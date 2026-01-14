@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PsychoMath SVG Mixer</title>
+  <style>
+    :root { --bg:#0d1228; --panel:#121735; --ink:#eaf7ff; --accent:#7cf0ff; --accent2:#ffd36a; }
+    html, body { height:100%; background:var(--bg); margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji"; color:var(--ink); }
+    .wrap { display:grid; place-items:center; padding:24px; }
+    .gallery-row{
+      margin-top:18px;
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:16px;
+      width:100%;
+      max-width:980px;
+    }
+    .gallery-window{
+      background:#0b1026;
+      border-radius:14px;
+      border:1px solid #1f2950;
+      padding:10px 10px 12px;
+      box-shadow:0 10px 26px rgba(0,0,0,.45);
+      display:flex;
+      flex-direction:column;
+      min-height:260px;
+    }
+    .gw-header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:4px;
+    }
+    .gw-title{
+      font-size:12px;
+      font-weight:700;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:#cfe7ff;
+    }
+    .gw-nav, .gw-vert{
+      display:flex;
+      gap:4px;
+    }
+    .gw-subnav{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      font-size:10px;
+      color:#9bb3ff;
+      margin-bottom:6px;
+    }
+    .gw-theme-label{opacity:.8; letter-spacing:.06em; text-transform:uppercase;}
+    .nav-btn{
+      background:#141a3c;
+      border:1px solid #29336b;
+      color:#dff5ff;
+      font-size:11px;
+      padding:0 6px;
+      border-radius:4px;
+      cursor:pointer;
+    }
+    .nav-btn:hover{border-color:#46a8ff; color:#fff;}
+    .gw-canvas{
+      width:100%;
+      height:auto;
+      border-radius:10px;
+      background:#050816;
+      border:1px solid #1b2348;
+    }
+    .gw-caption{
+      margin-top:6px;
+      font-size:10px;
+      color:#b8c7ff;
+      min-height:1.6em;
+    }
+    .pad-row{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:8px;
+    }
+    .drum-pad{
+      fill:#151a3b;
+      stroke:#36407a;
+      stroke-width:1.6;
+      rx:10;
+      ry:10;
+    }
+    .drum-pad-label{
+      font:700 10px/1.2 system-ui,sans-serif;
+      fill:#cde6ff;
+      text-anchor:middle;
+    }
+    .drum-pad-hit{
+      opacity:0;
+      pointer-events:none;
+      fill:url(#faceGrad);
+    }
+  
+    .hint { font-size:12px; opacity:0.8; margin-top:8px; }
+    svg { width: min(980px, 96vw); height: auto; border-radius:16px; box-shadow: 0 12px 40px rgba(0,0,0,.45); background: #0b1024; }
+    .num { font: 600 10px/1 monospace; fill:#bcd; }
+    .label { font: 700 12px/1.2 system-ui, sans-serif; fill:#cfe7ff; letter-spacing:.04em; }
+    .lite { opacity:.7 }
+    .tick { stroke:#2a335f; stroke-width:1 }
+    .knob-face { fill:url(#faceGrad); stroke:#26305e; stroke-width:1.5 }
+    .knob-cap { fill:#0b1024; stroke:#94f0ff; stroke-width:1.6 }
+    .panel { fill:url(#panelGrad); stroke:#1c254f; stroke-width:1.2; rx:12; ry:12 }
+    .button { cursor:pointer }
+    .scope-bg { fill:#0f1433; stroke:#1e2858; stroke-width:1; rx:10; ry:10 }
+    .kbd { font: 700 11px/1 monospace; fill:#8adfff }
+    .led { fill:#142046; stroke:#2b3270; stroke-width:1 }
+    .led.on { fill:#23d3ff }
+    .btn { fill:#1a2044; stroke:#2d3a7a; stroke-width:1.2; rx:6; ry:6 }
+    .btn.active { fill:#204a6a; stroke:#44a9ff }
+    .small { font: 600 9px/1 monospace; fill:#9cc }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <!-- Entire UI is one SVG -->
+    <svg viewBox="0 0 980 560" role="img" aria-label="PsychoMath SVG Mixer">
+      <defs>
+        <linearGradient id="panelGrad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#0d1432" />
+          <stop offset="1" stop-color="#0a102a" />
+        </linearGradient>
+        <radialGradient id="faceGrad" cx="35%" cy="30%" r="80%">
+          <stop offset="0" stop-color="#172048" />
+          <stop offset="1" stop-color="#0c1130" />
+        </radialGradient>
+        <filter id="glow">
+          <feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#7cf0ff" flood-opacity=".45"/>
+        </filter>
+      </defs>
+
+      <!-- Outer panel -->
+      <rect class="panel" x="15" y="15" width="950" height="530" />
+
+      <!-- Header -->
+      <text x="36" y="52" class="label" font-size="22">PsychoMath Mixer</text>
+      <text x="36" y="72" class="small">SVG + CSS with sprinkles of JS • knobs are rotatable • everything mathy and weird</text>
+
+      <!-- Left: three effect viewports -->
+      <!-- Spirograph -->
+      <g transform="translate(30,95)">
+        <rect class="scope-bg" x="0" y="0" width="420" height="140" rx="10" ry="10"/>
+        <text x="12" y="18" class="label lite">Spirograph</text>
+        <g id="spiroScope" transform="translate(210,75)">
+          <circle r="68" fill="#0f173c" stroke="#1f2a64"/>
+          <path id="spiroPath" d="" fill="none" stroke="#7cf0ff" stroke-width="1.6" filter="url(#glow)"/>
+        </g>
+      </g>
+
+      <!-- Superellipse -->
+      <g transform="translate(30,260)">
+        <rect class="scope-bg" x="0" y="0" width="420" height="140" rx="10" ry="10"/>
+        <text x="12" y="18" class="label lite">Superellipse</text>
+        <g id="superScope" transform="translate(210,70)">
+          <rect x="-78" y="-48" width="156" height="96" fill="#0f173c" stroke="#1f2a64"/>
+          <path id="superPath" d="" fill="none" stroke="#ffd36a" stroke-width="1.6" filter="url(#glow)"/>
+        </g>
+      </g>
+
+      <!-- Kaleidoscope -->
+      <g transform="translate(30,425)">
+        <rect class="scope-bg" x="0" y="0" width="420" height="100" rx="10" ry="10"/>
+        <text x="12" y="18" class="label lite">Kaleidoscope</text>
+        <g id="kaleidoScope" transform="translate(220,72)">
+          <defs>
+            <radialGradient id="blob" cx="30%" cy="30%">
+              <stop offset="0" stop-color="#7cf0ff"/>
+              <stop offset="1" stop-color="#142046"/>
+            </radialGradient>
+          </defs>
+          <g id="kBox" transform="scale(0.8)">
+            <!-- Wedges are generated by JS -->
+          </g>
+        </g>
+      </g>
+
+      <!-- Right: Knob strip -->
+      <g id="knobStrip" transform="translate(480,95)">
+        <text x="0" y="-10" class="label">Controls</text>
+
+        <!-- Knob template instances -->
+        <g class="knob" data-name="R (outer)" data-min="20" data-max="120" transform="translate(40,40)"></g>
+        <g class="knob" data-name="r (inner)" data-min="5" data-max="60"  transform="translate(160,40)"></g>
+        <g class="knob" data-name="d (pen)"   data-min="5" data-max="90"  transform="translate(280,40)"></g>
+
+        <g class="knob" data-name="n (super)" data-min="2" data-max="7"   transform="translate(40,160)"></g>
+        <g class="knob" data-name="Slices"    data-min="3" data-max="18"  transform="translate(160,160)"></g>
+        <g class="knob" data-name="Speed"     data-min="0" data-max="1"   transform="translate(280,160)"></g>
+
+        <!-- Buttons -->
+        <g transform="translate(0,240)">
+          <rect class="btn button" x="0" y="0" width="110" height="34" rx="6" ry="6" id="btnPause"/>
+          <text x="12" y="22" class="kbd">Pause / Play</text>
+          <rect class="led" x="120" y="8" width="10" height="18" rx="3" id="ledPlay"/>
+
+          <rect class="btn button" x="160" y="0" width="140" height="34" rx="6" ry="6" id="btnRandomize"/>
+          <text x="172" y="22" class="kbd">Randomize All</text>
+        </g>
+        <!-- Drum pads -->
+        <g class="pad-row" transform="translate(0,290)">
+          <g class="button pad" data-pad="0" transform="translate(0,0)">
+            <rect class="drum-pad" x="0" y="0" width="110" height="80" rx="10" ry="10"/>
+            <rect class="drum-pad-hit" x="0" y="0" width="110" height="80" rx="10" ry="10" opacity="0.0"/>
+            <text class="drum-pad-label" x="55" y="46">Pad A</text>
+          </g>
+          <g class="button pad" data-pad="1" transform="translate(130,0)">
+            <rect class="drum-pad" x="0" y="0" width="110" height="80" rx="10" ry="10"/>
+            <rect class="drum-pad-hit" x="0" y="0" width="110" height="80" rx="10" ry="10" opacity="0.0"/>
+            <text class="drum-pad-label" x="55" y="46">Pad B</text>
+          </g>
+          <g class="button pad" data-pad="2" transform="translate(0,90)">
+            <rect class="drum-pad" x="0" y="0" width="110" height="80" rx="10" ry="10"/>
+            <rect class="drum-pad-hit" x="0" y="0" width="110" height="80" rx="10" ry="10" opacity="0.0"/>
+            <text class="drum-pad-label" x="55" y="46">Pad C</text>
+          </g>
+          <g class="button pad" data-pad="3" transform="translate(130,90)">
+            <rect class="drum-pad" x="0" y="0" width="110" height="80" rx="10" ry="10"/>
+            <rect class="drum-pad-hit" x="0" y="0" width="110" height="80" rx="10" ry="10" opacity="0.0"/>
+            <text class="drum-pad-label" x="55" y="46">Pad D</text>
+          </g>
+        </g>
+
+      </g>
+
+      <!-- Footnotes -->
+      <text x="482" y="420" class="small">R,r,d = Spirograph radii; n = superellipse exponent; Slices = kaleidoscope wedge count; Speed = global animation rate</text>
+      <text x="482" y="440" class="small">Drag knobs (or mousewheel) to adjust. Everything is pure SVG + a dash of JS.</text>
+    </svg>
+
+
+    <section class="gallery-row">
+      <div class="gallery-window" data-index="0">
+        <div class="gw-header">
+          <span class="gw-title">Window A</span>
+          <div class="gw-nav">
+            <button class="nav-btn nav-left" aria-label="Previous theme">◀</button>
+            <button class="nav-btn nav-right" aria-label="Next theme">▶</button>
+          </div>
+        </div>
+        <div class="gw-subnav">
+          <span class="gw-theme-label">Theme</span>
+          <div class="gw-vert">
+            <button class="nav-btn nav-up" aria-label="Previous item">▲</button>
+            <button class="nav-btn nav-down" aria-label="Next item">▼</button>
+          </div>
+        </div>
+        <canvas class="gw-canvas" width="260" height="200"></canvas>
+        <div class="gw-caption"></div>
+      </div>
+
+      <div class="gallery-window" data-index="1">
+        <div class="gw-header">
+          <span class="gw-title">Window B</span>
+          <div class="gw-nav">
+            <button class="nav-btn nav-left" aria-label="Previous theme">◀</button>
+            <button class="nav-btn nav-right" aria-label="Next theme">▶</button>
+          </div>
+        </div>
+        <div class="gw-subnav">
+          <span class="gw-theme-label">Theme</span>
+          <div class="gw-vert">
+            <button class="nav-btn nav-up" aria-label="Previous item">▲</button>
+            <button class="nav-btn nav-down" aria-label="Next item">▼</button>
+          </div>
+        </div>
+        <canvas class="gw-canvas" width="260" height="200"></canvas>
+        <div class="gw-caption"></div>
+      </div>
+
+      <div class="gallery-window" data-index="2">
+        <div class="gw-header">
+          <span class="gw-title">Window C</span>
+          <div class="gw-nav">
+            <button class="nav-btn nav-left" aria-label="Previous theme">◀</button>
+            <button class="nav-btn nav-right" aria-label="Next theme">▶</button>
+          </div>
+        </div>
+        <div class="gw-subnav">
+          <span class="gw-theme-label">Theme</span>
+          <div class="gw-vert">
+            <button class="nav-btn nav-up" aria-label="Previous item">▲</button>
+            <button class="nav-btn nav-down" aria-label="Next item">▼</button>
+          </div>
+        </div>
+        <canvas class="gw-canvas" width="260" height="200"></canvas>
+        <div class="gw-caption"></div>
+      </div>
+
+      <div class="gallery-window" data-index="3">
+        <div class="gw-header">
+          <span class="gw-title">Window D</span>
+          <div class="gw-nav">
+            <button class="nav-btn nav-left" aria-label="Previous theme">◀</button>
+            <button class="nav-btn nav-right" aria-label="Next theme">▶</button>
+          </div>
+        </div>
+        <div class="gw-subnav">
+          <span class="gw-theme-label">Theme</span>
+          <div class="gw-vert">
+            <button class="nav-btn nav-up" aria-label="Previous item">▲</button>
+            <button class="nav-btn nav-down" aria-label="Next item">▼</button>
+          </div>
+        </div>
+        <canvas class="gw-canvas" width="260" height="200"></canvas>
+        <div class="gw-caption"></div>
+      </div>
+    </section>
+
+    <div class="hint">Tip: print this to paper for “physical mixer” vibes, or embed the SVG directly in your Errl portal.</div>
+  </div>
+
+  <script>
+  // ---------- State ----------
+  const state = {
+    R: 80, r: 23, d: 60,
+    n: 3.5,
+    slices: 8,
+    speed: 0.35,
+    running: true,
+    t: 0
+  };
+
+  // ---------- Helpers ----------
+  const $ = (q, root=document) => root.querySelector(q);
+  const $$ = (q, root=document) => Array.from(root.querySelectorAll(q));
+  function clamp(v,min,max){ return Math.min(max, Math.max(min, v)); }
+  function map(v, a1, a2, b1, b2){ return b1 + (v - a1) * (b2 - b1) / (a2 - a1); }
+
+  // ---------- Spirograph ----------
+  const spiroPath = $('#spiroPath');
+  function drawSpiro(R, r, d, turns=8, steps=1200, phase=0){
+    let dstr = "";
+    for(let i=0;i<=steps;i++){
+      const t = i/steps * (Math.PI*2*turns) + phase;
+      const x = (R - r)*Math.cos(t) + d*Math.cos(((R - r)/r)*t);
+      const y = (R - r)*Math.sin(t) - d*Math.sin(((R - r)/r)*t);
+      dstr += (i?'L':'M') + x.toFixed(2) + "," + y.toFixed(2);
+    }
+    spiroPath.setAttribute('d', dstr);
+    spiroPath.setAttribute('stroke', `hsl(${(state.t*40)%360} 90% 70%)`);
+  }
+
+  // ---------- Superellipse ----------
+  const superPath = $('#superPath');
+  function drawSuperellipse(n=3.5, a=70, b=40, steps=480){
+    let dstr="";
+    for(let i=0;i<=steps;i++){
+      const t = i/steps * Math.PI*2;
+      const ct = Math.cos(t), st = Math.sin(t);
+      const x = Math.sign(ct) * a * Math.pow(Math.abs(ct), 2/n);
+      const y = Math.sign(st) * b * Math.pow(Math.abs(st), 2/n);
+      dstr += (i?'L':'M') + x.toFixed(2) + "," + y.toFixed(2);
+    }
+    superPath.setAttribute('d', dstr + "Z");
+    superPath.setAttribute('stroke', `hsl(${(state.t*60+160)%360} 90% 70%)`);
+  }
+
+  // ---------- Kaleidoscope ----------
+  const kBox = $('#kBox');
+  function drawKaleidoscope(slices=8, t=0){
+    kBox.innerHTML = "";
+    const wedges = slices|0;
+    const radius = 60;
+    for(let i=0;i<wedges;i++){
+      const ang = i*(Math.PI*2/wedges);
+      const g = document.createElementNS("http://www.w3.org/2000/svg","g");
+      g.setAttribute("transform", `rotate(${ang*180/Math.PI})`);
+      const blob = document.createElementNS("http://www.w3.org/2000/svg","path");
+      const r1 = 26 + 8*Math.sin(t*0.9 + i*0.7);
+      const r2 = 12 + 4*Math.cos(t*1.1 + i*0.9);
+      const d = `M0,0 L0,-${radius}
+                 C ${r2},-${radius-r1} ${r1},-${r2} 0,0 Z`;
+      blob.setAttribute("d", d);
+      blob.setAttribute("fill", `hsl(${(t*50+i*20)%360} 90% 65%)`);
+      g.appendChild(blob);
+      kBox.appendChild(g);
+    }
+  }
+
+  // ---------- Knobs ----------
+  function buildKnob(g){
+    const name = g.dataset.name;
+    const min = +g.dataset.min;
+    const max = +g.dataset.max;
+    // base
+    const face = document.createElementNS("http://www.w3.org/2000/svg","circle");
+    face.setAttribute("class","knob-face");
+    face.setAttribute("r","28"); face.setAttribute("cx","0"); face.setAttribute("cy","0");
+    g.appendChild(face);
+    // ticks
+    for(let i=0;i<=10;i++){
+      const a = map(i,0,10,-135,135)*Math.PI/180;
+      const x1 = Math.cos(a)*22, y1 = Math.sin(a)*22;
+      const x2 = Math.cos(a)*26, y2 = Math.sin(a)*26;
+      const line = document.createElementNS("http://www.w3.org/2000/svg","line");
+      line.setAttribute("x1",x1); line.setAttribute("y1",y1);
+      line.setAttribute("x2",x2); line.setAttribute("y2",y2);
+      line.setAttribute("class","tick");
+      g.appendChild(line);
+    }
+    // pointer cap
+    const cap = document.createElementNS("http://www.w3.org/2000/svg","rect");
+    cap.setAttribute("class","knob-cap");
+    cap.setAttribute("x","-2"); cap.setAttribute("y","-18"); cap.setAttribute("width","4"); cap.setAttribute("height","18"); cap.setAttribute("rx","2");
+    cap.setAttribute("transform","rotate(-135)");
+    g.appendChild(cap);
+    // label
+    const label = document.createElementNS("http://www.w3.org/2000/svg","text");
+    label.setAttribute("class","label lite");
+    label.setAttribute("x","-32"); label.setAttribute("y","48");
+    label.textContent = name;
+    g.appendChild(label);
+    // value text
+    const val = document.createElementNS("http://www.w3.org/2000/svg","text");
+    val.setAttribute("class","num");
+    val.setAttribute("x","-12"); val.setAttribute("y","10");
+    g.appendChild(val);
+
+    // state binding key
+    const keyMap = {
+      "R (outer)":"R", "r (inner)":"r", "d (pen)":"d",
+      "n (super)":"n", "Slices":"slices", "Speed":"speed"
+    };
+    const key = keyMap[name];
+
+    function angleFromValue(v){
+      const a = map(v, min, max, -135, 135);
+      return a;
+    }
+    function valueFromAngle(a){
+      const v = map(a, -135, 135, min, max);
+      return v;
+    }
+    // init
+    function updateKnobVisual(){
+      const a = angleFromValue(state[key]);
+      cap.setAttribute("transform", `rotate(${a})`);
+      val.textContent = (key==="speed" || key==="n") ? state[key].toFixed(2) : Math.round(state[key]);
+    }
+    updateKnobVisual();
+
+    // interactions
+    let dragging=false, lastA=0;
+    g.style.cursor = "grab";
+    g.addEventListener("pointerdown", (e)=>{
+      dragging = true;
+      g.setPointerCapture(e.pointerId);
+      g.style.cursor = "grabbing";
+    });
+    g.addEventListener("pointerup", (e)=>{
+      dragging = false;
+      g.releasePointerCapture(e.pointerId);
+      g.style.cursor = "grab";
+    });
+    g.addEventListener("pointermove", (e)=>{
+      if(!dragging) return;
+      const pt = e.currentTarget.getBoundingClientRect();
+      const cx = pt.left + pt.width/2;
+      const cy = pt.top + pt.height/2;
+      const dx = e.clientX - cx;
+      const dy = e.clientY - cy;
+      let ang = Math.atan2(dy, dx) * 180/Math.PI; // -180..180
+      ang = clamp(ang, -135, 135);
+      const v = valueFromAngle(ang);
+      state[key] = key==="n" ? +v.toFixed(2) : (key==="speed"? +v.toFixed(2) : v);
+      updateKnobVisual();
+      refreshOnce();
+    });
+    // wheel
+    g.addEventListener("wheel", (e)=>{
+      e.preventDefault();
+      const delta = (e.deltaY<0?1:-1) * ((max-min)/100);
+      state[key] = clamp(state[key] - delta, min, max);
+      if(key==="n" || key==="speed") state[key] = +state[key].toFixed(2);
+      updateKnobVisual();
+      refreshOnce();
+    }, {passive:false});
+  }
+
+  // Build all knobs
+  $$('.knob').forEach(buildKnob);
+
+  // Buttons
+  const led = $('#ledPlay');
+  const btnPause = $('#btnPause');
+  const btnRandom = $('#btnRandomize');
+  function setPlayLED(){
+    if(state.running){ led.classList.add('on'); } else { led.classList.remove('on'); }
+  }
+  btnPause.addEventListener('click', ()=>{
+    state.running = !state.running;
+    setPlayLED();
+  });
+  btnRandom.addEventListener('click', ()=>{
+    state.R = Math.round(map(Math.random(),0,1, 30,120));
+    state.r = Math.round(map(Math.random(),0,1, 5,60));
+    state.d = Math.round(map(Math.random(),0,1, 5,90));
+    state.n = +(map(Math.random(),0,1, 2,7).toFixed(2));
+    state.slices = Math.round(map(Math.random(),0,1, 3,18));
+    state.speed = +(map(Math.random(),0,1, 0,1).toFixed(2));
+    $$('.knob').forEach(k=>{
+      // trigger visual refresh by rebuilding? simpler: call buildKnob again would duplicate elements.
+      // Instead, dispatch a fake wheel to force update; easier: just call refreshOnce and knobs expose values via inner text only.
+    });
+    refreshOnce(true);
+  });
+
+  setPlayLED();
+
+  // ---------- Render Loop ----------
+  let rafId=0;
+  function refreshOnce(force=false){
+    drawSpiro(state.R, state.r, state.d, 10, 1400, state.t*0.6);
+    drawSuperellipse(state.n, 80, 48, 600);
+    drawKaleidoscope(state.slices, state.t);
+    if(force===true){
+      // also refresh knob visuals to reflect randomize
+      // we stored values only; need to rotate caps again:
+      $$('.knob').forEach(k=>{
+        const textEl = k.querySelector('.num');
+        const cap = k.querySelector('.knob-cap');
+        const name = k.dataset.name;
+        const min = +k.dataset.min, max = +k.dataset.max;
+        const keyMap = {"R (outer)":"R","r (inner)":"r","d (pen)":"d","n (super)":"n","Slices":"slices","Speed":"speed"};
+        const key = keyMap[name];
+        const v = state[key];
+        const angle = map(v, min,max, -135, 135);
+        cap.setAttribute('transform', `rotate(${angle})`);
+        textEl.textContent = (key==="speed"||key==="n") ? (+v).toFixed(2) : Math.round(v);
+      });
+    }
+  }
+
+  function loop(ts){
+    if(state.running){
+      state.t += 0.016 * (0.25 + state.speed*2.0);
+      refreshOnce();
+    }
+    rafId = requestAnimationFrame(loop);
+  }
+  refreshOnce(true);
+  loop(0);
+  
+  // ---------- Gallery Themes (4 windows x themes x items) ----------
+  // Each item has: label, theme, render(ctx, w, h, t)
+  const galleryThemes = [
+    {
+      name: "Orbits & Knots",
+      items: [
+        {
+          label: "Spirograph Bloom",
+          render(ctx,w,h,t){
+            ctx.clearRect(0,0,w,h);
+            ctx.fillStyle="#050816"; ctx.fillRect(0,0,w,h);
+            const cx=w/2, cy=h/2;
+            const R=60, r=23, d=40;
+            ctx.strokeStyle=`hsl(${(t*30)%360} 90% 70%)`;
+            ctx.lineWidth=1.2;
+            ctx.beginPath();
+            const steps=900;
+            for(let i=0;i<=steps;i++){
+              const ang = i/steps * Math.PI*2*8 + t*0.4;
+              const x = (R-r)*Math.cos(ang) + d*Math.cos(((R-r)/r)*ang);
+              const y = (R-r)*Math.sin(ang) - d*Math.sin(((R-r)/r)*ang);
+              const X = cx + x, Y = cy + y*0.8;
+              if(i===0) ctx.moveTo(X,Y); else ctx.lineTo(X,Y);
+            }
+            ctx.stroke();
+          }
+        },
+        {
+          label: "Lissajous Knot",
+          render(ctx,w,h,t){
+            ctx.clearRect(0,0,w,h);
+            ctx.fillStyle="#050816"; ctx.fillRect(0,0,w,h);
+            const cx=w/2, cy=h/2;
+            const A=80,B=55, ax=5, ay=4;
+            ctx.strokeStyle=`hsl(${(t*40+160)%360} 90% 70%)`;
+            ctx.lineWidth=1.2;
+            ctx.beginPath();
+            const steps=1000;
+            for(let i=0;i<=steps;i++){
+              const u = i/steps * Math.PI*2;
+              const x = A*Math.sin(ax*u);
+              const y = B*Math.sin(ay*u + Math.PI/3 + t*0.2);
+              const X = cx + x*0.9, Y = cy + y*0.9;
+              if(i===0) ctx.moveTo(X,Y); else ctx.lineTo(X,Y);
+            }
+            ctx.stroke();
+          }
+        },
+        {
+          label: "Harmonograph Knot",
+          render(ctx,w,h,t){
+            ctx.clearRect(0,0,w,h);
+            ctx.fillStyle="#050816"; ctx.fillRect(0,0,w,h);
+            const cx=w/2, cy=h/2;
+            let x,y;
+            ctx.strokeStyle=`hsl(${(t*25+260)%360} 95% 70%)`;
+            ctx.lineWidth=1.0;
+            ctx.beginPath();
+            const steps=2600;
+            for(let i=0;i<=steps;i++){
+              const tt = i/steps * 40;
+              const A1=90, A2=80, f1=2.01, f2=3.03, p1=0, p2=Math.PI/2, d1=0.008, d2=0.006;
+              x = A1*Math.sin(f1*tt + p1) * Math.exp(-d1*tt);
+              y = A2*Math.sin(f2*tt + p2) * Math.exp(-d2*tt);
+              const X = cx + x*0.9, Y = cy + y*0.7;
+              if(i===0) ctx.moveTo(X,Y); else ctx.lineTo(X,Y);
+            }
+            ctx.stroke();
+          }
+        }
+      ]
+    },
+    {
+      name: "Fields & Flow",
+      items: [
+        {
+          label: "Phyllotaxis Sunflower",
+          render(ctx,w,h,t){
+            ctx.clearRect(0,0,w,h);
+            ctx.fillStyle="#050816"; ctx.fillRect(0,0,w,h);
+            const cx=w/2, cy=h/2;
+            const angle = 137.5 * Math.PI/180;
+            const c = 4;
+            const n=580;
+            for(let i=0;i<n;i++){
+              const r = c*Math.sqrt(i);
+              const theta = i*angle + t*0.1;
+              const x = cx + r*Math.cos(theta);
+              const y = cy + r*Math.sin(theta)*0.8;
+              const hue = (i*0.7 + t*10)%360;
+              ctx.fillStyle=`hsl(${hue} 85% 65%)`;
+              ctx.beginPath(); ctx.arc(x,y,1.2,0,Math.PI*2); ctx.fill();
+            }
+          }
+        },
+        {
+          label: "Voronoi Cells",
+          render(ctx,w,h,t){
+            ctx.clearRect(0,0,w,h);
+            const seeds = [];
+            const N=22;
+            for(let i=0;i<N;i++){
+              const x = (i%6+0.5)*(w/6) + Math.sin(t*0.4 + i)*8;
+              const y = (Math.floor(i/6)+0.5)*(h/4) + Math.cos(t*0.5 + i*0.7)*8;
+              seeds.push({x,y});
+            }
+            const img = ctx.createImageData(w,h);
+            const data = img.data;
+            for(let y=0;y<h;y++){
+              for(let x=0;x<w;x++){
+                let best=1e9, id=0;
+                for(let i=0;i<N;i++){
+                  const dx=x-seeds[i].x, dy=y-seeds[i].y;
+                  const d2=dx*dx+dy*dy;
+                  if(d2<best){best=d2; id=i;}
+                }
+                const hue = (id*360/N + t*4)%360;
+                const off=(y*w+x)*4;
+                const c = 30 + (best%40);
+                data[off+0]=c; data[off+1]=c; data[off+2]=c; data[off+3]=255;
+              }
+            }
+            ctx.putImageData(img,0,0);
+            const grd = ctx.createLinearGradient(0,0,w,h);
+            grd.addColorStop(0,"#7cf0ff55");
+            grd.addColorStop(1,"#ffd36a55");
+            ctx.globalCompositeOperation="overlay";
+            ctx.fillStyle=grd; ctx.fillRect(0,0,w,h);
+            ctx.globalCompositeOperation="source-over";
+          }
+        },
+        {
+          label: "Flow Ribbons",
+          render(ctx,w,h,t){
+            ctx.fillStyle="rgba(5,8,22,0.25)"; ctx.fillRect(0,0,w,h);
+            const N=30;
+            ctx.lineWidth=1.1;
+            for(let i=0;i<N;i++){
+              const seed = i*30;
+              const x = (Math.sin(t*0.15 + seed)*0.5+0.5)*w;
+              const y = (Math.cos(t*0.12 + seed*0.3)*0.5+0.5)*h;
+              ctx.strokeStyle=`hsl(${(t*20+seed)%360} 90% 70%)`;
+              ctx.beginPath();
+              for(let j=0;j<40;j++){
+                const a = Math.sin((x+y)*0.02 + t*0.002)*Math.PI;
+                const nx = x + Math.cos(a)*2.2;
+                const ny = y + Math.sin(a)*2.2;
+                if(j===0) ctx.moveTo(x,y); else ctx.lineTo(nx,ny);
+                x=nx; y=ny;
+              }
+              ctx.stroke();
+            }
+          }
+        }
+      ]
+    },
+    {
+      name: "Fractals & Strange",
+      items: [
+        {
+          label: "Strange Attractor",
+          render(ctx,w,h,t){
+            ctx.clearRect(0,0,w,h);
+            ctx.fillStyle="#050816"; ctx.fillRect(0,0,w,h);
+            const a=1.7,b=1.7,c=0.6,d=1.2;
+            let x=0.1,y=0,tsteps=7000;
+            ctx.fillStyle="#7cf0ff";
+            for(let i=0;i<tsteps;i++){
+              const nx = Math.sin(a*y)+c*Math.cos(a*x);
+              const ny = Math.sin(b*x)+d*Math.cos(b*y);
+              x=nx; y=ny;
+              const px = (x+2)/4*w;
+              const py = (y+2)/4*h;
+              ctx.fillStyle=`hsla(${(i*0.02+t*20)%360},90%,70%,0.6)`;
+              ctx.fillRect(px,py,1,1);
+            }
+          }
+        },
+        {
+          label: "Barnsley Fern",
+          render(ctx,w,h,t){
+            ctx.clearRect(0,0,w,h);
+            ctx.fillStyle="#050816"; ctx.fillRect(0,0,w,h);
+            let x=0,y=0;
+            ctx.fillStyle="#7cf0ff";
+            function mapTo(x,y){
+              const X = (x+2.5)/5*w;
+              const Y = h - (y/10+0.05)*h;
+              return [X,Y];
+            }
+            for(let i=0;i<6000;i++){
+              const r = Math.random()*100;
+              let xn,yn;
+              if(r<1){xn=0;yn=0.16*y;}
+              else if(r<86){xn=0.85*x+0.04*y; yn=-0.04*x+0.85*y+1.6;}
+              else if(r<93){xn=0.2*x-0.26*y; yn=0.23*x+0.22*y+1.6;}
+              else {xn=-0.15*x+0.28*y; yn=0.26*x+0.24*y+0.44;}
+              x=xn;y=yn;
+              const [X,Y]=mapTo(x,y);
+              ctx.fillStyle=`hsla(${(Y/h*120+120)%360},80%,65%,0.9)`;
+              ctx.fillRect(X,Y,1,1);
+            }
+          }
+        },
+        {
+          label: "Hilbert Curve",
+          render(ctx,w,h,t){
+            ctx.clearRect(0,0,w,h);
+            ctx.fillStyle="#050816"; ctx.fillRect(0,0,w,h);
+            const order=5, N=1<<order;
+            const scale = Math.min(w,h)/N;
+            function idxToXY(i){
+              let x=0,y=0, s=1, tt=i;
+              while(s<N){
+                const rx = 1 & (tt>>1);
+                const ry = 1 & (tt ^ rx);
+                if(ry===0){
+                  if(rx===1){ x = s-1-x; y = s-1-y; }
+                  const tmp=x; x=y; y=tmp;
+                }
+                x += s*rx; y += s*ry;
+                tt >>= 2; s <<= 1;
+              }
+              return [x,y];
+            }
+            ctx.beginPath();
+            for(let i=0;i<N*N;i++){
+              const [ix,iy]=idxToXY(i);
+              const px = ix*scale + (w-N*scale)/2 + scale/2;
+              const py = iy*scale + (h-N*scale)/2 + scale/2;
+              if(i===0) ctx.moveTo(px,py); else ctx.lineTo(px,py);
+            }
+            ctx.strokeStyle=`hsl(${(t*25+220)%360} 90% 70%)`;
+            ctx.lineWidth=1.2;
+            ctx.stroke();
+          }
+        }
+      ]
+    },
+    {
+      name: "Crystals & Kaleidos",
+      items: [
+        {
+          label: "Quasi Starfield",
+          render(ctx,w,h,t){
+            ctx.clearRect(0,0,w,h);
+            ctx.fillStyle="#050816"; ctx.fillRect(0,0,w,h);
+            const cx=w/2, cy=h/2;
+            const layers=3;
+            for(let L=0;L<layers;L++){
+              const spokes=10+L*4;
+              const rad=40+L*18;
+              ctx.strokeStyle=`hsla(${(t*10+L*60)%360},90%,70%,0.55)`;
+              ctx.lineWidth=1;
+              ctx.beginPath();
+              for(let i=0;i<spokes;i++){
+                const a = i*Math.PI*2/spokes + t*0.02*(L+1);
+                const x1 = cx + Math.cos(a)*(rad-8);
+                const y1 = cy + Math.sin(a)*(rad-8);
+                const x2 = cx + Math.cos(a+0.02)*(rad+8);
+                const y2 = cy + Math.sin(a+0.02)*(rad+8);
+                ctx.moveTo(x1,y1); ctx.lineTo(x2,y2);
+              }
+              ctx.stroke();
+            }
+          }
+        },
+        {
+          label: "Polygon Kaleido",
+          render(ctx,w,h,t){
+            ctx.clearRect(0,0,w,h);
+            const cx=w/2, cy=h/2;
+            ctx.fillStyle="#050816"; ctx.fillRect(0,0,w,h);
+            const slices=10;
+            for(let i=0;i<slices;i++){
+              const ang = i*Math.PI*2/slices;
+              ctx.save();
+              ctx.translate(cx,cy);
+              ctx.rotate(ang);
+              const r1 = 30 + 10*Math.sin(t*0.7+i);
+              ctx.beginPath();
+              ctx.moveTo(0,0);
+              ctx.lineTo(0,-70);
+              ctx.quadraticCurveTo(r1,-40,0,-10);
+              ctx.closePath();
+              ctx.fillStyle=`hsl(${(t*20+i*30)%360} 85% 65%)`;
+              ctx.fill();
+              ctx.restore();
+            }
+          }
+        },
+        {
+          label: "Soap Film Orb",
+          render(ctx,w,h,t){
+            ctx.clearRect(0,0,w,h);
+            ctx.fillStyle="#050816"; ctx.fillRect(0,0,w,h);
+            const cx=w/2, cy=h/2, R=Math.min(w,h)*0.35;
+            const steps=220;
+            for(let i=0;i<steps;i++){
+              const ang = i/steps*Math.PI*2;
+              const x = cx + Math.cos(ang)*R;
+              const y = cy + Math.sin(ang)*R;
+              const hue = (i/steps*360 + t*10)%360;
+              ctx.strokeStyle=`hsla(${hue},90%,70%,0.8)`;
+              ctx.beginPath();
+              ctx.arc(cx,cy,R*Math.abs(Math.sin(ang*2+t*0.4))*0.3+R*0.7,ang,ang+0.02);
+              ctx.stroke();
+            }
+          }
+        }
+      ]
+    }
+  ];
+
+  const galleryWindows = Array.from(document.querySelectorAll('.gallery-window')).map((el,i)=>({
+    el,
+    canvas: el.querySelector('.gw-canvas'),
+    ctx: el.querySelector('.gw-canvas').getContext('2d'),
+    caption: el.querySelector('.gw-caption'),
+    themeIndex: i % galleryThemes.length,
+    itemIndex: 0
+  }));
+
+  function renderGalleryWindow(win, t){
+    const theme = galleryThemes[win.themeIndex];
+    const item = theme.items[(win.itemIndex % theme.items.length + theme.items.length)%theme.items.length];
+    const {ctx, canvas} = win;
+    item.render(ctx, canvas.width, canvas.height, t);
+    win.caption.textContent = theme.name + " • " + item.label;
+  }
+
+  galleryWindows.forEach(win=>{
+    const left = win.el.querySelector('.nav-left');
+    const right = win.el.querySelector('.nav-right');
+    const up = win.el.querySelector('.nav-up');
+    const down = win.el.querySelector('.nav-down');
+    left.addEventListener('click', ()=>{ win.themeIndex = (win.themeIndex - 1 + galleryThemes.length) % galleryThemes.length; win.itemIndex=0; renderGalleryWindow(win, state.t*60); });
+    right.addEventListener('click', ()=>{ win.themeIndex = (win.themeIndex + 1) % galleryThemes.length; win.itemIndex=0; renderGalleryWindow(win, state.t*60); });
+    up.addEventListener('click', ()=>{ win.itemIndex = (win.itemIndex - 1 + galleryThemes[win.themeIndex].items.length) % galleryThemes[win.themeIndex].items.length; renderGalleryWindow(win, state.t*60); });
+    down.addEventListener('click', ()=>{ win.itemIndex = (win.itemIndex + 1) % galleryThemes[win.themeIndex].items.length; renderGalleryWindow(win, state.t*60); });
+  });
+
+  // Pads: each pad will randomize and flash a window
+  const padGroups = $$('.pad');
+  padGroups.forEach((pg,i)=>{
+    pg.addEventListener('click', ()=>{
+      const padRect = pg.querySelector('.drum-pad-hit');
+      padRect.style.opacity = "0.7";
+      setTimeout(()=>padRect.style.opacity="0", 120);
+      const win = galleryWindows[i % galleryWindows.length];
+      win.themeIndex = Math.floor(Math.random()*galleryThemes.length);
+      win.itemIndex = Math.floor(Math.random()*galleryThemes[win.themeIndex].items.length);
+      renderGalleryWindow(win, state.t*60);
+    });
+  });
+
+  // Seed gallery
+  galleryWindows.forEach(win=>renderGalleryWindow(win, 0));
+</script>
+</body>
+</html>

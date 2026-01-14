@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_accessory" data-cat="wearable" data-name="errl_accessory_coat_mad_scientist">
+  <rect width="64" height="64" rx="12" fill="none"/>
+  <path d="M18 20c2 4 3 8 3 12-4 8-6 16-6 24h34c0-8-2-16-6-24 0-4 1-8 3-12" fill="#f7fbff" stroke="#163a4a" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M18 44h28" stroke="#a7c6dd" stroke-width="2" stroke-linecap="round"/>
+  <rect x="28" y="26" width="8" height="18" rx="2" fill="#cde6ff"/>
+  <circle cx="32" cy="38" r="1.5" fill="#163a4a"/>
+  <circle cx="32" cy="32" r="1.5" fill="#163a4a"/>
+  <path d="M22 30l-4 6m24-6l4 6" stroke="#34e1ff" stroke-width="2" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,16 @@
+node_modules
+dist
+dist-electron
+.DS_Store
+*.log
+.env.local
+.env
+*.local
+public/libs
+*.dmg
+*.zip
+.vscode
+.idea
+*.swp
+*.swo
+*~

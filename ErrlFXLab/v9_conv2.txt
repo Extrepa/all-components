@@ -1,0 +1,355 @@
+Alright, Errl Lab Technician, let’s bolt on v0.9:
+Sandbox snippet generator + Favorites for captured frames.
+No 3D yet—this slice is all about making outputs portable and curate-able.
+
+I’ll treat your current file as v0.8 and give you surgical edits instead of another 900-line brick.
+
+⸻
+
+1. Add a “Sandbox Snippet” panel (HTML)
+
+In your current index.html, inside the right-hand column (the <section class="w-80 ...">), after the “FX Preset Pack manager” block, add this new block at the bottom:
+
+      <!-- Sandbox snippet generator -->
+      <div class="border-t border-slate-800/70 px-3 py-2 text-[11px] text-slate-200">
+        <div class="flex items-center justify-between mb-1">
+          <span class="font-semibold text-slate-100">Sandbox Snippet</span>
+          <span class="text-[10px] text-slate-500">Standalone HTML</span>
+        </div>
+
+        <p class="text-[10px] text-slate-400 mb-1">
+          Generates a tiny HTML file that embeds the current Errl SVG + HTML FX filters. Save as
+          <code class="bg-slate-900 px-1 rounded">errl-fx-sandbox.html</code>
+          or drop into an <code>&lt;iframe srcdoc="..."&gt;</code>.
+        </p>
+
+        <div class="flex items-center gap-1 mb-1">
+          <button
+            id="copySandboxBtn"
+            class="px-2 py-1 rounded-md border border-cyan-500/70 text-cyan-200 text-[10px] hover:bg-cyan-500/15"
+          >
+            Copy HTML
+          </button>
+          <button
+            id="downloadSandboxBtn"
+            class="px-2 py-1 rounded-md border border-emerald-500/70 text-emerald-200 text-[10px] hover:bg-emerald-500/15"
+          >
+            Download .html
+          </button>
+          <span class="text-[10px] text-slate-500">Uses current SVG + CSS filter</span>
+        </div>
+
+        <textarea
+          id="sandboxHtmlOutput"
+          class="w-full h-24 mt-1 bg-slate-950 border border-slate-700 rounded-md px-2 py-1 text-[10px] font-mono text-slate-100 scrollbar-thin"
+          spellcheck="false"
+        ></textarea>
+      </div>
+
+So now the right panel has, from top to bottom:
+	•	SVG Inspector
+	•	p5 Controls
+	•	HTML FX Controls
+	•	Captured frames
+	•	FX Preset Pack
+	•	Sandbox Snippet (new)
+
+⸻
+
+2. Wire up new DOM refs (JS)
+
+In your <script> block, near the top where you grab DOM elements (right after const presetListEl = document.getElementById("presetList");), add:
+
+    // Sandbox snippet elements
+    const sandboxHtmlOutput = document.getElementById("sandboxHtmlOutput");
+    const copySandboxBtn = document.getElementById("copySandboxBtn");
+    const downloadSandboxBtn = document.getElementById("downloadSandboxBtn");
+
+
+⸻
+
+3. Add captured frame favorites (JS change)
+
+Find your current captureCurrentFrameToGallery function in v0.8 and replace it with this version:
+
+    // ---- Captured frames + favorites ----
+    let capturedFrames = [];
+
+    function captureCurrentFrameToGallery() {
+      if (!p5CanvasElement) return false;
+      try {
+        const dataUrl = p5CanvasElement.toDataURL("image/png");
+        const id = Date.now() + "-" + Math.random().toString(16).slice(2);
+
+        const frame = {
+          id,
+          url: dataUrl,
+          favorite: false,
+        };
+        capturedFrames.unshift(frame);
+
+        const wrapper = document.createElement("div");
+        wrapper.className =
+          "relative group w-full h-full rounded-md overflow-hidden border border-slate-700/80 bg-slate-900/80";
+
+        const img = new Image();
+        img.src = dataUrl;
+        img.className =
+          "w-full h-full object-cover cursor-pointer group-hover:opacity-90 transition";
+        img.title = "Click to download";
+        img.addEventListener("click", () => {
+          const a = document.createElement("a");
+          a.href = dataUrl;
+          a.download = "errl-fx-frame.png";
+          a.click();
+        });
+
+        const favBtn = document.createElement("button");
+        favBtn.className =
+          "absolute top-0.5 right-0.5 px-1.5 py-0.5 rounded-full bg-slate-950/90 border border-slate-600 text-[10px] text-slate-200 opacity-80 group-hover:opacity-100";
+        favBtn.textContent = "☆";
+
+        favBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          frame.favorite = !frame.favorite;
+          if (frame.favorite) {
+            favBtn.textContent = "★";
+            favBtn.classList.remove("border-slate-600", "text-slate-200");
+            favBtn.classList.add("border-amber-400", "text-amber-300");
+            wrapper.classList.add("ring-1", "ring-amber-400/70");
+          } else {
+            favBtn.textContent = "☆";
+            favBtn.classList.remove("border-amber-400", "text-amber-300");
+            favBtn.classList.add("border-slate-600", "text-slate-200");
+            wrapper.classList.remove("ring-1", "ring-amber-400/70");
+          }
+          playBeep(frame.favorite ? 880 : 320, 0.07, "triangle");
+        });
+
+        wrapper.appendChild(img);
+        wrapper.appendChild(favBtn);
+        thumbGallery.prepend(wrapper);
+
+        const maxThumbs = 48;
+        while (thumbGallery.children.length > maxThumbs) {
+          thumbGallery.removeChild(thumbGallery.lastChild);
+        }
+        thumbCountEl.textContent = String(thumbGallery.children.length);
+        return true;
+      } catch (err) {
+        console.error("Capture error", err);
+        return false;
+      }
+    }
+
+The visible changes:
+	•	Each frame in the gallery now has a ⭐ button in the corner.
+	•	Clicking the star toggles favorite state and glows the thumb.
+	•	We also keep a capturedFrames array for later export / VS mode.
+
+No other parts of the code that call captureCurrentFrameToGallery() need to change.
+
+⸻
+
+4. Implement sandbox snippet generation
+
+We’ll create a function that turns current SVG + HTML FX filters into a tiny HTML file, then connect it to the textarea + buttons.
+
+4.1 Helper: create sandbox HTML from current state
+
+Somewhere in the helper section (near the HTML FX helpers is fine), add:
+
+    // ---- Sandbox snippet generator ----
+    function getCurrentSandboxHtml() {
+      if (!currentSvg || !currentSvg.cleanedSvg) {
+        return "<!-- Upload an Errl SVG + set some HTML FX to generate a sandbox document. -->";
+      }
+
+      // Encode SVG as data URL (so the sandbox is fully self-contained)
+      const svgText = currentSvg.cleanedSvg;
+      const svgBase64 = btoa(unescape(encodeURIComponent(svgText)));
+      const svgDataUrl = "data:image/svg+xml;base64," + svgBase64;
+
+      const filterString = getHtmlFxFilterString();
+
+      const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Errl FX Sandbox</title>
+  <style>
+    :root {
+      --bg: #02070a;
+      --accent: #34e1ff;
+      --accent-alt: #ff34f5;
+      --text: #ecf9ff;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(circle at top, #071b25 0, #02070a 55%, #000 100%);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    .frame {
+      padding: 16px;
+      border-radius: 24px;
+      background: rgba(2, 7, 10, 0.9);
+      box-shadow:
+        0 0 32px rgba(52, 225, 255, 0.4),
+        0 0 64px rgba(255, 52, 245, 0.25);
+      border: 1px solid rgba(22, 58, 74, 0.9);
+    }
+    img {
+      max-width: 70vmin;
+      max-height: 70vmin;
+      display: block;
+      filter: ${filterString};
+    }
+    .label {
+      margin-top: 8px;
+      font-size: 10px;
+      opacity: 0.7;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <img src="${svgDataUrl}" alt="Errl FX" />
+    <div class="label">Errl FX sandbox · CSS filter baked in</div>
+  </div>
+</body>
+</html>`;
+
+      return html;
+    }
+
+    function updateSandboxSnippet() {
+      if (!sandboxHtmlOutput) return;
+      sandboxHtmlOutput.value = getCurrentSandboxHtml();
+    }
+
+4.2 Hook sandbox updates into existing flows
+
+Anywhere you already update HTML FX or SVG, call updateSandboxSnippet().
+
+Specifically:
+	1.	In handleSvgFile (after updateHtmlFxImage();), add:
+
+          updateHtmlFxImage();
+          updateSandboxSnippet();
+
+(So just add updateSandboxSnippet(); on the next line.)
+	2.	In updateHtmlFxImage(), after applyHtmlFxFilters(); add:
+
+      applyHtmlFxFilters();
+      updateSandboxSnippet();
+
+	3.	In applyHtmlFxFilters(), after setting htmlFxImage.style.filter = filter;, also call:
+
+      htmlFxImage.style.filter = filter;
+      updateSandboxSnippet();
+
+This is “extra safe” so wherever the filter changes, the sandbox HTML mirrors it.
+	4.	Right after you set up initial HTML FX presets (after applyHtmlFxPreset("clean", false);), add a first call:
+
+    applyHtmlFxPreset("clean", false);
+    updateSandboxSnippet();
+
+
+⸻
+
+5. Copy + Download buttons for sandbox
+
+Near the bottom of the script (where you define button listeners like copyCssFilterBtn, exportPresetsBtn, etc.), add:
+
+    // ---- Sandbox snippet buttons ----
+    copySandboxBtn.addEventListener("click", async () => {
+      const text = sandboxHtmlOutput.value || getCurrentSandboxHtml();
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(text);
+        } else {
+          const textarea = document.createElement("textarea");
+          textarea.value = text;
+          textarea.style.position = "fixed";
+          textarea.style.left = "-9999px";
+          document.body.appendChild(textarea);
+          textarea.focus();
+          textarea.select();
+          document.execCommand("copy");
+          document.body.removeChild(textarea);
+        }
+        flashStatus("Sandbox HTML copied to clipboard ✂️");
+        playBeep(780, 0.08, "sine");
+      } catch (err) {
+        console.error("Sandbox copy error:", err);
+        flashStatus("Could not copy sandbox HTML.", "error");
+        playBeep(200, 0.1, "square");
+      }
+    });
+
+    downloadSandboxBtn.addEventListener("click", () => {
+      const text = sandboxHtmlOutput.value || getCurrentSandboxHtml();
+      const blob = new Blob([text], { type: "text/html;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "errl-fx-sandbox.html";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      flashStatus("Downloaded sandbox HTML 💾");
+      playBeep(840, 0.08, "triangle");
+    });
+
+
+⸻
+
+6. Clear behavior: reset sandbox text too
+
+In your clearBtn.addEventListener("click", ...) handler, after you reset htmlFxImage/htmlFxStatus, also do:
+
+      if (sandboxHtmlOutput) {
+        sandboxHtmlOutput.value =
+          "<!-- Upload an Errl SVG + set some HTML FX to generate a sandbox document. -->";
+      }
+
+
+⸻
+
+What you have now (v0.9 vibes)
+	•	Captured frames with favorites:
+	•	Each thumbnail can be starred.
+	•	Favorite frames are visually highlighted and stored in capturedFrames with favorite: true.
+	•	Future VS mode can pull directly from capturedFrames.filter(f => f.favorite).
+	•	Sandbox Snippet:
+	•	One click generates a complete, self-contained HTML file with:
+	•	Your current Errl SVG embedded as a data URL.
+	•	The exact current CSS filter stack baked in.
+	•	You can:
+	•	Copy it to clipboard and paste into:
+	•	AI prompts
+	•	srcdoc of an <iframe>
+	•	A CodePen / JSFiddle / whatever.
+	•	Download as errl-fx-sandbox.html and drag into a browser or host it.
+
+Next slice we can ride this infrastructure into:
+	•	Simple VS Mode that compares two favorite frames side-by-side.
+	•	A “Favorites” view in the sidebar that only shows starred frames.
+	•	First pass at 3D Wire using the same SVG → texture pipeline in a lightweight Three.js or canvas setup.
+
+For now, you’ve basically got:
+
+Errl FX lab → preset packs → batch frames → favorites → portable sandbox.
+One goo, many realities.

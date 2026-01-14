@@ -1,0 +1,8 @@
+<!-- errl_concert_truss_segment_01 – horizontal stage truss (env/prop) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_concert" data-cat="env" data-name="errl_concert_truss_segment_01">
+  <g fill="none">
+    <rect x="12" y="24" width="40" height="8" rx="2" fill="#111827"/>
+    <path d="M14 26 L50 30 M14 30 L50 26" stroke="#22d3ee" stroke-width="1.3" stroke-linecap="round" opacity="0.8"/>
+  </g>
+</svg>

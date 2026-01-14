@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Voxel Creature</title>
+    <style>
+        body { margin: 0; overflow: hidden; background-color: #201a4a; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    <script type="module">
+        import * as THREE from 'https://esm.run/three';
+        import { OrbitControls } from 'https://esm.run/three/examples/jsm/controls/OrbitControls.js';
+
+        // Scene Setup
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color('#201a4a'); // Matching background roughly to the image mood
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(40, 30, 50);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(2);
+        document.body.appendChild(renderer.domElement);
+
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.autoRotate = true;
+        controls.autoRotateSpeed = 2.0;
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+        scene.add(ambientLight);
+
+        const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        dirLight.position.set(20, 30, 20);
+        scene.add(dirLight);
+        
+        const backLight = new THREE.DirectionalLight(0x6655aa, 0.5);
+        backLight.position.set(-20, 10, -20);
+        scene.add(backLight);
+
+        // Geometry & Material for Voxels
+        const geometry = new THREE.BoxGeometry(1, 1, 1);
+        // Using a slightly rounded box for a nicer voxel look
+        const boxGeo = new THREE.BoxGeometry(0.95, 0.95, 0.95); 
+        
+        const material = new THREE.MeshStandardMaterial({
+            roughness: 0.3,
+            metalness: 0.1
+        });
+
+        // SDF Functions for shape generation
+        function smin(a, b, k) {
+            const h = Math.max(k - Math.abs(a - b), 0.0) / k;
+            return Math.min(a, b) - h * h * k * 0.25;
+        }
+
+        function sdSphere(x, y, z, cx, cy, cz, r) {
+            return Math.sqrt((x-cx)**2 + (y-cy)**2 + (z-cz)**2) - r;
+        }
+
+        function sdVerticalCapsule(x, y, z, cx, cyTop, cyBot, cz, r) {
+            // Closest point on the line segment
+            const cy = Math.max(cyBot, Math.min(cyTop, y));
+            const dx = x - cx;
+            const dy = y - cy;
+            const dz = z - cz;
+            return Math.sqrt(dx*dx + dy*dy + dz*dz) - r;
+        }
+
+        // Shape Configuration
+        const COLOR_PURPLE = new THREE.Color('#2E2272');
+        const COLOR_WHITE = new THREE.Color('#FFFFFF');
+
+        const voxels = [];
+        const bounds = 18; 
+
+        // Iterate grid
+        for (let x = -bounds; x <= bounds; x++) {
+            for (let y = -bounds; y <= bounds; y++) {
+                for (let z = -bounds; z <= bounds; z++) {
+                    
+                    // 1. Body Shape Construction (Purple Blob)
+                    // Main Head
+                    let d = sdSphere(x, y, z, 0, 6, 0, 9);
+                    
+                    // Legs (Inner longer drips)
+                    const legL = sdVerticalCapsule(x, y, z, -4, 2, -10, 0, 3.2);
+                    const legR = sdVerticalCapsule(x, y, z, 4, 2, -10, 0, 3.2);
+                    
+                    // Arms (Outer shorter drips)
+                    const armL = sdVerticalCapsule(x, y, z, -9.5, 4, -5, 0, 2.2);
+                    const armR = sdVerticalCapsule(x, y, z, 9.5, 4, -5, 0, 2.2);
+
+                    // Smooth blend everything
+                    d = smin(d, legL, 2.5);
+                    d = smin(d, legR, 2.5);
+                    d = smin(d, armL, 2.0);
+                    d = smin(d, armR, 2.0);
+
+                    if (d < 0) {
+                        let color = COLOR_PURPLE;
+
+                        // 2. Face Mask (White)
+                        // Sphere slightly shifted forward and flattened
+                        // We use a geometric check for the white area
+                        // Face center roughly (0, 6, 2)
+                        const faceSphere = sdSphere(x, y, z*0.8, 0, 6, 2, 7.5);
+                        
+                        if (faceSphere < 0 && z > 1) {
+                            color = COLOR_WHITE;
+
+                            // 3. Features (Eyes & Mouth - Purple)
+                            // Left Eye (Tall Oval)
+                            const eyeLX = x + 3.5;
+                            const eyeLY = y - 7.5;
+                            if ((eyeLX*eyeLX)/(1.8*1.8) + (eyeLY*eyeLY)/(2.8*2.8) < 1.0) {
+                                color = COLOR_PURPLE;
+                            }
+
+                            // Right Eye (Tall Oval)
+                            const eyeRX = x - 3.5;
+                            const eyeRY = y - 7.5;
+                            if ((eyeRX*eyeRX)/(1.8*1.8) + (eyeRY*eyeRY)/(2.8*2.8) < 1.0) {
+                                color = COLOR_PURPLE;
+                            }
+
+                            // Mouth (Flat Oval)
+                            const mouthX = x;
+                            const mouthY = y - 3.0;
+                            if ((mouthX*mouthX)/(2.2*2.2) + (mouthY*mouthY)/(1.0*1.0) < 1.0) {
+                                color = COLOR_PURPLE;
+                            }
+                        }
+
+                        voxels.push({ x, y, z, color });
+                    }
+                }
+            }
+        }
+
+        // Create Instanced Mesh
+        const instancedMesh = new THREE.InstancedMesh(boxGeo, material, voxels.length);
+        const dummy = new THREE.Object3D();
+
+        voxels.forEach((voxel, index) => {
+            dummy.position.set(voxel.x, voxel.y, voxel.z);
+            dummy.updateMatrix();
+            instancedMesh.setMatrixAt(index, dummy.matrix);
+            instancedMesh.setColorAt(index, voxel.color);
+        });
+
+        scene.add(instancedMesh);
+
+        // Animation Loop
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Resize Handler
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+    </script>
+</body>
+</html>

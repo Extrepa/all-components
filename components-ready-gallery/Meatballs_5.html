@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meatballs 5</title>
+    <style>
+        :root {
+            --background-color: #1a1a1a;
+            --canvas-bg-color: #000000;
+        }
+        body { margin: 0; overflow: hidden; }
+        .metaballs-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background-color: var(--background-color);
+        }
+        .metaballs-canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            background-color: var(--canvas-bg-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="metaballs-container">
+        <canvas id="metaballsCanvas" class="metaballs-canvas"></canvas>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.querySelector('.metaballs-container');
+            const canvas = document.getElementById('metaballsCanvas');
+            
+            if (!container || !canvas) {
+                console.error('Container or canvas element not found.');
+                return;
+            }
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+            const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+            renderer.setPixelRatio(window.devicePixelRatio);
+
+            let animationFrameId;
+
+            const shaderMaterial = new THREE.ShaderMaterial({
+                uniforms: {
+                    u_resolution: { value: new THREE.Vector2(container.clientWidth, container.clientHeight) },
+                    u_time: { value: 0.0 }
+                },
+                vertexShader: `
+                    void main() {
+                        gl_Position = vec4(position, 1.0);
+                    }
+                `,
+                fragmentShader: `
+                    precision mediump float;
+                    uniform vec2 u_resolution;
+                    uniform float u_time;
+
+                    // Polynomial smooth min (k = 0.1);
+                    float smin(float a, float b, float k) {
+                        float h = clamp(0.5 + 0.5 * (b - a) / k, 0.0, 1.0);
+                        return mix(b, a, h) - k * h * (1.0 - h);
+                    }
+
+                    // Rotate function for dynamic movement
+                    vec3 rotate(vec3 p, vec3 axis, float angle) {
+                        axis = normalize(axis);
+                        float s = sin(angle);
+                        float c = cos(angle);
+                        float oc = 1.0 - c;
+                        return p * c + cross(axis, p) * s + axis * dot(axis, p) * oc;
+                    }
+
+                    float sphere(vec3 p, float r) {
+                        return length(p) - r;
+                    }
+
+                    float map(vec3 p) {
+                        float t = u_time;
+                        
+                        // Define 4 spheres moving in patterns
+                        vec3 p1 = p - vec3(sin(t * 0.8) * 1.5, cos(t * 0.6) * 0.5, sin(t * 0.3));
+                        vec3 p2 = p - vec3(cos(t * 0.7) * 1.2, sin(t * 0.9) * 1.2, cos(t * 0.5) * 0.5);
+                        vec3 p3 = p - vec3(sin(t * 1.1 + 2.0), cos(t * 1.2 + 1.0), sin(t * 0.9));
+                        vec3 p4 = p - vec3(0.0, sin(t * 0.5) * 0.5, 0.0);
+                        
+                        // Rotate the whole domain slightly for extra complexity
+                        vec3 pRot = rotate(p, vec3(1.0, 1.0, 0.0), t * 0.2);
+                        vec3 p5 = pRot - vec3(cos(t * 2.0) * 0.8, sin(t * 2.0) * 0.8, 0.0);
+
+                        float d1 = sphere(p1, 0.6);
+                        float d2 = sphere(p2, 0.5);
+                        float d3 = sphere(p3, 0.4);
+                        float d4 = sphere(p4, 0.7);
+                        float d5 = sphere(p5, 0.3);
+
+                        float k = 0.9; // Smoothness factor
+                        float d = smin(d1, d2, k);
+                        d = smin(d, d3, k);
+                        d = smin(d, d4, k);
+                        d = smin(d, d5, k);
+
+                        return d;
+                    }
+
+                    vec3 getNormal(vec3 p) {
+                        float d = map(p);
+                        vec2 e = vec2(0.001, 0.0);
+                        return normalize(vec3(
+                            d - map(p - e.xyy),
+                            d - map(p - e.yxy),
+                            d - map(p - e.yyx)
+                        ));
+                    }
+
+                    void main() {
+                        vec2 uv = (gl_FragCoord.xy * 2.0 - u_resolution.xy) / min(u_resolution.x, u_resolution.y);
+
+                        // Ray initialization
+                        vec3 ro = vec3(0.0, 0.0, 4.0); // Ray Origin
+                        vec3 rd = normalize(vec3(uv, -1.5)); // Ray Direction
+
+                        // Background gradient
+                        vec3 col = vec3(0.05, 0.08, 0.15) * (1.0 - length(uv) * 0.4);
+
+                        float t = 0.0;
+                        float d = 0.0;
+
+                        // Raymarching loop
+                        for(int i = 0; i < 80; i++) {
+                            vec3 p = ro + rd * t;
+                            d = map(p);
+                            if(d < 0.001 || t > 20.0) break;
+                            t += d;
+                        }
+
+                        // Lighting calculations if we hit a surface
+                        if(d < 0.001) {
+                            vec3 p = ro + rd * t;
+                            vec3 n = getNormal(p);
+                            
+                            vec3 lightPos = vec3(2.0, 2.0, 3.0);
+                            vec3 l = normalize(lightPos - p);
+                            vec3 v = normalize(ro - p);
+                            vec3 h = normalize(l + v);
+
+                            // Diffuse
+                            float diff = max(dot(n, l), 0.0);
+                            
+                            // Specular
+                            float spec = pow(max(dot(n, h), 0.0), 32.0);
+                            
+                            // Fresnel / Rim lighting
+                            float fre = pow(1.0 - max(dot(n, v), 0.0), 3.0);
+
+                            // Material color varies based on normal and time
+                            vec3 baseCol = 0.5 + 0.5 * cos(u_time * 0.2 + n.y * 2.0 + vec3(0.0, 2.0, 4.0));
+                            
+                            col = baseCol * diff;
+                            col += vec3(1.0, 0.9, 0.8) * spec;
+                            col += vec3(0.4, 0.7, 1.0) * fre * 0.8;
+                            col += vec3(0.1, 0.0, 0.2); // Ambient
+                        }
+
+                        // Gamma correction
+                        col = pow(col, vec3(0.4545));
+
+                        gl_FragColor = vec4(col, 1.0);
+                    }
+                `
+            });
+
+            const plane = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), shaderMaterial);
+            scene.add(plane);
+
+            const resizeRenderer = () => {
+                const width = container.clientWidth;
+                const height = container.clientHeight;
+                renderer.setSize(width, height);
+                shaderMaterial.uniforms.u_resolution.value.set(width, height);
+            };
+
+            window.addEventListener('resize', resizeRenderer);
+            resizeRenderer();
+
+            const startTime = performance.now();
+            const animate = () => {
+                const elapsedTime = (performance.now() - startTime) / 1000;
+                shaderMaterial.uniforms.u_time.value = elapsedTime;
+                renderer.render(scene, camera);
+                animationFrameId = requestAnimationFrame(animate);
+            };
+
+            animate();
+        });
+    </script>
+</body>
+</html>

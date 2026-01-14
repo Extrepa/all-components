@@ -1,0 +1,12 @@
+<!-- errl_weather_cloud_sun_mix_01 – sun peeking from cloud (fx/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_weather" data-cat="fx" data-name="errl_weather_cloud_sun_mix_01">
+  <g fill="none">
+    <!-- sun behind -->
+    <circle cx="38" cy="20" r="5" fill="#facc15"/>
+    <!-- cloud front -->
+    <circle cx="26" cy="24" r="5" fill="#e5e7eb"/>
+    <circle cx="34" cy="22" r="6" fill="#e5e7eb"/>
+    <rect x="24" y="24" width="18" height="4" rx="2" fill="#e5e7eb"/>
+  </g>
+</svg>

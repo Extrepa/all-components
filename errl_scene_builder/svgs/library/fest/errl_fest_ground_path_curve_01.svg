@@ -1,0 +1,10 @@
+<!-- Example 151 | errl_fest_ground_path_curve_01 (env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="env" data-name="errl_fest_ground_path_curve_01">
+  <g fill="none">
+    <path d="M14 46 C22 44 28 40 32 36 C36 32 42 30 50 30"
+      stroke="#a16207" stroke-width="3" stroke-linecap="round" opacity="0.95"/>
+    <path d="M16 46 C22 44 28 42 32 38 C36 34 42 32 48 32"
+      stroke="#f97316" stroke-width="1.6" stroke-linecap="round" opacity="0.8"/>
+  </g>
+</svg>

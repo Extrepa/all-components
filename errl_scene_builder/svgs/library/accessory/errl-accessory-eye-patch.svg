@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <g id="eye-patch" fill="none" stroke="#0e0b1e" stroke-width="14" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 340 360 C 420 320 520 304 640 320" />
+    <path fill="#0b0b12" d="M 360 410 C 390 380 430 368 470 382 C 504 394 522 428 526 470 C 532 526 504 566 456 574 C 414 582 378 556 362 518 C 348 484 344 444 360 410 Z" />
+  </g>
+</svg>

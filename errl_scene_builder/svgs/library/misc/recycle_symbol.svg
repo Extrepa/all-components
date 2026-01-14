@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" id="icon-d9frr8vl4">
+  <g xmlns="http://www.w3.org/2000/svg" fill="none">
+    <path d="M24 30 L26 46 38 46 40 30 Z" fill="#166534"/>
+    <rect x="24" y="28" width="16" height="3" rx="1.5" fill="#14532d"/>
+    <!-- recycle symbol -->
+    <path d="M32 35 L30 38 L34 38 Z M32 35 L34 32 L30 32 Z" fill="#22c55e"/>
+    <ellipse cx="32" cy="48" rx="10" ry="2.5" fill="#020617" opacity="0.45"/>
+  </g>
+</svg>

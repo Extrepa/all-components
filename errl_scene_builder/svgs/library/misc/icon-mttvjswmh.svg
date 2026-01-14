@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" id="icon-mttvjswmh">
+  <g xmlns="http://www.w3.org/2000/svg" fill="none">
+    <ellipse cx="24" cy="40" rx="8" ry="6" fill="#166534"/>
+    <ellipse cx="34" cy="40" rx="9" ry="7" fill="#22c55e"/>
+    <ellipse cx="44" cy="41" rx="7" ry="5.5" fill="#166534"/>
+    <circle cx="28" cy="39" r="1.2" fill="#fb7185"/>
+    <circle cx="34" cy="42" r="1.2" fill="#f97316"/>
+    <circle cx="40" cy="38" r="1.2" fill="#a855f7"/>
+  </g>
+</svg>

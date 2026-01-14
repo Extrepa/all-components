@@ -1,0 +1,12 @@
+<!-- 100) errl_woods_errl_footprints_01 – 3 goo footprints in dirt (fx/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="fx" data-name="errl_woods_errl_footprints_01">
+  <g fill="none">
+    <ellipse cx="22" cy="42" rx="3.5" ry="2" fill="#22d3ee"/>
+    <circle cx="20.6" cy="40.4" r="0.9" fill="#22d3ee"/>
+    <ellipse cx="32" cy="44" rx="3.5" ry="2" fill="#22d3ee"/>
+    <circle cx="30.6" cy="42.4" r="0.9" fill="#22d3ee"/>
+    <ellipse cx="42" cy="46" rx="3.5" ry="2" fill="#22d3ee"/>
+    <circle cx="40.6" cy="44.4" r="0.9" fill="#22d3ee"/>
+  </g>
+</svg>

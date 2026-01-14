@@ -1,0 +1,12 @@
+<!-- 75) errl_woods_map_01 – folded map prop (prop/ui-ish) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="prop" data-name="errl_woods_map_01">
+  <g fill="none">
+    <path d="M20 30 L28 26 36 30 44 26 44 40 36 44 28 40 20 44 Z"
+      fill="#e5e7eb"/>
+    <path d="M28 26 L28 40 M36 30 L36 44"
+      stroke="#cbd5f5" stroke-width="1.2"/>
+    <path d="M22 38 C24 34 28 34 30 32 C32 30 36 30 40 32"
+      stroke="#22c55e" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+  </g>
+</svg>

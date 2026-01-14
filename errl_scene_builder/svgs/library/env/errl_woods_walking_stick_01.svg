@@ -1,0 +1,8 @@
+<!-- 68) errl_woods_walking_stick_01 – staff prop (prop) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="prop" data-name="errl_woods_walking_stick_01">
+  <g fill="none">
+    <path d="M30 16 C28 20 28 24 29 28s1 8 0 12-3 8-4 10"
+      stroke="#78350f" stroke-width="2.2" stroke-linecap="round"/>
+  </g>
+</svg>

@@ -1,0 +1,9 @@
+<!-- Example 230 | errl_fest_light_orb_triple_01 (fx) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="fx" data-name="errl_fest_light_orb_triple_01">
+  <g fill="none">
+    <circle cx="24" cy="32" r="3.2" fill="#22d3ee"/>
+    <circle cx="32" cy="28" r="3.2" fill="#a855f7"/>
+    <circle cx="40" cy="32" r="3.2" fill="#facc15"/>
+  </g>
+</svg>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_accessory" data-cat="wearable" data-name="errl_accessory_goggles_mad_scientist">
+  <rect width="64" height="64" rx="12" fill="none"/>
+  <path d="M6 32c4-6 10-10 26-10s22 4 26 10" fill="none" stroke="#34e1ff" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="22" cy="30" r="9" fill="#0a1c28" stroke="#34e1ff" stroke-width="3"/>
+  <circle cx="42" cy="30" r="9" fill="#0a1c28" stroke="#34e1ff" stroke-width="3"/>
+  <circle cx="22" cy="30" r="4" fill="#9af4ff"/>
+  <circle cx="42" cy="30" r="4" fill="#9af4ff"/>
+  <path d="M32 22v16" stroke="#8ed8ff" stroke-width="2" stroke-dasharray="2 3"/>
+</svg>

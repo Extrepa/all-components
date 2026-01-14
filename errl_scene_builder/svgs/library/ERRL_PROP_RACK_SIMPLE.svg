@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <g id="group_base" fill="#f4f0ff" stroke="#101020" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="280" y="340" width="464" height="320" rx="24" />
+  </g>
+  <g id="group_panels" fill="#ffd166" stroke="#101020" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="310" y="360" width="404" height="90" rx="12" />
+    <rect x="310" y="468" width="404" height="90" rx="12" />
+    <rect x="310" y="576" width="404" height="68" rx="12" />
+  </g>
+  <g id="group_knobs" fill="#101020">
+    <circle cx="360" cy="405" r="12" />
+    <circle cx="400" cy="405" r="12" />
+    <circle cx="440" cy="405" r="12" />
+    <circle cx="360" cy="513" r="12" />
+    <circle cx="400" cy="513" r="12" />
+    <circle cx="440" cy="513" r="12" />
+    <rect x="520" y="392" width="168" height="24" rx="12" />
+    <rect x="520" y="500" width="168" height="24" rx="12" />
+    <rect x="340" y="590" width="308" height="16" rx="8" />
+  </g>
+</svg>

@@ -1,0 +1,370 @@
+We have, in fact, accidentally built a tiny engine.
+Let’s now bolt on a final brain: an Animation Pack Export that ties spritesheets + timelines + tags into one neat JSON you can hand to ErrlStory or any game engine.
+
+Think: “Here’s the spritesheet file, and here are the clips: idle, walk, jump, fx.”
+
+Patch style as usual.
+
+⸻
+
+1. Track the last spritesheet + timeline (if you haven’t already)
+
+If you didn’t add these from the “optional” bits earlier, drop these globals near your other globals:
+
+    let lastSpritesheetManifest = null;
+    let lastTimelineSnapshot = null;
+
+Then:
+	•	In your spritesheet export handler, after spritesheetManifestOutput.value = manifestJson; add:
+
+        lastSpritesheetManifest = manifest;
+
+	•	In updateTimelineJson(), after computing data and assigning timelineJsonOutput.value = JSON.stringify(data, null, 2);, add:
+
+      lastTimelineSnapshot = data;
+
+Now the app always remembers:
+	•	The last spritesheet manifest
+	•	The last timeline setup
+
+Perfect for bundling.
+
+⸻
+
+2. Add “Animation Pack Export” panel (HTML)
+
+In the right column, put this after Animation Timeline, and before Audio Reactive.
+
+So find:
+
+      <!-- Animation Timeline -->
+      <div class="border-t border-slate-800/70 px-3 py-2 text-[11px] text-slate-200">
+        ...
+      </div>
+
+      <!-- Audio Reactive Mode -->
+      <div class="border-t border-slate-800/70 px-3 py-2 text-[11px] text-slate-200">
+        ...
+      </div>
+
+Insert this in between:
+
+      <!-- Animation Pack Export -->
+      <div class="border-t border-slate-800/70 px-3 py-2 text-[11px] text-slate-200">
+        <div class="flex items-center justify-between mb-1">
+          <span class="font-semibold text-slate-100">Animation Pack Export</span>
+          <span id="animPackStatus" class="text-[10px] text-slate-500">
+            Build game-ready JSON
+          </span>
+        </div>
+
+        <p class="text-[10px] text-slate-400 mb-1">
+          Uses the last spritesheet + tags + timeline to create a single JSON animation pack.
+        </p>
+
+        <div class="flex flex-wrap items-center gap-2 mb-1 text-[10px] text-slate-300">
+          <div class="flex items-center gap-1">
+            <span class="text-slate-400">Sheet file name:</span>
+            <input
+              id="animPackSheetName"
+              type="text"
+              value="errl-spritesheet.png"
+              class="w-40 px-1 py-0.5 rounded-md bg-slate-950 border border-slate-700 text-[10px] text-slate-100"
+            />
+          </div>
+
+          <div class="flex items-center gap-1">
+            <span class="text-slate-400">Animation tags:</span>
+            <input
+              id="animPackTagsInput"
+              type="text"
+              value="idle,walk,jump,fx"
+              class="w-40 px-1 py-0.5 rounded-md bg-slate-950 border border-slate-700 text-[10px] text-slate-100"
+            />
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 mb-1">
+          <button
+            id="animPackBuildBtn"
+            class="px-2 py-1 rounded-md border border-cyan-500/70 text-cyan-200 text-[10px] hover:bg-cyan-500/15"
+          >
+            Build animation pack JSON
+          </button>
+          <button
+            id="animPackCopyBtn"
+            class="px-2 py-1 rounded-md border border-slate-600 text-slate-200 text-[10px] hover:bg-slate-900/80 disabled:opacity-40 disabled:cursor-not-allowed"
+            disabled
+          >
+            Copy pack JSON
+          </button>
+        </div>
+
+        <textarea
+          id="animPackOutput"
+          class="w-full h-20 mt-1 bg-slate-950 border border-slate-700 rounded-md px-2 py-1 text-[10px] font-mono text-slate-100 scrollbar-thin"
+          placeholder="// Animation pack JSON will appear here"
+          spellcheck="false"
+        ></textarea>
+
+        <p class="mt-1 text-[9px] text-slate-500">
+          Each tag becomes a named clip with ordered frames referencing the spritesheet cells.
+        </p>
+      </div>
+
+
+⸻
+
+3. Wire DOM refs (JS)
+
+Add near your other getElementById calls:
+
+    // Animation pack export
+    const animPackStatusEl = document.getElementById("animPackStatus");
+    const animPackSheetNameInput = document.getElementById("animPackSheetName");
+    const animPackTagsInput = document.getElementById("animPackTagsInput");
+    const animPackBuildBtn = document.getElementById("animPackBuildBtn");
+    const animPackCopyBtn = document.getElementById("animPackCopyBtn");
+    const animPackOutput = document.getElementById("animPackOutput");
+
+
+⸻
+
+4. Build animation pack from manifest + tags
+
+We’ll:
+	•	Require lastSpritesheetManifest to exist.
+	•	Look at all frames in that manifest.
+	•	Group them by tag.
+	•	Order by their position in the manifest (index).
+	•	Build animations[tag] = { frames: [ { index, col, row, duration } ] }.
+
+Add this helper:
+
+    function buildAnimationPackFromManifest() {
+      if (!lastSpritesheetManifest) {
+        throw new Error("No spritesheet manifest found. Export a spritesheet first.");
+      }
+
+      const sheetName =
+        animPackSheetNameInput.value.trim() || "errl-spritesheet.png";
+
+      const tagsRaw = animPackTagsInput.value.trim();
+      const tagList = tagsRaw
+        ? tagsRaw
+            .split(",")
+            .map((t) => t.trim())
+            .filter(Boolean)
+        : [];
+
+      const manifest = lastSpritesheetManifest;
+
+      // Map frameId -> manifest frame object
+      const frameById = {};
+      manifest.frames.forEach((f, idx) => {
+        frameById[f.id] = {
+          ...f,
+          index: idx,
+        };
+      });
+
+      // Build an animation for each requested tag
+      const animations = {};
+
+      // Helper: collect all frames with a given tag, in index order
+      function collectFramesForTag(tag) {
+        const frames = manifest.frames
+          .map((f, idx) => ({ f, idx }))
+          .filter(({ f }) => (f.tag || null) === tag)
+          .sort((a, b) => a.idx - b.idx);
+
+        return frames.map(({ f, idx }) => ({
+          frameIndex: idx,
+          col: f.col,
+          row: f.row,
+          duration: 1 / 8, // default 8 FPS; game can override
+          favorite: !!f.favorite,
+          source: f.source,
+          modeLabel: f.modeLabel,
+        }));
+      }
+
+      if (tagList.length) {
+        tagList.forEach((tag) => {
+          const frames = collectFramesForTag(tag);
+          if (frames.length) {
+            animations[tag] = {
+              tag,
+              frameCount: frames.length,
+              frames,
+            };
+          }
+        });
+      } else {
+        // If no explicit tags set, build a single "all" animation
+        const frames = manifest.frames.map((f, idx) => ({
+          frameIndex: idx,
+          col: f.col,
+          row: f.row,
+          duration: 1 / 8,
+          favorite: !!f.favorite,
+          source: f.source,
+          modeLabel: f.modeLabel,
+        }));
+        animations.all = {
+          tag: "all",
+          frameCount: frames.length,
+          frames,
+        };
+      }
+
+      const pack = {
+        type: "errl-animation-pack",
+        version: "1.0.0",
+        sheet: {
+          file: sheetName,
+          frameWidth: manifest.frameWidth,
+          frameHeight: manifest.frameHeight,
+          columns: manifest.columns,
+          rows: manifest.rows,
+        },
+        animations,
+      };
+
+      return pack;
+    }
+
+This assumes your spritesheet manifest has the fields we defined earlier: frameWidth, frameHeight, columns, rows, and frames[] with col, row, favorite, source, modeLabel, tag.
+
+⸻
+
+5. Wire the buttons
+
+Add:
+
+    animPackBuildBtn.addEventListener("click", () => {
+      try {
+        const pack = buildAnimationPackFromManifest();
+        animPackOutput.value = JSON.stringify(pack, null, 2);
+        animPackStatusEl.textContent = `Animation pack ready (${Object.keys(
+          pack.animations
+        ).length} clip(s)).`;
+        animPackCopyBtn.disabled = false;
+        flashStatus("Animation pack built ✅", "info");
+        playBeep(820, 0.09, "triangle");
+      } catch (err) {
+        console.error("Animation pack error:", err);
+        animPackStatusEl.textContent = err.message || "Could not build pack.";
+        animPackCopyBtn.disabled = true;
+        flashStatus("Could not build animation pack.", "error");
+        playBeep(200, 0.1, "square");
+      }
+    });
+
+    animPackCopyBtn.addEventListener("click", async () => {
+      try {
+        const text = animPackOutput.value.trim();
+        if (!text) {
+          flashStatus("No animation pack JSON to copy.", "error");
+          playBeep(200, 0.1, "square");
+          return;
+        }
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(text);
+        } else {
+          const textarea = document.createElement("textarea");
+          textarea.value = text;
+          textarea.style.position = "fixed";
+          textarea.style.left = "-9999px";
+          document.body.appendChild(textarea);
+          textarea.focus();
+          textarea.select();
+          document.execCommand("copy");
+          document.body.removeChild(textarea);
+        }
+
+        flashStatus("Animation pack JSON copied ✅", "info");
+        playBeep(780, 0.08, "sine");
+      } catch (err) {
+        console.error("Copy animation pack error:", err);
+        flashStatus("Could not copy animation pack JSON.", "error");
+        playBeep(200, 0.1, "square");
+      }
+    });
+
+
+⸻
+
+6. Optional: save animation pack into Session Snapshot
+
+If you want the session JSON to remember the last pack too:
+	•	Add global:
+
+    let lastAnimationPack = null;
+
+	•	In animPackBuildBtn handler, after const pack = buildAnimationPackFromManifest(); add:
+
+        lastAnimationPack = pack;
+
+	•	In collectSessionSnapshot(), add:
+
+        animationPack: lastAnimationPack,
+
+So the full session JSON now contains:
+	•	fxPresets
+	•	frames + VS
+	•	spritesheet manifest
+	•	timeline snapshot
+	•	animation pack
+
+That’s literally your entire “Errl animation project” in one JSON.
+
+⸻
+
+What this unlocks
+
+Now your flow looks like:
+	1.	Upload Errl SVG.
+	2.	Go wild with FX Dice, audio-reactive wobble, 3D / voxel modes.
+	3.	Capture frames, tag them by animation type (idle, walk, jump, fx).
+	4.	Export spritesheet → get PNG + manifest.
+	5.	Build timelines for each tag if you want.
+	6.	Build Animation Pack JSON that says:
+
+{
+  "type": "errl-animation-pack",
+  "sheet": {
+    "file": "errl-spritesheet.png",
+    "frameWidth": 256,
+    "frameHeight": 256
+  },
+  "animations": {
+    "idle": {
+      "frameCount": 8,
+      "frames": [
+        { "frameIndex": 0, "col": 0, "row": 0, "duration": 0.125 },
+        ...
+      ]
+    },
+    "walk": { ... },
+    "jump": { ... }
+  }
+}
+
+
+	7.	Hand that JSON + spritesheet PNG to:
+	•	ErrlStory engine
+	•	Phaser / Pixi / Unity / Godot / custom Maple clone
+	•	Or another AI agent that generates engine-specific code.
+
+At this point your single index.html is:
+	•	Visual FX lab
+	•	Audio-reactive performance toy
+	•	Gallery, VS match-maker
+	•	Spritesheet generator
+	•	Timeline previewer
+	•	Session save/load + JSON black box
+	•	Animation pack factory.
+
+Errl isn’t just a mascot anymore; he’s a fully pipeline-ready asset.

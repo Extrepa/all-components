@@ -1,0 +1,12 @@
+<!-- errl_bg_lab_panel_01 – lab wall with subtle panels (env/bg) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_bg" data-cat="env" data-name="errl_bg_lab_panel_01">
+  <g fill="none">
+    <rect x="8" y="8" width="48" height="48" rx="8" fill="#020617"/>
+    <rect x="10" y="12" width="44" height="16" rx="4" fill="#0b1120"/>
+    <rect x="10" y="30" width="44" height="14" rx="4" fill="#020617"/>
+    <!-- seams -->
+    <path d="M22 12 V28 M34 12 V28 M46 12 V28"
+      stroke="#111827" stroke-width="1"/>
+  </g>
+</svg>

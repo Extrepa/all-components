@@ -1,0 +1,8 @@
+<!-- errl_concert_light_bar_floor_01 – LED bar on floor edge (fx/prop) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_concert" data-cat="fx" data-name="errl_concert_light_bar_floor_01">
+  <g fill="none">
+    <rect x="14" y="40" width="36" height="3" rx="1.5" fill="#020617"/>
+    <rect x="16" y="41" width="32" height="1.5" rx="0.8" fill="#22d3ee"/>
+  </g>
+</svg>

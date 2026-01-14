@@ -1,0 +1,9 @@
+<!-- Example 175 | errl_fest_pylon_round_top_01 (env/ui) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="env" data-name="errl_fest_pylon_round_top_01">
+  <g fill="none">
+    <rect x="28" y="26" width="8" height="18" rx="2" fill="#111827"/>
+    <circle cx="32" cy="24" r="3" fill="#22d3ee"/>
+    <ellipse cx="32" cy="46" rx="8" ry="2.4" fill="#020617" opacity="0.45"/>
+  </g>
+</svg>

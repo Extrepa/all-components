@@ -1,0 +1,15 @@
+<!-- errl_weather_rain_sun_mix_01 – sun + light rain (fx) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_weather" data-cat="fx" data-name="errl_weather_rain_sun_mix_01">
+  <g fill="none">
+    <!-- sun -->
+    <circle cx="40" cy="18" r="5" fill="#facc15"/>
+    <!-- cloud -->
+    <circle cx="26" cy="22" r="4.5" fill="#e5e7eb"/>
+    <circle cx="32" cy="21" r="5.5" fill="#e5e7eb"/>
+    <rect x="26" y="22" width="12" height="4" rx="2" fill="#e5e7eb"/>
+    <!-- rain -->
+    <path d="M28 27 V33" stroke="#38bdf8" stroke-width="1.4" stroke-linecap="round"/>
+    <path d="M34 29 V35" stroke="#38bdf8" stroke-width="1.4" stroke-linecap="round"/>
+  </g>
+</svg>

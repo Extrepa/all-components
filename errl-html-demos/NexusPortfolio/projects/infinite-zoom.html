@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus: Infinite Zoom Singularity</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #020205;
+            color: #fff;
+            font-family: 'Courier New', Courier, monospace;
+            touch-action: none; /* Prevent browser pull-to-refresh on mobile */
+        }
+
+        #canvas-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 0 8px rgba(0, 255, 255, 0.3));
+        }
+
+        .ui-overlay {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            pointer-events: none;
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+        }
+
+        .controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            pointer-events: none;
+        }
+
+        .nexus-tracer {
+            transition: stroke 0.2s ease;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="canvas-container">
+        <svg id="nexus-svg" viewBox="-500 -500 1000 1000" preserveAspectRatio="xMidYMid slice">
+            <defs>
+                <filter id="glow">
+                    <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                    <feMerge>
+                        <feMergeNode in="coloredBlur"/>
+                        <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                </filter>
+            </defs>
+            <g id="main-group"></g>
+        </svg>
+    </div>
+
+    <div class="ui-overlay">
+        <div id="depth-indicator">Current Depth: 0.000LY</div>
+        <div id="velocity-indicator">Velocity: 0.000v</div>
+    </div>
+
+    <div class="controls text-xs">
+        <p class="mb-2 text-cyan-400 font-bold underline">NEXUS CORE: INF-ZOOM</p>
+        <p>Scroll: Traverse Dimensions</p>
+        <p>Speed: Proportional to Intensity</p>
+    </div>
+
+<script>
+    const svg = document.getElementById('nexus-svg');
+    const group = document.getElementById('main-group');
+    const depthUI = document.getElementById('depth-indicator');
+    const velocityUI = document.getElementById('velocity-indicator');
+
+    let layers = [];
+    const LAYER_COUNT = 20; // Increased for smoother density
+    
+    // Core state: Depth is now linear, Zoom is exponential
+    let currentDepth = 0;
+    let targetDepth = 0;
+    let chromaticShift = 0;
+
+    const sigilPaths = [
+        "M 0,-100 L 86,50 L -86,50 Z", // Triangle
+        "M -70,-70 L 70,-70 L 70,70 L -70,70 Z", // Square
+        "M 0,-100 L 50,-86 L 86,-50 L 100,0 L 86,50 L 50,86 L 0,100 L -50,86 L -86,50 L -100,0 L -86,-50 L -50,-86 Z", // Dodecagon
+        "M 0,-100 L 20,-20 L 100,0 L 20,20 L 0,100 L -20,20 L -100,0 L -20,-20 Z" // 4-Point Star
+    ];
+
+    function createLayer(index) {
+        const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+        const pathData = sigilPaths[Math.floor(Math.random() * sigilPaths.length)];
+        
+        // Symmetrical Hexagonal Array
+        for (let i = 0; i < 6; i++) {
+            const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            path.setAttribute("d", pathData);
+            path.setAttribute("fill", "none");
+            path.setAttribute("stroke-width", "1.5");
+            path.setAttribute("transform", `rotate(${i * 60}) translate(0, -180) scale(0.6)`);
+            path.classList.add('nexus-tracer');
+            g.appendChild(path);
+        }
+
+        group.appendChild(g);
+        
+        return {
+            element: g,
+            id: index,
+            offset: index // Where this layer sits in the zoom cycle
+        };
+    }
+
+    function init() {
+        for (let i = 0; i < LAYER_COUNT; i++) {
+            layers.push(createLayer(i));
+        }
+    }
+
+    window.addEventListener('wheel', (e) => {
+        // e.deltaY is now translated to linear depth movement
+        targetDepth += e.deltaY * 0.002;
+        chromaticShift += Math.abs(e.deltaY) * 0.15;
+    });
+
+    let touchStart = 0;
+    window.addEventListener('touchstart', (e) => touchStart = e.touches[0].clientY);
+    window.addEventListener('touchmove', (e) => {
+        const delta = touchStart - e.touches[0].clientY;
+        targetDepth += delta * 0.005;
+        chromaticShift += Math.abs(delta) * 0.2;
+        touchStart = e.touches[0].clientY;
+    });
+
+    function update() {
+        // Smooth linear interpolation for depth
+        const diff = targetDepth - currentDepth;
+        currentDepth += diff * 0.08;
+        
+        chromaticShift *= 0.92; // Decay the visual noise
+
+        layers.forEach((layer) => {
+            // The layer's relative position in the cycle
+            // We use modulo to keep layers looping within a fixed scale range
+            let relativeDepth = (layer.offset - currentDepth) % LAYER_COUNT;
+            
+            // Wrap the modulo for negative depths (scrolling up)
+            if (relativeDepth < 0) relativeDepth += LAYER_COUNT;
+
+            // Scale is exponential based on its position in the current window of layers
+            const s = Math.pow(1.8, relativeDepth - (LAYER_COUNT / 2));
+            
+            // Opacity fades at the near and far clipping planes
+            const fadePoint = LAYER_COUNT * 0.4;
+            let opacity = 1;
+            if (relativeDepth < fadePoint) opacity = relativeDepth / fadePoint;
+            if (relativeDepth > LAYER_COUNT - fadePoint) opacity = (LAYER_COUNT - relativeDepth) / fadePoint;
+            
+            const rotation = (currentDepth * 5) + (layer.id * 15);
+            
+            layer.element.setAttribute("transform", `scale(${s}) rotate(${rotation})`);
+            layer.element.style.opacity = Math.max(0, opacity);
+
+            // RGB Shift Logic
+            const paths = layer.element.querySelectorAll('path');
+            paths.forEach((p, pi) => {
+                const hue = (currentDepth * 20 + layer.id * 10 + pi * 5 + chromaticShift) % 360;
+                p.setAttribute("stroke", `hsla(${hue}, 100%, 65%, ${opacity})`);
+                // Pulsing stroke width based on "speed"
+                p.setAttribute("stroke-width", 1 + (Math.abs(diff) * 2));
+            });
+        });
+
+        depthUI.innerText = `Current Depth: ${(currentDepth * 10).toFixed(3)}LY`;
+        velocityUI.innerText = `Velocity: ${Math.abs(diff * 100).toFixed(2)}v`;
+        
+        requestAnimationFrame(update);
+    }
+
+    init();
+    update();
+</script>
+</body>
+</html>

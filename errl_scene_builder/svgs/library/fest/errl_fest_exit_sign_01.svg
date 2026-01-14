@@ -1,0 +1,10 @@
+<!-- Example 138 | errl_fest_exit_sign_01 (ui/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="ui" data-name="errl_fest_exit_sign_01">
+  <g fill="none">
+    <rect x="20" y="24" width="24" height="10" rx="3" fill="#0f172a"/>
+    <rect x="22" y="26" width="20" height="6" rx="2" fill="#22c55e"/>
+    <path d="M26 29 H34" stroke="#020617" stroke-width="1.6" stroke-linecap="round"/>
+    <path d="M34 27 L38 29 L34 31 Z" fill="#020617"/>
+  </g>
+</svg>

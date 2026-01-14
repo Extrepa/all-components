@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" id="icon-oxtoqr5x7">
+  <g xmlns="http://www.w3.org/2000/svg" fill="none">
+    <!-- post -->
+    <rect x="30" y="28" width="4" height="14" rx="2" fill="#0f172a"/>
+    <!-- head -->
+    <rect x="28" y="24" width="8" height="4" rx="2" fill="#111827"/>
+    <circle cx="32" cy="26" r="1.6" fill="#facc15"/>
+    <!-- glow -->
+    <ellipse cx="32" cy="44" rx="10" ry="2.6" fill="#facc15" opacity="0.18"/>
+  </g>
+</svg>

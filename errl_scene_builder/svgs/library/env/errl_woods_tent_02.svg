@@ -1,0 +1,11 @@
+<!-- 54) errl_woods_tent_02 – round cozy tent (env/prop) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="env" data-name="errl_woods_tent_02">
+  <g fill="none">
+    <ellipse cx="32" cy="40" rx="14" ry="8" fill="#0f766e"/>
+    <ellipse cx="32" cy="38" rx="10" ry="6" fill="#115e59"/>
+    <!-- door -->
+    <path d="M28 36 C28 32 30 30 32 30s4 2 4 6v6H28Z" fill="#020617" opacity="0.9"/>
+    <ellipse cx="32" cy="48" rx="12" ry="2.6" fill="#14532d" opacity="0.35"/>
+  </g>
+</svg>

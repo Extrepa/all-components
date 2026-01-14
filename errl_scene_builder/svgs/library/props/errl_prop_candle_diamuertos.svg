@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_prop" data-cat="prop" data-name="errl_prop_candle_diamuertos">
+  <rect width="64" height="64" rx="12" fill="none"/>
+  <rect x="24" y="20" width="16" height="28" rx="4" fill="#fff7f2" stroke="#f5d8cf" stroke-width="2"/>
+  <path d="M32 12c2 2 3 4 3 6 0 1-1 2-3 2s-3-1-3-2c0-2 1-4 3-6z" fill="#fbbf24" stroke="#f97316" stroke-width="2"/>
+  <path d="M26 44h12" stroke="#fde68a" stroke-width="2" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,8 @@
+<!-- errl_concert_crowd_silhouette_01 – dense front-row blob (env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_concert" data-cat="env" data-name="errl_concert_crowd_silhouette_01">
+  <g fill="none">
+    <path d="M8 40 C12 34 18 32 24 32s10 2 14 2 10-1 12-2c2 3 4 6 4 10H8z"
+      fill="#020617"/>
+  </g>
+</svg>

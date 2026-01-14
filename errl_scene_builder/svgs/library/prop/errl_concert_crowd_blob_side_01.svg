@@ -1,0 +1,8 @@
+<!-- errl_concert_crowd_blob_side_01 – side-view mass (env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_concert" data-cat="env" data-name="errl_concert_crowd_blob_side_01">
+  <g fill="none">
+    <path d="M10 40 C12 34 16 32 22 32s10 3 12 5 4 5 4 7H10z"
+      fill="#020617"/>
+  </g>
+</svg>

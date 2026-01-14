@@ -1,0 +1,28 @@
+# Project Index
+
+**Project:** [Project Name]  
+**Type:** [Web App / Desktop App / Library / etc.]  
+**Last Updated:** [Date]
+
+## Project Structure
+
+```
+project-name/
+├── src/              # Source code
+├── public/           # Public assets
+├── docs/             # Documentation
+├── package.json      # Dependencies
+└── README.md         # Project overview
+```
+
+## Key Directories
+
+- `src/` - Application source code
+- `public/` - Public assets
+- `docs/` - Documentation files
+
+## Documentation
+
+- [README.md](README.md) - Project overview
+- [PROJECT_STATUS.md](PROJECT_STATUS.md) - Current status
+- [docs/index.md](docs/index.md) - Documentation index

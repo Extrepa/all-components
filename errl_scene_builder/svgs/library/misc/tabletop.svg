@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" id="icon-xzhwyhjgz">
+  <g xmlns="http://www.w3.org/2000/svg" fill="none">
+    <ellipse cx="32" cy="28" rx="8" ry="3" fill="#0f172a"/>
+    <rect x="24" y="28" width="16" height="10" rx="3" fill="#111827"/>
+    <ellipse cx="32" cy="38" rx="8" ry="3" fill="#111827"/>
+    <!-- tabletop -->
+    <ellipse cx="32" cy="24" rx="9" ry="2.6" fill="#020617"/>
+  </g>
+</svg>

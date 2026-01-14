@@ -1,0 +1,352 @@
+Alright, Errl OS, time to give this beast a “black box flight recorder” so sessions don’t just evaporate into the void.
+
+Next upgrade: Session Snapshot Export – one-click JSON describing:
+	•	Your FX configuration (p5 + HTML FX)
+	•	Your presets
+	•	Captured frames (with favorites + VS mapping)
+	•	Current modes / tabs
+
+Perfect for Obsidian, AI pipelines, and future re-loaders.
+
+I’ll keep it patch-style like before.
+
+⸻
+
+1. Add a “Session Snapshot” block (HTML)
+
+In the right-hand sidebar, after the Sandbox Snippet block you added earlier, drop this in:
+
+      <!-- Session Snapshot (JSON) -->
+      <div class="border-t border-slate-800/70 px-3 py-2 text-[11px] text-slate-200">
+        <div class="flex items-center justify-between mb-1">
+          <span class="font-semibold text-slate-100">Session Snapshot</span>
+          <span class="text-[10px] text-slate-500">
+            JSON · export for Obsidian / AI
+          </span>
+        </div>
+
+        <p class="text-[10px] text-slate-400 mb-1">
+          Captures presets, current FX config, frames (with favorites) and VS setup
+          into a single JSON blob.
+        </p>
+
+        <div class="flex items-center gap-1 mb-1">
+          <button
+            id="copySessionJsonBtn"
+            class="px-2 py-1 rounded-md border border-cyan-500/70 text-cyan-200 text-[10px] hover:bg-cyan-500/15"
+          >
+            Copy JSON
+          </button>
+          <button
+            id="downloadSessionJsonBtn"
+            class="px-2 py-1 rounded-md border border-emerald-500/70 text-emerald-200 text-[10px] hover:bg-emerald-500/15"
+          >
+            Download .json
+          </button>
+          <span class="text-[10px] text-slate-500">Includes data URLs for frames</span>
+        </div>
+
+        <textarea
+          id="sessionJsonOutput"
+          class="w-full h-24 mt-1 bg-slate-950 border border-slate-700 rounded-md px-2 py-1 text-[10px] font-mono text-slate-100 scrollbar-thin"
+          spellcheck="false"
+        ></textarea>
+      </div>
+
+Now the right column order is roughly:
+	•	SVG inspector
+	•	p5 controls
+	•	HTML FX controls
+	•	Captured frames
+	•	VS Mode
+	•	Sandbox snippet
+	•	Session Snapshot ✅
+
+⸻
+
+2. Wire up DOM refs (JS)
+
+In your <script>, near where you grab Sandbox elements:
+
+    const sandboxHtmlOutput = document.getElementById("sandboxHtmlOutput");
+    const copySandboxBtn = document.getElementById("copySandboxBtn");
+    const downloadSandboxBtn = document.getElementById("downloadSandboxBtn");
+
+Add:
+
+    // Session snapshot elements
+    const sessionJsonOutput = document.getElementById("sessionJsonOutput");
+    const copySessionJsonBtn = document.getElementById("copySessionJsonBtn");
+    const downloadSessionJsonBtn = document.getElementById("downloadSessionJsonBtn");
+
+
+⸻
+
+3. Helper: collect current session snapshot
+
+We’ll make a function that pulls together:
+	•	App version
+	•	UI state
+	•	p5 config
+	•	HTML FX config
+	•	Presets
+	•	Captured frames (with full data URLs)
+	•	VS selection
+
+Add this somewhere in your helpers section (after your persistence helpers is a good spot):
+
+    // ---- Session snapshot (export only v1) ----
+    const ERRL_LAB_VERSION = "errl-fx-lab-v1.0.0";
+
+    function getCurrentHtmlFxConfig() {
+      // If you have individual sliders, you can add them here later.
+      // For now, store the CSS filter string + selected preset id.
+      return {
+        selectedPresetId: htmlFxPresetSelect.value,
+        filterString: getHtmlFxFilterString(),
+      };
+    }
+
+    function getCurrentP5ConfigSnapshot() {
+      // Minimal snapshot – extend with more sliders if you want.
+      return {
+        bgHue: p5Config.bgHue,
+        wobbleAmplitude: p5Config.wobbleAmplitude,
+        wobbleSpeed: p5Config.wobbleSpeed,
+        glowStrength: p5Config.glowStrength,
+        sceneZoom: p5Config.sceneZoom,
+        currentPresetId: p5Config.currentPresetId || null,
+      };
+    }
+
+    function collectSessionSnapshot() {
+      const activeTab = getActivePreviewTabName();
+      const snapshot = {
+        version: ERRL_LAB_VERSION,
+        createdAt: new Date().toISOString(),
+        ui: {
+          activeTab,
+          threeMode,
+        },
+        svg: {
+          hasSvg: !!currentSvg,
+          name: currentSvg?.name || null,
+        },
+        p5Config: getCurrentP5ConfigSnapshot(),
+        htmlFx: getCurrentHtmlFxConfig(),
+        fxPresets: fxPresets,
+        frames: {
+          all: capturedFrames.map((f) => ({
+            id: f.id,
+            url: f.url, // data URL – can be large, but fully self-contained
+            favorite: f.favorite,
+            source: f.source,
+            modeLabel: f.modeLabel,
+            createdAt: f.createdAt,
+          })),
+          favorites: capturedFrames
+            .filter((f) => f.favorite)
+            .map((f) => f.id),
+        },
+        versus: {
+          leftFrameId: vsLeftFrame ? vsLeftFrame.id : null,
+          rightFrameId: vsRightFrame ? vsRightFrame.id : null,
+        },
+      };
+
+      return snapshot;
+    }
+
+    function updateSessionJsonOutput() {
+      if (!sessionJsonOutput) return;
+      const snapshot = collectSessionSnapshot();
+      sessionJsonOutput.value = JSON.stringify(snapshot, null, 2);
+    }
+
+Now we have a canonical little “what is this lab doing right now?” JSON.
+
+⸻
+
+4. Hook snapshot updating into app flows
+
+We want the JSON textarea to stay vaguely up-to-date, but we’ll keep it lightweight:
+	•	At load
+	•	When presets change
+	•	When frames change
+	•	When VS slots change
+
+4.1 On initial setup
+
+Near the end of your script where you do initial setup:
+
+    applyPreset("wobbleChill", false);
+    applyHtmlFxPreset("clean", false);
+    updateSandboxSnippet();
+    renderFxPresetList();
+    loadStateFromStorage();
+
+Add:
+
+    updateSessionJsonOutput();
+
+4.2 After saving / importing presets
+
+In saveCurrentPresetFromUi(), after you already added saveStateToStorage();:
+
+      renderFxPresetList();
+      saveStateToStorage();
+      updateSessionJsonOutput();
+
+In the import handler (after renderFxPresetList(); saveStateToStorage();):
+
+          renderFxPresetList();
+          saveStateToStorage();
+          updateSessionJsonOutput();
+          flashStatus(`Imported ${data.presets.length} presets ✅`);
+
+4.3 After HTML FX preset changes
+
+In the htmlFxPresetSelect change listener:
+
+    htmlFxPresetSelect.addEventListener("change", () => {
+      const id = htmlFxPresetSelect.value;
+      applyHtmlFxPreset(id);
+      saveStateToStorage();
+      updateSessionJsonOutput();
+    });
+
+4.4 When capturing frames or changing VS
+
+At the end of captureCurrentFrameToGallery(...) (just before return true;), add:
+
+        updateSessionJsonOutput();
+        return true;
+
+In assignVsSlot(frame, side), after setting vsLeftFrame / vsRightFrame and calling renderVsSlots();:
+
+      if (side === "left") {
+        vsLeftFrame = frame;
+        renderVsSlots();
+        updateSessionJsonOutput();
+        ...
+      } else if (side === "right") {
+        vsRightFrame = frame;
+        renderVsSlots();
+        updateSessionJsonOutput();
+        ...
+      }
+
+In clearVsSlots(), after renderVsSlots();:
+
+      renderVsSlots();
+      updateSessionJsonOutput();
+      vsStatusEl.textContent = "VS slots cleared.";
+
+In your big clearBtn handler, after you nuke frames / presets or near the end, add:
+
+      if (sessionJsonOutput) {
+        sessionJsonOutput.value = "";
+      }
+      updateSessionJsonOutput();
+
+So the Snapshot block always reflects the latest state.
+
+⸻
+
+5. Implement “Copy JSON” + “Download .json” buttons
+
+Add this near your other button listeners:
+
+    // ---- Session snapshot buttons ----
+    copySessionJsonBtn.addEventListener("click", async () => {
+      try {
+        updateSessionJsonOutput();
+        const text = sessionJsonOutput.value || JSON.stringify(collectSessionSnapshot(), null, 2);
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(text);
+        } else {
+          const textarea = document.createElement("textarea");
+          textarea.value = text;
+          textarea.style.position = "fixed";
+          textarea.style.left = "-9999px";
+          document.body.appendChild(textarea);
+          textarea.focus();
+          textarea.select();
+          document.execCommand("copy");
+          document.body.removeChild(textarea);
+        }
+
+        flashStatus("Session JSON copied to clipboard ✅");
+        playBeep(780, 0.08, "sine");
+      } catch (err) {
+        console.error("Copy session JSON error:", err);
+        flashStatus("Could not copy session JSON.", "error");
+        playBeep(200, 0.1, "square");
+      }
+    });
+
+    downloadSessionJsonBtn.addEventListener("click", () => {
+      try {
+        updateSessionJsonOutput();
+        const text = sessionJsonOutput.value || JSON.stringify(collectSessionSnapshot(), null, 2);
+        const blob = new Blob([text], { type: "application/json;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        const dateTag = new Date().toISOString().replace(/[:.]/g, "-");
+        a.href = url;
+        a.download = `errl-fx-session-${dateTag}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        flashStatus("Session JSON downloaded 💾");
+        playBeep(840, 0.08, "triangle");
+      } catch (err) {
+        console.error("Download session JSON error:", err);
+        flashStatus("Could not download session JSON.", "error");
+        playBeep(200, 0.1, "square");
+      }
+    });
+
+Now two one-click options:
+	•	Copy → paste straight into Obsidian, a prompt, etc.
+	•	Download → drop the .json into your project folder for archiving/re-loading.
+
+⸻
+
+6. Optional: mention snapshot in hint
+
+Somewhere near the end of your setup where you set hintLabel.textContent, you can spice it up:
+
+    hintLabel.textContent =
+      "Hint: Capture frames from any tab (p5/3D/Voxels), then export VS or a full session JSON.";
+
+Just to remind Future-You that “Session Snapshot” exists.
+
+⸻
+
+What you’ve unlocked now
+
+Your Errl Visual OS now has its own little black box recorder:
+	•	Captures:
+	•	Which tab is active
+	•	3D mode (Wire / 3D Voxels)
+	•	p5 FX config
+	•	HTML FX settings
+	•	Your FX preset library
+	•	All captured frames (with source + mode + favorite flags)
+	•	Which frames are in VS Left / Right
+	•	And spits it out as a single JSON blob:
+	•	Copyable into Obsidian or notes
+	•	Downloadable as a timestamped .json file
+	•	Feedable into other AI tools / future loaders
+
+From here you can:
+	•	Build a “Session Replayer” later that reads this JSON and reconstructs:
+	•	FX presets
+	•	active modes
+	•	even re-renders frames into a gallery
+
+For now, you’ve got a fully instrumented, multi-modal goo lab that can explain itself in structured data.

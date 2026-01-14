@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>An interactive overhead projector where you drop oil and water in different colors and then it shines on the wall - P5.js Sketch</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0a0a0a;
+      color: #fff;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .header {
+      padding: 1.5rem 2rem;
+      background: #1a1a1a;
+      border-bottom: 1px solid #333;
+    }
+    .header h1 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .header p {
+      color: #b0b0b0;
+      font-size: 0.875rem;
+    }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 1rem;
+      color: #6366f1;
+      text-decoration: none;
+      font-size: 0.875rem;
+    }
+    .back-link:hover {
+      text-decoration: underline;
+    }
+    #p5-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background: #0a0a0a;
+    }
+    .info {
+      padding: 1.5rem 2rem;
+      background: #1a1a1a;
+      border-top: 1px solid #333;
+      font-size: 0.875rem;
+    }
+    .info-item {
+      margin-bottom: 0.5rem;
+      display: flex;
+    }
+    .info-label {
+      width: 120px;
+      color: #b0b0b0;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="../index.html" class="back-link">← Back to Gallery</a>
+      <h1>An interactive overhead projector where you drop oil and water in different colors and then it shines on the wall</h1>
+      <p>P5.js Interactive Sketch</p>
+    </div>
+    <div id="p5-container"></div>
+    <div class="info">
+      <div class="info-item">
+        <span class="info-label">Prompt:</span>
+        <span>An interactive overhead projector where you drop oil and water in different colors and then it shines on the wall</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Model:</span>
+        <span>threePro</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Generation Time:</span>
+        <span>57.6s</span>
+      </div>
+    </div>
+  </div>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+  <script>
+    const container = document.getElementById('p5-container');
+    const sketchCode = "let blobs = [];\nlet maxBlobs = 60;\nlet blobTexture;\nlet wallTexture;\nlet instructionFade = 255;\n\nfunction setup() {\n  createCanvas(800, 600);\n  \n  // Pre-render a soft radial gradient for the blobs to ensure performance\n  blobTexture = createGraphics(200, 200);\n  blobTexture.noFill();\n  for (let r = 100; r > 0; r -= 2) {\n    let alpha = map(r, 0, 100, 255, 0);\n    // Cubic ease in for softer edges\n    alpha = pow(alpha / 255, 2) * 255;\n    blobTexture.fill(255, alpha);\n    blobTexture.noStroke();\n    blobTexture.ellipse(100, 100, r * 2, r * 2);\n  }\n\n  // Generate static wall noise texture\n  wallTexture = createGraphics(width, height);\n  wallTexture.loadPixels();\n  for (let i = 0; i < wallTexture.width; i++) {\n    for (let j = 0; j < wallTexture.height; j++) {\n      let idx = (i + j * wallTexture.width) * 4;\n      let grain = random(0, 30);\n      wallTexture.pixels[idx] = 0;\n      wallTexture.pixels[idx + 1] = 0;\n      wallTexture.pixels[idx + 2] = 0;\n      wallTexture.pixels[idx + 3] = grain; // Alpha noise\n    }\n  }\n  wallTexture.updatePixels();\n}\n\nfunction draw() {\n  // 1. Draw the \"Wall\" background (Projector light center)\n  background(240, 238, 230); // Off-white wall\n  \n  // Draw a vignette light center\n  noStroke();\n  for (let r = 800; r > 0; r -= 50) {\n    let inter = map(r, 0, 800, 0, 1);\n    let c = lerpColor(color(255, 255, 240), color(200, 190, 180), inter);\n    fill(c);\n    ellipse(width/2, height/2, r * 1.2, r * 1.0);\n  }\n\n  // 2. Physics Update\n  for (let i = 0; i < blobs.length; i++) {\n    blobs[i].update();\n    blobs[i].checkEdges();\n    blobs[i].interact(blobs);\n  }\n\n  // 3. Render Water (Ink) Layers first\n  // We use MULTIPLY blend mode to simulate transparent ink on a projector\n  blendMode(MULTIPLY);\n  for (let b of blobs) {\n    if (b.type === 'water') {\n      b.display();\n    }\n  }\n\n  // 4. Render Oil Layers\n  // Oil sits on top or repels, often blocking light or refracting differently\n  // We use BLEND or HARD_LIGHT for a thicker substance look\n  blendMode(BLEND);\n  for (let b of blobs) {\n    if (b.type === 'oil') {\n      b.display();\n    }\n  }\n\n  // Reset blend mode for UI and overlays\n  blendMode(BLEND);\n\n  // 5. Overlay Wall Texture (Grain)\n  image(wallTexture, 0, 0);\n\n  // 6. Heavy Vignette to simulate the dark room around the projection\n  drawVignette();\n\n  // 7. Instructions\n  if (instructionFade > 0) {\n    textAlign(CENTER);\n    textSize(16);\n    fill(50, instructionFade);\n    noStroke();\n    text(\"Click to drop Ink (Water)\", width / 2, height - 50);\n    text(\"Hold SHIFT + Click to drop Oil\", width / 2, height - 30);\n    instructionFade -= 1;\n  }\n  \n  // Auto-remove old blobs if too many\n  if (blobs.length > maxBlobs) {\n    blobs.splice(0, 1);\n  }\n}\n\nfunction mousePressed() {\n  let isOil = keyIsDown(SHIFT);\n  let sz = random(60, 120);\n  \n  let c;\n  if (isOil) {\n    // Dark, amber, or black oil\n    c = color(random(20, 50), random(10, 30), 0, 220);\n  } else {\n    // CMY Color model for mixing inks\n    let r = random(1);\n    if (r < 0.33) c = color(0, 180, 220); // Cyan\n    else if (r < 0.66) c = color(220, 0, 120); // Magenta\n    else c = color(220, 200, 0); // Yellow\n  }\n  \n  let type = isOil ? 'oil' : 'water';\n  blobs.push(new Blob(mouseX, mouseY, sz, c, type));\n}\n\nfunction drawVignette() {\n  push();\n  noFill();\n  strokeWeight(150);\n  stroke(20, 20, 20, 100);\n  rect(0, 0, width, height);\n  // Soften the inner edge of the stroke (fake gradient)\n  drawingContext.filter = 'blur(60px)';\n  stroke(10, 10, 10, 200);\n  rect(-50, -50, width+100, height+100);\n  drawingContext.filter = 'none';\n  pop();\n}\n\nclass Blob {\n  constructor(x, y, r, c, type) {\n    this.pos = createVector(x, y);\n    this.vel = p5.Vector.random2D().mult(random(0.2, 0.5));\n    this.r = r;\n    this.c = c; // Base color\n    this.type = type;\n    this.noiseOffset = random(1000);\n  }\n\n  update() {\n    // Add organic movement\n    let n = noise(this.pos.x * 0.005, this.pos.y * 0.005, frameCount * 0.01);\n    let noiseForce = p5.Vector.fromAngle(n * TWO_PI).mult(0.05);\n    this.vel.add(noiseForce);\n    \n    // Friction\n    this.vel.mult(0.98);\n    this.pos.add(this.vel);\n    \n    // Heat convection simulation (slow drift up or center)\n    // In projectors, heat sometimes makes fluid drift slowly\n    this.pos.y -= 0.02; \n  }\n\n  checkEdges() {\n    if (this.pos.x < -this.r) this.pos.x = width + this.r;\n    if (this.pos.x > width + this.r) this.pos.x = -this.r;\n    if (this.pos.y < -this.r) this.pos.y = height + this.r;\n    if (this.pos.y > height + this.r) this.pos.y = -this.r;\n  }\n\n  interact(others) {\n    for (let other of others) {\n      if (other !== this) {\n        let d = dist(this.pos.x, this.pos.y, other.pos.x, other.pos.y);\n        \n        // Interaction radii logic\n        // Oil and Water repel strongly (hydrophobic)\n        // Water and Water clump loosely\n        // Oil and Oil clump tightly\n        \n        let minDist = (this.r + other.r) * 0.4; // Visual overlap allowed\n        \n        if (d < minDist) {\n          let force = p5.Vector.sub(this.pos, other.pos);\n          force.normalize();\n          \n          let magnitude = 0;\n          \n          if (this.type !== other.type) {\n            // Oil vs Water: Strong Repulsion\n            magnitude = 0.8; \n          } else if (this.type === 'oil') {\n             // Oil vs Oil: Surface tension tries to minimize boundary, \n             // but here we just keep them distinct circles that nudge\n             magnitude = 0.2;\n          } else {\n             // Water vs Water: They flow over each other easily\n             magnitude = 0.05;\n          }\n\n          // Apply force\n          force.mult(magnitude);\n          this.vel.add(force);\n        }\n      }\n    }\n  }\n\n  display() {\n    push();\n    translate(this.pos.x, this.pos.y);\n    \n    // Wobble effect\n    let wobble = sin(frameCount * 0.05 + this.noiseOffset) * (this.r * 0.05);\n    let w = this.r + wobble;\n    let h = this.r - wobble;\n    \n    tint(this.c);\n    imageMode(CENTER);\n    \n    // If it's oil, we make it look like a bubble/void\n    if (this.type === 'oil') {\n       // Draw a dark core\n       fill(this.c);\n       noStroke();\n       ellipse(0, 0, w*0.6, h*0.6);\n       // Draw the halo using the texture\n       image(blobTexture, 0, 0, w, h);\n       // Highlights for oil bubble surface\n       fill(255, 100);\n       ellipse(w*0.15, -h*0.15, w*0.1, h*0.1);\n    } else {\n       // Water/Ink is just the colored stain\n       image(blobTexture, 0, 0, w, h);\n    }\n    \n    pop();\n  }\n}";
+    
+    const sketch = function(p) {
+      let blobs = [];
+let maxBlobs = 60;
+let blobTexture;
+let wallTexture;
+let instructionFade = 255;
+
+function setup() {
+  createCanvas(800, 600);
+  
+  // Pre-render a soft radial gradient for the blobs to ensure performance
+  blobTexture = createGraphics(200, 200);
+  blobTexture.noFill();
+  for (let r = 100; r > 0; r -= 2) {
+    let alpha = map(r, 0, 100, 255, 0);
+    // Cubic ease in for softer edges
+    alpha = pow(alpha / 255, 2) * 255;
+    blobTexture.fill(255, alpha);
+    blobTexture.noStroke();
+    blobTexture.ellipse(100, 100, r * 2, r * 2);
+  }
+
+  // Generate static wall noise texture
+  wallTexture = createGraphics(width, height);
+  wallTexture.loadPixels();
+  for (let i = 0; i < wallTexture.width; i++) {
+    for (let j = 0; j < wallTexture.height; j++) {
+      let idx = (i + j * wallTexture.width) * 4;
+      let grain = random(0, 30);
+      wallTexture.pixels[idx] = 0;
+      wallTexture.pixels[idx + 1] = 0;
+      wallTexture.pixels[idx + 2] = 0;
+      wallTexture.pixels[idx + 3] = grain; // Alpha noise
+    }
+  }
+  wallTexture.updatePixels();
+}
+
+function draw() {
+  // 1. Draw the "Wall" background (Projector light center)
+  background(240, 238, 230); // Off-white wall
+  
+  // Draw a vignette light center
+  noStroke();
+  for (let r = 800; r > 0; r -= 50) {
+    let inter = map(r, 0, 800, 0, 1);
+    let c = lerpColor(color(255, 255, 240), color(200, 190, 180), inter);
+    fill(c);
+    ellipse(width/2, height/2, r * 1.2, r * 1.0);
+  }
+
+  // 2. Physics Update
+  for (let i = 0; i < blobs.length; i++) {
+    blobs[i].update();
+    blobs[i].checkEdges();
+    blobs[i].interact(blobs);
+  }
+
+  // 3. Render Water (Ink) Layers first
+  // We use MULTIPLY blend mode to simulate transparent ink on a projector
+  blendMode(MULTIPLY);
+  for (let b of blobs) {
+    if (b.type === 'water') {
+      b.display();
+    }
+  }
+
+  // 4. Render Oil Layers
+  // Oil sits on top or repels, often blocking light or refracting differently
+  // We use BLEND or HARD_LIGHT for a thicker substance look
+  blendMode(BLEND);
+  for (let b of blobs) {
+    if (b.type === 'oil') {
+      b.display();
+    }
+  }
+
+  // Reset blend mode for UI and overlays
+  blendMode(BLEND);
+
+  // 5. Overlay Wall Texture (Grain)
+  image(wallTexture, 0, 0);
+
+  // 6. Heavy Vignette to simulate the dark room around the projection
+  drawVignette();
+
+  // 7. Instructions
+  if (instructionFade > 0) {
+    textAlign(CENTER);
+    textSize(16);
+    fill(50, instructionFade);
+    noStroke();
+    text("Click to drop Ink (Water)", width / 2, height - 50);
+    text("Hold SHIFT + Click to drop Oil", width / 2, height - 30);
+    instructionFade -= 1;
+  }
+  
+  // Auto-remove old blobs if too many
+  if (blobs.length > maxBlobs) {
+    blobs.splice(0, 1);
+  }
+}
+
+function mousePressed() {
+  let isOil = keyIsDown(SHIFT);
+  let sz = random(60, 120);
+  
+  let c;
+  if (isOil) {
+    // Dark, amber, or black oil
+    c = color(random(20, 50), random(10, 30), 0, 220);
+  } else {
+    // CMY Color model for mixing inks
+    let r = random(1);
+    if (r < 0.33) c = color(0, 180, 220); // Cyan
+    else if (r < 0.66) c = color(220, 0, 120); // Magenta
+    else c = color(220, 200, 0); // Yellow
+  }
+  
+  let type = isOil ? 'oil' : 'water';
+  blobs.push(new Blob(mouseX, mouseY, sz, c, type));
+}
+
+function drawVignette() {
+  push();
+  noFill();
+  strokeWeight(150);
+  stroke(20, 20, 20, 100);
+  rect(0, 0, width, height);
+  // Soften the inner edge of the stroke (fake gradient)
+  drawingContext.filter = 'blur(60px)';
+  stroke(10, 10, 10, 200);
+  rect(-50, -50, width+100, height+100);
+  drawingContext.filter = 'none';
+  pop();
+}
+
+class Blob {
+  constructor(x, y, r, c, type) {
+    this.pos = createVector(x, y);
+    this.vel = p5.Vector.random2D().mult(random(0.2, 0.5));
+    this.r = r;
+    this.c = c; // Base color
+    this.type = type;
+    this.noiseOffset = random(1000);
+  }
+
+  update() {
+    // Add organic movement
+    let n = noise(this.pos.x * 0.005, this.pos.y * 0.005, frameCount * 0.01);
+    let noiseForce = p5.Vector.fromAngle(n * TWO_PI).mult(0.05);
+    this.vel.add(noiseForce);
+    
+    // Friction
+    this.vel.mult(0.98);
+    this.pos.add(this.vel);
+    
+    // Heat convection simulation (slow drift up or center)
+    // In projectors, heat sometimes makes fluid drift slowly
+    this.pos.y -= 0.02; 
+  }
+
+  checkEdges() {
+    if (this.pos.x < -this.r) this.pos.x = width + this.r;
+    if (this.pos.x > width + this.r) this.pos.x = -this.r;
+    if (this.pos.y < -this.r) this.pos.y = height + this.r;
+    if (this.pos.y > height + this.r) this.pos.y = -this.r;
+  }
+
+  interact(others) {
+    for (let other of others) {
+      if (other !== this) {
+        let d = dist(this.pos.x, this.pos.y, other.pos.x, other.pos.y);
+        
+        // Interaction radii logic
+        // Oil and Water repel strongly (hydrophobic)
+        // Water and Water clump loosely
+        // Oil and Oil clump tightly
+        
+        let minDist = (this.r + other.r) * 0.4; // Visual overlap allowed
+        
+        if (d < minDist) {
+          let force = p5.Vector.sub(this.pos, other.pos);
+          force.normalize();
+          
+          let magnitude = 0;
+          
+          if (this.type !== other.type) {
+            // Oil vs Water: Strong Repulsion
+            magnitude = 0.8; 
+          } else if (this.type === 'oil') {
+             // Oil vs Oil: Surface tension tries to minimize boundary, 
+             // but here we just keep them distinct circles that nudge
+             magnitude = 0.2;
+          } else {
+             // Water vs Water: They flow over each other easily
+             magnitude = 0.05;
+          }
+
+          // Apply force
+          force.mult(magnitude);
+          this.vel.add(force);
+        }
+      }
+    }
+  }
+
+  display() {
+    push();
+    translate(this.pos.x, this.pos.y);
+    
+    // Wobble effect
+    let wobble = sin(frameCount * 0.05 + this.noiseOffset) * (this.r * 0.05);
+    let w = this.r + wobble;
+    let h = this.r - wobble;
+    
+    tint(this.c);
+    imageMode(CENTER);
+    
+    // If it's oil, we make it look like a bubble/void
+    if (this.type === 'oil') {
+       // Draw a dark core
+       fill(this.c);
+       noStroke();
+       ellipse(0, 0, w*0.6, h*0.6);
+       // Draw the halo using the texture
+       image(blobTexture, 0, 0, w, h);
+       // Highlights for oil bubble surface
+       fill(255, 100);
+       ellipse(w*0.15, -h*0.15, w*0.1, h*0.1);
+    } else {
+       // Water/Ink is just the colored stain
+       image(blobTexture, 0, 0, w, h);
+    }
+    
+    pop();
+  }
+}
+    };
+    
+    new p5(sketch, container);
+  </script>
+</body>
+</html>

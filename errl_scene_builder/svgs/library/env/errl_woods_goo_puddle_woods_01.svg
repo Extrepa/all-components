@@ -1,0 +1,9 @@
+<!-- 97) errl_woods_goo_puddle_woods_01 – forest-colored goo puddle (fx/prop) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="fx" data-name="errl_woods_goo_puddle_woods_01">
+  <g fill="none">
+    <ellipse cx="32" cy="44" rx="14" ry="4" fill="#22c55e" opacity="0.9"/>
+    <ellipse cx="28" cy="43" rx="5" ry="2" fill="#86efac" opacity="0.8"/>
+    <ellipse cx="38" cy="45" rx="4" ry="1.6" fill="#16a34a" opacity="0.8"/>
+  </g>
+</svg>

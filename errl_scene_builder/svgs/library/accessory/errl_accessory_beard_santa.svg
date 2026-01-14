@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_accessory" data-cat="wearable" data-name="errl_accessory_beard_santa">
+  <rect width="64" height="64" rx="12" fill="none"/>
+  <path d="M16 30c-2 10 3 18 16 26 13-8 18-16 16-26" fill="#fff2e2" stroke="#f5d8cf" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M18 36c3 6 7 10 14 14 7-4 11-8 14-14" fill="none" stroke="#e6c5b8" stroke-width="2" stroke-linecap="round"/>
+  <path d="M22 28c3 2 6 3 10 3s7-1 10-3" fill="none" stroke="#f5d8cf" stroke-width="2" stroke-linecap="round"/>
+</svg>

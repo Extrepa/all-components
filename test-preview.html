@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Preview Test</title>
+  <style>
+    body {
+      font-family: monospace;
+      padding: 2rem;
+      background: #1a1a1a;
+      color: #fff;
+    }
+    .test-section {
+      margin: 2rem 0;
+      padding: 1rem;
+      background: #2a2a2a;
+      border-radius: 8px;
+    }
+    .test-item {
+      margin: 0.5rem 0;
+      padding: 0.5rem;
+      background: #3a3a3a;
+      border-radius: 4px;
+    }
+    .pass { color: #4ade80; }
+    .fail { color: #f87171; }
+    .info { color: #60a5fa; }
+  </style>
+</head>
+<body>
+  <h1>Preview System Test</h1>
+  
+  <div class="test-section">
+    <h2>Component Data Test</h2>
+    <div id="data-test" class="test-item">Loading...</div>
+  </div>
+  
+  <div class="test-section">
+    <h2>Preview Functions Test</h2>
+    <div id="function-test" class="test-item">Loading...</div>
+  </div>
+  
+  <div class="test-section">
+    <h2>Cache Test</h2>
+    <div id="cache-test" class="test-item">Loading...</div>
+  </div>
+  
+  <div class="test-section">
+    <h2>Syntax Highlighting Test</h2>
+    <div id="syntax-test" class="test-item">Loading...</div>
+  </div>
+  
+  <script>
+    async function runTests() {
+      const results = {
+        data: [],
+        functions: [],
+        cache: [],
+        syntax: []
+      };
+      
+      // Test 1: Component Data
+      try {
+        const response = await fetch('components-data.json');
+        if (response.ok) {
+          const data = await response.json();
+          const total = Object.values(data).reduce((sum, p) => sum + p.components.length, 0);
+          results.data.push({ test: 'Load components-data.json', pass: true, msg: `Loaded ${total} components` });
+          results.data.push({ test: 'Component count', pass: total === 205, msg: `Expected 205, got ${total}` });
+        } else {
+          results.data.push({ test: 'Load components-data.json', pass: false, msg: 'Failed to load' });
+        }
+      } catch (e) {
+        results.data.push({ test: 'Load components-data.json', pass: false, msg: e.message });
+      }
+      
+      // Test 2: Preview Functions
+      if (typeof toggleComponentPreview === 'function') {
+        results.functions.push({ test: 'toggleComponentPreview exists', pass: true });
+      } else {
+        results.functions.push({ test: 'toggleComponentPreview exists', pass: false });
+      }
+      
+      if (typeof loadComponentPreview === 'function') {
+        results.functions.push({ test: 'loadComponentPreview exists', pass: true });
+      } else {
+        results.functions.push({ test: 'loadComponentPreview exists', pass: false });
+      }
+      
+      if (typeof getFileExtension === 'function') {
+        results.functions.push({ test: 'getFileExtension exists', pass: true });
+        // Test it
+        const ext1 = getFileExtension('test.tsx');
+        const ext2 = getFileExtension('test.glsl');
+        results.functions.push({ test: 'getFileExtension works', pass: ext1 === 'tsx' && ext2 === 'glsl', msg: `tsx=${ext1}, glsl=${ext2}` });
+      } else {
+        results.functions.push({ test: 'getFileExtension exists', pass: false });
+      }
+      
+      // Test 3: Cache
+      if (typeof previewCache !== 'undefined') {
+        results.cache.push({ test: 'previewCache exists', pass: true });
+        if (previewCache instanceof Map) {
+          results.cache.push({ test: 'previewCache is Map', pass: true });
+        } else {
+          results.cache.push({ test: 'previewCache is Map', pass: false });
+        }
+      } else {
+        results.cache.push({ test: 'previewCache exists', pass: false });
+      }
+      
+      // Test 4: Syntax Highlighting
+      if (typeof Prism !== 'undefined') {
+        results.syntax.push({ test: 'Prism.js loaded', pass: true });
+      } else {
+        results.syntax.push({ test: 'Prism.js loaded', pass: false, msg: 'Load from CDN' });
+      }
+      
+      // Render results
+      function renderResults(id, tests) {
+        const div = document.getElementById(id);
+        div.innerHTML = tests.map(t => 
+          `<span class="${t.pass ? 'pass' : 'fail'}">${t.pass ? '✓' : '✗'}</span> ${t.test}${t.msg ? `: ${t.msg}` : ''}`
+        ).join('<br>');
+      }
+      
+      renderResults('data-test', results.data);
+      renderResults('function-test', results.functions);
+      renderResults('cache-test', results.cache);
+      renderResults('syntax-test', results.syntax);
+      
+      const allPass = [...results.data, ...results.functions, ...results.cache, ...results.syntax].every(t => t.pass);
+      document.body.insertAdjacentHTML('beforeend', `<div class="test-section"><h2>Overall</h2><div class="test-item ${allPass ? 'pass' : 'fail'}">${allPass ? '✓ All tests passed' : '✗ Some tests failed'}</div></div>`);
+    }
+    
+    // Load preview.html script to test functions
+    const script = document.createElement('script');
+    script.src = 'preview.html';
+    script.onerror = () => {
+      // Can't load directly, try to extract script
+      fetch('preview.html')
+        .then(r => r.text())
+        .then(html => {
+          const match = html.match(/<script>([\s\S]+)<\/script>/);
+          if (match) {
+            try {
+              eval(match[1]);
+              runTests();
+            } catch (e) {
+              document.getElementById('function-test').innerHTML = `<span class="fail">✗</span> Error: ${e.message}`;
+            }
+          }
+        });
+    };
+    
+    // Try to run tests after a delay
+    setTimeout(runTests, 1000);
+  </script>
+</body>
+</html>

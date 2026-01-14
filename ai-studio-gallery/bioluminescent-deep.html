@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bioluminescent Deep</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #010101; /* Pitch black */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    canvas {
+      display: block;
+      box-shadow: 0 0 100px rgba(0,0,0,1);
+    }
+    #instructions {
+      position: absolute;
+      bottom: 30px;
+      width: 100%;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.15);
+      font-family: 'Courier New', sans-serif; 
+      font-size: 11px;
+      pointer-events: none;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    #status {
+      position: absolute;
+      top: 30px;
+      width: 100%;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.3);
+      font-family: 'Courier New', sans-serif;
+      font-size: 14px;
+      letter-spacing: 4px;
+      pointer-events: none;
+      text-transform: uppercase;
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+</head>
+<body>
+
+  <div id="status">Current: <span id="typeLabel">Water</span></div>
+  <div id="instructions">
+    Auto-swaps every 5 drops • 'S' to Swap
+  </div>
+
+  <script>
+    let drops = [];
+    let bubbles = []; // NEW: Micro-bubbles
+    let currentDrop = null;
+    let mousePressStartTime = 0;
+    const CLICK_THRESHOLD = 200;
+
+    let currentType = 'water'; 
+    let dropCounter = 0;
+    const AUTO_SWAP_COUNT = 5;
+
+    let grainImg;
+
+    const PALETTE_WATER = { hues: [190, 210, 230, 170], bgHue: 210 }; 
+    const PALETTE_OIL = { hues: [20, 40, 270, 290], bgHue: 20 };      
+
+    function setup() {
+      createCanvas(windowWidth, windowHeight);
+      colorMode(HSB, 360, 100, 100, 100);
+      
+      grainImg = createGraphics(width, height);
+      grainImg.noStroke();
+      for (let i = 0; i < 30000; i++) {
+        grainImg.fill(0, 0, 100, 1.5); 
+        grainImg.rect(random(width), random(height), 1, 1);
+      }
+      updateLabel();
+    }
+
+    function windowResized() {
+      resizeCanvas(windowWidth, windowHeight);
+      grainImg = createGraphics(width, height);
+      grainImg.noStroke();
+      for (let i = 0; i < 30000; i++) {
+        grainImg.fill(0, 0, 100, 1.5);
+        grainImg.rect(random(width), random(height), 1, 1);
+      }
+    }
+
+    function draw() {
+      // 1. Deep Background
+      blendMode(BLEND);
+      noStroke();
+      let targetBg = currentType === 'water' ? 210 : 20;
+      let dimBg = color(targetBg, 40, 2, 30); // Very dark, slight color hint
+      fill(dimBg); 
+      rect(0, 0, width, height);
+
+      // 2. Main Physics Loop
+      blendMode(ADD);
+
+      let mousePos = createVector(mouseX, mouseY);
+      let mouseVel = createVector(mouseX - pmouseX, mouseY - pmouseY);
+      
+      // Update Bubbles (Effervescence)
+      for (let i = bubbles.length - 1; i >= 0; i--) {
+        let b = bubbles[i];
+        b.update();
+        b.display();
+        if (b.isGone()) bubbles.splice(i, 1);
+      }
+
+      // Reset neighbor counts
+      for (let drop of drops) {
+        drop.neighborCount = 0;
+      }
+
+      for (let i = 0; i < drops.length; i++) {
+        let A = drops[i];
+
+        // NEW: Global Deep Current (Flow Field)
+        // Uses very large scale noise to create a "river" direction
+        let flowAngle = noise(A.pos.x * 0.0005, A.pos.y * 0.0005, frameCount * 0.001) * TWO_PI * 2;
+        let flowForce = p5.Vector.fromAngle(flowAngle).mult(0.01);
+        A.vel.add(flowForce);
+
+        // Interaction Physics
+        for (let j = i + 1; j < drops.length; j++) {
+          let B = drops[j];
+          let d = p5.Vector.dist(A.pos, B.pos);
+          let combinedR = A.r + B.r;
+          let reach = combinedR * 2.0; 
+          
+          if (d < reach) {
+            if (A.type === B.type) {
+              // LIKE FLUIDS
+              A.neighborCount++;
+              B.neighborCount++;
+
+              let force = p5.Vector.sub(B.pos, A.pos);
+              force.setMag(0.02); 
+              if (d < combinedR * 0.6) force.mult(-2.5); 
+              A.vel.add(force);
+              B.vel.sub(force);
+
+              // Viscosity
+              let viscosity = (A.type === 'oil') ? 0.08 : 0.04;
+              let relVel = p5.Vector.sub(B.vel, A.vel);
+              let drag = relVel.mult(viscosity); 
+              A.vel.add(drag);
+              B.vel.sub(drag);
+
+            } else {
+              // OPPOSITE FLUIDS
+              let force = p5.Vector.sub(A.pos, B.pos);
+              let repulsionStrength = map(d, 0, reach, 0.025, 0.005);
+              force.setMag(repulsionStrength);
+              A.vel.add(force);
+              B.vel.sub(force);
+            }
+          }
+        }
+
+        // Mouse Interaction
+        let dToMouse = dist(mouseX, mouseY, A.pos.x, A.pos.y);
+        if (dToMouse < 80) {
+          let dragForce = mouseVel.copy().mult(0.005);
+          A.vel.add(dragForce);
+          let pushDir = p5.Vector.sub(A.pos, mousePos);
+          let pushStrength = map(dToMouse, 0, 80, 0.01, 0);
+          pushDir.setMag(pushStrength);
+          A.vel.add(pushDir);
+        }
+
+        A.update();
+        A.display();
+      }
+
+      // Cleanup
+      for (let i = drops.length - 1; i >= 0; i--) {
+        if (drops[i].isGone()) drops.splice(i, 1);
+      }
+
+      // Creation
+      if (mouseIsPressed && currentDrop) {
+        let growAmount = (millis() - mousePressStartTime) * 0.05;
+        currentDrop.r = 15 + growAmount;
+        currentDrop.display(); 
+      }
+
+      blendMode(BLEND);
+      image(grainImg, 0, 0);
+    }
+
+    // --- CLASSES ---
+
+    class Bubble {
+      constructor(x, y, hue) {
+        this.pos = createVector(x, y);
+        this.vel = createVector(random(-0.5, 0.5), random(-1, -0.2)); // Float Up
+        this.hue = hue;
+        this.life = 255;
+        this.size = random(1, 3);
+      }
+
+      update() {
+        this.pos.add(this.vel);
+        this.life -= 4; // Die fast
+      }
+
+      display() {
+        noStroke();
+        fill(this.hue, 30, 100, this.life / 255 * 50);
+        ellipse(this.pos.x, this.pos.y, this.size);
+      }
+
+      isGone() {
+        return this.life <= 0;
+      }
+    }
+
+    class Drop {
+      constructor(x, y, r, type) {
+        this.pos = createVector(x, y);
+        this.vel = createVector(0, 0);
+        this.r = r;
+        this.type = type;
+        
+        let palette = (this.type === 'water') ? PALETTE_WATER.hues : PALETTE_OIL.hues;
+        this.baseHue = random(palette);
+
+        this.hue = this.baseHue + random(-10, 10);
+        this.baseSat = random(30, 50); 
+        this.baseBri = random(20, 35); 
+        
+        this.life = 255; 
+        this.maxSpread = this.r * random(2, 4);
+        this.noiseOffset = random(1000);
+        this.shapeSpeed = (this.type === 'water') ? random(0.02, 0.04) : random(0.005, 0.015);
+        this.neighborCount = 0;
+        this.cycleValue = 0.0;
+        this.isOverloaded = false;
+        this.prevHeading = 0;
+        this.stretchFactor = 1.0;
+      }
+
+      setInitialVelocity() {
+        this.vel = p5.Vector.random2D().mult(random(0.1, 0.4));
+      }
+
+      update() {
+        // Micro-Bubble Spawning
+        // If moving fast, chance to emit bubble
+        if (this.vel.mag() > 1.5 && random(1) < 0.2) {
+          bubbles.push(new Bubble(this.pos.x + random(-this.r, this.r), this.pos.y, this.hue));
+        }
+
+        // Wander
+        let wanderAngle = noise(this.pos.x * 0.002, this.pos.y * 0.002, frameCount * 0.005) * TWO_PI * 2;
+        let wanderForce = p5.Vector.fromAngle(wanderAngle).mult(0.015);
+        this.vel.add(wanderForce);
+        
+        // Friction
+        let friction = (this.type === 'water') ? 0.97 : 0.95;
+        this.vel.mult(friction); 
+        this.pos.add(this.vel);
+
+        // Life
+        if (this.r < this.maxSpread) this.r += 0.05;
+        this.life -= 0.1; 
+
+        // Wrap
+        let buffer = this.r * 3;
+        if (this.pos.x < -buffer) this.pos.x = width + buffer;
+        if (this.pos.x > width + buffer) this.pos.x = -buffer;
+        if (this.pos.y < -buffer) this.pos.y = height + buffer;
+        if (this.pos.y > height + buffer) this.pos.y = -buffer;
+      }
+
+      display(extraSize = 0) {
+        noStroke();
+        let lifeFactor = this.life / 255;
+        
+        // Cycle Logic
+        let hasEnergy = this.neighborCount > 1;
+        if (hasEnergy) {
+          if (!this.isOverloaded) {
+            this.cycleValue += 0.008;
+            if (this.cycleValue >= 1.0) { this.cycleValue = 1.0; this.isOverloaded = true; }
+          } else {
+            this.cycleValue -= 0.004; 
+            if (this.cycleValue <= 0.0) { this.cycleValue = 0.0; this.isOverloaded = false; }
+          }
+        } else {
+          this.cycleValue -= 0.01;
+          if (this.cycleValue < 0) this.cycleValue = 0;
+        }
+
+        // Color Calc
+        let density = min(this.neighborCount, 10);
+        let currentRadiusBoost = (density * 5) * this.cycleValue;
+        let currentSatBoost = (density * 15) * this.cycleValue;
+        let currentBriBoost = (density * 5) * this.cycleValue;
+
+        let displayR = this.r + currentRadiusBoost;
+        let displaySat = min(this.baseSat + currentSatBoost, 100);
+        let displayBri = min(this.baseBri + currentBriBoost, 65); 
+
+        // Deformation
+        let speed = this.vel.mag();
+        let heading = this.vel.heading();
+        let targetStretch = map(speed, 0, 4, 1.0, 2.0);
+        targetStretch = constrain(targetStretch, 1.0, 2.5);
+        
+        this.stretchFactor = lerp(this.stretchFactor, targetStretch, 0.1);
+        this.prevHeading = lerp(this.prevHeading, heading, 0.1);
+        let squashFactor = 1.0 / this.stretchFactor;
+
+        push();
+        translate(this.pos.x, this.pos.y);
+        rotate(this.prevHeading);
+        scale(this.stretchFactor, squashFactor);
+        
+        // --- DRAW BODY ---
+        fill(this.hue, displaySat, displayBri, 3 * lifeFactor);
+        this.drawBlob(displayR * 2.8 + extraSize, 0);
+
+        fill(this.hue, displaySat, displayBri, 5 * lifeFactor);
+        this.drawBlob(displayR * 2.0 + extraSize, 10);
+
+        fill(this.hue, displaySat, displayBri, 8 * lifeFactor);
+        this.drawBlob(displayR * 1.3 + extraSize, 20);
+
+        fill(this.hue, displaySat, displayBri + 10, 12 * lifeFactor);
+        this.drawBlob(displayR * 0.7 + extraSize, 30);
+
+        // --- NEW: SPECULAR HIGHLIGHT (The Gloss) ---
+        // We do not rotate/stretch the highlight perfectly with the body
+        // to make it look like a surface reflection.
+        // We draw it 'on top' of the blob logic.
+        rotate(-this.prevHeading); // Counter-rotate slightly to keep light source fixed
+        scale(1/this.stretchFactor, 1/squashFactor); // Reset scale for crisp circle
+        
+        // Highlight color (White with tint of hue)
+        let highlightAlpha = 30 * lifeFactor * (0.5 + this.cycleValue * 0.5); // Gets brighter with energy
+        fill(this.hue, 10, 100, highlightAlpha); 
+        
+        // Offset to top-left (implied light source)
+        let glintX = -displayR * 0.3;
+        let glintY = -displayR * 0.3;
+        let glintSize = displayR * 0.5;
+        
+        ellipse(glintX, glintY, glintSize, glintSize * 0.8);
+
+        pop();
+      }
+
+      drawBlob(radius, phaseOffset) {
+        beginShape();
+        for (let a = 0; a < TWO_PI; a += 0.15) {
+          let xoff = cos(a) * 0.5 + 1 + this.noiseOffset;
+          let yoff = sin(a) * 0.5 + 1 + this.noiseOffset;
+          let n = noise(xoff, yoff, frameCount * this.shapeSpeed + phaseOffset);
+          
+          let r = radius + map(n, 0, 1, -radius * 0.15, radius * 0.15);
+          let x = r * cos(a);
+          let y = r * sin(a);
+          vertex(x, y);
+        }
+        endShape(CLOSE);
+      }
+
+      isGone() {
+        return this.life <= 0;
+      }
+    }
+
+    function mousePressed() {
+      mousePressStartTime = millis();
+      currentDrop = new Drop(mouseX, mouseY, 10, currentType);
+    }
+
+    function mouseReleased() {
+      if (currentDrop) {
+        if (millis() - mousePressStartTime < CLICK_THRESHOLD) {
+          currentDrop.r = random(20, 35);
+          currentDrop.maxSpread = currentDrop.r * random(1.5, 2.5);
+        }
+        currentDrop.setInitialVelocity();
+        drops.push(currentDrop);
+        currentDrop = null;
+        
+        dropCounter++;
+        if (dropCounter >= AUTO_SWAP_COUNT) {
+          toggleLiquid();
+          dropCounter = 0;
+        }
+      }
+    }
+
+    function keyPressed() {
+      if (key === 's' || key === 'S' || key === ' ') {
+        toggleLiquid();
+        dropCounter = 0; 
+      }
+    }
+
+    function toggleLiquid() {
+      currentType = (currentType === 'water') ? 'oil' : 'water';
+      updateLabel();
+    }
+
+    function updateLabel() {
+      let label = document.getElementById('typeLabel');
+      label.innerText = currentType;
+      label.style.color = (currentType === 'water') ? '#88ccff' : '#ffcc44';
+    }
+  </script>
+</body>
+</html>

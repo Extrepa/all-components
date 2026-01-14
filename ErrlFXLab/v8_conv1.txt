@@ -1,0 +1,1830 @@
+We’re slowly turning this into “Errl FX Factory Manager 2025”. v0.8 = Preset Import + Batch Capture Wizard. 🧪📦📸
+
+New upgrades in this round:
+	•	Import FX preset packs (JSON):
+	•	Load a .json created by “Export JSON”.
+	•	Merge into the current preset list.
+	•	Batch capture (p5 + FX presets):
+	•	Button to auto-walk through all FX presets:
+	•	Apply each preset
+	•	Wait a bit
+	•	Capture a frame into the thumbnail gallery
+	•	It’s basically “make a contact sheet of how every preset looks” button.
+
+Everything from v0.7 still works: SVG inspector, p5 FX lab, HTML FX filters, CSS filter copy, preset pack manager, keyboard shortcuts, audio bleeps.
+
+Here’s the full updated index.html (v0.8). Replace your current file with this:
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Errl FX Megaforge v0.8</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Tailwind via CDN (fine for prototyping) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- p5.js for FX lab -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+
+  <style>
+    body {
+      background: radial-gradient(circle at top, #071b25 0, #02070a 55%, #000 100%);
+      color: #ecf9ff;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+    }
+
+    .errl-glow {
+      box-shadow:
+        0 0 40px rgba(52, 225, 255, 0.3),
+        0 0 80px rgba(255, 52, 245, 0.2);
+    }
+
+    .scrollbar-thin::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.6);
+      border-radius: 999px;
+    }
+
+    .scrollbar-thin::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .backdrop-blur-soft {
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Top Bar -->
+  <header
+    class="flex items-center justify-between px-4 py-2 border-b border-slate-800/70 bg-slate-900/70 backdrop-blur-soft"
+  >
+    <div class="flex items-center gap-3">
+      <div
+        class="w-8 h-8 rounded-xl bg-gradient-to-br from-cyan-400 to-fuchsia-500 flex items-center justify-center errl-glow"
+      >
+        <span class="text-xs font-black tracking-tight">E</span>
+      </div>
+      <div>
+        <h1 class="text-sm font-semibold tracking-tight">
+          Errl FX Megaforge <span class="text-xs text-cyan-300/80">v0.8</span>
+        </h1>
+        <p class="text-[11px] text-slate-300/70">
+          Upload Errl → SVG inspector → p5 + HTML FX → preset packs → batch frames.
+        </p>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-3 text-xs">
+      <span id="status-text" class="px-2 py-1 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/40">
+        Ready · No SVG loaded
+      </span>
+      <button
+        id="themeToggle"
+        class="px-2 py-1 rounded-full border border-slate-600/80 text-[11px] hover:bg-slate-800/80 transition"
+      >
+        Theme: Errl Night
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Layout -->
+  <main class="flex-1 flex overflow-hidden">
+
+    <!-- Sidebar -->
+    <aside
+      class="w-52 border-r border-slate-800/70 bg-slate-950/80 backdrop-blur-soft p-3 flex flex-col gap-3"
+    >
+      <h2 class="text-[11px] uppercase tracking-[0.16em] text-slate-400 mb-1">
+        Modes
+      </h2>
+      <nav class="flex flex-col gap-1 text-xs">
+        <button
+          class="mode-btn flex items-center gap-2 px-2 py-1.5 rounded-md bg-cyan-500/15 border border-cyan-500/40 text-cyan-200"
+          data-mode="lab"
+        >
+          <span>🧪</span>
+          <span>Lab (SVG + FX)</span>
+        </button>
+        <button
+          class="mode-btn flex items-center gap-2 px-2 py-1.5 rounded-md hover:bg-slate-900/80 border border-slate-700/70 text-slate-200"
+          data-mode="wire3d"
+        >
+          <span>📡</span>
+          <span>3D Wire (soon)</span>
+        </button>
+        <button
+          class="mode-btn flex items-center gap-2 px-2 py-1.5 rounded-md hover:bg-slate-900/80 border border-slate-700/70 text-slate-200"
+          data-mode="voxel"
+        >
+          <span>🧊</span>
+          <span>Voxels (soon)</span>
+        </button>
+      </nav>
+
+      <div class="mt-4">
+        <h2 class="text-[11px] uppercase tracking-[0.16em] text-slate-400 mb-1">
+          Views
+        </h2>
+        <div class="flex flex-col gap-1 text-xs">
+          <button
+            class="flex items-center gap-2 px-2 py-1.5 rounded-md hover:bg-slate-900/80 border border-slate-700/70 text-slate-200"
+          >
+            <span>📚</span>
+            <span>Gallery (later)</span>
+          </button>
+          <button
+            class="flex items-center gap-2 px-2 py-1.5 rounded-md hover:bg-slate-900/80 border border-slate-700/70 text-slate-200"
+          >
+            <span>❤️</span>
+            <span>Favorites (later)</span>
+          </button>
+          <button
+            class="flex items-center gap-2 px-2 py-1.5 rounded-md hover:bg-slate-900/80 border border-slate-700/70 text-slate-200"
+          >
+            <span>⚔️</span>
+            <span>Versus Mode (later)</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="mt-auto text-[10px] text-slate-500">
+        <p>Errl FX Megaforge v0.8 shell.</p>
+        <p>Slice: FX import + batch capture.</p>
+      </div>
+    </aside>
+
+    <!-- Center: Preview + Upload -->
+    <section class="flex-1 flex flex-col border-r border-slate-800/70">
+      <!-- Upload Bar -->
+      <div class="border-b border-slate-800/70 px-4 py-2 flex items-center justify-between bg-slate-950/50 backdrop-blur-soft">
+        <div class="flex items-center gap-2 text-xs">
+          <span class="text-slate-400">Step 1</span>
+          <span class="text-slate-200">Upload an Errl SVG</span>
+        </div>
+        <div class="flex items-center gap-2 text-xs">
+          <label
+            for="svgFileInput"
+            class="cursor-pointer px-3 py-1.5 rounded-md bg-cyan-500/10 border border-cyan-400/60 text-cyan-100 hover:bg-cyan-500/20"
+          >
+            Choose file
+          </label>
+          <input id="svgFileInput" type="file" accept=".svg" class="hidden" />
+        </div>
+      </div>
+
+      <!-- Dropzone + Preview -->
+      <div class="flex-1 flex flex-col lg:flex-row overflow-hidden">
+        <!-- Drop / Status -->
+        <div class="w-full lg:w-1/3 border-r border-slate-800/70 flex flex-col">
+          <div
+            id="dropzone"
+            class="m-3 flex-1 rounded-xl border border-dashed border-slate-600/90 bg-slate-950/70 backdrop-blur-soft flex flex-col items-center justify-center text-center px-3 py-3 text-xs text-slate-300/80 hover:border-cyan-400/70 hover:bg-slate-900/70 transition cursor-pointer"
+          >
+            <p class="mb-1 text-slate-200 font-medium">
+              Drop your Errl SVG here
+            </p>
+            <p class="text-[11px] leading-snug">
+              .svg files only.<br />
+              We’ll normalize the viewBox and render a preview.
+            </p>
+            <p class="mt-2 text-[10px] text-slate-500">
+              (Drag & drop or use “Choose file” above)
+            </p>
+          </div>
+
+          <div class="px-3 pb-3 text-[11px] text-slate-400 space-y-1">
+            <div class="flex items-center justify-between">
+              <span>Paths:</span>
+              <span id="pathCount" class="text-slate-100">–</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span>Groups:</span>
+              <span id="groupCount" class="text-slate-100">–</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span>ViewBox:</span>
+              <span id="viewBoxInfo" class="text-slate-100">–</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Center panel with tabs: SVG Preview / p5 FX / HTML FX -->
+        <div class="flex-1 flex flex-col">
+          <!-- Tabs -->
+          <div class="px-4 pt-1.5 border-b border-slate-800/70 flex items-center justify-between">
+            <div class="flex items-center gap-1 text-xs">
+              <button
+                id="tabSvg"
+                class="preview-tab px-3 py-1.5 rounded-md bg-slate-800/80 text-slate-50 border border-slate-600/90"
+                data-tab="svg"
+              >
+                SVG Preview
+              </button>
+              <button
+                id="tabP5"
+                class="preview-tab px-3 py-1.5 rounded-md text-slate-300 border border-transparent hover:border-slate-600/80 hover:bg-slate-900/80"
+                data-tab="p5"
+              >
+                p5 FX Lab
+              </button>
+              <button
+                id="tabHtmlFx"
+                class="preview-tab px-3 py-1.5 rounded-md text-slate-300 border border-transparent hover:border-slate-600/80 hover:bg-slate-900/80"
+                data-tab="htmlfx"
+              >
+                HTML FX
+              </button>
+            </div>
+            <div class="flex items-center gap-2 text-[11px] text-slate-400">
+              <span id="currentFileName" class="truncate max-w-[220px]">No file loaded</span>
+            </div>
+          </div>
+
+          <!-- SVG / p5 / HTML content -->
+          <div class="flex-1 flex items-center justify-center bg-slate-900/40">
+            <!-- SVG Preview Container -->
+            <div
+              id="svgPreviewContainer"
+              class="preview-panel w-full max-w-[420px] max-h-[420px] aspect-square rounded-2xl bg-slate-950/70 border border-slate-700/80 errl-glow flex items-center justify-center overflow-hidden p-4"
+              data-tab="svg"
+            >
+              <div id="svgPreviewPlaceholder" class="text-[11px] text-slate-500 text-center px-4">
+                No SVG yet.<br />
+                Upload your Errl and we’ll show it here at a normalized scale.
+              </div>
+              <div id="svgPreview" class="hidden w-full h-full flex items-center justify-center"></div>
+            </div>
+
+            <!-- p5 Preview Container -->
+            <div
+              id="p5PreviewContainer"
+              class="preview-panel hidden w-full max-w-[420px] max-h-[420px] aspect-square rounded-2xl bg-slate-950/70 border border-fuchsia-700/80 errl-glow flex flex-col overflow-hidden"
+              data-tab="p5"
+            >
+              <div class="px-3 py-1.5 border-b border-slate-800/70 flex items-center justify-between text-[11px] text-slate-300">
+                <span>p5 FX Lab · Wobble</span>
+                <div class="flex items-center gap-2">
+                  <button
+                    id="captureFrameBtn"
+                    class="px-2 py-1 rounded-md border border-cyan-500/60 text-cyan-200 hover:bg-cyan-500/15 disabled:opacity-40 disabled:hover:bg-transparent"
+                    disabled
+                  >
+                    Capture frame (C)
+                  </button>
+                  <span id="p5Status" class="text-slate-500">
+                    Waiting for SVG…
+                  </span>
+                </div>
+              </div>
+              <div class="flex-1 flex items-center justify-center">
+                <div id="p5CanvasHost" class="w-full h-full"></div>
+              </div>
+            </div>
+
+            <!-- HTML FX Preview Container -->
+            <div
+              id="htmlFxPreviewContainer"
+              class="preview-panel hidden w-full max-w-[420px] max-h-[420px] aspect-square rounded-2xl bg-slate-950/70 border border-cyan-700/80 errl-glow flex flex-col overflow-hidden"
+              data-tab="htmlfx"
+            >
+              <div class="px-3 py-1.5 border-b border-slate-800/70 flex items-center justify-between text-[11px] text-slate-300">
+                <span>HTML FX · CSS Filters</span>
+                <span id="htmlFxStatus" class="text-slate-500">
+                  Waiting for SVG…
+                </span>
+              </div>
+              <div class="flex-1 flex items-center justify-center bg-slate-900/60">
+                <div class="w-full h-full flex items-center justify-center p-4">
+                  <img
+                    id="htmlFxImage"
+                    alt="Errl HTML FX"
+                    class="max-w-full max-h-full object-contain rounded-xl"
+                    src=""
+                  />
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Right: Inspector + FX Controls + Thumbs + Presets -->
+    <section class="w-80 bg-slate-950/80 backdrop-blur-soft flex flex-col">
+      <!-- Inspector -->
+      <div class="px-4 py-2 border-b border-slate-800/70 flex items-center justify-between">
+        <div>
+          <h2 class="text-xs font-semibold text-slate-100">SVG Inspector</h2>
+          <p class="text-[11px] text-slate-400">
+            Structure of the uploaded Errl.
+          </p>
+        </div>
+        <button
+          id="clearBtn"
+          class="text-[11px] px-2 py-1 rounded-md border border-slate-700/80 text-slate-300 hover:bg-slate-900/90"
+        >
+          Clear
+        </button>
+      </div>
+      <div
+        id="inspector"
+        class="flex-1 overflow-auto p-3 text-[11px] text-slate-200 space-y-1 scrollbar-thin"
+      >
+        <p class="text-slate-400">
+          Once you upload an SVG, we’ll show a simplified DOM tree here:
+          &lt;svg&gt;, &lt;g&gt;, &lt;path&gt;, etc.
+        </p>
+      </div>
+
+      <!-- p5 Controls -->
+      <div class="border-t border-slate-800/70 px-3 py-2 text-[11px] text-slate-200">
+        <div class="flex items-center justify-between mb-1">
+          <span class="font-semibold text-slate-100">p5 Controls</span>
+          <span class="text-[10px] text-slate-500">Space = pause/play</span>
+        </div>
+
+        <!-- Preset row -->
+        <div class="mb-2 flex items-center justify-between gap-2">
+          <div class="flex flex-col">
+            <span>Preset</span>
+            <span class="text-[10px] text-slate-500">1/2 = cycle</span>
+          </div>
+          <select
+            id="presetSelect"
+            class="w-40 bg-slate-900 border border-slate-700 rounded-md px-2 py-1 text-[11px] text-slate-100"
+          >
+            <option value="wobbleChill">Wobble Chill</option>
+            <option value="hyperBounce">Hyper Bounce</option>
+            <option value="lowOrbit">Low Orbit Drift</option>
+          </select>
+        </div>
+
+        <div class="space-y-2">
+          <div>
+            <div class="flex justify-between">
+              <span>Wobble amplitude</span>
+              <span id="labelAmp" class="text-slate-400">10</span>
+            </div>
+            <input
+              id="sliderAmp"
+              type="range"
+              min="0"
+              max="50"
+              value="10"
+              class="w-full"
+            />
+          </div>
+
+          <div>
+            <div class="flex justify-between">
+              <span>Wobble speed</span>
+              <span id="labelFreq" class="text-slate-400">2.0×</span>
+            </div>
+            <input
+              id="sliderFreq"
+              type="range"
+              min="5"
+              max="40"
+              value="20"
+              class="w-full"
+            />
+          </div>
+
+          <div>
+            <div class="flex justify-between">
+              <span>Rotation intensity</span>
+              <span id="labelRot" class="text-slate-400">0.07</span>
+            </div>
+            <input
+              id="sliderRot"
+              type="range"
+              min="0"
+              max="50"
+              value="7"
+              class="w-full"
+            />
+          </div>
+
+          <div>
+            <div class="flex justify-between">
+              <span>Background hue</span>
+              <span id="labelHue" class="text-slate-400">210°</span>
+            </div>
+            <input
+              id="sliderHue"
+              type="range"
+              min="0"
+              max="360"
+              value="210"
+              class="w-full"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- HTML FX Controls -->
+      <div class="border-t border-slate-800/70 px-3 py-2 text-[11px] text-slate-200">
+        <div class="flex items-center justify-between mb-1">
+          <span class="font-semibold text-slate-100">HTML FX Controls</span>
+          <span class="text-[10px] text-slate-500">CSS filter stack</span>
+        </div>
+
+        <!-- HTML FX preset row -->
+        <div class="mb-2 flex items-center justify-between gap-2">
+          <div class="flex flex-col">
+            <span>HTML FX Preset</span>
+            <span class="text-[10px] text-slate-500">CSS filter recipes</span>
+          </div>
+          <select
+            id="htmlFxPresetSelect"
+            class="w-40 bg-slate-900 border border-slate-700 rounded-md px-2 py-1 text-[11px] text-slate-100"
+          >
+            <option value="clean">Clean</option>
+            <option value="oilSlick">Oil Slick</option>
+            <option value="neonBloom">Neon Bloom</option>
+            <option value="ghostFade">Ghost Fade</option>
+          </select>
+        </div>
+
+        <!-- HTML FX sliders -->
+        <div class="space-y-2">
+          <div>
+            <div class="flex justify-between">
+              <span>Blur</span>
+              <span id="labelHtmlBlur" class="text-slate-400">0 px</span>
+            </div>
+            <input
+              id="sliderHtmlBlur"
+              type="range"
+              min="0"
+              max="20"
+              value="0"
+              class="w-full"
+            />
+          </div>
+
+          <div>
+            <div class="flex justify-between">
+              <span>Contrast</span>
+              <span id="labelHtmlContrast" class="text-slate-400">100%</span>
+            </div>
+            <input
+              id="sliderHtmlContrast"
+              type="range"
+              min="50"
+              max="250"
+              value="100"
+              class="w-full"
+            />
+          </div>
+
+          <div>
+            <div class="flex justify-between">
+              <span>Hue rotate</span>
+              <span id="labelHtmlHue" class="text-slate-400">0°</span>
+            </div>
+            <input
+              id="sliderHtmlHue"
+              type="range"
+              min="0"
+              max="360"
+              value="0"
+              class="w-full"
+            />
+          </div>
+
+          <div>
+            <div class="flex justify-between">
+              <span>Saturate</span>
+              <span id="labelHtmlSat" class="text-slate-400">100%</span>
+            </div>
+            <input
+              id="sliderHtmlSat"
+              type="range"
+              min="0"
+              max="300"
+              value="100"
+              class="w-full"
+            />
+          </div>
+
+          <div>
+            <div class="flex justify-between">
+              <span>Brightness</span>
+              <span id="labelHtmlBright" class="text-slate-400">100%</span>
+            </div>
+            <input
+              id="sliderHtmlBright"
+              type="range"
+              min="50"
+              max="200"
+              value="100"
+              class="w-full"
+            />
+          </div>
+        </div>
+
+        <!-- Copy CSS filter -->
+        <div class="mt-2 flex items-center justify-between">
+          <button
+            id="copyCssFilterBtn"
+            class="px-2 py-1 rounded-md border border-cyan-500/70 text-cyan-200 text-[11px] hover:bg-cyan-500/15"
+          >
+            Copy CSS filter
+          </button>
+          <span class="text-[10px] text-slate-500">Copies full filter: stack</span>
+        </div>
+      </div>
+
+      <!-- Captured frames (p5 only for now) -->
+      <div class="border-t border-slate-800/70 px-3 py-2 text-[10px] text-slate-200">
+        <div class="flex items-center justify-between mb-1">
+          <span class="font-semibold text-slate-100 text-[11px]">Captured frames (p5)</span>
+          <span id="thumbCount" class="text-slate-500">0</span>
+        </div>
+        <div
+          id="thumbGallery"
+          class="grid grid-cols-3 gap-1 max-h-24 overflow-auto scrollbar-thin"
+        ></div>
+      </div>
+
+      <!-- FX Preset Pack manager -->
+      <div class="border-t border-slate-800/70 px-3 py-2 text-[11px] text-slate-200">
+        <div class="flex items-center justify-between mb-1">
+          <span class="font-semibold text-slate-100">FX Preset Pack</span>
+          <span class="text-[10px] text-slate-500">S = quick-save</span>
+        </div>
+
+        <div class="flex items-center gap-1 mb-2">
+          <input
+            id="presetNameInput"
+            type="text"
+            placeholder="Preset name (e.g. Oil Bounce)"
+            class="flex-1 bg-slate-900 border border-slate-700 rounded-md px-2 py-1 text-[11px] text-slate-100 placeholder:text-slate-500"
+          />
+          <button
+            id="savePresetBtn"
+            class="px-2 py-1 rounded-md border border-emerald-500/70 text-emerald-200 text-[11px] hover:bg-emerald-500/15"
+          >
+            Save
+          </button>
+        </div>
+
+        <div class="flex items-center justify-between mb-1 gap-2">
+          <div class="flex items-center gap-1">
+            <button
+              id="exportPresetsBtn"
+              class="px-2 py-1 rounded-md border border-slate-600 text-slate-200 text-[10px] hover:bg-slate-800/80"
+            >
+              Export JSON
+            </button>
+            <label
+              for="importPresetsInput"
+              class="px-2 py-1 rounded-md border border-slate-600 text-slate-200 text-[10px] hover:bg-slate-800/80 cursor-pointer"
+            >
+              Import JSON
+            </label>
+            <input
+              id="importPresetsInput"
+              type="file"
+              accept=".json"
+              class="hidden"
+            />
+          </div>
+          <button
+            id="batchCaptureBtn"
+            class="px-2 py-1 rounded-md border border-cyan-500 text-cyan-200 text-[10px] hover:bg-cyan-500/15"
+          >
+            Batch capture
+          </button>
+        </div>
+
+        <div class="mb-1 text-[10px] text-slate-500">
+          Batch capture walks all FX presets, applies them, and grabs frames into the gallery.
+        </div>
+
+        <div
+          id="presetList"
+          class="mt-1 max-h-28 overflow-auto scrollbar-thin space-y-1 text-[10px]"
+        >
+          <p class="text-slate-500">
+            No presets yet. Tweak sliders, then click Save or press “S”.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Bottom status bar -->
+  <footer
+    class="h-7 px-3 flex items-center justify-between text-[10px] border-t border-slate-800/70 bg-slate-950/80 backdrop-blur-soft text-slate-400"
+  >
+    <div class="flex items-center gap-2">
+      <span>Engine: SVG Shell + p5 Lab + HTML FX + Presets</span>
+      <span class="text-slate-600">•</span>
+      <span id="modeLabel">Mode: Lab (SVG + FX)</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <span id="hintLabel">Hint: Upload Errl, tune p5 + HTML FX, save/import presets, then batch capture.</span>
+    </div>
+  </footer>
+
+  <script>
+    "use strict";
+
+    // ---- Status + global UI refs ----
+    const statusText = document.getElementById("status-text");
+    const modeLabel = document.getElementById("modeLabel");
+    const hintLabel = document.getElementById("hintLabel");
+
+    const svgFileInput = document.getElementById("svgFileInput");
+    const dropzone = document.getElementById("dropzone");
+    const pathCountEl = document.getElementById("pathCount");
+    const groupCountEl = document.getElementById("groupCount");
+    const viewBoxInfoEl = document.getElementById("viewBoxInfo");
+    const inspectorEl = document.getElementById("inspector");
+    const svgPreview = document.getElementById("svgPreview");
+    const svgPreviewPlaceholder = document.getElementById("svgPreviewPlaceholder");
+    const currentFileName = document.getElementById("currentFileName");
+    const clearBtn = document.getElementById("clearBtn");
+
+    const tabButtons = document.querySelectorAll(".preview-tab");
+    const previewPanels = document.querySelectorAll(".preview-panel");
+    const p5StatusEl = document.getElementById("p5Status");
+    const p5CanvasHost = document.getElementById("p5CanvasHost");
+    const captureFrameBtn = document.getElementById("captureFrameBtn");
+    const thumbGallery = document.getElementById("thumbGallery");
+    const thumbCountEl = document.getElementById("thumbCount");
+
+    const presetSelect = document.getElementById("presetSelect");
+
+    const htmlFxImage = document.getElementById("htmlFxImage");
+    const htmlFxStatus = document.getElementById("htmlFxStatus");
+    const htmlFxPresetSelect = document.getElementById("htmlFxPresetSelect");
+    const copyCssFilterBtn = document.getElementById("copyCssFilterBtn");
+
+    // Preset pack manager elements
+    const presetNameInput = document.getElementById("presetNameInput");
+    const savePresetBtn = document.getElementById("savePresetBtn");
+    const exportPresetsBtn = document.getElementById("exportPresetsBtn");
+    const importPresetsInput = document.getElementById("importPresetsInput");
+    const batchCaptureBtn = document.getElementById("batchCaptureBtn");
+    const presetListEl = document.getElementById("presetList");
+
+    // p5 control sliders
+    const sliderAmp = document.getElementById("sliderAmp");
+    const sliderFreq = document.getElementById("sliderFreq");
+    const sliderRot = document.getElementById("sliderRot");
+    const sliderHue = document.getElementById("sliderHue");
+    const labelAmp = document.getElementById("labelAmp");
+    const labelFreq = document.getElementById("labelFreq");
+    const labelRot = document.getElementById("labelRot");
+    const labelHue = document.getElementById("labelHue");
+
+    // HTML FX sliders
+    const sliderHtmlBlur = document.getElementById("sliderHtmlBlur");
+    const sliderHtmlContrast = document.getElementById("sliderHtmlContrast");
+    const sliderHtmlHue = document.getElementById("sliderHtmlHue");
+    const sliderHtmlSat = document.getElementById("sliderHtmlSat");
+    const sliderHtmlBright = document.getElementById("sliderHtmlBright");
+
+    const labelHtmlBlur = document.getElementById("labelHtmlBlur");
+    const labelHtmlContrast = document.getElementById("labelHtmlContrast");
+    const labelHtmlHue = document.getElementById("labelHtmlHue");
+    const labelHtmlSat = document.getElementById("labelHtmlSat");
+    const labelHtmlBright = document.getElementById("labelHtmlBright");
+
+    let currentMode = "lab";
+    let currentSvg = null;
+    let currentSvgUrl = null; // Blob URL for p5 + HTML FX
+    let p5Instance = null;
+    let p5CanvasElement = null;
+    let p5Paused = false;
+    let isBatchRunning = false;
+
+    // ---- Simple audio feedback (no external assets) ----
+    let audioCtx = null;
+    function ensureAudioCtx() {
+      if (!audioCtx) {
+        const AC = window.AudioContext || window.webkitAudioContext;
+        if (AC) {
+          audioCtx = new AC();
+        }
+      }
+    }
+
+    function playBeep(freq = 440, duration = 0.08, type = "sine") {
+      ensureAudioCtx();
+      if (!audioCtx) return;
+      const ctx = audioCtx;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = type;
+      osc.frequency.value = freq;
+
+      const now = ctx.currentTime;
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(0.15, now + 0.01);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + duration + 0.02);
+    }
+
+    // ---- p5 config + presets ----
+    const p5Config = {
+      wobbleAmplitude: 10,
+      wobbleFrequency: 2.0,
+      rotationAmount: 0.07,
+      bgHue: 210,
+      bgSat: 70,
+      bgLight: 8,
+      _t: 0,
+    };
+
+    const p5Presets = {
+      wobbleChill: {
+        label: "Wobble Chill",
+        wobbleAmplitude: 10,
+        wobbleFrequency: 2.0,
+        rotationAmount: 0.07,
+        bgHue: 210,
+        bgSat: 70,
+        bgLight: 8,
+      },
+      hyperBounce: {
+        label: "Hyper Bounce",
+        wobbleAmplitude: 30,
+        wobbleFrequency: 3.5,
+        rotationAmount: 0.18,
+        bgHue: 295,
+        bgSat: 80,
+        bgLight: 10,
+      },
+      lowOrbit: {
+        label: "Low Orbit Drift",
+        wobbleAmplitude: 6,
+        wobbleFrequency: 1.0,
+        rotationAmount: 0.04,
+        bgHue: 190,
+        bgSat: 60,
+        bgLight: 7,
+      },
+    };
+
+    const presetOrder = ["wobbleChill", "hyperBounce", "lowOrbit"];
+    let currentPresetId = "wobbleChill";
+
+    // ---- HTML FX config + presets ----
+    const htmlFxConfig = {
+      blur: 0,
+      contrast: 100,
+      hue: 0,
+      saturate: 100,
+      brightness: 100,
+    };
+
+    const htmlFxPresets = {
+      clean: {
+        label: "Clean",
+        blur: 0,
+        contrast: 100,
+        hue: 0,
+        saturate: 100,
+        brightness: 100,
+      },
+      oilSlick: {
+        label: "Oil Slick",
+        blur: 4,
+        contrast: 140,
+        hue: 220,
+        saturate: 220,
+        brightness: 110,
+      },
+      neonBloom: {
+        label: "Neon Bloom",
+        blur: 6,
+        contrast: 180,
+        hue: 300,
+        saturate: 260,
+        brightness: 130,
+      },
+      ghostFade: {
+        label: "Ghost Fade",
+        blur: 3,
+        contrast: 80,
+        hue: 180,
+        saturate: 40,
+        brightness: 130,
+      },
+    };
+
+    // ---- Preset pack storage ----
+    let fxPresets = [];
+    let presetAutoCounter = 1;
+
+    // ---- Mode buttons (left sidebar) ----
+    const modeButtons = document.querySelectorAll(".mode-btn");
+    modeButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const newMode = btn.dataset.mode;
+        currentMode = newMode || "lab";
+
+        modeButtons.forEach((b) =>
+          b.classList.remove("bg-cyan-500/15", "border-cyan-500/40", "text-cyan-200")
+        );
+        btn.classList.add("bg-cyan-500/15", "border-cyan-500/40", "text-cyan-200");
+
+        modeLabel.textContent = `Mode: ${
+          newMode === "lab"
+            ? "Lab (SVG + FX)"
+            : newMode === "wire3d"
+            ? "3D Wire (soon)"
+            : newMode === "voxel"
+            ? "Voxels (soon)"
+            : newMode
+        }`;
+
+        if (newMode === "lab") {
+          hintLabel.textContent = "Hint: Upload Errl, tune p5 + HTML FX, save/import presets, then batch capture.";
+        } else {
+          hintLabel.textContent = "This mode is scaffolded; 3D engines will plug in later.";
+        }
+      });
+    });
+
+    // ---- Theme toggle (placeholder) ----
+    document.getElementById("themeToggle").addEventListener("click", () => {
+      flashStatus("Theme switching will be wired in a later slice.");
+    });
+
+    // ---- Status flash helper ----
+    function flashStatus(message, type = "info") {
+      statusText.textContent = message;
+      if (type === "error") {
+        statusText.classList.remove("bg-emerald-500/10", "text-emerald-300", "border-emerald-500/40");
+        statusText.classList.add("bg-rose-500/10", "text-rose-300", "border-rose-500/40");
+      } else {
+        statusText.classList.remove("bg-rose-500/10", "text-rose-300", "border-rose-500/40");
+        statusText.classList.add("bg-emerald-500/10", "text-emerald-300", "border-emerald-500/40");
+      }
+
+      setTimeout(() => {
+        statusText.textContent = currentSvg
+          ? `Ready · Loaded: ${currentSvg.name}`
+          : "Ready · No SVG loaded";
+      }, 2600);
+    }
+
+    // ---- Tab switching (SVG vs p5 vs HTML FX) ----
+    tabButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const tab = btn.dataset.tab;
+
+        tabButtons.forEach((b) =>
+          b.classList.remove(
+            "bg-slate-800/80",
+            "text-slate-50",
+            "border-slate-600/90"
+          )
+        );
+        btn.classList.add(
+          "bg-slate-800/80",
+          "text-slate-50",
+          "border-slate-600/90"
+        );
+
+        previewPanels.forEach((panel) => {
+          panel.classList.add("hidden");
+          if (panel.dataset.tab === tab) {
+            panel.classList.remove("hidden");
+          }
+        });
+
+        if (tab === "p5") {
+          if (!currentSvg) {
+            p5StatusEl.textContent = "Upload an SVG first.";
+            captureFrameBtn.disabled = true;
+          } else {
+            startP5WithCurrentSvg();
+          }
+        } else {
+          // Any non-p5 tab should stop p5 to avoid wasting CPU.
+          stopP5Instance();
+        }
+
+        if (tab === "htmlfx") {
+          if (!currentSvg) {
+            htmlFxStatus.textContent = "Upload an SVG to enable HTML FX.";
+          } else {
+            htmlFxStatus.textContent = "CSS filters are live.";
+          }
+        }
+      });
+    });
+
+    // ---- Upload handling ----
+    svgFileInput.addEventListener("change", (event) => {
+      const file = event.target.files && event.target.files[0];
+      if (file) {
+        handleSvgFile(file);
+      }
+    });
+
+    dropzone.addEventListener("dragover", (event) => {
+      event.preventDefault();
+      dropzone.classList.add("border-cyan-400/80", "bg-slate-900/80");
+    });
+
+    dropzone.addEventListener("dragleave", (event) => {
+      event.preventDefault();
+      dropzone.classList.remove("border-cyan-400/80", "bg-slate-900/80");
+    });
+
+    dropzone.addEventListener("drop", (event) => {
+      event.preventDefault();
+      dropzone.classList.remove("border-cyan-400/80", "bg-slate-900/80");
+      const file = event.dataTransfer.files && event.dataTransfer.files[0];
+      if (file) {
+        handleSvgFile(file);
+      }
+    });
+
+    dropzone.addEventListener("click", () => {
+      svgFileInput.click();
+    });
+
+    function handleSvgFile(file) {
+      if (!file.name.toLowerCase().endsWith(".svg")) {
+        flashStatus("Please drop a .svg file ✋", "error");
+        playBeep(220, 0.09, "square");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const rawText = String(e.target.result);
+          const parsed = parseAndNormalizeSvg(rawText);
+          currentSvg = {
+            name: file.name,
+            raw: rawText,
+            ...parsed,
+          };
+
+          if (currentSvgUrl) {
+            URL.revokeObjectURL(currentSvgUrl);
+          }
+          currentSvgUrl = svgToObjectUrl(currentSvg.cleanedSvg);
+
+          updateUiForSvg(currentSvg);
+          updateHtmlFxImage();
+          flashStatus("SVG loaded and normalized ✅");
+          p5StatusEl.textContent = "Ready. Switch to this tab to see FX.";
+          htmlFxStatus.textContent = "CSS filters are live.";
+          playBeep(660, 0.08, "sine");
+        } catch (err) {
+          console.error("SVG parse error:", err);
+          flashStatus("Failed to parse SVG 😵‍💫", "error");
+          playBeep(180, 0.12, "square");
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    // Parse + simple normalization
+    function parseAndNormalizeSvg(svgText) {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(svgText, "image/svg+xml");
+      const svgEl = doc.documentElement;
+
+      if (!svgEl || svgEl.nodeName.toLowerCase() !== "svg") {
+        throw new Error("No <svg> root element.");
+      }
+
+      const paths = svgEl.querySelectorAll("path");
+      const groups = svgEl.querySelectorAll("g");
+
+      let viewBox = svgEl.getAttribute("viewBox");
+      const width = svgEl.getAttribute("width");
+      const height = svgEl.getAttribute("height");
+
+      if (!viewBox) {
+        if (width && height) {
+          viewBox = `0 0 ${width} ${height}`;
+          svgEl.setAttribute("viewBox", viewBox);
+        } else {
+          viewBox = "0 0 512 512";
+          svgEl.setAttribute("viewBox", viewBox);
+        }
+      }
+
+      const scripts = svgEl.querySelectorAll("script");
+      scripts.forEach((s) => s.parentNode && s.parentNode.removeChild(s));
+
+      const serializer = new XMLSerializer();
+      const cleaned = serializer.serializeToString(svgEl);
+
+      const tree = buildSvgTree(svgEl);
+
+      return {
+        cleanedSvg: cleaned,
+        viewBox,
+        pathCount: paths.length,
+        groupCount: groups.length,
+        tree,
+      };
+    }
+
+    function buildSvgTree(svgEl) {
+      function walk(node) {
+        const name = node.nodeName.toLowerCase();
+        const children = [];
+        node.childNodes.forEach((child) => {
+          if (child.nodeType === Node.ELEMENT_NODE) {
+            children.push(walk(child));
+          }
+        });
+
+        const attrs = {};
+        if (node.attributes) {
+          Array.from(node.attributes).forEach((attr) => {
+            if (["id", "class", "viewBox", "d"].includes(attr.name)) {
+              attrs[attr.name] = attr.value;
+            }
+          });
+        }
+
+        return {
+          name,
+          attrs,
+          children,
+        };
+      }
+
+      return walk(svgEl);
+    }
+
+    function updateUiForSvg(svgData) {
+      currentFileName.textContent = svgData.name || "Unnamed SVG";
+      pathCountEl.textContent = String(svgData.pathCount);
+      groupCountEl.textContent = String(svgData.groupCount);
+      viewBoxInfoEl.textContent = svgData.viewBox || "–";
+
+      svgPreview.innerHTML = svgData.cleanedSvg;
+      svgPreview.classList.remove("hidden");
+      svgPreviewPlaceholder.classList.add("hidden");
+
+      const innerSvg = svgPreview.querySelector("svg");
+      if (innerSvg) {
+        innerSvg.setAttribute("width", "100%");
+        innerSvg.setAttribute("height", "100%");
+        innerSvg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+      }
+
+      renderInspector(svgData.tree);
+    }
+
+    function renderInspector(tree) {
+      inspectorEl.innerHTML = "";
+      const rootList = document.createElement("ul");
+      rootList.className = "space-y-1";
+
+      function createNode(item, depth) {
+        const li = document.createElement("li");
+        li.className = "font-mono text-[10px]";
+
+        const indent = "&nbsp;".repeat(depth * 2);
+        const attrParts = [];
+        for (const key in item.attrs) {
+          const val = item.attrs[key];
+          if (!val) continue;
+          let displayed = val;
+          if (key === "d" && val.length > 40) {
+            displayed = val.slice(0, 38) + "…";
+          }
+          attrParts.push(`${key}="${displayed}"`);
+        }
+
+        li.innerHTML = `${indent}&lt;${item.name}${
+          attrParts.length ? " " + attrParts.join(" ") : ""
+        }&gt;`;
+
+        if (item.children && item.children.length) {
+          const ul = document.createElement("ul");
+          ul.className = "space-y-1";
+          item.children.forEach((child) => {
+            ul.appendChild(createNode(child, depth + 1));
+          });
+          li.appendChild(ul);
+        }
+
+        return li;
+      }
+
+      rootList.appendChild(createNode(tree, 0));
+      inspectorEl.appendChild(rootList);
+    }
+
+    function svgToObjectUrl(svgText) {
+      const blob = new Blob([svgText], { type: "image/svg+xml;charset=utf-8" });
+      return URL.createObjectURL(blob);
+    }
+
+    // ---- HTML FX helpers ----
+    function updateHtmlFxImage() {
+      if (!htmlFxImage) return;
+      if (!currentSvgUrl || !currentSvg) {
+        htmlFxImage.src = "";
+        htmlFxStatus.textContent = "Waiting for SVG…";
+        return;
+      }
+      htmlFxImage.src = currentSvgUrl;
+      applyHtmlFxFilters();
+      htmlFxStatus.textContent = "CSS filters are live.";
+    }
+
+    function getHtmlFxFilterString() {
+      const cfg = htmlFxConfig;
+      return [
+        `blur(${cfg.blur}px)`,
+        `contrast(${cfg.contrast}%)`,
+        `hue-rotate(${cfg.hue}deg)`,
+        `saturate(${cfg.saturate}%)`,
+        `brightness(${cfg.brightness}%)`,
+      ].join(" ");
+    }
+
+    function applyHtmlFxFilters() {
+      if (!htmlFxImage) return;
+      const filter = getHtmlFxFilterString();
+      htmlFxImage.style.filter = filter;
+    }
+
+    function syncHtmlFxSlidersFromConfig() {
+      sliderHtmlBlur.value = String(htmlFxConfig.blur);
+      sliderHtmlContrast.value = String(htmlFxConfig.contrast);
+      sliderHtmlHue.value = String(htmlFxConfig.hue);
+      sliderHtmlSat.value = String(htmlFxConfig.saturate);
+      sliderHtmlBright.value = String(htmlFxConfig.brightness);
+    }
+
+    function syncHtmlFxLabels() {
+      labelHtmlBlur.textContent = `${htmlFxConfig.blur.toFixed(0)} px`;
+      labelHtmlContrast.textContent = `${htmlFxConfig.contrast.toFixed(0)}%`;
+      labelHtmlHue.textContent = `${htmlFxConfig.hue.toFixed(0)}°`;
+      labelHtmlSat.textContent = `${htmlFxConfig.saturate.toFixed(0)}%`;
+      labelHtmlBright.textContent = `${htmlFxConfig.brightness.toFixed(0)}%`;
+    }
+
+    function applyHtmlFxPreset(id, flash = true) {
+      const preset = htmlFxPresets[id];
+      if (!preset) return;
+      htmlFxConfig.blur = preset.blur;
+      htmlFxConfig.contrast = preset.contrast;
+      htmlFxConfig.hue = preset.hue;
+      htmlFxConfig.saturate = preset.saturate;
+      htmlFxConfig.brightness = preset.brightness;
+
+      htmlFxPresetSelect.value = id;
+      syncHtmlFxSlidersFromConfig();
+      syncHtmlFxLabels();
+      applyHtmlFxFilters();
+
+      if (flash) {
+        flashStatus(`HTML FX preset: ${preset.label}`);
+        playBeep(520, 0.07, "triangle");
+      }
+    }
+
+    sliderHtmlBlur.addEventListener("input", () => {
+      htmlFxConfig.blur = Number(sliderHtmlBlur.value);
+      syncHtmlFxLabels();
+      applyHtmlFxFilters();
+    });
+
+    sliderHtmlContrast.addEventListener("input", () => {
+      htmlFxConfig.contrast = Number(sliderHtmlContrast.value);
+      syncHtmlFxLabels();
+      applyHtmlFxFilters();
+    });
+
+    sliderHtmlHue.addEventListener("input", () => {
+      htmlFxConfig.hue = Number(sliderHtmlHue.value);
+      syncHtmlFxLabels();
+      applyHtmlFxFilters();
+    });
+
+    sliderHtmlSat.addEventListener("input", () => {
+      htmlFxConfig.saturate = Number(sliderHtmlSat.value);
+      syncHtmlFxLabels();
+      applyHtmlFxFilters();
+    });
+
+    sliderHtmlBright.addEventListener("input", () => {
+      htmlFxConfig.brightness = Number(sliderHtmlBright.value);
+      syncHtmlFxLabels();
+      applyHtmlFxFilters();
+    });
+
+    htmlFxPresetSelect.addEventListener("change", () => {
+      const id = htmlFxPresetSelect.value;
+      applyHtmlFxPreset(id);
+    });
+
+    syncHtmlFxLabels();
+    applyHtmlFxFilters();
+    applyHtmlFxPreset("clean", false);
+
+    // Copy CSS filter to clipboard
+    copyCssFilterBtn.addEventListener("click", async () => {
+      const filterString = getHtmlFxFilterString();
+      const cssSnippet = `filter: ${filterString};`;
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(cssSnippet);
+        } else {
+          const textarea = document.createElement("textarea");
+          textarea.value = cssSnippet;
+          textarea.style.position = "fixed";
+          textarea.style.left = "-9999px";
+          document.body.appendChild(textarea);
+          textarea.focus();
+          textarea.select();
+          document.execCommand("copy");
+          document.body.removeChild(textarea);
+        }
+        flashStatus("CSS filter copied to clipboard ✂️");
+        playBeep(740, 0.07, "sine");
+      } catch (err) {
+        console.error("Clipboard error", err);
+        flashStatus("Could not copy CSS filter 🤔", "error");
+        playBeep(200, 0.1, "square");
+      }
+    });
+
+    // ---- p5 integration ----
+    function stopP5Instance() {
+      if (p5Instance) {
+        p5Instance.remove();
+        p5Instance = null;
+      }
+      p5CanvasElement = null;
+      p5Paused = false;
+      p5Config._t = 0;
+      p5StatusEl.textContent = currentSvg ? "Ready. Switch to this tab to see FX." : "Waiting for SVG…";
+      captureFrameBtn.disabled = true;
+    }
+
+    function startP5WithCurrentSvg() {
+      if (!currentSvg || !currentSvgUrl) {
+        p5StatusEl.textContent = "Upload an SVG first.";
+        captureFrameBtn.disabled = true;
+        return;
+      }
+
+      stopP5Instance();
+      applyPreset(currentPresetId, false);
+      p5StatusEl.textContent = "Loading p5 sketch…";
+
+      const host = p5CanvasHost;
+      const svgUrl = currentSvgUrl;
+
+      const sketch = (p) => {
+        let img;
+
+        p.preload = () => {
+          img = p.loadImage(
+            svgUrl,
+            () => {
+              p5StatusEl.textContent = "Running (Space = pause).";
+              captureFrameBtn.disabled = false;
+            },
+            () => {
+              p5StatusEl.textContent = "Failed to load SVG as image.";
+              captureFrameBtn.disabled = true;
+            }
+          );
+        };
+
+        p.setup = () => {
+          const w = host.clientWidth || 400;
+          const h = host.clientHeight || 400;
+          const canvas = p.createCanvas(w, h);
+          canvas.parent(host);
+          p.imageMode(p.CENTER);
+          p.colorMode(p.HSL, 360, 100, 100, 255);
+          p5CanvasElement = canvas.elt;
+        };
+
+        p.windowResized = () => {
+          const w = host.clientWidth || 400;
+          const h = host.clientHeight || 400;
+          p.resizeCanvas(w, h);
+        };
+
+        p.draw = () => {
+          const bg = p5Config;
+          p.background(bg.bgHue, bg.bgSat, bg.bgLight, 255);
+
+          if (!img) {
+            p.fill(0, 0, 80);
+            p.textAlign(p.CENTER, p.CENTER);
+            p.textSize(14);
+            p.text("Loading Errl image…", p.width / 2, p.height / 2);
+            return;
+          }
+
+          if (!p5Paused) {
+            p5Config._t += 0.02 * p5Config.wobbleFrequency;
+          }
+          const t = p5Config._t;
+
+          const wobbleY = Math.sin(t * 2) * p5Config.wobbleAmplitude;
+          const wobbleScale = 0.9 + Math.sin(t) * 0.05;
+          const rotation = Math.sin(t * 0.7) * p5Config.rotationAmount;
+
+          const baseSize = Math.min(p.width, p.height) * 0.8;
+          const w = baseSize * wobbleScale;
+          const h = baseSize * wobbleScale;
+
+          p.noStroke();
+          p.fill(bg.bgHue, 80, 25, 80);
+          p.ellipse(p.width / 2, p.height / 2 + wobbleY + 8, baseSize * 1.1);
+
+          p.push();
+          p.translate(p.width / 2, p.height / 2 + wobbleY);
+          p.rotate(rotation);
+          p.image(img, 0, 0, w, h);
+          p.pop();
+
+          p.fill(0, 0, 85);
+          p.textAlign(p.LEFT, p.BOTTOM);
+          p.textSize(10);
+          p.text("p5 wobble demo (v0.8)", 8, p.height - 8);
+        };
+      };
+
+      p5Instance = new p5(sketch);
+    }
+
+    // ---- p5 Controls wiring ----
+    function syncSlidersFromConfig() {
+      sliderAmp.value = String(p5Config.wobbleAmplitude);
+      sliderFreq.value = String(p5Config.wobbleFrequency * 10); // 0.5..4.0 → 5..40
+      sliderRot.value = String(p5Config.rotationAmount * 100); // 0..0.5 → 0..50
+      sliderHue.value = String(p5Config.bgHue);
+    }
+
+    function syncLabelsFromConfig() {
+      labelAmp.textContent = p5Config.wobbleAmplitude.toFixed(0);
+      labelFreq.textContent = p5Config.wobbleFrequency.toFixed(1) + "×";
+      labelRot.textContent = p5Config.rotationAmount.toFixed(2);
+      labelHue.textContent = p5Config.bgHue.toFixed(0) + "°";
+    }
+
+    function applyPreset(id, flash = true) {
+      const preset = p5Presets[id];
+      if (!preset) return;
+
+      p5Config.wobbleAmplitude = preset.wobbleAmplitude;
+      p5Config.wobbleFrequency = preset.wobbleFrequency;
+      p5Config.rotationAmount = preset.rotationAmount;
+      p5Config.bgHue = preset.bgHue;
+      p5Config.bgSat = preset.bgSat;
+      p5Config.bgLight = preset.bgLight;
+      p5Config._t = 0;
+
+      currentPresetId = id;
+      presetSelect.value = id;
+
+      syncSlidersFromConfig();
+      syncLabelsFromConfig();
+
+      if (flash) {
+        flashStatus(`Applied preset: ${preset.label}`);
+        playBeep(600, 0.06, "triangle");
+      }
+    }
+
+    sliderAmp.addEventListener("input", () => {
+      p5Config.wobbleAmplitude = Number(sliderAmp.value);
+      syncLabelsFromConfig();
+    });
+
+    sliderFreq.addEventListener("input", () => {
+      const v = Number(sliderFreq.value); // 5..40
+      p5Config.wobbleFrequency = v / 10; // 0.5..4.0
+      syncLabelsFromConfig();
+    });
+
+    sliderRot.addEventListener("input", () => {
+      const v = Number(sliderRot.value); // 0..50
+      p5Config.rotationAmount = v / 100; // 0..0.5
+      syncLabelsFromConfig();
+    });
+
+    sliderHue.addEventListener("input", () => {
+      p5Config.bgHue = Number(sliderHue.value);
+      syncLabelsFromConfig();
+    });
+
+    presetSelect.addEventListener("change", () => {
+      const id = presetSelect.value;
+      applyPreset(id);
+    });
+
+    applyPreset("wobbleChill", false);
+
+    // ---- Capture frame → thumbnail gallery ----
+    function captureCurrentFrameToGallery() {
+      if (!p5CanvasElement) return false;
+      try {
+        const dataUrl = p5CanvasElement.toDataURL("image/png");
+        const img = new Image();
+        img.src = dataUrl;
+        img.className =
+          "w-full h-full object-cover rounded-md border border-slate-700/80 cursor-pointer hover:border-cyan-400/80";
+        img.title = "Click to download";
+        img.addEventListener("click", () => {
+          const a = document.createElement("a");
+          a.href = dataUrl;
+          a.download = "errl-fx-frame.png";
+          a.click();
+        });
+
+        thumbGallery.prepend(img);
+
+        const maxThumbs = 48;
+        while (thumbGallery.children.length > maxThumbs) {
+          thumbGallery.removeChild(thumbGallery.lastChild);
+        }
+        thumbCountEl.textContent = String(thumbGallery.children.length);
+        return true;
+      } catch (err) {
+        console.error("Capture error", err);
+        return false;
+      }
+    }
+
+    captureFrameBtn.addEventListener("click", () => {
+      const ok = captureCurrentFrameToGallery();
+      if (ok) {
+        flashStatus("Captured current frame 📸");
+        playBeep(820, 0.09, "sine");
+      } else {
+        flashStatus("Failed to capture frame.", "error");
+        playBeep(200, 0.1, "square");
+      }
+    });
+
+    // ---- FX Preset Pack manager ----
+    function snapshotCurrentFxPreset(name) {
+      return {
+        id: Date.now() + "-" + Math.random().toString(16).slice(2),
+        name: name || `Preset ${presetAutoCounter++}`,
+        createdAt: new Date().toISOString(),
+        p5: {
+          wobbleAmplitude: p5Config.wobbleAmplitude,
+          wobbleFrequency: p5Config.wobbleFrequency,
+          rotationAmount: p5Config.rotationAmount,
+          bgHue: p5Config.bgHue,
+          bgSat: p5Config.bgSat,
+          bgLight: p5Config.bgLight,
+        },
+        htmlFx: {
+          blur: htmlFxConfig.blur,
+          contrast: htmlFxConfig.contrast,
+          hue: htmlFxConfig.hue,
+          saturate: htmlFxConfig.saturate,
+          brightness: htmlFxConfig.brightness,
+        },
+      };
+    }
+
+    function applyFxPreset(preset) {
+      if (!preset) return;
+
+      // p5 side
+      p5Config.wobbleAmplitude = preset.p5.wobbleAmplitude;
+      p5Config.wobbleFrequency = preset.p5.wobbleFrequency;
+      p5Config.rotationAmount = preset.p5.rotationAmount;
+      p5Config.bgHue = preset.p5.bgHue;
+      p5Config.bgSat = preset.p5.bgSat;
+      p5Config.bgLight = preset.p5.bgLight;
+      p5Config._t = 0;
+      syncSlidersFromConfig();
+      syncLabelsFromConfig();
+
+      // HTML FX side
+      htmlFxConfig.blur = preset.htmlFx.blur;
+      htmlFxConfig.contrast = preset.htmlFx.contrast;
+      htmlFxConfig.hue = preset.htmlFx.hue;
+      htmlFxConfig.saturate = preset.htmlFx.saturate;
+      htmlFxConfig.brightness = preset.htmlFx.brightness;
+      syncHtmlFxSlidersFromConfig();
+      syncHtmlFxLabels();
+      applyHtmlFxFilters();
+
+      flashStatus(`Applied FX pack: ${preset.name}`);
+      playBeep(580, 0.07, "triangle");
+    }
+
+    function renderFxPresetList() {
+      presetListEl.innerHTML = "";
+      if (!fxPresets.length) {
+        const p = document.createElement("p");
+        p.className = "text-slate-500";
+        p.textContent = "No presets yet. Tweak sliders, then click Save or press “S”.";
+        presetListEl.appendChild(p);
+        return;
+      }
+
+      fxPresets.forEach((preset) => {
+        const row = document.createElement("div");
+        row.className =
+          "flex items-center justify-between gap-2 px-1 py-1 rounded-md border border-slate-700/70 bg-slate-900/70";
+
+        const left = document.createElement("div");
+        left.className = "flex-1 truncate";
+        const nameSpan = document.createElement("span");
+        nameSpan.className = "text-slate-100";
+        nameSpan.textContent = preset.name;
+        const metaSpan = document.createElement("span");
+        metaSpan.className = "ml-1 text-slate-500";
+        metaSpan.textContent = "· FX pack";
+        left.appendChild(nameSpan);
+        left.appendChild(metaSpan);
+
+        const buttons = document.createElement("div");
+        buttons.className = "flex items-center gap-1";
+
+        const applyBtn = document.createElement("button");
+        applyBtn.className =
+          "px-1.5 py-0.5 rounded-md border border-cyan-500/60 text-cyan-200 text-[10px] hover:bg-cyan-500/15";
+        applyBtn.textContent = "Apply";
+        applyBtn.addEventListener("click", () => applyFxPreset(preset));
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.className =
+          "px-1.5 py-0.5 rounded-md border border-slate-600 text-slate-300 text-[10px] hover:bg-slate-800/80";
+        deleteBtn.textContent = "✕";
+        deleteBtn.addEventListener("click", () => {
+          fxPresets = fxPresets.filter((p) => p.id !== preset.id);
+          renderFxPresetList();
+          playBeep(240, 0.08, "square");
+        });
+
+        buttons.appendChild(applyBtn);
+        buttons.appendChild(deleteBtn);
+
+        row.appendChild(left);
+        row.appendChild(buttons);
+        presetListEl.appendChild(row);
+      });
+    }
+
+    function saveCurrentPresetFromUi() {
+      const name = presetNameInput.value.trim();
+      const preset = snapshotCurrentFxPreset(name || undefined);
+      fxPresets.unshift(preset);
+      renderFxPresetList();
+      presetNameInput.value = "";
+      flashStatus(`Saved FX pack: ${preset.name}`);
+      playBeep(700, 0.09, "sine");
+    }
+
+    savePresetBtn.addEventListener("click", () => {
+      saveCurrentPresetFromUi();
+    });
+
+    exportPresetsBtn.addEventListener("click", () => {
+      if (!fxPresets.length) {
+        flashStatus("No presets to export yet.", "error");
+        playBeep(200, 0.1, "square");
+        return;
+      }
+      const payload = {
+        type: "errlFxPresetPack",
+        version: "0.8.0",
+        createdAt: new Date().toISOString(),
+        count: fxPresets.length,
+        presets: fxPresets,
+      };
+      const json = JSON.stringify(payload, null, 2);
+      const blob = new Blob([json], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "errl-fx-preset-pack.json";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      flashStatus("Exported FX preset pack JSON 💾");
+      playBeep(780, 0.09, "triangle");
+    });
+
+    importPresetsInput.addEventListener("change", (event) => {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const text = String(e.target.result);
+          const data = JSON.parse(text);
+          if (!data || data.type !== "errlFxPresetPack" || !Array.isArray(data.presets)) {
+            throw new Error("Not an Errl FX preset pack.");
+          }
+          // Merge presets
+          data.presets.forEach((p) => {
+            // Give them fresh ids so we don’t clash
+            const clone = {
+              ...p,
+              id: Date.now() + "-" + Math.random().toString(16).slice(2),
+            };
+            fxPresets.push(clone);
+          });
+          renderFxPresetList();
+          flashStatus(`Imported ${data.presets.length} presets ✅`);
+          playBeep(690, 0.09, "sine");
+        } catch (err) {
+          console.error("Import error:", err);
+          flashStatus("Failed to import preset pack.", "error");
+          playBeep(200, 0.1, "square");
+        } finally {
+          importPresetsInput.value = "";
+        }
+      };
+      reader.readAsText(file);
+    });
+
+    renderFxPresetList();
+
+    // ---- Batch capture over FX presets ----
+    batchCaptureBtn.addEventListener("click", () => {
+      if (!fxPresets.length) {
+        flashStatus("No presets to batch-capture yet.", "error");
+        playBeep(200, 0.1, "square");
+        return;
+      }
+      if (!p5Instance || !p5CanvasElement) {
+        flashStatus("Open the p5 tab and ensure it’s running first.", "error");
+        playBeep(200, 0.1, "square");
+        return;
+      }
+      if (isBatchRunning) {
+        flashStatus("Batch capture already running.", "error");
+        return;
+      }
+
+      isBatchRunning = true;
+      batchCaptureBtn.disabled = true;
+      batchCaptureBtn.textContent = "Batch running…";
+
+      const snapshotList = [...fxPresets];
+      let index = 0;
+
+      const step = () => {
+        if (index >= snapshotList.length) {
+          isBatchRunning = false;
+          batchCaptureBtn.disabled = false;
+          batchCaptureBtn.textContent = "Batch capture";
+          flashStatus("Batch capture complete ✅");
+          playBeep(820, 0.1, "triangle");
+          return;
+        }
+
+        const preset = snapshotList[index];
+        applyFxPreset(preset);
+
+        // Give p5 a moment to draw new frame before capture
+        setTimeout(() => {
+          const ok = captureCurrentFrameToGallery();
+          if (ok) {
+            playBeep(760, 0.05, "sine");
+          }
+          index += 1;
+          setTimeout(step, 120); // small gap between presets
+        }, 160);
+      };
+
+      flashStatus("Starting batch capture over FX presets…");
+      playBeep(540, 0.08, "triangle");
+      step();
+    });
+
+    // ---- Keyboard shortcuts ----
+    window.addEventListener("keydown", (event) => {
+      if (event.repeat) return;
+
+      const tag = (event.target && event.target.tagName || "").toLowerCase();
+      if (tag === "input" || tag === "textarea" || tag === "select") return;
+
+      const key = event.key.toLowerCase();
+
+      // Space: pause/play
+      if (event.code === "Space") {
+        if (p5Instance) {
+          p5Paused = !p5Paused;
+          p5StatusEl.textContent = p5Paused
+            ? "Paused (Space to resume)."
+            : "Running (Space = pause).";
+          playBeep(p5Paused ? 260 : 520, 0.07, "triangle");
+        }
+        event.preventDefault();
+        return;
+      }
+
+      // 1/2: cycle p5 presets
+      if (key === "1" || key === "2") {
+        const direction = key === "1" ? -1 : 1;
+        const currentIndex = presetOrder.indexOf(currentPresetId);
+        const nextIndex =
+          (currentIndex + direction + presetOrder.length) % presetOrder.length;
+        const nextId = presetOrder[nextIndex];
+        applyPreset(nextId);
+        if (p5Instance && !p5Paused) {
+          p5StatusEl.textContent = "Running (Space = pause).";
+        }
+        return;
+      }
+
+      // C: capture (p5)
+      if (key === "c") {
+        if (!captureFrameBtn.disabled) {
+          captureFrameBtn.click();
+        }
+        return;
+      }
+
+      // S: quick-save FX preset pack
+      if (key === "s") {
+        saveCurrentPresetFromUi();
+        return;
+      }
+    });
+
+    // ---- Clear everything ----
+    clearBtn.addEventListener("click", () => {
+      currentSvg = null;
+      if (currentSvgUrl) {
+        URL.revokeObjectURL(currentSvgUrl);
+        currentSvgUrl = null;
+      }
+      stopP5Instance();
+
+      currentFileName.textContent = "No file loaded";
+      pathCountEl.textContent = "–";
+      groupCountEl.textContent = "–";
+      viewBoxInfoEl.textContent = "–";
+
+      svgPreview.innerHTML = "";
+      svgPreview.classList.add("hidden");
+      svgPreviewPlaceholder.classList.remove("hidden");
+
+      inspectorEl.innerHTML = `
+        <p class="text-slate-400">
+          SVG cleared. Upload another Errl to inspect its structure.
+        </p>
+      `;
+
+      thumbGallery.innerHTML = "";
+      thumbCountEl.textContent = "0";
+
+      htmlFxImage.src = "";
+      htmlFxStatus.textContent = "Waiting for SVG…";
+
+      flashStatus("Cleared current SVG.");
+      playBeep(220, 0.09, "square");
+    });
+  </script>
+</body>
+</html>
+
+You now have:
+	•	One-Errl sandbox (SVG inspector + live p5 wobble + HTML FX filters)
+	•	FX brain that can:
+	•	Save named FX packs (p5 + HTML combo)
+	•	Export & import them as JSON
+	•	Auto-walk all presets and spit frames into a lil’ thumbnail gallery
+
+Next natural evolution is to wire the 3D Wire / Voxel modes to reuse these FX packs as “profiles” and maybe add an <iframe> sandbox view for embedding the generated FX into other pages.
+

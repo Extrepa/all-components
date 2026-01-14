@@ -1,0 +1,9 @@
+<!-- 59) errl_woods_log_seat_01 – log slice stool (prop/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="prop" data-name="errl_woods_log_seat_01">
+  <g fill="none">
+    <ellipse cx="32" cy="38" rx="7" ry="3" fill="#a16207"/>
+    <rect x="25" y="38" width="14" height="7" rx="3" fill="#92400e"/>
+    <ellipse cx="32" cy="44" rx="7" ry="2.4" fill="#78350f"/>
+  </g>
+</svg>

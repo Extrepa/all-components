@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full Screen Lava Lamp</title>
+    <style>
+        :root {
+            --bg-color: #050505; /* Pitch black for contrast */
+            --text-color: rgba(255, 255, 255, 0.5);
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            overflow: hidden;
+            background-color: var(--bg-color);
+            font-family: 'SF Mono', 'Courier New', monospace;
+            cursor: crosshair;
+        }
+
+        .screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* 
+               High Blur + High Contrast = Liquid Effect.
+               Blur spreads the pixels, Contrast snaps the alpha channel back to sharp edges.
+            */
+            filter: blur(4vmin) contrast(30);
+            z-index: 1;
+        }
+
+        .vignette {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            /* Subtle darkening at corners to give depth */
+            background-image: radial-gradient(circle at center, transparent 20%, #000 120%);
+            z-index: 2;
+        }
+
+        .blob {
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-radius: 50%;
+            /* 
+               'lighten' compares overlapping colors and keeps the brightest value.
+               This prevents the "whiteout" effect of 'screen' mode while still mixing colors.
+            */
+            mix-blend-mode: lighten; 
+            will-change: transform;
+            opacity: 0.85; 
+        }
+        
+        .ui-layer {
+            position: fixed;
+            bottom: 2rem;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            z-index: 10;
+            pointer-events: none; /* Let clicks pass through to the canvas */
+        }
+        
+        h1 {
+            font-size: 2rem;
+            margin: 0;
+            font-weight: 300;
+            letter-spacing: 2px;
+            color: var(--text-color);
+            text-transform: uppercase;
+        }
+        
+        p {
+            font-size: 0.9rem;
+            margin: 0.5rem 0 0;
+            color: var(--text-color);
+            opacity: 0.7;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- The Liquid Canvas -->
+    <div class="screen">
+        <!-- Blobs injected here -->
+    </div>
+
+    <!-- Overlays -->
+    <div class="vignette"></div>
+    
+    <div class="ui-layer">
+        <h1>Lava Flow</h1>
+        <p>Click to add fluid</p>
+    </div>
+
+    <script>
+        const screen = document.querySelector('.screen');
+        
+        let blobs = [];
+        
+        // Expanded Palette - Vibrant Colors that mix well
+        const COLORS = [
+            '#FF0055', // Hot Pink
+            '#00FFCC', // Cyan
+            '#8A2BE2', // Blue Violet
+            '#FFD700', // Gold
+            '#FF4500', // Orange Red
+            '#7FFF00', // Chartreuse
+            '#00BFFF', // Deep Sky Blue
+            '#FF1493'  // Deep Pink
+        ];
+
+        const NUM_INITIAL_BLOBS = 20; // More blobs for full screen
+        const MIN_RADIUS = 5;  // in vmin
+        const MAX_RADIUS = 15; // in vmin
+        const MAX_BLOBS = 80;  // Higher limit for large screens
+
+        let bounds;
+        let vminUnit;
+
+        class Blob {
+            constructor(x, y, rVmin, color) {
+                this.x = x;
+                this.y = y;
+                this.rVmin = rVmin;
+                this.rPx = 0;
+                
+                // Slow, lazy movement
+                this.vx = (Math.random() - 0.5) * 0.6;
+                this.vy = (Math.random() - 0.5) * 0.6;
+
+                this.el = document.createElement('div');
+                this.el.classList.add('blob');
+                this.el.style.background = color;
+                
+                this.updateSize();
+                screen.appendChild(this.el);
+            }
+
+            updateSize() {
+                this.rPx = this.rVmin * vminUnit;
+                this.el.style.width = `${this.rPx * 2}px`;
+                this.el.style.height = `${this.rPx * 2}px`;
+            }
+
+            update(dt) {
+                const speedFactor = dt / 16;
+                this.x += this.vx * speedFactor;
+                this.y += this.vy * speedFactor;
+
+                // Wall Collisions (Soft bounce)
+                // Using -0.8 to lose some energy on wall hit
+                if (this.x - this.rPx < 0) {
+                    this.x = this.rPx; 
+                    this.vx *= -0.8;
+                }
+                if (this.x + this.rPx > bounds.width) {
+                    this.x = bounds.width - this.rPx;
+                    this.vx *= -0.8;
+                }
+                if (this.y - this.rPx < 0) {
+                    this.y = this.rPx;
+                    this.vy *= -0.8;
+                }
+                if (this.y + this.rPx > bounds.height) {
+                    this.y = bounds.height - this.rPx;
+                    this.vy *= -0.8;
+                }
+            }
+
+            draw() {
+                // Hardware accelerated movement
+                this.el.style.transform = `translate3d(${this.x - this.rPx}px, ${this.y - this.rPx}px, 0)`;
+            }
+        }
+
+        function handleCollisions() {
+            for (let i = 0; i < blobs.length; i++) {
+                for (let j = i + 1; j < blobs.length; j++) {
+                    const blobA = blobs[i];
+                    const blobB = blobs[j];
+
+                    const dx = blobB.x - blobA.x;
+                    const dy = blobB.y - blobA.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    const minDistance = blobA.rPx + blobB.rPx;
+
+                    // If overlapping
+                    if (distance < minDistance) {
+                        const angle = Math.atan2(dy, dx);
+                        const overlap = minDistance - distance;
+                        
+                        // Very soft repulsion for "gloopy" feel
+                        const force = overlap * 0.003; 
+
+                        const forceX = Math.cos(angle) * force;
+                        const forceY = Math.sin(angle) * force;
+                        
+                        const totalRadius = blobA.rPx + blobB.rPx;
+                        const ratioA = blobB.rPx / totalRadius;
+                        const ratioB = blobA.rPx / totalRadius;
+
+                        blobA.vx -= forceX * ratioA;
+                        blobA.vy -= forceY * ratioA;
+                        blobB.vx += forceX * ratioB;
+                        blobB.vy += forceY * ratioB;
+
+                        // Sticky Friction (Velcro effect)
+                        // Makes them move together when touching
+                        const friction = 0.008; 
+                        const avgVx = (blobA.vx + blobB.vx) / 2;
+                        const avgVy = (blobA.vy + blobB.vy) / 2;
+                        
+                        blobA.vx += (avgVx - blobA.vx) * friction;
+                        blobA.vy += (avgVy - blobA.vy) * friction;
+                        blobB.vx += (avgVx - blobB.vx) * friction;
+                        blobB.vy += (avgVy - blobB.vy) * friction;
+                    }
+                }
+            }
+        }
+
+        function createBlob(x, y) {
+            if (blobs.length >= MAX_BLOBS) {
+                const oldBlob = blobs.shift();
+                oldBlob.el.remove();
+            }
+
+            const radiusVmin = MIN_RADIUS + Math.random() * (MAX_RADIUS - MIN_RADIUS);
+            const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+            blobs.push(new Blob(x, y, radiusVmin, color));
+        }
+        
+        function updateBounds() {
+            bounds = document.body.getBoundingClientRect();
+            vminUnit = Math.min(window.innerWidth, window.innerHeight) / 100;
+            
+            blobs.forEach(blob => {
+                // Keep blobs inside if window shrinks
+                if (bounds.width > 0 && bounds.height > 0) {
+                     blob.x = Math.min(Math.max(blob.x, 0), bounds.width);
+                     blob.y = Math.min(Math.max(blob.y, 0), bounds.height);
+                }
+                blob.updateSize();
+            });
+        }
+
+        function init() {
+            updateBounds();
+            for (let i = 0; i < NUM_INITIAL_BLOBS; i++) {
+                createBlob(
+                    Math.random() * bounds.width,
+                    Math.random() * bounds.height
+                );
+            }
+        }
+        
+        // Handle Clicks
+        window.addEventListener('mousedown', (e) => {
+            createBlob(e.clientX, e.clientY);
+        });
+
+        // Handle Touch
+        window.addEventListener('touchstart', (e) => {
+            // Don't prevent default everywhere or we can't pinch zoom etc, 
+            // but for this app we usually want to stop scrolling.
+            for (let i = 0; i < e.touches.length; i++) {
+                createBlob(e.touches[i].clientX, e.touches[i].clientY);
+            }
+        }, { passive: true });
+        
+        let lastTime = performance.now();
+
+        function animate(currentTime) {
+            const dt = currentTime - lastTime;
+            lastTime = currentTime;
+
+            handleCollisions();
+
+            blobs.forEach(blob => {
+                blob.update(dt);
+                blob.draw();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', updateBounds);
+
+        init();
+        requestAnimationFrame(animate);
+    </script>
+</body>
+</html>

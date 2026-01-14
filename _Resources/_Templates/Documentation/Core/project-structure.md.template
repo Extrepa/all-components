@@ -1,0 +1,115 @@
+# Project Structure Documentation
+
+**Project:** [Project Name]  
+**Last Updated:** [Date]
+
+## Directory Structure
+
+```
+project-name/
+├── src/              # Source code
+│   ├── components/   # React/components
+│   ├── utils/        # Utility functions
+│   ├── types/        # TypeScript types
+│   └── ...
+├── public/           # Public assets
+├── docs/             # Documentation
+├── package.json      # Dependencies
+└── README.md         # Project overview
+```
+
+## File Organization
+
+### Core Files
+
+- Configuration files (package.json, tsconfig.json, etc.)
+- Entry points (index.html, main.js, etc.)
+- Source code directories
+
+### Documentation
+
+- Root documentation files
+- docs/ directory (this directory)
+- README.md
+
+### Build and Distribution
+
+- Build output directories
+- Distribution files
+- Compiled assets
+
+## Key Directories
+
+### `src/` - Source Code
+- `components/` - [Description]
+- `utils/` - [Description]
+- `types/` - [Description]
+- `hooks/` - [Description] (if applicable)
+- `services/` - [Description] (if applicable)
+
+### `public/` - Public Assets
+- Static files served directly
+- Images, fonts, icons
+- HTML files (if applicable)
+
+### `docs/` - Documentation
+- [Documentation structure]
+- Guides and references
+- Architecture documentation
+
+## File Naming Conventions
+
+- React components: PascalCase (e.g., `MyComponent.tsx`)
+- Utilities: camelCase (e.g., `helpers.ts`)
+- Types: PascalCase interfaces (e.g., `UserData.ts`)
+- Constants: UPPER_SNAKE_CASE (e.g., `API_URL.ts`)
+
+## Import/Export Structure
+
+- ES modules
+- TypeScript
+- [Framework-specific patterns]
+
+## Configuration Files
+
+### `package.json`
+- Dependencies
+- Scripts
+- Project metadata
+
+### `tsconfig.json`
+- TypeScript configuration
+- Compiler options
+- Path aliases
+
+### `vite.config.ts` / `webpack.config.js` / etc.
+- Build configuration
+- Plugin setup
+- Development server config
+
+## Build Output
+
+### Development
+- [Development build output]
+- [Hot reload setup]
+
+### Production
+- [Production build output]
+- [Optimization settings]
+
+## Testing Structure
+
+### Test Files
+- [Test file naming convention]
+- [Test file location]
+- [Test utilities]
+
+### Test Configuration
+- [Test framework setup]
+- [Test coverage settings]
+
+## Related Documentation
+
+- [Architecture](architecture.md)
+- [README](../README.md.template)
+- [INDEX](../INDEX.md.template)

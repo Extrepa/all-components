@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quad-Core Fluid Simulation</title>
+    <style>
+        :root {
+            --bg-color: #080808;
+            --gap: 10px;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            background-color: var(--bg-color);
+            font-family: 'Segoe UI', sans-serif;
+            overflow: hidden;
+        }
+
+        /* The Grid Layout */
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            width: 100vw;
+            height: 100vh;
+            gap: var(--gap);
+            padding: var(--gap);
+            box-sizing: border-box;
+        }
+
+        .projector {
+            position: relative;
+            background: #111;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.8);
+            border: 1px solid #333;
+        }
+
+        /* 
+           The Container for the blobs.
+           We apply the SVG filter here via the 'url' syntax.
+        */
+        .fluid-layer {
+            width: 100%;
+            height: 100%;
+            /* Connects to the SVG filter defined in HTML */
+            filter: url('#goo'); 
+            transform: translateZ(0); /* Hardware acceleration trigger */
+        }
+
+        .blob {
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-radius: 50%;
+            will-change: transform;
+        }
+
+        /* Overlay for text */
+        .label {
+            position: absolute;
+            bottom: 15px;
+            left: 20px;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        /* Hide the SVG definition block */
+        svg {
+            position: absolute;
+            width: 0;
+            height: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 
+       SVG FILTER DEFINITION 
+       This creates the "Gooey" effect mathematically, resulting in 
+       smooth edges instead of pixelated ones.
+    -->
+    <svg>
+        <defs>
+            <filter id="goo">
+                <!-- Blur the source image -->
+                <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="blur" />
+                <!-- 
+                    Color Matrix to sharpen the alpha channel.
+                    1 0 0 0 0  (R)
+                    0 1 0 0 0  (G)
+                    0 0 1 0 0  (B)
+                    0 0 0 19 -9 (Alpha: Multiply alpha by 19, subtract 9 to clip translucent edges)
+                -->
+                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="goo" />
+                <!-- Optional: Composite source graphic over goo for core colors (we skip this for pure liquid look) -->
+            </filter>
+        </defs>
+    </svg>
+
+    <div class="grid-container">
+        <!-- SIMULATION 1: NEON SLIME -->
+        <div class="projector" id="sim-1">
+            <div class="fluid-layer"></div>
+            <div class="label">01. Neon Viscosity</div>
+        </div>
+
+        <!-- SIMULATION 2: CHAOTIC OIL -->
+        <div class="projector" id="sim-2">
+            <div class="fluid-layer"></div>
+            <div class="label">02. High Kinetic</div>
+        </div>
+
+        <!-- SIMULATION 3: LIQUID MERCURY -->
+        <div class="projector" id="sim-3">
+            <div class="fluid-layer"></div>
+            <div class="label">03. Heavy Metal</div>
+        </div>
+
+        <!-- SIMULATION 4: MAGMA CONVECTION -->
+        <div class="projector" id="sim-4">
+            <div class="fluid-layer"></div>
+            <div class="label">04. Thermal Updraft</div>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * Core Physics Engine Class
+         * Handles one instance of a fluid simulation
+         */
+        class FluidSimulation {
+            constructor(containerId, config) {
+                this.container = document.getElementById(containerId);
+                this.layer = this.container.querySelector('.fluid-layer');
+                
+                // Configuration Defaults
+                this.config = {
+                    colors: ['#fff'],
+                    count: 15,
+                    minSize: 20, // pixels
+                    maxSize: 60, // pixels
+                    viscosity: 0.9, // Velocity retention (lower = thicker fluid)
+                    stickiness: 0.005, // How much they clump on touch
+                    repulsion: 0.05, // Bounciness
+                    speedMult: 1.0,
+                    gravityY: 0, // Vertical drift
+                    gravityX: 0,
+                    ...config
+                };
+
+                this.blobs = [];
+                this.bounds = { width: 0, height: 0 };
+                
+                this.init();
+                
+                // Add click listener specific to this container
+                this.container.addEventListener('mousedown', (e) => this.handleClick(e));
+                this.container.addEventListener('touchstart', (e) => this.handleTouch(e), {passive: false});
+            }
+
+            init() {
+                this.updateBounds();
+                for(let i=0; i<this.config.count; i++) {
+                    this.createBlob();
+                }
+            }
+
+            updateBounds() {
+                const rect = this.container.getBoundingClientRect();
+                this.bounds.width = rect.width;
+                this.bounds.height = rect.height;
+            }
+
+            createBlob(x, y) {
+                const blob = {
+                    x: x || Math.random() * this.bounds.width,
+                    y: y || Math.random() * this.bounds.height,
+                    vx: (Math.random() - 0.5) * 2 * this.config.speedMult,
+                    vy: (Math.random() - 0.5) * 2 * this.config.speedMult,
+                    radius: this.config.minSize + Math.random() * (this.config.maxSize - this.config.minSize),
+                    color: this.config.colors[Math.floor(Math.random() * this.config.colors.length)],
+                    el: document.createElement('div')
+                };
+
+                blob.el.className = 'blob';
+                blob.el.style.width = blob.radius * 2 + 'px';
+                blob.el.style.height = blob.radius * 2 + 'px';
+                blob.el.style.background = blob.color;
+
+                this.layer.appendChild(blob.el);
+                this.blobs.push(blob);
+
+                // Limit max blobs per container to prevent lag
+                if(this.blobs.length > 40) {
+                    const old = this.blobs.shift();
+                    old.el.remove();
+                }
+            }
+
+            handleClick(e) {
+                const rect = this.container.getBoundingClientRect();
+                this.createBlob(e.clientX - rect.left, e.clientY - rect.top);
+            }
+
+            handleTouch(e) {
+                e.preventDefault();
+                const rect = this.container.getBoundingClientRect();
+                const t = e.touches[0];
+                this.createBlob(t.clientX - rect.left, t.clientY - rect.top);
+            }
+
+            update() {
+                // Physics Steps
+                for (let i = 0; i < this.blobs.length; i++) {
+                    const b = this.blobs[i];
+
+                    // 1. Apply Forces (Gravity/Drift)
+                    b.vx += this.config.gravityX * 0.1;
+                    b.vy += this.config.gravityY * 0.1;
+
+                    // 2. Apply Velocity
+                    b.x += b.vx;
+                    b.y += b.vy;
+
+                    // 3. Wall Collisions
+                    // Damping wall hits makes it feel less like pong, more like fluid
+                    if (b.x < 0) { b.x = 0; b.vx *= -0.8; }
+                    if (b.x > this.bounds.width - b.radius*2) { b.x = this.bounds.width - b.radius*2; b.vx *= -0.8; }
+                    if (b.y < 0) { b.y = 0; b.vy *= -0.8; }
+                    if (b.y > this.bounds.height - b.radius*2) { b.y = this.bounds.height - b.radius*2; b.vy *= -0.8; }
+                }
+
+                // 4. Blob Collisions (The "Goo" Math)
+                for (let i = 0; i < this.blobs.length; i++) {
+                    for (let j = i + 1; j < this.blobs.length; j++) {
+                        const b1 = this.blobs[i];
+                        const b2 = this.blobs[j];
+
+                        // Center points (adjust for radius)
+                        const c1x = b1.x + b1.radius;
+                        const c1y = b1.y + b1.radius;
+                        const c2x = b2.x + b2.radius;
+                        const c2y = b2.y + b2.radius;
+
+                        const dx = c2x - c1x;
+                        const dy = c2y - c1y;
+                        const dist = Math.sqrt(dx*dx + dy*dy);
+                        const minDist = b1.radius + b2.radius;
+
+                        if (dist < minDist) {
+                            const angle = Math.atan2(dy, dx);
+                            const overlap = minDist - dist;
+                            
+                            // Soft Repulsion (Push apart)
+                            const force = overlap * this.config.repulsion;
+                            const fx = Math.cos(angle) * force;
+                            const fy = Math.sin(angle) * force;
+
+                            // Mass approximation (bigger blobs move less)
+                            const rTotal = b1.radius + b2.radius;
+                            const m1 = b2.radius / rTotal;
+                            const m2 = b1.radius / rTotal;
+
+                            b1.vx -= fx * m1;
+                            b1.vy -= fy * m1;
+                            b2.vx += fx * m2;
+                            b2.vy += fy * m2;
+
+                            // Stickiness (Velcro / Surface Tension)
+                            // Pull velocities closer to average to make them "stick"
+                            const friction = this.config.stickiness;
+                            const avgVx = (b1.vx + b2.vx) / 2;
+                            const avgVy = (b1.vy + b2.vy) / 2;
+
+                            b1.vx += (avgVx - b1.vx) * friction;
+                            b1.vy += (avgVy - b1.vy) * friction;
+                            b2.vx += (avgVx - b2.vx) * friction;
+                            b2.vy += (avgVy - b2.vy) * friction;
+                        }
+                    }
+                }
+
+                // 5. Draw
+                for (let i = 0; i < this.blobs.length; i++) {
+                    const b = this.blobs[i];
+                    b.el.style.transform = `translate3d(${b.x}px, ${b.y}px, 0)`;
+                }
+            }
+        }
+
+        // ==========================================
+        // CONFIGURATIONS
+        // ==========================================
+
+        const simulations = [];
+
+        // 1. NEON SLIME (Top Left)
+        // Thick, sticky, slow, vibrant colors
+        simulations.push(new FluidSimulation('sim-1', {
+            colors: ['#39ff14', '#ccff00', '#00ffef', '#8a2be2'],
+            count: 18,
+            speedMult: 0.5,
+            stickiness: 0.05, // Very sticky
+            repulsion: 0.01,  // Very soft (high overlap)
+            minSize: 30,
+            maxSize: 70
+        }));
+
+        // 2. KINETIC OIL (Top Right)
+        // Fast, bouncy, low stickiness, distinct colors
+        simulations.push(new FluidSimulation('sim-2', {
+            colors: ['#FF0055', '#0099FF', '#FFDD00', '#FFFFFF'],
+            count: 25,
+            speedMult: 1.8,   // Fast
+            stickiness: 0.001, // Not sticky
+            repulsion: 0.08,   // Bouncy
+            minSize: 15,
+            maxSize: 40
+        }));
+
+        // 3. HEAVY METAL (Bottom Left)
+        // Monochromatic, heavy gravity pull downward, dense
+        simulations.push(new FluidSimulation('sim-3', {
+            colors: ['#444', '#666', '#888', '#aaa', '#1a3b5c'],
+            count: 20,
+            speedMult: 0.8,
+            gravityY: 0.15,    // Falls down
+            stickiness: 0.03,  // High surface tension
+            repulsion: 0.03,
+            minSize: 25,
+            maxSize: 65
+        }));
+
+        // 4. MAGMA CONVECTION (Bottom Right)
+        // Hot colors, upward drift (heat rises), thick
+        simulations.push(new FluidSimulation('sim-4', {
+            colors: ['#ff0000', '#ff4d00', '#ff9900', '#330000'],
+            count: 22,
+            speedMult: 0.6,
+            gravityY: -0.1,    // Floats up
+            stickiness: 0.02,
+            repulsion: 0.02,
+            minSize: 30,
+            maxSize: 80
+        }));
+
+        // ==========================================
+        // MAIN LOOP & HANDLERS
+        // ==========================================
+
+        function animate() {
+            simulations.forEach(sim => sim.update());
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            simulations.forEach(sim => sim.updateBounds());
+        });
+
+        animate();
+
+    </script>
+</body>
+</html>

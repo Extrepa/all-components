@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>An interactive overhead projector - P5.js Sketch</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0a0a0a;
+      color: #fff;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .header {
+      padding: 1.5rem 2rem;
+      background: #1a1a1a;
+      border-bottom: 1px solid #333;
+    }
+    .header h1 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .header p {
+      color: #b0b0b0;
+      font-size: 0.875rem;
+    }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 1rem;
+      color: #6366f1;
+      text-decoration: none;
+      font-size: 0.875rem;
+    }
+    .back-link:hover {
+      text-decoration: underline;
+    }
+    #p5-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background: #0a0a0a;
+    }
+    .info {
+      padding: 1.5rem 2rem;
+      background: #1a1a1a;
+      border-top: 1px solid #333;
+      font-size: 0.875rem;
+    }
+    .info-item {
+      margin-bottom: 0.5rem;
+      display: flex;
+    }
+    .info-label {
+      width: 120px;
+      color: #b0b0b0;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="../index.html" class="back-link">← Back to Gallery</a>
+      <h1>An interactive overhead projector</h1>
+      <p>P5.js Interactive Sketch</p>
+    </div>
+    <div id="p5-container"></div>
+    <div class="info">
+      <div class="info-item">
+        <span class="info-label">Prompt:</span>
+        <span>An interactive overhead projector</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Model:</span>
+        <span>threePro</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Generation Time:</span>
+        <span>58.9s</span>
+      </div>
+    </div>
+  </div>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+  <script>
+    const container = document.getElementById('p5-container');
+    const sketchCode = "let transparencyLayer;\nlet projectorLight;\nlet sheetX = 0;\nlet sheetY = 0;\nlet isDraggingSheet = false;\nlet dragOffsetX = 0;\nlet dragOffsetY = 0;\n\n// Pen properties\nlet penColor;\nlet penSize = 5;\nlet currentPenIndex = 0;\nlet pens = [\n  { color: [0, 0, 0, 200], label: 'BLK' }, // Black\n  { color: [200, 0, 0, 200], label: 'RED' }, // Red\n  { color: [0, 0, 180, 200], label: 'BLU' }, // Blue\n  { color: [0, 150, 0, 200], label: 'GRN' }  // Green\n];\n\n// Projector visual constants\nlet glassX, glassY, glassW, glassH;\n\nfunction setup() {\n  createCanvas(800, 600);\n  \n  // Define the projector glass area\n  glassW = 500;\n  glassH = 500;\n  glassX = width / 2 - glassW / 2;\n  glassY = height / 2 - glassH / 2;\n\n  // Initialize the transparency sheet (the buffer we draw on)\n  transparencyLayer = createGraphics(600, 600);\n  transparencyLayer.clear(); // Transparent background\n  \n  // Set initial position of the sheet (centered)\n  sheetX = width / 2 - 300;\n  sheetY = height / 2 - 300;\n\n  penColor = color(pens[0].color);\n  \n  cursor(CROSS);\n}\n\nfunction draw() {\n  background(30); // Dark classroom\n\n  // 1. Draw the Projector Base\n  noStroke();\n  fill(50); // Dark grey plastic casing\n  rect(glassX - 40, glassY - 40, glassW + 80, glassH + 80, 20);\n  \n  // 2. Draw the Glass/Light (The Stage)\n  drawProjectorLight();\n\n  // 3. Draw the Transparency Sheet\n  // We simulate the plastic sheet being slightly larger than the drawing area\n  // and slightly milky/reflective\n  push();\n  translate(sheetX, sheetY);\n  \n  // Sheet boundary (The plastic film)\n  stroke(255, 50);\n  strokeWeight(1);\n  fill(255, 10); // Slight milky tint of plastic\n  rect(0, 0, transparencyLayer.width, transparencyLayer.height);\n  \n  // The drawings\n  image(transparencyLayer, 0, 0);\n  pop();\n\n  // 4. Post-Processing / Overlays\n  drawProjectorArmShadow();\n  drawDustMotes();\n  drawVignette();\n  \n  // 5. UI - Marker Tray\n  drawUI();\n}\n\nfunction drawProjectorLight() {\n  // Clip drawing to the glass area\n  push();\n  rectMode(CORNER);\n  // Glow effect for the light\n  drawingContext.shadowBlur = 50;\n  drawingContext.shadowColor = color(255, 255, 240);\n  \n  fill(240, 240, 225); // Bright warm white light\n  rect(glassX, glassY, glassW, glassH, 10);\n  drawingContext.shadowBlur = 0; // Reset shadow\n\n  // Draw Fresnel Lens rings (Concentric circles texture)\n  noFill();\n  stroke(0, 0, 0, 10); // Very faint rings\n  strokeWeight(2);\n  let centerX = glassX + glassW / 2;\n  let centerY = glassY + glassH / 2;\n  for (let r = 0; r < 400; r += 15) {\n    circle(centerX, centerY, r * 2);\n  }\n  pop();\n}\n\nfunction drawProjectorArmShadow() {\n  // Simulates the shadow of the focus head and arm blocking the light\n  push();\n  fill(0, 150);\n  drawingContext.filter = 'blur(20px)';\n  \n  // The arm coming from the side\n  beginShape();\n  vertex(glassX + glassW + 50, glassY + 100);\n  vertex(glassX + glassW - 50, glassY + 120);\n  vertex(glassX + glassW - 50, glassY + glassH - 120);\n  vertex(glassX + glassW + 50, glassY + glassH - 100);\n  endShape(CLOSE);\n\n  // The head shadow (top corner usually)\n  ellipse(glassX + glassW - 80, glassY + 80, 150, 150);\n  pop();\n}\n\nfunction drawVignette() {\n  // Darken edges to simulate looking into a bright light source\n  push();\n  drawingContext.shadowBlur = 0;\n  noFill();\n  strokeWeight(100);\n  stroke(20, 20, 20, 100);\n  rect(-50, -50, width + 100, height + 100);\n  pop();\n}\n\nlet motes = [];\nfunction drawDustMotes() {\n  // Floating dust in the light\n  if (motes.length < 20) {\n    motes.push({\n      x: random(glassX, glassX + glassW),\n      y: random(glassY, glassY + glassH),\n      vx: random(-0.5, 0.5),\n      vy: random(-0.5, 0.5),\n      alpha: random(50, 150)\n    });\n  }\n  \n  noStroke();\n  fill(255);\n  \n  for (let i = motes.length - 1; i >= 0; i--) {\n    let m = motes[i];\n    m.x += m.vx;\n    m.y += m.vy;\n    \n    // Only draw if over the glass\n    if (m.x > glassX && m.x < glassX + glassW && m.y > glassY && m.y < glassY + glassH) {\n       fill(255, m.alpha);\n       circle(m.x, m.y, 2);\n    } else {\n      motes.splice(i, 1);\n    }\n  }\n}\n\nfunction drawUI() {\n  // Draw Marker Tray at the bottom\n  push();\n  translate(50, height - 60);\n  \n  // Tray background\n  fill(40);\n  stroke(60);\n  rect(-10, -10, 300, 60, 5);\n\n  // Markers\n  for (let i = 0; i < pens.length; i++) {\n    let x = i * 60;\n    \n    // Highlight active pen\n    if (i === currentPenIndex) {\n      fill(60);\n      noStroke();\n      rect(x - 5, -5, 50, 50, 5);\n      stroke(255); // White border for active\n    } else {\n      noStroke();\n    }\n    \n    // Pen Body\n    let c = color(pens[i].color);\n    c.setAlpha(255);\n    fill(c);\n    rect(x + 10, 10, 20, 30, 2);\n    \n    // Cap\n    fill(20);\n    rect(x + 10, 0, 20, 10, 2);\n    \n    // Label (Simulate looking down at pen caps)\n    textAlign(CENTER);\n    textSize(10);\n    fill(200);\n    noStroke();\n    text(pens[i].label, x + 20, 55);\n  }\n\n  // Clear Button\n  translate(320, 0);\n  fill(currentPenIndex === -1 ? 80 : 50); // Highlight if hovering (handled by logic below usually, simplified here)\n  stroke(100);\n  rect(0, 0, 60, 40, 5);\n  fill(255);\n  noStroke();\n  textAlign(CENTER, CENTER);\n  text(\"WIPE\", 30, 20);\n  \n  // Instructions\n  textAlign(LEFT);\n  fill(150);\n  text(\"Drag sheet with SHIFT key or Right Click\", 80, 20);\n\n  pop();\n}\n\nfunction mousePressed() {\n  // Check UI Interaction\n  if (mouseY > height - 70 && mouseY < height - 10) {\n     let relativeX = mouseX - 50;\n     \n     // Markers\n     if (relativeX >= 0 && relativeX < 240) {\n       let idx = floor(relativeX / 60);\n       if (idx >= 0 && idx < pens.length) {\n         currentPenIndex = idx;\n         penColor = color(pens[idx].color);\n       }\n       return;\n     }\n     \n     // Wipe Button\n     if (relativeX >= 320 && relativeX <= 380) {\n       transparencyLayer.clear();\n       return;\n     }\n  }\n\n  // Check if starting a drag on the sheet (Holding shift or Right click)\n  let overSheet = (mouseX > sheetX && mouseX < sheetX + transparencyLayer.width && \n                   mouseY > sheetY && mouseY < sheetY + transparencyLayer.height);\n                   \n  if (overSheet && (mouseButton === RIGHT || keyIsDown(SHIFT))) {\n    isDraggingSheet = true;\n    dragOffsetX = mouseX - sheetX;\n    dragOffsetY = mouseY - sheetY;\n    cursor(MOVE);\n  }\n}\n\nfunction mouseDragged() {\n  if (isDraggingSheet) {\n    sheetX = mouseX - dragOffsetX;\n    sheetY = mouseY - dragOffsetY;\n  } else {\n    // Drawing Mode\n    // Calculate coordinates relative to the transparency layer\n    let localX = mouseX - sheetX;\n    let localY = mouseY - sheetY;\n    let pLocalX = pmouseX - sheetX;\n    let pLocalY = pmouseY - sheetY;\n\n    // Only draw if we are roughly over the light area (realistic constraint)\n    // or just enforce drawing on the sheet buffer bounds\n    if (mouseX > glassX && mouseX < glassX + glassW && \n        mouseY > glassY && mouseY < glassY + glassH) {\n          \n      transparencyLayer.stroke(penColor);\n      transparencyLayer.strokeWeight(penSize);\n      transparencyLayer.strokeCap(ROUND);\n      transparencyLayer.strokeJoin(ROUND);\n      \n      // Basic line\n      transparencyLayer.line(pLocalX, pLocalY, localX, localY);\n      \n      // Add a slightly thicker, lower alpha line to simulate ink spread/bleed\n      let bleedColor = color(penColor);\n      bleedColor.setAlpha(20);\n      transparencyLayer.stroke(bleedColor);\n      transparencyLayer.strokeWeight(penSize + 4);\n      transparencyLayer.line(pLocalX, pLocalY, localX, localY);\n    }\n  }\n}\n\nfunction mouseReleased() {\n  isDraggingSheet = false;\n  cursor(CROSS);\n}\n\n// Prevent context menu on right click for better dragging experience\ndocument.oncontextmenu = function() { return false; }";
+    
+    const sketch = function(p) {
+      let transparencyLayer;
+let projectorLight;
+let sheetX = 0;
+let sheetY = 0;
+let isDraggingSheet = false;
+let dragOffsetX = 0;
+let dragOffsetY = 0;
+
+// Pen properties
+let penColor;
+let penSize = 5;
+let currentPenIndex = 0;
+let pens = [
+  { color: [0, 0, 0, 200], label: 'BLK' }, // Black
+  { color: [200, 0, 0, 200], label: 'RED' }, // Red
+  { color: [0, 0, 180, 200], label: 'BLU' }, // Blue
+  { color: [0, 150, 0, 200], label: 'GRN' }  // Green
+];
+
+// Projector visual constants
+let glassX, glassY, glassW, glassH;
+
+function setup() {
+  createCanvas(800, 600);
+  
+  // Define the projector glass area
+  glassW = 500;
+  glassH = 500;
+  glassX = width / 2 - glassW / 2;
+  glassY = height / 2 - glassH / 2;
+
+  // Initialize the transparency sheet (the buffer we draw on)
+  transparencyLayer = createGraphics(600, 600);
+  transparencyLayer.clear(); // Transparent background
+  
+  // Set initial position of the sheet (centered)
+  sheetX = width / 2 - 300;
+  sheetY = height / 2 - 300;
+
+  penColor = color(pens[0].color);
+  
+  cursor(CROSS);
+}
+
+function draw() {
+  background(30); // Dark classroom
+
+  // 1. Draw the Projector Base
+  noStroke();
+  fill(50); // Dark grey plastic casing
+  rect(glassX - 40, glassY - 40, glassW + 80, glassH + 80, 20);
+  
+  // 2. Draw the Glass/Light (The Stage)
+  drawProjectorLight();
+
+  // 3. Draw the Transparency Sheet
+  // We simulate the plastic sheet being slightly larger than the drawing area
+  // and slightly milky/reflective
+  push();
+  translate(sheetX, sheetY);
+  
+  // Sheet boundary (The plastic film)
+  stroke(255, 50);
+  strokeWeight(1);
+  fill(255, 10); // Slight milky tint of plastic
+  rect(0, 0, transparencyLayer.width, transparencyLayer.height);
+  
+  // The drawings
+  image(transparencyLayer, 0, 0);
+  pop();
+
+  // 4. Post-Processing / Overlays
+  drawProjectorArmShadow();
+  drawDustMotes();
+  drawVignette();
+  
+  // 5. UI - Marker Tray
+  drawUI();
+}
+
+function drawProjectorLight() {
+  // Clip drawing to the glass area
+  push();
+  rectMode(CORNER);
+  // Glow effect for the light
+  drawingContext.shadowBlur = 50;
+  drawingContext.shadowColor = color(255, 255, 240);
+  
+  fill(240, 240, 225); // Bright warm white light
+  rect(glassX, glassY, glassW, glassH, 10);
+  drawingContext.shadowBlur = 0; // Reset shadow
+
+  // Draw Fresnel Lens rings (Concentric circles texture)
+  noFill();
+  stroke(0, 0, 0, 10); // Very faint rings
+  strokeWeight(2);
+  let centerX = glassX + glassW / 2;
+  let centerY = glassY + glassH / 2;
+  for (let r = 0; r < 400; r += 15) {
+    circle(centerX, centerY, r * 2);
+  }
+  pop();
+}
+
+function drawProjectorArmShadow() {
+  // Simulates the shadow of the focus head and arm blocking the light
+  push();
+  fill(0, 150);
+  drawingContext.filter = 'blur(20px)';
+  
+  // The arm coming from the side
+  beginShape();
+  vertex(glassX + glassW + 50, glassY + 100);
+  vertex(glassX + glassW - 50, glassY + 120);
+  vertex(glassX + glassW - 50, glassY + glassH - 120);
+  vertex(glassX + glassW + 50, glassY + glassH - 100);
+  endShape(CLOSE);
+
+  // The head shadow (top corner usually)
+  ellipse(glassX + glassW - 80, glassY + 80, 150, 150);
+  pop();
+}
+
+function drawVignette() {
+  // Darken edges to simulate looking into a bright light source
+  push();
+  drawingContext.shadowBlur = 0;
+  noFill();
+  strokeWeight(100);
+  stroke(20, 20, 20, 100);
+  rect(-50, -50, width + 100, height + 100);
+  pop();
+}
+
+let motes = [];
+function drawDustMotes() {
+  // Floating dust in the light
+  if (motes.length < 20) {
+    motes.push({
+      x: random(glassX, glassX + glassW),
+      y: random(glassY, glassY + glassH),
+      vx: random(-0.5, 0.5),
+      vy: random(-0.5, 0.5),
+      alpha: random(50, 150)
+    });
+  }
+  
+  noStroke();
+  fill(255);
+  
+  for (let i = motes.length - 1; i >= 0; i--) {
+    let m = motes[i];
+    m.x += m.vx;
+    m.y += m.vy;
+    
+    // Only draw if over the glass
+    if (m.x > glassX && m.x < glassX + glassW && m.y > glassY && m.y < glassY + glassH) {
+       fill(255, m.alpha);
+       circle(m.x, m.y, 2);
+    } else {
+      motes.splice(i, 1);
+    }
+  }
+}
+
+function drawUI() {
+  // Draw Marker Tray at the bottom
+  push();
+  translate(50, height - 60);
+  
+  // Tray background
+  fill(40);
+  stroke(60);
+  rect(-10, -10, 300, 60, 5);
+
+  // Markers
+  for (let i = 0; i < pens.length; i++) {
+    let x = i * 60;
+    
+    // Highlight active pen
+    if (i === currentPenIndex) {
+      fill(60);
+      noStroke();
+      rect(x - 5, -5, 50, 50, 5);
+      stroke(255); // White border for active
+    } else {
+      noStroke();
+    }
+    
+    // Pen Body
+    let c = color(pens[i].color);
+    c.setAlpha(255);
+    fill(c);
+    rect(x + 10, 10, 20, 30, 2);
+    
+    // Cap
+    fill(20);
+    rect(x + 10, 0, 20, 10, 2);
+    
+    // Label (Simulate looking down at pen caps)
+    textAlign(CENTER);
+    textSize(10);
+    fill(200);
+    noStroke();
+    text(pens[i].label, x + 20, 55);
+  }
+
+  // Clear Button
+  translate(320, 0);
+  fill(currentPenIndex === -1 ? 80 : 50); // Highlight if hovering (handled by logic below usually, simplified here)
+  stroke(100);
+  rect(0, 0, 60, 40, 5);
+  fill(255);
+  noStroke();
+  textAlign(CENTER, CENTER);
+  text("WIPE", 30, 20);
+  
+  // Instructions
+  textAlign(LEFT);
+  fill(150);
+  text("Drag sheet with SHIFT key or Right Click", 80, 20);
+
+  pop();
+}
+
+function mousePressed() {
+  // Check UI Interaction
+  if (mouseY > height - 70 && mouseY < height - 10) {
+     let relativeX = mouseX - 50;
+     
+     // Markers
+     if (relativeX >= 0 && relativeX < 240) {
+       let idx = floor(relativeX / 60);
+       if (idx >= 0 && idx < pens.length) {
+         currentPenIndex = idx;
+         penColor = color(pens[idx].color);
+       }
+       return;
+     }
+     
+     // Wipe Button
+     if (relativeX >= 320 && relativeX <= 380) {
+       transparencyLayer.clear();
+       return;
+     }
+  }
+
+  // Check if starting a drag on the sheet (Holding shift or Right click)
+  let overSheet = (mouseX > sheetX && mouseX < sheetX + transparencyLayer.width && 
+                   mouseY > sheetY && mouseY < sheetY + transparencyLayer.height);
+                   
+  if (overSheet && (mouseButton === RIGHT || keyIsDown(SHIFT))) {
+    isDraggingSheet = true;
+    dragOffsetX = mouseX - sheetX;
+    dragOffsetY = mouseY - sheetY;
+    cursor(MOVE);
+  }
+}
+
+function mouseDragged() {
+  if (isDraggingSheet) {
+    sheetX = mouseX - dragOffsetX;
+    sheetY = mouseY - dragOffsetY;
+  } else {
+    // Drawing Mode
+    // Calculate coordinates relative to the transparency layer
+    let localX = mouseX - sheetX;
+    let localY = mouseY - sheetY;
+    let pLocalX = pmouseX - sheetX;
+    let pLocalY = pmouseY - sheetY;
+
+    // Only draw if we are roughly over the light area (realistic constraint)
+    // or just enforce drawing on the sheet buffer bounds
+    if (mouseX > glassX && mouseX < glassX + glassW && 
+        mouseY > glassY && mouseY < glassY + glassH) {
+          
+      transparencyLayer.stroke(penColor);
+      transparencyLayer.strokeWeight(penSize);
+      transparencyLayer.strokeCap(ROUND);
+      transparencyLayer.strokeJoin(ROUND);
+      
+      // Basic line
+      transparencyLayer.line(pLocalX, pLocalY, localX, localY);
+      
+      // Add a slightly thicker, lower alpha line to simulate ink spread/bleed
+      let bleedColor = color(penColor);
+      bleedColor.setAlpha(20);
+      transparencyLayer.stroke(bleedColor);
+      transparencyLayer.strokeWeight(penSize + 4);
+      transparencyLayer.line(pLocalX, pLocalY, localX, localY);
+    }
+  }
+}
+
+function mouseReleased() {
+  isDraggingSheet = false;
+  cursor(CROSS);
+}
+
+// Prevent context menu on right click for better dragging experience
+document.oncontextmenu = function() { return false; }
+    };
+    
+    new p5(sketch, container);
+  </script>
+</body>
+</html>

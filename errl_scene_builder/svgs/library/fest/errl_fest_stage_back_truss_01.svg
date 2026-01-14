@@ -1,0 +1,11 @@
+<!-- Example 148 | errl_fest_stage_back_truss_01 (env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="env" data-name="errl_fest_stage_back_truss_01">
+  <g fill="none">
+    <rect x="12" y="20" width="8" height="24" rx="2" fill="#111827"/>
+    <rect x="44" y="20" width="8" height="24" rx="2" fill="#111827"/>
+    <path d="M16 22 L48 22" stroke="#22d3ee" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M16 30 L48 30" stroke="#22d3ee" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+    <path d="M16 38 L48 38" stroke="#22d3ee" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+  </g>
+</svg>

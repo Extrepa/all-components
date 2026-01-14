@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>VJ Synth Lab — Mixer (MIDI Learn)</title>
+<style>
+:root { --bg:#0d1228; --panel:#121735; --ink:#eaf7ff; --accent:#7cf0ff; --accent2:#ffd36a; }
+* { box-sizing: border-box; }
+html, body { height:100%; margin:0; background:var(--bg); color:var(--ink); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial; }
+.site-head { max-width:1200px; margin: 18px auto 8px; padding: 0 16px; display:grid; gap:8px; }
+.site-head h1 { margin: 0 0 2px; font-size: clamp(20px, 3vw, 32px); }
+.meta { display:flex; gap:10px; align-items:center; flex-wrap:wrap; opacity:.9; font-size:12px; }
+.badge { padding:4px 8px; border-radius:8px; border:1px solid #24306a; background:#0c1232; }
+.badge.live { border-color:#19c3ff; }
+.select { background:#0f1536; color:#eaf7ff; border:1px solid #27326a; border-radius:6px; padding:4px 6px; font-size:12px; }
+.button { cursor:pointer; background:#141a3c; border:1px solid #29336b; color:#dff5ff; font-size:12px; padding:6px 10px; border-radius:8px }
+.button:hover { border-color:#46a8ff }
+.button.warn { border-color:#7a2d2d; background:#2a1313; }
+.layout { display: grid; gap: 16px; max-width: 1200px; margin: 0 auto; padding: 0 16px 24px; }
+.mixer-wrap { display:grid; place-items:center; }
+.mixer { width: min(100%, 1100px); height: auto; background:#0b1024; border-radius:16px; box-shadow: 0 12px 40px rgba(0,0,0,.45); }
+
+.panel { fill:url(#panelGrad); stroke:#1c254f; stroke-width:1.2; rx:12; ry:12 }
+.label { font: 700 12px/1.2 system-ui, sans-serif; letter-spacing:.04em; fill:#cfe7ff; }
+.title { font-size: 22px; }
+.lite { opacity:.72 }
+.small { font: 600 10px/1 monospace; fill:#9cc }
+.tick { stroke:#2a335f; stroke-width:1 }
+.knob-face { fill:url(#faceGrad); stroke:#26305e; stroke-width:1.5 }
+.knob-cap { fill:#0b1024; stroke:#94f0ff; stroke-width:1.6 }
+.knob-armed .knob-face { stroke:#23d3ff; filter: drop-shadow(0 0 6px rgba(35,211,255,.6)); }
+.scope-bg { fill:#0f1433; stroke:#1e2858; stroke-width:1; rx:10; ry:10 }
+.kbd { font: 700 11px/1 monospace; fill:#8adfff }
+.led { fill:#142046; stroke:#2b3270; stroke-width:1 }
+.led.on { fill:#23d3ff }
+.btn { fill:#1a2044; stroke:#2d3a7a; stroke-width:1.2; rx:6; ry:6 }
+.btn:hover { stroke:#44a9ff }
+.pad-row .drum-pad { fill:#151a3b; stroke:#36407a; stroke-width:1.6; rx:10; ry:10 }
+.drum-pad-label { font:700 10px/1.2 system-ui,sans-serif; fill:#cde6ff; text-anchor:middle }
+.drum-pad-hit { opacity:0; pointer-events:none; fill:url(#faceGrad) }
+.pad-armed .drum-pad { stroke:#23d3ff; filter: drop-shadow(0 0 6px rgba(35,211,255,.6)); }
+
+.gallery-row { display:grid; gap:16px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); align-items:start; }
+.gallery-window { background:#0b1026; border-radius:14px; border:1px solid #1f2950; padding:10px 10px 12px; box-shadow:0 10px 26px rgba(0,0,0,.45); display:flex; flex-direction:column; min-height:260px; }
+.gw-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:4px; }
+.gw-title { font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:#cfe7ff; }
+.gw-nav, .gw-vert { display:flex; gap:4px; }
+.gw-subnav { display:flex; align-items:center; justify-content:space-between; font-size:10px; color:#9bb3ff; margin-bottom:6px; }
+.gw-theme-label { opacity:.8; letter-spacing:.06em; text-transform:uppercase; }
+.nav-btn { background:#141a3c; border:1px solid #29336b; color:#dff5ff; font-size:11px; padding:0 6px; border-radius:4px; cursor:pointer; }
+.nav-btn:hover { border-color:#46a8ff; color:#fff; }
+.gw-canvas { width:100%; height:auto; border-radius:10px; background:#050816; border:1px solid #1b2348; }
+.gw-caption { margin-top:6px; font-size:10px; color:#b8c7ff; min-height:1.6em; }
+.site-foot { max-width: 1200px; margin: 8px auto 24px; padding: 0 16px; opacity:.7; font-size:12px; }
+@media (max-width: 420px) { .title { font-size: 18px; } .small { font-size: 9px; } }
+</style>
+</head>
+<body>
+  <header class="site-head">
+    <h1>VJ Synth Lab — Mixer</h1>
+    <div class="meta">
+      <span id="midiBadge" class="badge">MIDI: Not Available</span>
+      <label>Input:</label>
+      <select id="midiInput" class="select"></select>
+      <button id="btnLearn" class="button">Enable Learn</button>
+      <button id="btnClearMap" class="button warn">Clear Mappings</button>
+      <span id="learnHint" class="badge">Hint: click any knob/pad, then wiggle a MIDI control</span>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="mixer-wrap">
+      <svg class="mixer" viewBox="0 0 980 560" role="img" aria-label="VJ Synth Mixer">
+        <defs>
+          <linearGradient id="panelGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#0d1432" />
+            <stop offset="1" stop-color="#0a102a" />
+          </linearGradient>
+          <radialGradient id="faceGrad" cx="35%" cy="30%" r="80%">
+            <stop offset="0" stop-color="#172048" />
+            <stop offset="1" stop-color="#0c1130" />
+          </radialGradient>
+          <filter id="glow">
+            <feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#7cf0ff" flood-opacity=".45"/>
+          </filter>
+        </defs>
+
+        <rect class="panel" x="15" y="15" width="950" height="530" />
+
+        <text x="36" y="52" class="label title">VJ Synth Lab</text>
+        <text x="36" y="72" class="small">Drag knobs • Tap pads • Swipe windows • Double-click captions for autoplay • MIDI Learn</text>
+
+        <g transform="translate(30,95)">
+          <rect class="scope-bg" x="0" y="0" width="420" height="140" rx="10" ry="10"/>
+          <text x="12" y="18" class="label lite">Scope A — Spiro</text>
+          <g id="scopeA" transform="translate(210,75)">
+            <circle r="68" fill="#0f173c" stroke="#1f2a64"/>
+            <path id="spiroPath" d="" fill="none" stroke="#7cf0ff" stroke-width="1.6" filter="url(#glow)"/>
+          </g>
+        </g>
+
+        <g transform="translate(30,260)">
+          <rect class="scope-bg" x="0" y="0" width="420" height="140" rx="10" ry="10"/>
+          <text x="12" y="18" class="label lite">Scope B — Superellipse</text>
+          <g id="scopeB" transform="translate(210,70)">
+            <rect x="-78" y="-48" width="156" height="96" fill="#0f173c" stroke="#1f2a64"/>
+            <path id="superPath" d="" fill="none" stroke="#ffd36a" stroke-width="1.6" filter="url(#glow)"/>
+          </g>
+        </g>
+
+        <g transform="translate(30,425)">
+          <rect class="scope-bg" x="0" y="0" width="420" height="100" rx="10" ry="10"/>
+          <text x="12" y="18" class="label lite">Scope C — Kaleido</text>
+          <g id="scopeC" transform="translate(220,72)">
+            <g id="kBox" transform="scale(0.8)"></g>
+          </g>
+        </g>
+
+        <g id="knobStrip" transform="translate(480,95)">
+          <text x="0" y="-10" class="label">Controls</text>
+          <g class="knob" data-name="R (outer)" data-key="R" data-min="20" data-max="120" transform="translate(40,40)"></g>
+          <g class="knob" data-name="r (inner)" data-key="r" data-min="5" data-max="60"  transform="translate(160,40)"></g>
+          <g class="knob" data-name="d (pen)"   data-key="d" data-min="5" data-max="90"  transform="translate(280,40)"></g>
+
+          <g class="knob" data-name="n (super)" data-key="n" data-min="2" data-max="7"   transform="translate(40,160)"></g>
+          <g class="knob" data-name="Slices"    data-key="slices" data-min="3" data-max="18"  transform="translate(160,160)"></g>
+          <g class="knob" data-name="Speed"     data-key="speed" data-min="0" data-max="1"   transform="translate(280,160)"></g>
+
+          <g transform="translate(0,240)">
+            <rect class="btn button" x="0" y="0" width="110" height="34" rx="6" ry="6" id="btnPause"/>
+            <text x="12" y="22" class="kbd">Pause / Play</text>
+            <rect class="led" x="120" y="8" width="10" height="18" rx="3" id="ledPlay"/>
+
+            <rect class="btn button" x="160" y="0" width="140" height="34" rx="6" ry="6" id="btnRandomize"/>
+            <text x="172" y="22" class="kbd">Randomize All</text>
+          </g>
+
+          <g class="pad-row" transform="translate(0,290)">
+            <g class="button pad" data-midi="pad0" data-pad="0" transform="translate(0,0)">
+              <rect class="drum-pad" x="0" y="0" width="110" height="80" rx="10" ry="10"/>
+              <rect class="drum-pad-hit" x="0" y="0" width="110" height="80" rx="10" ry="10" opacity="0.0"/>
+              <text class="drum-pad-label" x="55" y="46">Pad A</text>
+            </g>
+            <g class="button pad" data-midi="pad1" data-pad="1" transform="translate(130,0)">
+              <rect class="drum-pad" x="0" y="0" width="110" height="80" rx="10" ry="10"/>
+              <rect class="drum-pad-hit" x="0" y="0" width="110" height="80" rx="10" ry="10" opacity="0.0"/>
+              <text class="drum-pad-label" x="55" y="46">Pad B</text>
+            </g>
+            <g class="button pad" data-midi="pad2" data-pad="2" transform="translate(0,90)">
+              <rect class="drum-pad" x="0" y="0" width="110" height="80" rx="10" ry="10"/>
+              <rect class="drum-pad-hit" x="0" y="0" width="110" height="80" rx="10" ry="10" opacity="0.0"/>
+              <text class="drum-pad-label" x="55" y="46">Pad C</text>
+            </g>
+            <g class="button pad" data-midi="pad3" data-pad="3" transform="translate(130,90)">
+              <rect class="drum-pad" x="0" y="0" width="110" height="80" rx="10" ry="10"/>
+              <rect class="drum-pad-hit" x="0" y="0" width="110" height="80" rx="10" ry="10" opacity="0.0"/>
+              <text class="drum-pad-label" x="55" y="46">Pad D</text>
+            </g>
+          </g>
+        </g>
+      </svg>
+    </section>
+
+    <section class="gallery-row">
+      <div class="gallery-window" data-index="0">
+        <div class="gw-header">
+          <span class="gw-title">Window A</span>
+          <div class="gw-nav">
+            <button class="nav-btn nav-left" data-midi="navA_left">◀</button>
+            <button class="nav-btn nav-right" data-midi="navA_right">▶</button>
+          </div>
+        </div>
+        <div class="gw-subnav">
+          <span class="gw-theme-label">Theme</span>
+          <div class="gw-vert">
+            <button class="nav-btn nav-up" data-midi="navA_up">▲</button>
+            <button class="nav-btn nav-down" data-midi="navA_down">▼</button>
+          </div>
+        </div>
+        <canvas class="gw-canvas" width="320" height="220"></canvas>
+        <div class="gw-caption"></div>
+      </div>
+
+      <div class="gallery-window" data-index="1">
+        <div class="gw-header">
+          <span class="gw-title">Window B</span>
+          <div class="gw-nav">
+            <button class="nav-btn nav-left" data-midi="navB_left">◀</button>
+            <button class="nav-btn nav-right" data-midi="navB_right">▶</button>
+          </div>
+        </div>
+        <div class="gw-subnav">
+          <span class="gw-theme-label">Theme</span>
+          <div class="gw-vert">
+            <button class="nav-btn nav-up" data-midi="navB_up">▲</button>
+            <button class="nav-btn nav-down" data-midi="navB_down">▼</button>
+          </div>
+        </div>
+        <canvas class="gw-canvas" width="320" height="220"></canvas>
+        <div class="gw-caption"></div>
+      </div>
+
+      <div class="gallery-window" data-index="2">
+        <div class="gw-header">
+          <span class="gw-title">Window C</span>
+          <div class="gw-nav">
+            <button class="nav-btn nav-left" data-midi="navC_left">◀</button>
+            <button class="nav-btn nav-right" data-midi="navC_right">▶</button>
+          </div>
+        </div>
+        <div class="gw-subnav">
+          <span class="gw-theme-label">Theme</span>
+          <div class="gw-vert">
+            <button class="nav-btn nav-up" data-midi="navC_up">▲</button>
+            <button class="nav-btn nav-down" data-midi="navC_down">▼</button>
+          </div>
+        </div>
+        <canvas class="gw-canvas" width="320" height="220"></canvas>
+        <div class="gw-caption"></div>
+      </div>
+
+      <div class="gallery-window" data-index="3">
+        <div class="gw-header">
+          <span class="gw-title">Window D</span>
+          <div class="gw-nav">
+            <button class="nav-btn nav-left" data-midi="navD_left">◀</button>
+            <button class="nav-btn nav-right" data-midi="navD_right">▶</button>
+          </div>
+        </div>
+        <div class="gw-subnav">
+          <span class="gw-theme-label">Theme</span>
+          <div class="gw-vert">
+            <button class="nav-btn nav-up" data-midi="navD_up">▲</button>
+            <button class="nav-btn nav-down" data-midi="navD_down">▼</button>
+          </div>
+        </div>
+        <canvas class="gw-canvas" width="320" height="220"></canvas>
+        <div class="gw-caption"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-foot">
+    <div>© VJ Synth Lab • Math visuals + MIDI Learn. Use Chrome/Edge over HTTPS for Web MIDI.</div>
+  </footer>
+
+<script>
+// --- State & utils
+const state = { R:80, r:23, d:60, n:3.5, slices:8, speed:0.35, running:true, t:0 };
+const $ = (q,root=document)=>root.querySelector(q);
+const $$ = (q,root=document)=>Array.from(root.querySelectorAll(q));
+function clamp(v,min,max){ return Math.min(max, Math.max(min, v)); }
+function map(v,a1,a2,b1,b2){ return b1 + (v-a1)*(b2-b1)/(a2-a1); }
+
+// --- Knobs
+function buildKnob(g){
+  const name=g.dataset.name, key=g.dataset.key, min=+g.dataset.min, max=+g.dataset.max;
+  const ns="http://www.w3.org/2000/svg";
+  const face=document.createElementNS(ns,"circle"); face.setAttribute("class","knob-face"); face.setAttribute("r","28"); g.appendChild(face);
+  for(let i=0;i<=10;i++){ const a=map(i,0,10,-135,135)*Math.PI/180;
+    const x1=Math.cos(a)*22,y1=Math.sin(a)*22,x2=Math.cos(a)*26,y2=Math.sin(a)*26;
+    const line=document.createElementNS(ns,"line"); line.setAttribute("x1",x1); line.setAttribute("y1",y1); line.setAttribute("x2",x2); line.setAttribute("y2",y2); line.setAttribute("class","tick"); g.appendChild(line); }
+  const cap=document.createElementNS(ns,"rect"); cap.setAttribute("class","knob-cap"); cap.setAttribute("x","-2"); cap.setAttribute("y","-18"); cap.setAttribute("width","4"); cap.setAttribute("height","18"); cap.setAttribute("rx","2"); cap.setAttribute("transform","rotate(-135)"); g.appendChild(cap);
+  const label=document.createElementNS(ns,"text"); label.setAttribute("class","label lite"); label.setAttribute("x","-32"); label.setAttribute("y","48"); label.textContent=name; g.appendChild(label);
+  const val=document.createElementNS(ns,"text"); val.setAttribute("class","small"); val.setAttribute("x","-12"); val.setAttribute("y","10"); g.appendChild(val);
+  const upd=()=>{ const a=map(state[key],min,max,-135,135); cap.setAttribute("transform","rotate("+a+")"); val.textContent=(key==="n"||key==="speed")?state[key].toFixed(2):Math.round(state[key]); };
+  upd();
+  let dragging=false; g.style.cursor="grab";
+  g.addEventListener("pointerdown",e=>{ dragging=true; g.setPointerCapture(e.pointerId); g.style.cursor="grabbing"; armForMidi(g, 'knob', 'knob_'+key); });
+  g.addEventListener("pointerup",e=>{ dragging=false; g.releasePointerCapture(e.pointerId); g.style.cursor="grab"; });
+  g.addEventListener("pointermove",e=>{
+    if(!dragging) return;
+    const pt=g.getBoundingClientRect(); const cx=pt.left+pt.width/2, cy=pt.top+pt.height/2;
+    let ang=Math.atan2(e.clientY-cy,e.clientX-cx)*180/Math.PI; ang=clamp(ang,-135,135);
+    let v=map(ang,-135,135,min,max); if(key==="n"||key==="speed") v=+v.toFixed(2);
+    state[key]=v; upd(); refreshOnce(true);
+  });
+  g.addEventListener("wheel",e=>{ e.preventDefault(); const d=(e.deltaY<0?1:-1)*((max-min)/100); let v=clamp(state[key]-d,min,max); if(key==="n"||key==="speed") v=+v.toFixed(2); state[key]=v; upd(); refreshOnce(true); }, {passive:false});
+  g.dataset.midi = "knob_"+key;
+}
+$$('.knob').forEach(buildKnob);
+
+// --- Transport + Pads
+const led=$('#ledPlay'), btnPause=$('#btnPause'), btnRandom=$('#btnRandomize');
+function setPlayLED(){ state.running? led.classList.add('on') : led.classList.remove('on'); }
+btnPause.addEventListener('click',()=>{ state.running=!state.running; setPlayLED(); });
+btnRandom.addEventListener('click',()=>{ randomizeAll(); });
+setPlayLED();
+function flashPad(pg){ const hit=pg.querySelector('.drum-pad-hit'); hit.style.opacity="0.7"; setTimeout(()=>hit.style.opacity="0",120); }
+$$('.pad').forEach((pg,i)=>{
+  pg.addEventListener('click',()=>{ flashPad(pg); routePad(i); });
+  pg.addEventListener('pointerdown',()=>armForMidi(pg,'pad',pg.dataset.midi||('pad'+i)));
+});
+
+// --- Scopes
+const spiroPath=$('#spiroPath'), superPath=$('#superPath'), kBox=$('#kBox');
+function drawSpiro(R,r,d,turns=8,steps=1200,phase=0){
+  let dstr=""; for(let i=0;i<=steps;i++){ const t=i/steps*(Math.PI*2*turns)+phase;
+    const x=(R-r)*Math.cos(t)+d*Math.cos(((R-r)/r)*t); const y=(R-r)*Math.sin(t)-d*Math.sin(((R-r)/r)*t);
+    dstr += (i?'L':'M') + x.toFixed(2)+','+y.toFixed(2); }
+  spiroPath.setAttribute('d',dstr); spiroPath.setAttribute('stroke','hsl('+((state.t*40)%360)+' 90% 70%)');
+}
+function drawSuperellipse(n=3.5,a=70,b=40,steps=480){
+  let dstr=""; for(let i=0;i<=steps;i++){ const t=i/steps*Math.PI*2; const ct=Math.cos(t), st=Math.sin(t);
+    const x=Math.sign(ct)*a*Math.pow(Math.abs(ct),2/n); const y=Math.sign(st)*b*Math.pow(Math.abs(st),2/n);
+    dstr += (i?'L':'M') + x.toFixed(2)+','+y.toFixed(2); }
+  superPath.setAttribute('d',dstr+'Z'); superPath.setAttribute('stroke','hsl('+((state.t*60+160)%360)+' 90% 70%)');
+}
+function drawKaleido(slices=8,t=0){
+  kBox.innerHTML=""; const wedges=slices|0, radius=60;
+  for(let i=0;i<wedges;i++){ const ang=i*(Math.PI*2/wedges);
+    const g=document.createElementNS("http://www.w3.org/2000/svg","g"); g.setAttribute("transform","rotate("+(ang*180/Math.PI)+")");
+    const p=document.createElementNS("http://www.w3.org/2000/svg","path");
+    const r1=26+8*Math.sin(t*0.9+i*0.7), r2=12+4*Math.cos(t*1.1+i*0.9);
+    const d="M0,0 L0,-"+radius+" C "+r2+",-"+(radius-r1)+" "+r1+",-"+r2+" 0,0 Z"; p.setAttribute("d",d); p.setAttribute("fill","hsl("+((t*50+i*20)%360)+" 90% 65%)");
+    g.appendChild(p); kBox.appendChild(g); }
+}
+
+// --- Gallery themes (Canvas renderers)
+const galleryThemes=[];
+const galleryWindows = Array.from(document.querySelectorAll('.gallery-window')).map((el,i)=>({
+  el, canvas: el.querySelector('.gw-canvas'), ctx: el.querySelector('.gw-canvas').getContext('2d'),
+  caption: el.querySelector('.gw-caption'), themeIndex: i, itemIndex: 0, auto:false
+}));
+function renderGalleryWindow(win,t){
+  if(!galleryThemes.length) return;
+  const theme=galleryThemes[win.themeIndex % galleryThemes.length];
+  const item=theme.items[(win.itemIndex % theme.items.length + theme.items.length)%theme.items.length];
+  item.render(win.ctx, win.canvas.width, win.canvas.height, t);
+  win.caption.textContent = theme.name+" • "+item.label+(win.auto?" • Auto ▶":"");
+}
+function hookWindowNav(){
+  galleryWindows.forEach((win, idx)=>{
+    const left=win.el.querySelector('.nav-left'), right=win.el.querySelector('.nav-right'), up=win.el.querySelector('.nav-up'), down=win.el.querySelector('.nav-down');
+    left.addEventListener('click',()=>{ win.themeIndex=(win.themeIndex-1+galleryThemes.length)%galleryThemes.length; win.itemIndex=0; renderGalleryWindow(win,state.t*60); });
+    right.addEventListener('click',()=>{ win.themeIndex=(win.themeIndex+1)%galleryThemes.length; win.itemIndex=0; renderGalleryWindow(win,state.t*60); });
+    up.addEventListener('click',()=>{ win.itemIndex=(win.itemIndex-1+galleryThemes[win.themeIndex].items.length)%galleryThemes[win.themeIndex].items.length; renderGalleryWindow(win,state.t*60); });
+    down.addEventListener('click',()=>{ win.itemIndex=(win.itemIndex+1)%galleryThemes[win.themeIndex].items.length; renderGalleryWindow(win,state.t*60); });
+    [left,right,up,down].forEach(btn=>btn.addEventListener('pointerdown',()=>armForMidi(btn,'button',btn.dataset.midi||('nav'+idx))));
+  });
+}
+
+// --- Pads route
+function routePad(i){
+  const win=galleryWindows[i % galleryWindows.length];
+  win.themeIndex = i % galleryThemes.length;
+  const items=galleryThemes[win.themeIndex].items; win.itemIndex=Math.floor(Math.random()*items.length);
+  renderGalleryWindow(win,state.t*60);
+}
+
+function hookPads(){ /* already attached above */ }
+
+function refreshOnce(){ drawSpiro(state.R,state.r,state.d,10,1400,state.t*0.6); drawSuperellipse(state.n,80,48,600); drawKaleido(state.slices,state.t); }
+
+function loop(ts){
+  if(state.running){
+    state.t += 0.016*(0.25 + state.speed*2.0);
+    refreshOnce();
+    galleryWindows.forEach(win=>{
+      if(win.auto && galleryThemes.length){
+        if(Math.floor(state.t*10)%30===0){
+          const items=galleryThemes[win.themeIndex].items;
+          win.itemIndex=(win.itemIndex+1)%items.length;
+        }
+      }
+      renderGalleryWindow(win,state.t*60);
+    });
+  }
+  requestAnimationFrame(loop);
+}
+
+// --- Patches (themes)
+galleryThemes.push({ name:"Showcase", items:[
+{ label:"Spirograph Bloom", render(ctx,w,h,t){ ctx.clearRect(0,0,w,h); ctx.fillStyle="#050816"; ctx.fillRect(0,0,w,h); const cx=w/2, cy=h/2; const R=60,r=23,d=40; ctx.strokeStyle='hsl('+((t*0.5)%360)+' 90% 70%)'; ctx.lineWidth=1.2; ctx.beginPath(); const steps=900; for(let i=0;i<=steps;i++){ const ang=i/steps*Math.PI*2*8 + t*0.02; const x=(R-r)*Math.cos(ang)+d*Math.cos(((R-r)/r)*ang); const y=(R-r)*Math.sin(ang)-d*Math.sin(((R-r)/r)*ang); const X=cx+x, Y=cy+y*0.8; if(i===0) ctx.moveTo(X,Y); else ctx.lineTo(X,Y);} ctx.stroke(); } },
+{ label:"Flow Ribbons", render(ctx,w,h,t){ ctx.fillStyle="rgba(5,8,22,0.2)"; ctx.fillRect(0,0,w,h); const N=30; ctx.lineWidth=1.1; for(let i=0;i<N;i++){ let x=(Math.sin(t*0.002+i)*0.5+0.5)*w; let y=(Math.cos(t*0.002+i*0.3)*0.5+0.5)*h; ctx.strokeStyle='hsl('+((t*0.3+i*12)%360)+' 90% 70%)'; ctx.beginPath(); for(let j=0;j<40;j++){ const a=Math.sin((x+y)*0.02 + t*0.001)*Math.PI; const nx=x+Math.cos(a)*2.2, ny=y+Math.sin(a)*2.2; if(j===0) ctx.moveTo(x,y); else ctx.lineTo(nx,ny); x=nx; y=ny; } ctx.stroke(); } } },
+{ label:"Domain Coloring (z^3-1)", render(ctx,w,h,t){ function hsv(h,s,v){ const f=(n,k=(n+h/60)%6)=> v - v*s*Math.max(Math.min(k,4-k,1),0); return [f(5)*255,f(3)*255,f(1)*255]; } const img=ctx.createImageData(w,h), d=img.data;
+ for(let y=0;y<h;y++){ for(let x=0;x<w;x++){ const zx=(x/w-0.5)*3.2, zy=(y/h-0.5)*1.6; const zx2=zx*zx - zy*zy, zy2=2*zx*zy; let rx=zx*zx2 - zy*zy2 - 1; let ry=zx*zy2 + zy*zx2; const mag=Math.hypot(rx,ry); const arg=Math.atan2(ry,rx); const hue=(arg/(Math.PI*2)+0.5)*360; const vv=(Math.sin(mag*2 + t*0.0015)*0.5+0.5)*0.8+0.2; const c=hsv(hue,0.8,vv); const i=(y*w+x)*4; d[i]=c[0]; d[i+1]=c[1]; d[i+2]=c[2]; d[i+3]=255; } } ctx.putImageData(img,0,0);} }
+]});
+
+// --- MIDI Learn
+const midiBadge = document.getElementById('midiBadge');
+const midiSelect = document.getElementById('midiInput');
+const btnLearn = document.getElementById('btnLearn');
+const btnClearMap = document.getElementById('btnClearMap');
+
+let MIDI = { access:null, inputs:[], input:null, learn:false, armed:null, map:{}, rev:{} };
+function setBadge(text, live=false){ midiBadge.textContent = text; midiBadge.classList.toggle('live', !!live); }
+function saveMap(){ try{ localStorage.setItem('vjMidiMap', JSON.stringify(MIDI.map)); }catch(e){} }
+function loadMap(){ try{ const m=JSON.parse(localStorage.getItem('vjMidiMap')||'{}'); MIDI.map = m||{}; rebuildReverse(); }catch(e){} }
+function rebuildReverse(){ MIDI.rev={}; Object.keys(MIDI.map).forEach(target=>{ const m=MIDI.map[target]; const key=revKey(m); MIDI.rev[key]=target; }); }
+function revKey(m){ return `${m.type}:${m.channel}:${m.number}`; }
+
+btnLearn.addEventListener('click',()=>{ MIDI.learn=!MIDI.learn; btnLearn.textContent = MIDI.learn? 'Learning… (click a control)': 'Enable Learn'; setBadge(MIDI.learn? 'MIDI: Learning…':'MIDI: Ready', true); if(!MIDI.learn){ clearArmed(); } });
+btnClearMap.addEventListener('click',()=>{ if(confirm('Clear all MIDI mappings?')){ MIDI.map={}; MIDI.rev={}; saveMap(); alert('Mappings cleared.'); } });
+
+function clearArmed(){ if(MIDI.armed){ MIDI.armed.el.classList.remove('knob-armed','pad-armed'); MIDI.armed=null; } }
+function armForMidi(el, kind, targetId){
+  if(!MIDI.learn) return;
+  clearArmed();
+  MIDI.armed = { el, kind, targetId };
+  if(kind==='pad') el.classList.add('pad-armed'); else el.classList.add('knob-armed');
+  setBadge('MIDI: Move a knob/press a pad to bind to '+targetId, true);
+}
+
+function bindMidiToTarget(msg){
+  if(!MIDI.learn || !MIDI.armed) return;
+  MIDI.map[MIDI.armed.targetId] = msg;
+  saveMap(); rebuildReverse();
+  setBadge(`MIDI: Bound ${MIDI.armed.targetId} ⇢ ${msg.type} ch${msg.channel} #${msg.number}`, true);
+  clearArmed(); MIDI.learn=false; btnLearn.textContent='Enable Learn';
+}
+
+function handleMidiMessage(e){
+  const [status, data1, data2] = e.data; const type = status & 0xF0; const ch = (status & 0x0F) + 1;
+  if(type===0xB0){ // CC
+    const cc = data1, val = data2;
+    const msg = { type:'cc', channel:ch, number:cc };
+    if(MIDI.learn && MIDI.armed){ bindMidiToTarget(msg); return; }
+    const tgt = MIDI.rev[revKey(msg)]; if(tgt) applyMidiToTarget(tgt, val);
+  } else if(type===0x90 || type===0x80){ // Note on/off
+    const note = data1, vel = data2, on = (type===0x90 && vel>0);
+    const msg = { type:'note', channel:ch, number:note };
+    if(MIDI.learn && MIDI.armed && on){ bindMidiToTarget(msg); return; }
+    const tgt = MIDI.rev[revKey(msg)]; if(tgt && on) applyMidiToTarget(tgt, vel);
+  }
+}
+
+function applyMidiToTarget(targetId, value){
+  if(targetId.startsWith('knob_')){
+    const key = targetId.split('_')[1];
+    const knobEl = document.querySelector(`[data-key="${key}"]`);
+    if(!knobEl) return;
+    const min = +knobEl.dataset.min, max = +knobEl.dataset.max;
+    let v = map(value, 0, 127, min, max);
+    if(key==='n' || key==='speed') v = +v.toFixed(2);
+    state[key] = clamp(v, min, max);
+    refreshOnce();
+  } else if(targetId.startsWith('pad')){
+    const idx = parseInt(targetId.replace('pad',''),10)||0;
+    const padEl = document.querySelector(`.pad[data-pad="${idx}"]`);
+    if(padEl) { const hit=padEl.querySelector('.drum-pad-hit'); hit.style.opacity="0.7"; setTimeout(()=>hit.style.opacity="0",120); }
+    routePad(idx);
+  } else if(targetId.startsWith('nav')){
+    const [nav, id] = targetId.split('_');
+    const winIndex = 'ABCD'.indexOf(nav.slice(3));
+    const win = galleryWindows[winIndex];
+    if(!win) return;
+    if(id==='left'){ win.themeIndex=(win.themeIndex-1+galleryThemes.length)%galleryThemes.length; win.itemIndex=0; }
+    if(id==='right'){ win.themeIndex=(win.themeIndex+1)%galleryThemes.length; win.itemIndex=0; }
+    if(id==='up'){ win.itemIndex=(win.itemIndex-1+galleryThemes[win.themeIndex].items.length)%galleryThemes[win.themeIndex].items.length; }
+    if(id==='down'){ win.itemIndex=(win.itemIndex+1)%galleryThemes[win.themeIndex].items.length; }
+    renderGalleryWindow(win, state.t*60);
+  } else if(targetId==='transport_play'){
+    state.running = !state.running; setPlayLED();
+  } else if(targetId==='transport_randomize'){
+    randomizeAll();
+  }
+}
+
+function randomizeAll(){
+  state.R=Math.round(map(Math.random(),0,1,30,120));
+  state.r=Math.round(map(Math.random(),0,1,5,60));
+  state.d=Math.round(map(Math.random(),0,1,5,90));
+  state.n=+(map(Math.random(),0,1,2,7).toFixed(2));
+  state.slices=Math.round(map(Math.random(),0,1,3,18));
+  state.speed=+(map(Math.random(),0,1,0,1).toFixed(2));
+  refreshOnce(true);
+}
+
+$('#btnPause').addEventListener('pointerdown', ()=>armForMidi($('#btnPause'), 'button', 'transport_play'));
+$('#btnRandomize').addEventListener('pointerdown', ()=>armForMidi($('#btnRandomize'), 'button', 'transport_randomize'));
+
+// MIDI setup
+async function initMIDI(){
+  loadMap(); rebuildReverse();
+  if(!('requestMIDIAccess' in navigator)){
+    setBadge('MIDI: Not Available'); return;
+  }
+  try{
+    const access = await navigator.requestMIDIAccess({ sysex:false });
+    MIDI.access = access;
+    setBadge('MIDI: Ready', true);
+    access.onstatechange = refreshInputs;
+    refreshInputs();
+  }catch(e){
+    setBadge('MIDI: Blocked'); console.warn(e);
+  }
+}
+function refreshInputs(){
+  midiSelect.innerHTML = '';
+  MIDI.inputs = [];
+  if(!MIDI.access) return;
+  for(const input of MIDI.access.inputs.values()){
+    MIDI.inputs.push(input);
+    const opt = document.createElement('option');
+    opt.value = input.id; opt.textContent = input.name;
+    midiSelect.appendChild(opt);
+  }
+  if(MIDI.inputs.length){
+    setInput(MIDI.inputs[0].id);
+  }else{
+    setBadge('MIDI: No Inputs');
+  }
+}
+function setInput(id){
+  const input = MIDI.inputs.find(i=>i.id===id);
+  if(!input) return;
+  if(MIDI.input) MIDI.input.onmidimessage = null;
+  MIDI.input = input;
+  MIDI.input.onmidimessage = handleMidiMessage;
+  midiSelect.value = id;
+  setBadge('MIDI: '+ (input.name||'Input'), true);
+}
+midiSelect.addEventListener('change', e=>setInput(e.target.value));
+
+// --- Boot
+function setPlayLED(){ state.running? $('#ledPlay').classList.add('on') : $('#ledPlay').classList.remove('on'); }
+function refreshOnce(){ drawSpiro(state.R,state.r,state.d,10,1400,state.t*0.6); drawSuperellipse(state.n,80,48,600); drawKaleido(state.slices,state.t); }
+function boot(){ hookWindowNav(); galleryWindows.forEach((win,i)=>renderGalleryWindow(win,0)); refreshOnce(); loop(0); initMIDI(); }
+boot();
+</script>
+</body>
+</html>

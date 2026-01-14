@@ -1,0 +1,16 @@
+<!-- errl_concert_spot_matrix_01 – small 3x3 LED matrix (fx/prop) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_concert" data-cat="fx" data-name="errl_concert_spot_matrix_01">
+  <g fill="none">
+    <rect x="24" y="24" width="16" height="16" rx="3" fill="#020617"/>
+    <circle cx="28" cy="28" r="1.4" fill="#22d3ee"/>
+    <circle cx="32" cy="28" r="1.4" fill="#a855f7"/>
+    <circle cx="36" cy="28" r="1.4" fill="#facc15"/>
+    <circle cx="28" cy="32" r="1.4" fill="#f97316"/>
+    <circle cx="32" cy="32" r="1.4" fill="#22d3ee"/>
+    <circle cx="36" cy="32" r="1.4" fill="#a855f7"/>
+    <circle cx="28" cy="36" r="1.4" fill="#22d3ee"/>
+    <circle cx="32" cy="36" r="1.4" fill="#facc15"/>
+    <circle cx="36" cy="36" r="1.4" fill="#fb7185"/>
+  </g>
+</svg>

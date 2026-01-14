@@ -1,0 +1,14 @@
+<!-- errl_concert_speaker_stack_wide_01 – stereo stack pair (prop/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_concert" data-cat="prop" data-name="errl_concert_speaker_stack_wide_01">
+  <g fill="none">
+    <!-- left -->
+    <rect x="14" y="22" width="10" height="20" rx="2" fill="#020617"/>
+    <circle cx="19" cy="28" r="2.6" fill="#111827"/>
+    <circle cx="19" cy="34" r="3.2" fill="#111827"/>
+    <!-- right -->
+    <rect x="40" y="22" width="10" height="20" rx="2" fill="#020617"/>
+    <circle cx="45" cy="28" r="2.6" fill="#111827"/>
+    <circle cx="45" cy="34" r="3.2" fill="#111827"/>
+  </g>
+</svg>

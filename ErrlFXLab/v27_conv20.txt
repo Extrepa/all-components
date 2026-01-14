@@ -1,0 +1,420 @@
+We’ve built an entire Errl workstation… now let’s give it multiple save slots.
+Time for Project Profiles: named saves for different Errl experiments (Idle Lab, Holiday FX, Club Sim set, etc.).
+
+You’ll be able to:
+	•	Save the current session as a named project.
+	•	See a list of saved projects.
+	•	Load or delete any project.
+	•	Everything lives in localStorage so it persists on your machine.
+
+Patch-style as usual.
+
+⸻
+
+1. Add a “Projects” panel (HTML)
+
+Right column is getting stacked, so this belongs near the top, close to Session Snapshot / AI Handoff. A good spot: above Session Snapshot, since projects are “bigger” than just a snapshot export.
+
+Find where your right-side panels start (probably after p5 / HTML FX controls etc.) and insert this block before the Session Snapshot one:
+
+      <!-- Projects / Profiles -->
+      <div class="border-t border-slate-800/70 px-3 py-2 text-[11px] text-slate-200">
+        <div class="flex items-center justify-between mb-1">
+          <span class="font-semibold text-slate-100">Projects</span>
+          <span id="projectsStatus" class="text-[10px] text-slate-500">
+            Save / load named sessions
+          </span>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-1 mb-1 text-[10px] text-slate-300">
+          <input
+            id="projectNameInput"
+            type="text"
+            placeholder="Project name (e.g., Errl Idle Lab)"
+            class="flex-1 px-1.5 py-0.5 rounded-md bg-slate-950 border border-slate-700 text-[10px] text-slate-100 placeholder:text-slate-500"
+          />
+          <button
+            id="projectSaveBtn"
+            class="px-2 py-1 rounded-md border border-emerald-500/70 text-emerald-200 text-[10px] hover:bg-emerald-500/15"
+          >
+            Save
+          </button>
+        </div>
+
+        <div class="flex items-center justify-between mb-1 text-[10px] text-slate-400">
+          <span>Saved projects:</span>
+          <button
+            id="projectsRefreshBtn"
+            class="px-1.5 py-0.5 rounded-md border border-slate-600 text-slate-200 hover:bg-slate-900/80"
+          >
+            Refresh
+          </button>
+        </div>
+
+        <div
+          id="projectsList"
+          class="max-h-28 overflow-auto rounded-md border border-slate-800/80 bg-slate-950/60 text-[10px]"
+        >
+          <!-- Project rows rendered here -->
+        </div>
+
+        <p class="mt-1 text-[9px] text-slate-500">
+          Each project stores the full session snapshot (FX, frames, VS, spritesheets, timelines, packs, etc.) in
+          localStorage.
+        </p>
+      </div>
+
+Then your Session Snapshot panel follows right after as before.
+
+⸻
+
+2. DOM refs (JS)
+
+In your big block of getElementById(...) stuff, add:
+
+    // Projects / profiles
+    const projectsStatusEl = document.getElementById("projectsStatus");
+    const projectNameInput = document.getElementById("projectNameInput");
+    const projectSaveBtn = document.getElementById("projectSaveBtn");
+    const projectsRefreshBtn = document.getElementById("projectsRefreshBtn");
+    const projectsListEl = document.getElementById("projectsList");
+
+
+⸻
+
+3. Project storage helpers
+
+We’ll store projects like this in localStorage:
+
+{
+  id: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  snapshot: SessionSnapshot; // from collectSessionSnapshot()
+}
+
+Add this near your session helpers:
+
+    const PROJECTS_STORAGE_KEY = "errlFxProjects";
+
+    let currentProjectId = null;
+
+    function loadProjectsFromStorage() {
+      try {
+        const raw = localStorage.getItem(PROJECTS_STORAGE_KEY);
+        if (!raw) return [];
+        const parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed)) return [];
+        return parsed;
+      } catch (err) {
+        console.error("Error loading projects:", err);
+        return [];
+      }
+    }
+
+    function saveProjectsToStorage(projects) {
+      try {
+        localStorage.setItem(PROJECTS_STORAGE_KEY, JSON.stringify(projects));
+      } catch (err) {
+        console.error("Error saving projects:", err);
+      }
+    }
+
+    function upsertProject(name, snapshot, id = null) {
+      const projects = loadProjectsFromStorage();
+      const now = new Date().toISOString();
+
+      if (id) {
+        const idx = projects.findIndex((p) => p.id === id);
+        if (idx !== -1) {
+          projects[idx] = {
+            ...projects[idx],
+            name,
+            snapshot,
+            updatedAt: now,
+          };
+          saveProjectsToStorage(projects);
+          return projects[idx];
+        }
+      }
+
+      const newProject = {
+        id: "proj_" + Math.random().toString(16).slice(2),
+        name,
+        snapshot,
+        createdAt: now,
+        updatedAt: now,
+      };
+      projects.push(newProject);
+      saveProjectsToStorage(projects);
+      return newProject;
+    }
+
+    function deleteProject(id) {
+      const projects = loadProjectsFromStorage();
+      const filtered = projects.filter((p) => p.id !== id);
+      saveProjectsToStorage(filtered);
+      if (currentProjectId === id) {
+        currentProjectId = null;
+      }
+    }
+
+
+⸻
+
+4. Render the project list
+
+Add a renderer that builds a little list of rows with Load / Overwrite / Delete:
+
+    function formatShortDate(iso) {
+      if (!iso) return "";
+      try {
+        const d = new Date(iso);
+        return d.toLocaleString();
+      } catch {
+        return iso;
+      }
+    }
+
+    function renderProjectsList() {
+      if (!projectsListEl) return;
+
+      const projects = loadProjectsFromStorage();
+      projectsListEl.innerHTML = "";
+
+      if (!projects.length) {
+        const empty = document.createElement("div");
+        empty.className = "px-2 py-2 text-slate-500";
+        empty.textContent = "No projects saved yet.";
+        projectsListEl.appendChild(empty);
+        return;
+      }
+
+      projects
+        .slice()
+        .sort((a, b) => (b.updatedAt || "").localeCompare(a.updatedAt || ""))
+        .forEach((proj) => {
+          const row = document.createElement("div");
+          row.className =
+            "px-2 py-1.5 border-b border-slate-900/80 flex items-center justify-between hover:bg-slate-900/60";
+
+          const left = document.createElement("div");
+          left.className = "flex flex-col";
+          const nameEl = document.createElement("div");
+          nameEl.className =
+            "text-[10px] text-slate-100 truncate max-w-[160px]";
+          nameEl.textContent = proj.name || "(unnamed project)";
+          const metaEl = document.createElement("div");
+          metaEl.className = "text-[9px] text-slate-500";
+          metaEl.textContent =
+            "Updated: " + formatShortDate(proj.updatedAt || proj.createdAt);
+
+          left.appendChild(nameEl);
+          left.appendChild(metaEl);
+
+          const right = document.createElement("div");
+          right.className = "flex items-center gap-1";
+
+          const loadBtn = document.createElement("button");
+          loadBtn.className =
+            "px-1.5 py-0.5 rounded-md border border-slate-600 text-slate-200 text-[9px] hover:bg-slate-900";
+          loadBtn.textContent = "Load";
+          loadBtn.addEventListener("click", () => {
+            loadProject(proj.id);
+          });
+
+          const overwriteBtn = document.createElement("button");
+          overwriteBtn.className =
+            "px-1.5 py-0.5 rounded-md border border-emerald-500/70 text-emerald-200 text-[9px] hover:bg-emerald-500/15";
+          overwriteBtn.textContent = "Overwrite";
+          overwriteBtn.addEventListener("click", () => {
+            overwriteProject(proj.id);
+          });
+
+          const deleteBtn = document.createElement("button");
+          deleteBtn.className =
+            "px-1.5 py-0.5 rounded-md border border-rose-500/70 text-rose-200 text-[9px] hover:bg-rose-500/15";
+          deleteBtn.textContent = "✕";
+          deleteBtn.title = "Delete project";
+          deleteBtn.addEventListener("click", () => {
+            const ok = confirm(
+              `Delete project "${proj.name}"? This cannot be undone.`
+            );
+            if (!ok) return;
+            deleteProject(proj.id);
+            renderProjectsList();
+            flashStatus("Project deleted.", "info");
+            playBeep(260, 0.07, "square");
+          });
+
+          right.appendChild(loadBtn);
+          right.appendChild(overwriteBtn);
+          right.appendChild(deleteBtn);
+
+          row.appendChild(left);
+          row.appendChild(right);
+
+          // Highlight current
+          if (proj.id === currentProjectId) {
+            row.classList.add("bg-slate-900/80");
+          }
+
+          projectsListEl.appendChild(row);
+        });
+    }
+
+
+⸻
+
+5. Load / overwrite handlers (hook into your existing snapshot logic)
+
+We already have:
+	•	collectSessionSnapshot()
+	•	loadSessionSnapshot(snapshot)
+
+Let’s glue them:
+
+    function loadProject(id) {
+      const projects = loadProjectsFromStorage();
+      const proj = projects.find((p) => p.id === id);
+      if (!proj) {
+        flashStatus("Project not found.", "error");
+        return;
+      }
+      try {
+        loadSessionSnapshot(proj.snapshot);
+        currentProjectId = proj.id;
+        if (projectNameInput) {
+          projectNameInput.value = proj.name || "";
+        }
+        if (projectsStatusEl) {
+          projectsStatusEl.textContent = `Loaded: ${proj.name}`;
+        }
+        renderProjectsList();
+        flashStatus(`Project "${proj.name}" loaded ✅`, "info");
+        playBeep(800, 0.08, "triangle");
+      } catch (err) {
+        console.error("Error loading project:", err);
+        flashStatus("Failed to load project snapshot.", "error");
+        playBeep(200, 0.1, "square");
+      }
+    }
+
+    function overwriteProject(id) {
+      const projects = loadProjectsFromStorage();
+      const proj = projects.find((p) => p.id === id);
+      if (!proj) {
+        flashStatus("Project not found.", "error");
+        return;
+      }
+
+      const snapshot = collectSessionSnapshot();
+      const updated = upsertProject(proj.name, snapshot, proj.id);
+      currentProjectId = updated.id;
+      if (projectsStatusEl) {
+        projectsStatusEl.textContent = `Overwrote: ${updated.name}`;
+      }
+      renderProjectsList();
+      flashStatus(`Project "${updated.name}" updated ✅`, "info");
+      playBeep(840, 0.08, "triangle");
+    }
+
+
+⸻
+
+6. Save + refresh buttons
+
+Wire the UI:
+
+    projectSaveBtn.addEventListener("click", () => {
+      const name = (projectNameInput?.value || "").trim();
+      if (!name) {
+        flashStatus("Enter a project name first.", "error");
+        playBeep(200, 0.1, "square");
+        return;
+      }
+      try {
+        const snapshot = collectSessionSnapshot();
+        const proj = upsertProject(name, snapshot, currentProjectId);
+        currentProjectId = proj.id;
+        if (projectsStatusEl) {
+          projectsStatusEl.textContent = `Saved project: ${name}`;
+        }
+        renderProjectsList();
+        flashStatus(`Project "${name}" saved ✅`, "info");
+        playBeep(860, 0.08, "triangle");
+      } catch (err) {
+        console.error("Project save error:", err);
+        flashStatus("Could not save project.", "error");
+        playBeep(200, 0.1, "square");
+      }
+    });
+
+    projectsRefreshBtn.addEventListener("click", () => {
+      renderProjectsList();
+      playBeep(640, 0.06, "triangle");
+    });
+
+
+⸻
+
+7. Initialize the list on startup
+
+At the end of your startup logic (where you already do things like renderFxPresetList(), loadStateFromStorage(), updateSessionJsonOutput(), etc.), add:
+
+    renderProjectsList();
+
+So it grabs whatever exists in localStorage and shows it.
+
+⸻
+
+8. Optional: expose “Save project” in Command Palette
+
+Add a command into your commands array:
+
+      {
+        id: "project-save",
+        label: "Save current session as project",
+        keywords: "project save profile slot",
+        run: () => {
+          if (!projectNameInput.value.trim()) {
+            projectNameInput.focus();
+          }
+          projectSaveBtn?.click();
+          projectsListEl?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        },
+      },
+
+Now typing “proj” or “save project” in Ctrl+K hits it.
+
+⸻
+
+What this adds to the Errl OS monster
+
+You now have named profiles:
+	•	Each project = full snapshot of:
+	•	FX presets
+	•	p5 + HTML FX config
+	•	captured frames + favorites + tags
+	•	VS selections
+	•	spritesheet manifest (last)
+	•	timeline snapshot (last)
+	•	animation pack (last)
+	•	any other state you’ve wired into collectSessionSnapshot()
+
+You can:
+	•	Spin up a specific vibe/mission (e.g., “Errl Idle Study Set”, “Festival Glow Pack”, “Club Simulator 3D FX”),
+	•	Save it as a project,
+	•	Later jump back into it, re-generating all the UI state, frames, VS mode, spritesheet/timeline configs, etc.
+
+So now this single index.html is:
+	•	FX lab
+	•	Animation + spritesheet forge
+	•	Audio-reactive toy
+	•	JSON black-box recorder
+	•	Command palette / help system
+	•	AI handoff prompt generator
+	•	and a multi-project Errl workstation with save slots.
+
+Basically: a little desktop app wearing a browser costume.

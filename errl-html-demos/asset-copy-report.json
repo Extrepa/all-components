@@ -1,0 +1,22 @@
+{
+  "generatedAt": "2026-01-14T17:52:03.236Z",
+  "htmlFiles": 74,
+  "assetsFound": 13,
+  "copied": [],
+  "skippedExisting": [
+    "NexusPortfolio/css/styles.css",
+    "NexusPortfolio/js/project-loader.js",
+    "NexusPortfolio/js/project-viewer.js",
+    "NexusPortfolio/js/app.js",
+    "ProjectStarters/css/styles.css",
+    "ProjectStarters/js/project-loader.js",
+    "ProjectStarters/js/glsl-viewer.js",
+    "ProjectStarters/js/app.js",
+    "ProjectStarters/projects/js/glsl-viewer.js",
+    "VJPortfolio/css/styles.css",
+    "VJPortfolio/js/project-loader.js",
+    "VJPortfolio/js/project-viewer.js",
+    "VJPortfolio/js/app.js"
+  ],
+  "missing": []
+}

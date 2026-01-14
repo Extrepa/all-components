@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <g id="group_top" fill="#ffd166" stroke="#101020" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="380" y="420" width="264" height="36" rx="14" />
+  </g>
+  <g id="group_body" fill="#f4f0ff" stroke="#101020" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="420" y="456" width="184" height="200" rx="18" />
+  </g>
+  <g id="group_legs" fill="#ffd166" stroke="#101020" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="430" y="656" width="32" height="160" rx="12" />
+    <rect x="562" y="656" width="32" height="160" rx="12" />
+  </g>
+</svg>

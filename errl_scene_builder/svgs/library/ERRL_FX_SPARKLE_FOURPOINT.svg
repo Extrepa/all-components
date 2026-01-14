@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <g id="sparkle" fill="none" stroke="#f4f0ff" stroke-width="18" stroke-linecap="round">
+    <path d="M512 240v544" />
+    <path d="M240 512h544" />
+  </g>
+  <g id="sparkle_outline" fill="none" stroke="#101020" stroke-width="10" stroke-linecap="round">
+    <path d="M512 260v504" />
+    <path d="M260 512h504" />
+  </g>
+</svg>

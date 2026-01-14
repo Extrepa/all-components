@@ -1,0 +1,52 @@
+{
+  "name": "errl-club",
+  "version": "0.1.0",
+  "description": "A browser-based 3D virtual nightclub with Errl avatars",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "format": "prettier --write \"src/**/*.{js,css}\"",
+    "format:check": "prettier --check \"src/**/*.{js,css}\"",
+    "lint": "eslint \"src/**/*.js\"",
+    "lint:fix": "eslint \"src/**/*.js\" --fix",
+    "test": "playwright test",
+    "test:e2e": "playwright test tests/e2e",
+    "test:unit": "playwright test tests/unit",
+    "test:ui": "playwright test --grep @ui",
+    "test:debug": "playwright test --debug",
+    "test:headed": "playwright test --headed",
+    "test:report": "playwright show-report",
+    "audit": "npm audit",
+    "audit:fix": "npm audit fix",
+    "check": "npm run lint && npm run format:check",
+    "prepare": "husky install || true"
+  },
+  "keywords": [
+    "three.js",
+    "vite",
+    "3d",
+    "nightclub",
+    "simulator"
+  ],
+  "author": "",
+  "license": "ISC",
+  "engines": {
+    "node": ">=25.2.1",
+    "npm": ">=10.0.0"
+  },
+  "devDependencies": {
+    "@types/three": "^0.181.0",
+    "@playwright/test": "^1.48.0",
+    "eslint": "^8.57.0",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.0",
+    "prettier": "^3.7.4",
+    "vite": "^7.2.6"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.47.0",
+    "three": "^0.181.2"
+  }
+}

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_accessory" data-cat="wearable" data-name="errl_accessory_earcovers_teletubby">
+  <rect width="64" height="64" rx="12" fill="none"/>
+  <path d="M10 30c4-6 10-10 22-10s18 4 22 10" fill="none" stroke="#a855f7" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="16" cy="32" r="7" fill="#c084fc" stroke="#6d28d9" stroke-width="2"/>
+  <circle cx="48" cy="32" r="7" fill="#c084fc" stroke="#6d28d9" stroke-width="2"/>
+  <circle cx="16" cy="32" r="3" fill="#fef3ff"/>
+  <circle cx="48" cy="32" r="3" fill="#fef3ff"/>
+</svg>

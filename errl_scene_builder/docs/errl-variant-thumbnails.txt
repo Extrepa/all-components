@@ -1,0 +1,12 @@
+# Variant Group Thumbnail Files (9 files)
+# These are the first variant from each group, used as thumbnails for the variant group buttons
+
+/svgs/Errl_AndOrbs/errl-30-dynamic-individual-transparent/errl-01.svg
+/svgs/Errl_AndOrbs/errl-50-grid-poses-individual-transparent/errl-01.svg
+/svgs/Errl_AndOrbs/errl-50-grid-ref-individual-transparent/errl-01.svg
+/svgs/Errl_AndOrbs/random-dynamic-individual-transparent/errl-01.svg
+/svgs/Errl_AndOrbs/errl-20-viscous-body-v2-individual-transparent/visc2-body-01-shear-left-tall.svg
+/svgs/ErrlOnly/errl-30-dynamic-individual-errl-only/errl-01.svg
+/svgs/ErrlOnly/errl-50-grid-poses-individual-errl-only/errl-01.svg
+/svgs/ErrlOnly/errl-50-grid-ref-individual-errl-only/errl-01.svg
+/svgs/ErrlOnly/errl-50-random-dynamic-individual-errl-only/errl-01.svg

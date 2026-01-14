@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Errl Club Simulator</title>
+</head>
+<body>
+    <!-- HUD Container -->
+    <div id="hud">
+        <h1 id="title">ERRL CLUB</h1>
+        <div id="controls" style="display: none;">
+                <!-- Controls are now in the orb drawer -->
+            </div>
+            <!-- Step 208: Fragment progress bar -->
+            <div id="fragment-progress" style="display: none;">
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <div class="progress-label">Fragments: <span id="fragment-count">0</span></div>
+            </div>
+            <!-- Step 169: Reticle for interactable objects -->
+            <div id="reticle" style="display: none;">
+                <div class="reticle-dot"></div>
+                <div class="reticle-label">Press E to interact</div>
+            </div>
+    </div>
+    
+    <!-- Main 3D Canvas -->
+    <canvas id="club-canvas"></canvas>
+    
+    <script type="module" src="/src/main.js"></script>
+</body>
+</html>
+

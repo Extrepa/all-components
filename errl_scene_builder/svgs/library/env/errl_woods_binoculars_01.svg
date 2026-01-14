@@ -1,0 +1,13 @@
+<!-- 72) errl_woods_binoculars_01 – perched on stump (prop) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="prop" data-name="errl_woods_binoculars_01">
+  <g fill="none">
+    <!-- stump -->
+    <ellipse cx="32" cy="42" rx="7" ry="3" fill="#a16207"/>
+    <rect x="26" y="42" width="12" height="5" rx="3" fill="#92400e"/>
+    <!-- binocular barrels -->
+    <rect x="26" y="30" width="4" height="8" rx="1.5" fill="#111827"/>
+    <rect x="34" y="30" width="4" height="8" rx="1.5" fill="#111827"/>
+    <rect x="28" y="28" width="8" height="3" rx="1.5" fill="#020617"/>
+  </g>
+</svg>

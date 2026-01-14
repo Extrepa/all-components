@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>An interactive overhead projector with oil and water to mix on it - P5.js Sketch</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0a0a0a;
+      color: #fff;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .header {
+      padding: 1.5rem 2rem;
+      background: #1a1a1a;
+      border-bottom: 1px solid #333;
+    }
+    .header h1 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .header p {
+      color: #b0b0b0;
+      font-size: 0.875rem;
+    }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 1rem;
+      color: #6366f1;
+      text-decoration: none;
+      font-size: 0.875rem;
+    }
+    .back-link:hover {
+      text-decoration: underline;
+    }
+    #p5-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background: #0a0a0a;
+    }
+    .info {
+      padding: 1.5rem 2rem;
+      background: #1a1a1a;
+      border-top: 1px solid #333;
+      font-size: 0.875rem;
+    }
+    .info-item {
+      margin-bottom: 0.5rem;
+      display: flex;
+    }
+    .info-label {
+      width: 120px;
+      color: #b0b0b0;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="../index.html" class="back-link">← Back to Gallery</a>
+      <h1>An interactive overhead projector with oil and water to mix on it</h1>
+      <p>P5.js Interactive Sketch</p>
+    </div>
+    <div id="p5-container"></div>
+    <div class="info">
+      <div class="info-item">
+        <span class="info-label">Prompt:</span>
+        <span>An interactive overhead projector with oil and water to mix on it</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Model:</span>
+        <span>threePro</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Generation Time:</span>
+        <span>49.4s</span>
+      </div>
+    </div>
+  </div>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+  <script>
+    const container = document.getElementById('p5-container');
+    const sketchCode = "let blobs = [];\nlet canvas;\nlet vignette;\n\nfunction setup() {\n  canvas = createCanvas(800, 600);\n  \n  // Create a vignette mask for the projector feel\n  vignette = createGraphics(width, height);\n  vignette.noFill();\n  for (let r = 0; r < width * 1.5; r += 5) {\n    let alpha = map(r, 300, width * 0.8, 0, 255, true);\n    vignette.stroke(0, 0, 0, alpha);\n    vignette.strokeWeight(5);\n    vignette.ellipse(width / 2, height / 2, r, r * 0.75); // Aspect ratio for oval light\n  }\n\n  // Initialize with some oil blobs\n  for (let i = 0; i < 25; i++) {\n    addBlob(random(width * 0.3, width * 0.7), random(height * 0.3, height * 0.7));\n  }\n}\n\nfunction draw() {\n  // 1. Projector Light Source Background\n  background(245, 245, 240);\n  \n  // Draw Fresnel lens pattern (concentric rings typical of overhead projectors)\n  noFill();\n  stroke(220, 220, 220);\n  strokeWeight(1);\n  let centerX = width / 2;\n  let centerY = height / 2;\n  for (let r = 0; r < width * 1.2; r += 15) {\n    ellipse(centerX, centerY, r, r * 0.8);\n  }\n\n  // 2. Physics and Simulation\n  handlePhysics();\n\n  // 3. Draw the Fluids\n  // We use MULTIPLY blend mode to simulate transparent colored oils on a lightbox\n  blendMode(MULTIPLY);\n  \n  for (let b of blobs) {\n    b.display();\n  }\n\n  // 4. Overlay and UI\n  blendMode(BLEND);\n  \n  // Draw the vignette to darken corners (simulate the projector head shadow/falloff)\n  image(vignette, 0, 0);\n  \n  // Dust/Scratch noise for analog feel\n  drawNoise();\n\n  // UI Text\n  fill(50);\n  noStroke();\n  textAlign(LEFT, BOTTOM);\n  textSize(14);\n  text(\"INTERACTIVE PROJECTOR: Click to drop oil. Drag to stir fluids.\", 20, height - 20);\n}\n\nfunction addBlob(x, y) {\n  let r = random(30, 70);\n  // CMY Color palette for subtractive mixing look\n  let colors = [\n    color(0, 255, 255, 180),   // Cyan\n    color(255, 0, 255, 180),   // Magenta\n    color(255, 255, 0, 180),   // Yellow\n    color(0, 100, 200, 180),   // Deep Blue\n    color(200, 50, 50, 180)    // Red\n  ];\n  let c = random(colors);\n  blobs.push(new Blob(x, y, r, c));\n}\n\nfunction mousePressed() {\n  addBlob(mouseX, mouseY);\n}\n\nfunction mouseDragged() {\n  // Stirring mechanic\n  let mouseVel = createVector(mouseX - pmouseX, mouseY - pmouseY);\n  mouseVel.mult(0.5); // Strength of stir\n  \n  for (let b of blobs) {\n    let d = dist(mouseX, mouseY, b.pos.x, b.pos.y);\n    if (d < b.r * 2) {\n      b.vel.add(mouseVel);\n    }\n  }\n}\n\nfunction handlePhysics() {\n  for (let i = 0; i < blobs.length; i++) {\n    let a = blobs[i];\n    \n    // Movement\n    a.update();\n    \n    // Blob-to-Blob interaction (Soft collision / surface tension)\n    for (let j = i + 1; j < blobs.length; j++) {\n      let b = blobs[j];\n      let distVec = p5.Vector.sub(b.pos, a.pos);\n      let d = distVec.mag();\n      let minDist = (a.r + b.r) * 0.6; // Allow some overlap for \"merging\" look\n      \n      if (d < minDist && d > 0) {\n        let force = distVec.copy().normalize();\n        let overlap = minDist - d;\n        \n        // Repulsion force (immiscibility)\n        force.mult(overlap * 0.05);\n        \n        a.vel.sub(force);\n        b.vel.add(force);\n        \n        // Surface tension attraction (clumping)\n        if (d > minDist * 0.5) {\n            let attract = distVec.copy().normalize().mult(0.01);\n            a.vel.add(attract);\n            b.vel.sub(attract);\n        }\n      }\n    }\n  }\n}\n\nfunction drawNoise() {\n  // Adds subtle grain to look like an old projection\n  loadPixels();\n  // Optimization: Only noise a fraction of pixels to save performance\n  for (let i = 0; i < 1000; i++) {\n    let x = floor(random(width));\n    let y = floor(random(height));\n    let col = random(200, 255);\n    set(x, y, color(col, col, col, 100));\n  }\n  updatePixels();\n}\n\nclass Blob {\n  constructor(x, y, r, c) {\n    this.pos = createVector(x, y);\n    this.vel = createVector(random(-1, 1), random(-1, 1));\n    this.acc = createVector(0, 0);\n    this.r = r;\n    this.c = c;\n    // Inner wobble offset\n    this.noiseOffset = random(1000);\n  }\n\n  update() {\n    // Viscosity/Friction\n    this.vel.mult(0.96);\n    \n    // Gentle centering force (gravity of the glass dip)\n    let center = createVector(width/2, height/2);\n    let dir = p5.Vector.sub(center, this.pos);\n    dir.normalize();\n    dir.mult(0.02); \n    this.acc.add(dir);\n\n    this.vel.add(this.acc);\n    this.pos.add(this.vel);\n    this.acc.mult(0);\n\n    // Walls\n    if (this.pos.x < this.r) { this.pos.x = this.r; this.vel.x *= -0.5; }\n    if (this.pos.x > width - this.r) { this.pos.x = width - this.r; this.vel.x *= -0.5; }\n    if (this.pos.y < this.r) { this.pos.y = this.r; this.vel.y *= -0.5; }\n    if (this.pos.y > height - this.r) { this.pos.y = height - this.r; this.vel.y *= -0.5; }\n    \n    this.noiseOffset += 0.01;\n  }\n\n  display() {\n    noStroke();\n    \n    // Draw main blob\n    fill(this.c);\n    \n    // Deform the shape slightly based on velocity for organic fluid feel\n    push();\n    translate(this.pos.x, this.pos.y);\n    \n    // Rotate based on movement\n    let angle = this.vel.heading();\n    rotate(angle);\n    \n    // Stretch based on speed\n    let speed = this.vel.mag();\n    let stretch = map(speed, 0, 10, 1, 1.5);\n    \n    // Draw organic shape\n    beginShape();\n    for (let a = 0; a < TWO_PI; a += 0.2) {\n      let xoff = map(cos(a), -1, 1, 0, 2);\n      let yoff = map(sin(a), -1, 1, 0, 2);\n      // Perlin noise for wobbly edges\n      let r = this.r * map(noise(xoff + this.noiseOffset, yoff + this.noiseOffset), 0, 1, 0.8, 1.1);\n      \n      // Stretch in X direction (direction of movement)\n      let sx = r * stretch;\n      let sy = r / stretch; // Maintain roughly same area\n      \n      let x = sx * cos(a);\n      let y = sy * sin(a);\n      vertex(x, y);\n    }\n    endShape(CLOSE);\n    \n    // Draw inner \"highlight\" to simulate thickness/caustics\n    fill(255, 255, 255, 50);\n    ellipse(this.r * -0.2, this.r * -0.2, this.r * 0.5, this.r * 0.4);\n    \n    pop();\n  }\n}";
+    
+    const sketch = function(p) {
+      let blobs = [];
+let canvas;
+let vignette;
+
+function setup() {
+  canvas = createCanvas(800, 600);
+  
+  // Create a vignette mask for the projector feel
+  vignette = createGraphics(width, height);
+  vignette.noFill();
+  for (let r = 0; r < width * 1.5; r += 5) {
+    let alpha = map(r, 300, width * 0.8, 0, 255, true);
+    vignette.stroke(0, 0, 0, alpha);
+    vignette.strokeWeight(5);
+    vignette.ellipse(width / 2, height / 2, r, r * 0.75); // Aspect ratio for oval light
+  }
+
+  // Initialize with some oil blobs
+  for (let i = 0; i < 25; i++) {
+    addBlob(random(width * 0.3, width * 0.7), random(height * 0.3, height * 0.7));
+  }
+}
+
+function draw() {
+  // 1. Projector Light Source Background
+  background(245, 245, 240);
+  
+  // Draw Fresnel lens pattern (concentric rings typical of overhead projectors)
+  noFill();
+  stroke(220, 220, 220);
+  strokeWeight(1);
+  let centerX = width / 2;
+  let centerY = height / 2;
+  for (let r = 0; r < width * 1.2; r += 15) {
+    ellipse(centerX, centerY, r, r * 0.8);
+  }
+
+  // 2. Physics and Simulation
+  handlePhysics();
+
+  // 3. Draw the Fluids
+  // We use MULTIPLY blend mode to simulate transparent colored oils on a lightbox
+  blendMode(MULTIPLY);
+  
+  for (let b of blobs) {
+    b.display();
+  }
+
+  // 4. Overlay and UI
+  blendMode(BLEND);
+  
+  // Draw the vignette to darken corners (simulate the projector head shadow/falloff)
+  image(vignette, 0, 0);
+  
+  // Dust/Scratch noise for analog feel
+  drawNoise();
+
+  // UI Text
+  fill(50);
+  noStroke();
+  textAlign(LEFT, BOTTOM);
+  textSize(14);
+  text("INTERACTIVE PROJECTOR: Click to drop oil. Drag to stir fluids.", 20, height - 20);
+}
+
+function addBlob(x, y) {
+  let r = random(30, 70);
+  // CMY Color palette for subtractive mixing look
+  let colors = [
+    color(0, 255, 255, 180),   // Cyan
+    color(255, 0, 255, 180),   // Magenta
+    color(255, 255, 0, 180),   // Yellow
+    color(0, 100, 200, 180),   // Deep Blue
+    color(200, 50, 50, 180)    // Red
+  ];
+  let c = random(colors);
+  blobs.push(new Blob(x, y, r, c));
+}
+
+function mousePressed() {
+  addBlob(mouseX, mouseY);
+}
+
+function mouseDragged() {
+  // Stirring mechanic
+  let mouseVel = createVector(mouseX - pmouseX, mouseY - pmouseY);
+  mouseVel.mult(0.5); // Strength of stir
+  
+  for (let b of blobs) {
+    let d = dist(mouseX, mouseY, b.pos.x, b.pos.y);
+    if (d < b.r * 2) {
+      b.vel.add(mouseVel);
+    }
+  }
+}
+
+function handlePhysics() {
+  for (let i = 0; i < blobs.length; i++) {
+    let a = blobs[i];
+    
+    // Movement
+    a.update();
+    
+    // Blob-to-Blob interaction (Soft collision / surface tension)
+    for (let j = i + 1; j < blobs.length; j++) {
+      let b = blobs[j];
+      let distVec = p5.Vector.sub(b.pos, a.pos);
+      let d = distVec.mag();
+      let minDist = (a.r + b.r) * 0.6; // Allow some overlap for "merging" look
+      
+      if (d < minDist && d > 0) {
+        let force = distVec.copy().normalize();
+        let overlap = minDist - d;
+        
+        // Repulsion force (immiscibility)
+        force.mult(overlap * 0.05);
+        
+        a.vel.sub(force);
+        b.vel.add(force);
+        
+        // Surface tension attraction (clumping)
+        if (d > minDist * 0.5) {
+            let attract = distVec.copy().normalize().mult(0.01);
+            a.vel.add(attract);
+            b.vel.sub(attract);
+        }
+      }
+    }
+  }
+}
+
+function drawNoise() {
+  // Adds subtle grain to look like an old projection
+  loadPixels();
+  // Optimization: Only noise a fraction of pixels to save performance
+  for (let i = 0; i < 1000; i++) {
+    let x = floor(random(width));
+    let y = floor(random(height));
+    let col = random(200, 255);
+    set(x, y, color(col, col, col, 100));
+  }
+  updatePixels();
+}
+
+class Blob {
+  constructor(x, y, r, c) {
+    this.pos = createVector(x, y);
+    this.vel = createVector(random(-1, 1), random(-1, 1));
+    this.acc = createVector(0, 0);
+    this.r = r;
+    this.c = c;
+    // Inner wobble offset
+    this.noiseOffset = random(1000);
+  }
+
+  update() {
+    // Viscosity/Friction
+    this.vel.mult(0.96);
+    
+    // Gentle centering force (gravity of the glass dip)
+    let center = createVector(width/2, height/2);
+    let dir = p5.Vector.sub(center, this.pos);
+    dir.normalize();
+    dir.mult(0.02); 
+    this.acc.add(dir);
+
+    this.vel.add(this.acc);
+    this.pos.add(this.vel);
+    this.acc.mult(0);
+
+    // Walls
+    if (this.pos.x < this.r) { this.pos.x = this.r; this.vel.x *= -0.5; }
+    if (this.pos.x > width - this.r) { this.pos.x = width - this.r; this.vel.x *= -0.5; }
+    if (this.pos.y < this.r) { this.pos.y = this.r; this.vel.y *= -0.5; }
+    if (this.pos.y > height - this.r) { this.pos.y = height - this.r; this.vel.y *= -0.5; }
+    
+    this.noiseOffset += 0.01;
+  }
+
+  display() {
+    noStroke();
+    
+    // Draw main blob
+    fill(this.c);
+    
+    // Deform the shape slightly based on velocity for organic fluid feel
+    push();
+    translate(this.pos.x, this.pos.y);
+    
+    // Rotate based on movement
+    let angle = this.vel.heading();
+    rotate(angle);
+    
+    // Stretch based on speed
+    let speed = this.vel.mag();
+    let stretch = map(speed, 0, 10, 1, 1.5);
+    
+    // Draw organic shape
+    beginShape();
+    for (let a = 0; a < TWO_PI; a += 0.2) {
+      let xoff = map(cos(a), -1, 1, 0, 2);
+      let yoff = map(sin(a), -1, 1, 0, 2);
+      // Perlin noise for wobbly edges
+      let r = this.r * map(noise(xoff + this.noiseOffset, yoff + this.noiseOffset), 0, 1, 0.8, 1.1);
+      
+      // Stretch in X direction (direction of movement)
+      let sx = r * stretch;
+      let sy = r / stretch; // Maintain roughly same area
+      
+      let x = sx * cos(a);
+      let y = sy * sin(a);
+      vertex(x, y);
+    }
+    endShape(CLOSE);
+    
+    // Draw inner "highlight" to simulate thickness/caustics
+    fill(255, 255, 255, 50);
+    ellipse(this.r * -0.2, this.r * -0.2, this.r * 0.5, this.r * 0.4);
+    
+    pop();
+  }
+}
+    };
+    
+    new p5(sketch, container);
+  </script>
+</body>
+</html>

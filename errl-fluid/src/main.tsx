@@ -1,0 +1,77 @@
+import { StrictMode, Component } from 'react'
+import { createRoot } from 'react-dom/client'
+import './index.css'
+import App from './App.tsx'
+import '@errl-design-system/styles/errlDesignSystem.css'
+import { ThemeProvider } from '@errl-design-system'
+
+// Error Boundary Component
+class ErrorBoundary extends Component<
+  { children: React.ReactNode },
+  { hasError: boolean; error: Error | null }
+> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    console.error('ErrorBoundary caught an error:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div style={{
+          width: '100vw',
+          height: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: '#050510',
+          color: '#f9f5ff',
+          fontFamily: 'system-ui, sans-serif',
+          padding: '2rem',
+        }}>
+          <h1 style={{ fontSize: '2rem', marginBottom: '1rem', color: '#ff00ff' }}>
+            Something Went Wrong
+          </h1>
+          <p style={{ opacity: 0.8, marginBottom: '2rem', textAlign: 'center', maxWidth: '600px' }}>
+            {this.state.error?.message || 'An unexpected error occurred. Please refresh the page.'}
+          </p>
+          <button
+            onClick={() => window.location.reload()}
+            style={{
+              padding: '0.75rem 1.5rem',
+              background: '#3b82f6',
+              border: 'none',
+              borderRadius: '0.5rem',
+              color: 'white',
+              cursor: 'pointer',
+              fontSize: '1rem',
+              fontWeight: 600,
+            }}
+          >
+            Reload Page
+          </button>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <ThemeProvider>
+      <ErrorBoundary>
+        <App />
+      </ErrorBoundary>
+    </ThemeProvider>
+  </StrictMode>,
+)

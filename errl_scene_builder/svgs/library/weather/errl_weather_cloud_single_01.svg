@@ -1,0 +1,10 @@
+<!-- errl_weather_cloud_single_01 – simple base cloud (env/fx) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_weather" data-cat="env" data-name="errl_weather_cloud_single_01">
+  <g fill="none">
+    <circle cx="26" cy="28" r="6" fill="#e5e7eb"/>
+    <circle cx="34" cy="26" r="7" fill="#e5e7eb"/>
+    <circle cx="42" cy="28" r="6" fill="#e5e7eb"/>
+    <rect x="24" y="28" width="20" height="6" rx="3" fill="#e5e7eb"/>
+  </g>
+</svg>

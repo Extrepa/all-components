@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optical Illusion</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+    <style> body { margin: 0; padding: 0; overflow: hidden; background: #808080; } canvas { display: block; } </style>
+</head>
+<body>
+    <script>
+let rotors = [];
+let cols, rows;
+let rotorSize = 140;
+
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  angleMode(DEGREES);
+  noStroke();
+
+  cols = floor(width / rotorSize) + 1;
+  rows = floor(height / rotorSize) + 1;
+
+  for (let i = 0; i < cols; i++) {
+    for (let j = 0; j < rows; j++) {
+      let x = i * rotorSize + rotorSize / 2;
+      let y = j * rotorSize + rotorSize / 2;
+      rotors.push(new Rotor(x, y, rotorSize));
+    }
+  }
+}
+
+function draw() {
+  background(128);
+  for (let rotor of rotors) {
+    rotor.update();
+    rotor.display();
+  }
+}
+
+function windowResized() {
+    resizeCanvas(windowWidth, windowHeight);
+    // Re-initialize rotors
+    rotors = [];
+    cols = floor(width / rotorSize) + 1;
+    rows = floor(height / rotorSize) + 1;
+    for (let i = 0; i < cols; i++) {
+        for (let j = 0; j < rows; j++) {
+            let x = i * rotorSize + rotorSize / 2;
+            let y = j * rotorSize + rotorSize / 2;
+            rotors.push(new Rotor(x, y, rotorSize));
+        }
+    }
+}
+
+class Rotor {
+  constructor(x, y, size) {
+    this.pos = createVector(x, y);
+    this.size = size;
+    this.angle = random(360);
+    this.direction = random() > 0.5 ? 1 : -1;
+    this.noiseOffset = random(1000);
+
+    this.colors = [
+      color(0, 0, 0),         // Black
+      color(60, 0, 120),      // Dark Purple
+      color(255, 255, 255),   // White
+      color(150, 255, 80)     // Lime Green
+    ];
+  }
+
+  update() {
+    // A slow, organic rotation based on noise
+    let noiseVal = noise(this.pos.x * 0.005, this.pos.y * 0.005, frameCount * 0.002 + this.noiseOffset);
+    let baseRotation = map(noiseVal, 0, 1, -0.2, 0.2);
+
+    // An interactive component based on mouse position
+    let mouseInfluence = map(mouseX, 0, width, -0.8, 0.8, true);
+
+    this.angle += (baseRotation + mouseInfluence) * this.direction;
+  }
+
+  display() {
+    push();
+    translate(this.pos.x, this.pos.y);
+    rotate(this.angle);
+
+    let numRings = 5;
+    let ringWidth = (this.size / 2) / numRings;
+    let numSegments = 16;
+    let angleStep = 360 / numSegments;
+
+    for (let r = numRings; r > 0; r--) {
+      let currentRadius = r * ringWidth;
+      let innerRadius = (r - 1) * ringWidth;
+      let colorOffset = (numRings - r) * (this.direction > 0 ? 1 : -1);
+
+      for (let i = 0; i < numSegments; i++) {
+        let cIndex = (i + colorOffset + this.colors.length * numSegments) % this.colors.length;
+        fill(this.colors[cIndex]);
+
+        let startAngle = i * angleStep;
+        let endAngle = startAngle + angleStep;
+        
+        beginShape();
+        // Outer arc
+        for (let a = startAngle; a <= endAngle; a += 2) {
+          vertex(cos(a) * currentRadius, sin(a) * currentRadius);
+        }
+        // Inner arc (reversed)
+        for (let a = endAngle; a >= startAngle; a -= 2) {
+          vertex(cos(a) * innerRadius, sin(a) * innerRadius);
+        }
+        endShape(CLOSE);
+      }
+    }
+    pop();
+  }
+}
+    </script>
+</body>
+</html>

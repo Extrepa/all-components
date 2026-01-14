@@ -1,0 +1,8 @@
+<!-- Example 208 | errl_fest_rope_curve_low_01 (fx/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="fx" data-name="errl_fest_rope_curve_low_01">
+  <g fill="none">
+    <path d="M10 30 C22 38 42 38 54 30"
+      stroke="#e5e7eb" stroke-width="1.5" stroke-linecap="round"/>
+  </g>
+</svg>

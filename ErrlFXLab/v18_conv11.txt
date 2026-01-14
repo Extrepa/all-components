@@ -1,0 +1,404 @@
+Nice. Time to close the loop: session import so you can replay a lab state from JSON, not just yeet it out into the void.
+
+We’ll add:
+	•	A “Load JSON” button next to Session Snapshot.
+	•	A loadSessionSnapshot(snapshot) function that:
+	•	Restores FX presets
+	•	Restores captured frames (+ favorites)
+	•	Restores VS slots
+	•	Restores active tab + 3D mode
+	•	Keeps the SVG itself separate (we can’t magically resurrect the file, but we can resurrect all captured frames / VS / presets around it).
+
+Patch-style, as usual.
+
+⸻
+
+1. Extend Session Snapshot block (HTML) with Load UI
+
+Find the Session Snapshot block we just added. It should look like this:
+
+      <!-- Session Snapshot (JSON) -->
+      <div class="border-t border-slate-800/70 px-3 py-2 text-[11px] text-slate-200">
+        <div class="flex items-center justify-between mb-1">
+          <span class="font-semibold text-slate-100">Session Snapshot</span>
+          <span class="text-[10px] text-slate-500">
+            JSON · export for Obsidian / AI
+          </span>
+        </div>
+
+        <p class="text-[10px] text-slate-400 mb-1">
+          Captures presets, current FX config, frames (with favorites) and VS setup
+          into a single JSON blob.
+        </p>
+
+        <div class="flex items-center gap-1 mb-1">
+          <button
+            id="copySessionJsonBtn"
+            class="px-2 py-1 rounded-md border border-cyan-500/70 text-cyan-200 text-[10px] hover:bg-cyan-500/15"
+          >
+            Copy JSON
+          </button>
+          <button
+            id="downloadSessionJsonBtn"
+            class="px-2 py-1 rounded-md border border-emerald-500/70 text-emerald-200 text-[10px] hover:bg-emerald-500/15"
+          >
+            Download .json
+          </button>
+          <span class="text-[10px] text-slate-500">Includes data URLs for frames</span>
+        </div>
+
+        <textarea
+          id="sessionJsonOutput"
+          class="w-full h-24 mt-1 bg-slate-950 border border-slate-700 rounded-md px-2 py-1 text-[10px] font-mono text-slate-100 scrollbar-thin"
+          spellcheck="false"
+        ></textarea>
+      </div>
+
+Replace the button row with one that also has Load JSON and a hidden file input:
+
+        <div class="flex items-center gap-1 mb-1">
+          <button
+            id="copySessionJsonBtn"
+            class="px-2 py-1 rounded-md border border-cyan-500/70 text-cyan-200 text-[10px] hover:bg-cyan-500/15"
+          >
+            Copy JSON
+          </button>
+          <button
+            id="downloadSessionJsonBtn"
+            class="px-2 py-1 rounded-md border border-emerald-500/70 text-emerald-200 text-[10px] hover:bg-emerald-500/15"
+          >
+            Download .json
+          </button>
+          <button
+            id="loadSessionJsonBtn"
+            class="px-2 py-1 rounded-md border border-amber-400/70 text-amber-200 text-[10px] hover:bg-amber-500/15"
+          >
+            Load JSON
+          </button>
+          <input
+            id="loadSessionJsonInput"
+            type="file"
+            accept="application/json,.json"
+            class="hidden"
+          />
+        </div>
+
+Textarea stays the same.
+
+⸻
+
+2. Wire new DOM refs (JS)
+
+In the DOM grab section where you added snapshot elements:
+
+    // Session snapshot elements
+    const sessionJsonOutput = document.getElementById("sessionJsonOutput");
+    const copySessionJsonBtn = document.getElementById("copySessionJsonBtn");
+    const downloadSessionJsonBtn = document.getElementById("downloadSessionJsonBtn");
+
+Extend it:
+
+    const loadSessionJsonBtn = document.getElementById("loadSessionJsonBtn");
+    const loadSessionJsonInput = document.getElementById("loadSessionJsonInput");
+
+
+⸻
+
+3. Helper: rebuild gallery from a list of frames
+
+We need a way to rebuild capturedFrames + thumbnails from snapshot data.
+We’ll mirror the DOM logic in captureCurrentFrameToGallery, but using stored URLs.
+
+Add this somewhere near your captured-frames helpers:
+
+    function rebuildCapturedFramesFromSnapshot(snapshotFrames) {
+      capturedFrames = [];
+      thumbGallery.innerHTML = "";
+      thumbCountEl.textContent = "0";
+
+      if (!Array.isArray(snapshotFrames) || !snapshotFrames.length) {
+        return;
+      }
+
+      snapshotFrames.forEach((data) => {
+        const frame = {
+          id: data.id || Date.now() + "-" + Math.random().toString(16).slice(2),
+          url: data.url,
+          favorite: !!data.favorite,
+          el: null,
+          source: data.source || "p5",
+          modeLabel: data.modeLabel || "p5 FX",
+          createdAt: data.createdAt || Date.now(),
+        };
+        capturedFrames.push(frame);
+
+        const wrapper = document.createElement("div");
+        wrapper.className =
+          "relative group w-full h-full rounded-md overflow-hidden border border-slate-700/80 bg-slate-900/80";
+
+        const img = new Image();
+        img.src = frame.url;
+        img.className =
+          "w-full h-full object-cover cursor-pointer group-hover:opacity-90 transition";
+        img.title = "Click = download · Shift-click = VS Left · Alt-click = VS Right";
+        img.addEventListener("click", (e) => {
+          if (e.shiftKey) {
+            assignVsSlot(frame, "left");
+            return;
+          }
+          if (e.altKey) {
+            assignVsSlot(frame, "right");
+            return;
+          }
+          const a = document.createElement("a");
+          a.href = frame.url;
+          a.download = "errl-fx-frame.png";
+          a.click();
+        });
+
+        const favBtn = document.createElement("button");
+        favBtn.className =
+          "absolute top-0.5 right-0.5 px-1.5 py-0.5 rounded-full bg-slate-950/90 border text-[10px] opacity-80 group-hover:opacity-100";
+        favBtn.textContent = frame.favorite ? "★" : "☆";
+
+        if (frame.favorite) {
+          favBtn.classList.add("border-amber-400", "text-amber-300");
+          favBtn.classList.remove("border-slate-600", "text-slate-200");
+          wrapper.classList.add("ring-1", "ring-amber-400/70");
+        } else {
+          favBtn.classList.add("border-slate-600", "text-slate-200");
+          favBtn.classList.remove("border-amber-400", "text-amber-300");
+        }
+
+        favBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          frame.favorite = !frame.favorite;
+          if (frame.favorite) {
+            favBtn.textContent = "★";
+            favBtn.classList.remove("border-slate-600", "text-slate-200");
+            favBtn.classList.add("border-amber-400", "text-amber-300");
+            wrapper.classList.add("ring-1", "ring-amber-400/70");
+          } else {
+            favBtn.textContent = "☆";
+            favBtn.classList.remove("border-amber-400", "text-amber-300");
+            favBtn.classList.add("border-slate-600", "text-slate-200");
+            wrapper.classList.remove("ring-1", "ring-amber-400/70");
+          }
+          playBeep(frame.favorite ? 880 : 320, 0.07, "triangle");
+          updateSessionJsonOutput();
+        });
+
+        wrapper.appendChild(img);
+        wrapper.appendChild(favBtn);
+        thumbGallery.appendChild(wrapper);
+
+        frame.el = wrapper;
+      });
+
+      thumbCountEl.textContent = String(thumbGallery.children.length);
+    }
+
+Now snapshots can reconstruct the gallery even without the original SVG.
+
+⸻
+
+4. Implement loadSessionSnapshot(snapshot)
+
+This is the main replay function. It’ll:
+	•	Reset relevant state
+	•	Restore presets
+	•	Restore frames
+	•	Restore VS
+	•	Restore tab + 3D mode
+
+Add:
+
+    function loadSessionSnapshot(snapshot) {
+      if (!snapshot || typeof snapshot !== "object") {
+        flashStatus("Invalid snapshot JSON.", "error");
+        playBeep(200, 0.1, "square");
+        return;
+      }
+
+      // FX presets
+      if (Array.isArray(snapshot.fxPresets)) {
+        fxPresets = snapshot.fxPresets.map((p) => ({
+          ...p,
+          id: p.id || Date.now() + "-" + Math.random().toString(16).slice(2),
+        }));
+        renderFxPresetList();
+      }
+
+      // p5 config (minimal restore via preset id)
+      if (snapshot.p5Config) {
+        const { currentPresetId } = snapshot.p5Config;
+        if (currentPresetId && p5Presets[currentPresetId]) {
+          applyPreset(currentPresetId, false);
+        }
+      }
+
+      // HTML FX
+      if (snapshot.htmlFx) {
+        const presetId = snapshot.htmlFx.selectedPresetId;
+        if (presetId && htmlFxPresets[presetId]) {
+          htmlFxPresetSelect.value = presetId;
+          applyHtmlFxPreset(presetId, false);
+        }
+      }
+
+      // Captured frames + favorites
+      if (snapshot.frames && Array.isArray(snapshot.frames.all)) {
+        rebuildCapturedFramesFromSnapshot(snapshot.frames.all);
+      } else {
+        rebuildCapturedFramesFromSnapshot([]);
+      }
+
+      // VS selection
+      vsLeftFrame = null;
+      vsRightFrame = null;
+      if (snapshot.versus) {
+        const { leftFrameId, rightFrameId } = snapshot.versus;
+        if (leftFrameId) {
+          vsLeftFrame = capturedFrames.find((f) => f.id === leftFrameId) || null;
+        }
+        if (rightFrameId) {
+          vsRightFrame = capturedFrames.find((f) => f.id === rightFrameId) || null;
+        }
+      }
+      renderVsSlots();
+
+      // UI state: 3D mode + tab
+      if (snapshot.ui) {
+        if (snapshot.ui.threeMode === "wire" || snapshot.ui.threeMode === "voxel3d") {
+          setThreeMode(snapshot.ui.threeMode);
+        }
+        if (snapshot.ui.activeTab) {
+          activatePreviewTab(snapshot.ui.activeTab);
+        }
+      }
+
+      // Note: we cannot resurrect the original SVG file itself from this snapshot;
+      // frames are still viewable because they carry their own data URLs.
+
+      updateSessionJsonOutput();
+      saveStateToStorage(); // keep presets in localStorage too
+      flashStatus("Session snapshot loaded ✅");
+      playBeep(820, 0.1, "triangle");
+    }
+
+This assumes you already have:
+	•	p5Presets and applyPreset
+	•	htmlFxPresets and applyHtmlFxPreset
+	•	renderFxPresetList
+	•	setThreeMode, activatePreviewTab, renderVsSlots
+
+…all of which we’ve wired in earlier steps.
+
+⸻
+
+5. Wire “Load JSON” button + file input
+
+Near your snapshot button listeners (where we added copy/download), add:
+
+    loadSessionJsonBtn.addEventListener("click", () => {
+      if (!loadSessionJsonInput) return;
+      loadSessionJsonInput.value = "";
+      loadSessionJsonInput.click();
+    });
+
+    loadSessionJsonInput.addEventListener("change", () => {
+      const file = loadSessionJsonInput.files?.[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const text = String(e.target?.result || "");
+          sessionJsonOutput.value = text; // show in textarea
+          const parsed = JSON.parse(text);
+          loadSessionSnapshot(parsed);
+        } catch (err) {
+          console.error("Error loading session JSON:", err);
+          flashStatus("Could not parse session JSON.", "error");
+          playBeep(200, 0.1, "square");
+        }
+      };
+      reader.readAsText(file);
+    });
+
+Now you can:
+	1.	Click Load JSON
+	2.	Pick any errl-fx-session-*.json from disk
+	3.	Watch the app re-hydrate presets, frames, VS mode, tabs, 3D mode.
+
+⸻
+
+6. Optional: paste-based load from textarea
+
+If you want a no-file version (for quickly pasting from Obsidian), add another tiny button below the textarea:
+
+HTML tweak
+
+Under the <textarea id="sessionJsonOutput"...>, add:
+
+        <button
+          id="applySessionJsonFromTextareaBtn"
+          class="mt-1 px-2 py-1 rounded-md border border-slate-600 text-slate-200 text-[10px] hover:bg-slate-900/80"
+        >
+          Load from textarea
+        </button>
+
+JS
+
+Grab it:
+
+    const applySessionJsonFromTextareaBtn = document.getElementById(
+      "applySessionJsonFromTextareaBtn"
+    );
+
+Wire it:
+
+    applySessionJsonFromTextareaBtn.addEventListener("click", () => {
+      try {
+        const text = sessionJsonOutput.value.trim();
+        if (!text) {
+          flashStatus("Textarea is empty.", "error");
+          playBeep(200, 0.1, "square");
+          return;
+        }
+        const parsed = JSON.parse(text);
+        loadSessionSnapshot(parsed);
+      } catch (err) {
+        console.error("Error parsing session JSON from textarea:", err);
+        flashStatus("Could not parse JSON from textarea.", "error");
+        playBeep(200, 0.1, "square");
+      }
+    });
+
+Now:
+	•	Paste a JSON blob straight from Obsidian
+	•	Hit Load from textarea
+	•	Boom, state restored.
+
+⸻
+
+What you have now
+
+Your goo lab is officially time-travel capable:
+	•	Export:
+	•	FX presets
+	•	p5 & HTML FX config
+	•	All captured frames (with mode + favorites)
+	•	VS Left/Right
+	•	UI mode (tab + 3D mode)
+	•	Import:
+	•	Reloads presets into the UI
+	•	Rebuilds gallery + favorites
+	•	Re-populates VS slots
+	•	Re-selects tab & 3D mode
+
+The only thing it doesn’t resurrect is the original SVG file itself (browsers won’t let us stash that live file), but:
+	•	All the generated frames are embedded as data URLs in the snapshot.
+	•	So visually, you still have everything that mattered.
+
+At this point, your single index.html isn’t just an app — it’s an Errl visual workstation with save/load + replay, which is stupidly powerful for feeding into Obsidian, agents, and future “Errl OS” layers.

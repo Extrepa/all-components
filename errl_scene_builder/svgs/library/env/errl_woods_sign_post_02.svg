@@ -1,0 +1,11 @@
+<!-- 58) errl_woods_sign_post_02 – double sign arrows (prop/ui-ish) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="prop" data-name="errl_woods_sign_post_02">
+  <g fill="none">
+    <rect x="30" y="22" width="4" height="26" rx="1.6" fill="#78350f"/>
+    <!-- top sign -->
+    <path d="M18 24 L34 20 40 24 24 28 Z" fill="#a16207"/>
+    <!-- bottom sign (other direction) -->
+    <path d="M24 30 L40 34 34 38 18 34 Z" fill="#a16207"/>
+  </g>
+</svg>

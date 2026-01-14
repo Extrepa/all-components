@@ -1,0 +1,322 @@
+Excellent. We’ll continue by completing the documentation set, moving from conceptual to operational. These next files answer the questions that come up once you actually start using the system every day.
+
+Same rule as before: one file = one job.
+
+You can drop these straight into the same folder.
+
+⸻
+
+📄 11-Dashboard.md
+
+# Vault Dashboard
+
+The dashboard is the single control surface for the entire system.
+
+It is intentionally simple.
+
+## Purpose
+
+- One URL to rule them all
+- Human navigation layer
+- No logic, no backend, no database
+
+## Location
+
+Served from:
+- /storage/websites/experiments/dashboard
+- Available at: vault.yourdomain.com
+
+## Recommended Layout
+
+- Files
+- Photos
+- Music
+- Videos
+- Books
+- Websites
+- Games
+- Admin (Portainer)
+
+Each item is just a link.
+
+## Rules
+
+- Static HTML only
+- No authentication logic here
+- Auth happens at the service level
+
+The dashboard must never be clever.
+It must never break.
+
+
+⸻
+
+📄 12-Containers-Selection.md
+
+# Container Selection Strategy
+
+This document explains *how* to choose containers, not which ones.
+
+## Rules for Choosing Containers
+
+A container is acceptable only if:
+
+- Actively maintained
+- Official or well-known image
+- Supports volume mounts
+- Browser-based UI
+- No forced cloud account
+
+## One Service, One Container
+
+Never combine services.
+Never stack features.
+
+Bad:
+- One container doing files + photos + media
+
+Good:
+- One container per media type
+
+## Why This Matters
+
+- Easier upgrades
+- Easier backups
+- Easier replacement
+- Easier debugging
+
+Containers are disposable.
+Your data is not.
+
+
+⸻
+
+📄 13-Authentication.md
+
+# Authentication Model
+
+## Goals
+
+- One login per user
+- No public access to private services
+- Works on mobile and desktop
+
+## Model
+
+- Authentication handled by reverse proxy or per-service
+- Dashboard itself has no auth
+- Services require login
+
+## User Types (Future)
+
+- Owner (you)
+- Collaborator
+- Viewer
+
+Do not implement roles until needed.
+
+## Rule
+
+Security is boring by design.
+If it feels fancy, it’s probably fragile.
+
+
+⸻
+
+📄 14-Mobile-Use.md
+
+# Mobile Usage Guide
+
+This system is designed to be mobile-first.
+
+## What Works on Mobile
+
+- File uploads
+- Music streaming
+- Photo galleries
+- Video playback
+- Book reading
+
+## What Does NOT Happen on Mobile
+
+- Server configuration
+- Docker management
+- System updates
+
+Mobile devices are for consumption and light uploads.
+Administration stays on desktop.
+
+## Key Rule
+
+If something is annoying on mobile, simplify the UI.
+Do not add features.
+
+
+⸻
+
+📄 15-Sync-and-Sharing.md
+
+# Sync and Sharing
+
+## Internal Sync
+
+- All data lives on the server
+- Devices access via browser
+- No bidirectional sync tools
+
+## Public Sharing
+
+Only approved content is copied outward.
+
+Examples:
+- Music previews
+- Gallery exports
+- Website builds
+
+## Forbidden
+
+- Syncing the entire vault to laptops
+- Letting public services write back to the server
+
+The server is authoritative.
+Everything else is a mirror.
+
+
+⸻
+
+📄 16-Maintenance.md
+
+# Maintenance
+
+## Weekly
+
+- Check disk space
+- Verify backups completed
+- Apply OS updates
+
+## Monthly
+
+- Update containers
+- Review unused data
+- Clean temporary files
+
+## Yearly
+
+- Test restore from backup
+- Review domain + DNS
+- Replace aging drives if needed
+
+## Philosophy
+
+Maintenance should be boring and predictable.
+If it becomes exciting, something is wrong.
+
+
+⸻
+
+📄 17-Failure-Scenarios.md
+
+# Failure Scenarios
+
+## If the Public Host Dies
+
+- Nothing important is lost
+- Re-upload from /storage/websites/public
+- Domain stays the same
+
+## If the Home Server Goes Down
+
+- Public site still works
+- Vault temporarily unavailable
+- Restore from backups
+
+## If You Make a Mistake
+
+- Containers can be rebuilt
+- Data remains intact
+- Nothing is permanent except folders
+
+This system is resilient by design.
+
+
+⸻
+
+📄 18-Future-Extensions.md
+
+# Future Extensions
+
+These are intentionally not implemented yet.
+
+## Possible Additions
+
+- User accounts
+- Media playlists
+- Errl OS UI layer
+- Automation scripts
+- Scheduled releases
+- Collaboration spaces
+
+## Rule
+
+Do not build extensions until:
+- The base system is boring
+- You use it daily
+- A real need appears
+
+Power comes from restraint.
+
+
+⸻
+
+📄 19-Rules-of-the-System.md
+
+# Rules of the System
+
+1. One server = one source of truth
+2. One media type per folder
+3. Containers are disposable
+4. Data is sacred
+5. Public services never write inward
+6. If unsure, do nothing
+
+Breaking rules leads to entropy.
+
+
+⸻
+
+📄 20-Quick-Start.md
+
+# Quick Start Checklist
+
+☐ Install Ubuntu Server  
+☐ Install Docker  
+☐ Mount /storage  
+☐ Deploy reverse proxy  
+☐ Enable Cloudflare Tunnel  
+☐ Deploy file service  
+☐ Test access from phone  
+☐ Add photos  
+☐ Add music  
+☐ Create public site  
+
+If files work on your phone, the system works.
+
+
+⸻
+
+Where you are now
+
+You now have:
+	•	A complete, modular documentation system
+	•	Clear separation between build, use, and future ideas
+	•	A setup that scales without rewrites
+	•	Something you can actually live inside
+
+Next natural continuations (choose when ready):
+	•	exact container recommendations (opinionated list)
+	•	a printable “build day” checklist
+	•	a minimal HTML dashboard template
+	•	automation scripts (sync, backups, encoding)
+
+This is no longer theory.
+This is infrastructure you’ll grow into.

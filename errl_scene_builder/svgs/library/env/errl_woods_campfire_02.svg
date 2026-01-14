@@ -1,0 +1,13 @@
+<!-- 52) errl_woods_campfire_02 – low flame / embers (prop/fx) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="prop" data-name="errl_woods_campfire_02">
+  <g fill="none">
+    <!-- logs -->
+    <path d="M22 46 L34 40 36 42 24 48 Z" fill="#78350f"/>
+    <path d="M30 46 L42 40 44 42 32 48 Z" fill="#92400e"/>
+    <!-- low flame -->
+    <path d="M32 34 C29 36 29 39 30 41s2 3 2.5 4c0.9-1.3 1.8-2.1 2.3-4s0.4-4-1-5.5-2.8-1.5-2.8-1.5z"
+      fill="#f97316"/>
+    <ellipse cx="32" cy="48" rx="9" ry="2.4" fill="#111827" opacity="0.4"/>
+  </g>
+</svg>

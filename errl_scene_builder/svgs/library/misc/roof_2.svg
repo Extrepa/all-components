@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" id="icon-d1z23m10p">
+  <g xmlns="http://www.w3.org/2000/svg" fill="none">
+    <!-- roof -->
+    <path d="M14 32 L32 20 50 32 Z" fill="#22d3ee"/>
+    <!-- body -->
+    <rect x="16" y="32" width="32" height="12" rx="2" fill="#020617"/>
+    <!-- cross icon -->
+    <rect x="28" y="34" width="8" height="2.4" rx="1" fill="#facc15"/>
+    <rect x="30.8" y="32.2" width="2.4" height="8" rx="1" fill="#facc15"/>
+    <ellipse cx="32" cy="48" rx="17" ry="3" fill="#111827" opacity="0.35"/>
+  </g>
+</svg>

@@ -1,0 +1,12 @@
+<!-- errl_bg_panel_gradient_diag_01 – diagonal gradient card (env/bg/ui) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_bg" data-cat="env" data-name="errl_bg_panel_gradient_diag_01">
+  <defs>
+    <linearGradient id="errl_bg_diag_g1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#22d3ee"/>
+      <stop offset="60%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </linearGradient>
+  </defs>
+  <rect x="8" y="8" width="48" height="48" rx="10" fill="url(#errl_bg_diag_g1)"/>
+</svg>

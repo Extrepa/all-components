@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <g id="MG_stage" fill="#6d5c37" stroke="#0e0f1b" stroke-width="12" stroke-linejoin="round" stroke-linecap="round">
+    <rect x="200" y="680" width="624" height="90" rx="24" />
+    <rect x="230" y="650" width="564" height="32" rx="14" />
+  </g>
+  <g id="MG_tents" fill="#696874" stroke="#0e0f1b" stroke-width="10" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M120 580c80-60 180-60 260 0 80-60 180-60 260 0 80-60 180-60 260 0v60H120z" />
+  </g>
+  <g id="MG_flags" fill="#6d3962" stroke="#0e0f1b" stroke-width="8" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M200 560v60l44-24z" />
+    <path d="M420 560v60l44-24z" />
+    <path d="M640 560v60l44-24z" />
+    <path d="M860 560v60l44-24z" />
+  </g>
+</svg>

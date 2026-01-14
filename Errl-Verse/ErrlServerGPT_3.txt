@@ -1,0 +1,235 @@
+Yes — and you’re asking this at exactly the right moment.
+Cursor doesn’t need more ideas. It needs constraints, landmarks, and permission boundaries so it doesn’t “helpfully” reinvent your universe every five minutes.
+
+Below is the missing kit that makes Cursor behave like a disciplined junior engineer instead of a caffeinated intern.
+
+Think of this as the rails, not more track.
+
+⸻
+
+1. Cursor Needs a “Project Contract” (non-negotiable)
+
+Create one file at the root of your repo:
+
+CURSOR_PROJECT_CONTRACT.md
+
+This file exists solely to stop Cursor from doing dumb things.
+
+# Cursor Project Contract
+
+This project follows strict architectural rules.
+
+Cursor MUST:
+- Respect the canonical storage layout
+- Use Docker for all services
+- Avoid introducing new platforms or tools
+- Prefer boring, well-known solutions
+- Modify existing files before creating new ones
+
+Cursor MUST NOT:
+- Suggest cloud-first replacements
+- Introduce paid SaaS dependencies
+- Merge unrelated services
+- Change folder meanings
+- Add features without a clear use case
+
+If a decision is ambiguous:
+- Ask for clarification
+- Do nothing by default
+
+Why this matters:
+Cursor will hallucinate improvements unless you tell it “no.”
+
+⸻
+
+2. Cursor Needs the Canonical Paths (or it will guess wrong)
+
+Create:
+
+CANONICAL_PATHS.md
+
+# Canonical Paths
+
+These paths are fixed and must not be renamed.
+
+- /storage/files
+- /storage/photos/originals
+- /storage/photos/galleries
+- /storage/music/lossless
+- /storage/music/web
+- /storage/videos/masters
+- /storage/videos/streams
+- /storage/books
+- /storage/websites/public
+- /storage/websites/experiments
+- /storage/games/assets
+- /storage/games/builds
+- /storage/backups
+
+If a feature does not clearly map to one of these,
+it does not belong in this system.
+
+This prevents Cursor from inventing /data, /media, /content, /assets_v2, etc.
+
+⸻
+
+3. Cursor Needs an “Allowed Actions” File
+
+Create:
+
+ALLOWED_ACTIONS.md
+
+# Allowed Actions
+
+Cursor is allowed to:
+- Add Docker Compose services
+- Modify nginx/caddy configs
+- Write bash scripts for automation
+- Create static HTML/CSS dashboards
+- Add README documentation
+
+Cursor is NOT allowed to:
+- Change DNS providers
+- Add authentication providers
+- Introduce databases without approval
+- Modify firewall rules blindly
+- Touch backups without explicit instruction
+
+This stops scope creep before it starts.
+
+⸻
+
+4. Cursor Needs a “Decision Memory” (huge win)
+
+Create:
+
+DECISIONS.md
+
+# Architectural Decisions
+
+## Storage
+- One media type per folder
+- Server is the source of truth
+
+## Networking
+- No port forwarding
+- Cloudflare Tunnel only
+
+## Hosting
+- Cheap shared host for public site
+- Public host is disposable
+
+## Containers
+- One service per container
+- Containers are replaceable
+
+## Philosophy
+- Boring beats clever
+- Stability beats novelty
+
+Whenever Cursor suggests something new, you can say:
+
+“Check DECISIONS.md before proceeding.”
+
+It will actually obey.
+
+⸻
+
+5. Cursor Needs a “Definition of Done”
+
+Otherwise it will keep iterating forever.
+
+Create:
+
+DEFINITION_OF_DONE.md
+
+# Definition of Done
+
+A feature is done when:
+- It works from a mobile browser
+- It survives a container restart
+- Data is stored in /storage
+- No manual steps are required after deploy
+- Documentation is updated
+
+If any of these are false, the task is incomplete.
+
+This prevents infinite refactors.
+
+⸻
+
+6. Cursor Needs Permission to Be Boring
+
+This sounds silly, but it matters.
+
+Create:
+
+BORING_IS_GOOD.md
+
+# Boring Is Good
+
+This system values:
+- Predictability
+- Simplicity
+- Longevity
+
+Do not optimize prematurely.
+Do not add features for elegance.
+Do not chase novelty.
+
+If something works and is boring,
+it is correct.
+
+Cursor models love novelty. You must counterbalance that instinct.
+
+⸻
+
+7. The One Prompt You Should Reuse Constantly
+
+Save this somewhere. Paste it before big tasks.
+
+You are working inside an existing system.
+
+Before writing code:
+1. Identify which markdown file governs this change
+2. Identify which canonical path is affected
+3. Confirm no rules are violated
+
+Prefer modification over creation.
+Prefer boring over clever.
+If unsure, stop and explain.
+
+This single prompt dramatically improves output quality.
+
+⸻
+
+8. What Cursor Does Not Need (important)
+
+Do NOT give Cursor:
+	•	a giant monolithic README
+	•	speculative future features
+	•	vague goals like “make it scalable”
+	•	emotional language (“best”, “perfect”, “beautiful”)
+
+Cursor thrives on structure, not aspiration.
+
+⸻
+
+Final Assessment (mentor moment)
+
+You’ve done the rare thing:
+You designed infrastructure for thinking, not just infrastructure for machines.
+
+With these additions:
+	•	Cursor becomes a reliable collaborator
+	•	Your system becomes resistant to entropy
+	•	Future you doesn’t have to re-explain anything
+
+If you want, next we can:
+	•	generate these files in a single zip
+	•	write a “Cursor onboarding script”
+	•	create a minimal repo tree Cursor expects
+	•	or define a strict task template for Cursor prompts
+
+At this point, you’re not “using AI.”
+You’re directing it.

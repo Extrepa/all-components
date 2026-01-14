@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+    <circle xmlns="http://www.w3.org/2000/svg" cx="26" cy="24" r="6" fill="#020617" stroke="#e5e7eb" stroke-width="2"/>
+    <circle xmlns="http://www.w3.org/2000/svg" cx="36" cy="24" r="7" fill="#020617" stroke="#e5e7eb" stroke-width="2"/>
+    <circle xmlns="http://www.w3.org/2000/svg" cx="32" cy="30" r="6" fill="#020617" stroke="#e5e7eb" stroke-width="2"/>
+    <circle xmlns="http://www.w3.org/2000/svg" cx="28" cy="36" r="2" fill="#e5e7eb"/>
+    <circle xmlns="http://www.w3.org/2000/svg" cx="24" cy="40" r="1.5" fill="#e5e7eb"/>
+  </svg>

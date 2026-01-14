@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_prop" data-cat="prop" data-name="errl_prop_luckyenvelope_lunarnewyear">
+  <rect width="64" height="64" rx="12" fill="none"/>
+  <rect x="22" y="16" width="20" height="32" rx="2" fill="#dc2626" stroke="#991b1b" stroke-width="2"/>
+  <path d="M22 18l10 10 10-10" fill="#fbbf24" stroke="#fbbf24" stroke-width="2"/>
+  <circle cx="32" cy="34" r="4" fill="#fbbf24"/>
+  <path d="M32 30v-4" stroke="#fbbf24" stroke-width="2" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,8 @@
+<!-- errl_concert_stage_side_banner_02 – alternate color (env/fx) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_concert" data-cat="env" data-name="errl_concert_stage_side_banner_02">
+  <g fill="none">
+    <rect x="44" y="18" width="6" height="26" rx="2" fill="#111827"/>
+    <path d="M46 20 H48 V40 L46 42 L44 40 V20 Z" fill="#fb7185"/>
+  </g>
+</svg>

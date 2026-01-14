@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5be0ff" />
+      <stop offset="100%" stop-color="#285769" />
+    </linearGradient>
+  </defs>
+  <rect id="BG_sky" x="0" y="0" width="1024" height="1024" fill="url(#sky)" />
+  <g id="BG_hills" fill="#2a596e" opacity="0.6">
+    <path d="M0 720c140-80 260-80 420-10 180 80 280 80 604 0V1024H0z" />
+  </g>
+  <g id="BG_crowd" fill="#2a596e" opacity="0.28">
+    <path d="M0 760c120-30 240-26 360 0 160 36 320 32 664-20V840H0z" />
+  </g>
+</svg>

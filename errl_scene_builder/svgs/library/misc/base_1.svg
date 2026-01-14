@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" id="icon-88yxxl0am">
+  <g xmlns="http://www.w3.org/2000/svg" fill="none">
+    <!-- base -->
+    <rect x="28" y="40" width="8" height="4" rx="1.5" fill="#020617"/>
+    <!-- glowing column -->
+    <rect x="29" y="22" width="6" height="18" rx="3" fill="#22d3ee" opacity="0.9"/>
+    <rect x="30" y="24" width="4" height="14" rx="2" fill="#e0f2fe" opacity="0.9"/>
+    <ellipse cx="32" cy="50" rx="9" ry="2.6" fill="#020617" opacity="0.5"/>
+  </g>
+</svg>

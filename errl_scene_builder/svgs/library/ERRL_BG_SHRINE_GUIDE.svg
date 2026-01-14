@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <rect x="0" y="0" width="1024" height="1024" fill="none" />
+  <g id="guide" fill="none" stroke="#5be0ff" stroke-width="6" stroke-dasharray="12 12" opacity="0.5">
+    <rect x="420" y="420" width="184" height="220" rx="30" />
+    <rect x="360" y="640" width="304" height="140" rx="26" />
+    <rect x="200" y="620" width="140" height="120" rx="16" />
+    <rect x="684" y="620" width="140" height="120" rx="16" />
+  </g>
+  <text x="432" y="508" font-size="32" fill="#5be0ff" opacity="0.6">MAIN ERRL</text>
+  <text x="396" y="706" font-size="28" fill="#5be0ff" opacity="0.6">PEDESTAL</text>
+  <text x="210" y="690" font-size="24" fill="#5be0ff" opacity="0.6">CANDLE</text>
+  <text x="700" y="690" font-size="24" fill="#5be0ff" opacity="0.6">VIAL</text>
+</svg>

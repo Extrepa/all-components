@@ -1,0 +1,15 @@
+<!-- errl_concert_amp_stack_01 – head + cab stack (prop/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_concert" data-cat="prop" data-name="errl_concert_amp_stack_01">
+  <g fill="none">
+    <!-- cab -->
+    <rect x="22" y="30" width="20" height="14" rx="2" fill="#020617"/>
+    <circle cx="28" cy="37" r="3" fill="#111827"/>
+    <circle cx="36" cy="37" r="3" fill="#111827"/>
+    <!-- head -->
+    <rect x="24" y="26" width="16" height="4" rx="2" fill="#111827"/>
+    <circle cx="27" cy="28" r="0.9" fill="#22d3ee"/>
+    <circle cx="31" cy="28" r="0.9" fill="#a855f7"/>
+    <circle cx="35" cy="28" r="0.9" fill="#facc15"/>
+  </g>
+</svg>

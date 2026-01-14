@@ -1,0 +1,11 @@
+<!-- Example 160 | errl_fest_badge_staff_lanyard_01 (ui) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="ui" data-name="errl_fest_badge_staff_lanyard_01">
+  <g fill="none">
+    <path d="M24 14 L32 24 L40 14"
+      stroke="#e5e7eb" stroke-width="1.6" stroke-linecap="round"/>
+    <rect x="26" y="24" width="12" height="14" rx="2" fill="#111827"/>
+    <rect x="28" y="26" width="8" height="6" rx="1.5" fill="#fb7185"/>
+    <rect x="28" y="34" width="8" height="2.5" rx="1.2" fill="#0f172a"/>
+  </g>
+</svg>

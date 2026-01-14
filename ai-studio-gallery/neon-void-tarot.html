@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neon Void Tarot</title>
+<style>
+    :root {
+        --neon-cyan: #0ff;
+        --neon-pink: #f0f;
+        --neon-purple: #bd00ff;
+        --dark-bg: #050505;
+        --card-width: 120px;
+        --card-height: 180px;
+    }
+
+    * { box-sizing: border-box; user-select: none; }
+
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: #000;
+        color: var(--neon-cyan);
+        font-family: 'Courier New', Courier, monospace;
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+    }
+
+    /* 4:3 Aspect Ratio Container */
+    #app-container {
+        width: 100vmin;
+        height: 75vmin; /* 4:3 ratio based on width */
+        max-width: 1024px;
+        max-height: 768px;
+        position: relative;
+        background: var(--dark-bg);
+        border: 2px solid var(--neon-purple);
+        box-shadow: 0 0 20px var(--neon-purple), inset 0 0 50px rgba(0,0,0,0.8);
+        overflow: hidden;
+        perspective: 1000px;
+    }
+
+    /* Cyber Grid Background */
+    .grid-bg {
+        position: absolute;
+        top: -50%; left: -50%; width: 200%; height: 200%;
+        background-image: 
+            linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 0, 255, 0.1) 1px, transparent 1px);
+        background-size: 40px 40px;
+        transform: perspective(500px) rotateX(60deg) translateY(0);
+        animation: grid-move 20s linear infinite;
+        z-index: 0;
+        pointer-events: none;
+    }
+
+    @keyframes grid-move {
+        0% { transform: perspective(500px) rotateX(60deg) translateY(0); }
+        100% { transform: perspective(500px) rotateX(60deg) translateY(40px); }
+    }
+
+    /* UI Overlay */
+    .ui-layer {
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        z-index: 100;
+        pointer-events: none;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 20px;
+    }
+
+    h1 {
+        margin: 0;
+        font-size: 2rem;
+        text-shadow: 2px 2px var(--neon-pink), -2px -2px var(--neon-cyan);
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        animation: glitch-text 3s infinite alternate;
+    }
+
+    .controls {
+        pointer-events: auto;
+        display: flex;
+        gap: 15px;
+        align-self: center;
+    }
+
+    button {
+        background: transparent;
+        border: 1px solid var(--neon-cyan);
+        color: var(--neon-cyan);
+        padding: 10px 20px;
+        font-family: inherit;
+        font-weight: bold;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: 0.3s;
+        box-shadow: 0 0 5px var(--neon-cyan);
+    }
+
+    button:hover {
+        background: var(--neon-cyan);
+        color: #000;
+        box-shadow: 0 0 15px var(--neon-cyan);
+    }
+
+    button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        border-color: #555;
+        color: #555;
+        box-shadow: none;
+    }
+
+    /* Message Log */
+    #log {
+        position: absolute;
+        bottom: 80px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80%;
+        text-align: center;
+        background: rgba(0, 0, 0, 0.7);
+        border: 1px dashed var(--neon-pink);
+        padding: 10px;
+        color: var(--neon-pink);
+        font-size: 0.9rem;
+        text-shadow: 0 0 5px var(--neon-pink);
+        opacity: 0;
+        transition: opacity 0.5s;
+    }
+    #log.visible { opacity: 1; }
+
+    /* The Deck Area */
+    #void-space {
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        z-index: 10;
+        transform-style: preserve-3d;
+    }
+
+    /* Card Styling */
+    .card-wrapper {
+        position: absolute;
+        width: var(--card-width);
+        height: var(--card-height);
+        /* Centered initially */
+        left: calc(50% - var(--card-width)/2);
+        top: calc(50% - var(--card-height)/2);
+        perspective: 1000px;
+        transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.27);
+        cursor: pointer;
+    }
+
+    .card {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        transform-style: preserve-3d;
+        transition: transform 0.8s;
+        box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+
+    .card.flipped {
+        transform: rotateY(180deg);
+    }
+
+    .face {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        border: 2px solid;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: rgba(10, 10, 10, 0.95);
+        overflow: hidden;
+    }
+
+    /* Back of Card */
+    .face.back {
+        border-color: var(--neon-purple);
+        background-image: 
+            radial-gradient(circle at 50% 50%, transparent 20%, rgba(0,0,0,0.8) 120%),
+            repeating-linear-gradient(45deg, #1a1a1a 0, #1a1a1a 10px, #222 10px, #222 20px);
+    }
+    
+    .face.back::after {
+        content: "∅";
+        font-size: 3rem;
+        color: var(--neon-purple);
+        text-shadow: 0 0 10px var(--neon-purple);
+        animation: pulse 2s infinite;
+    }
+
+    /* Front of Card */
+    .face.front {
+        transform: rotateY(180deg);
+        border-color: var(--neon-cyan);
+        color: var(--neon-cyan);
+        background: black;
+        box-shadow: inset 0 0 20px var(--neon-cyan);
+    }
+
+    .card-emoji {
+        font-size: 3rem;
+        filter: drop-shadow(0 0 5px var(--neon-cyan));
+        animation: float-emoji 3s ease-in-out infinite;
+    }
+
+    .card-title {
+        margin-top: 10px;
+        font-size: 0.8rem;
+        font-weight: bold;
+        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .card-id {
+        position: absolute;
+        top: 5px; right: 5px;
+        font-size: 0.6rem;
+        opacity: 0.7;
+    }
+
+    /* Holographic Glitch Effect on Front */
+    .hologram-overlay {
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: linear-gradient(180deg, rgba(0,255,255,0) 0%, rgba(0,255,255,0.1) 50%, rgba(0,255,255,0) 100%);
+        background-size: 100% 200%;
+        animation: scanline 2s linear infinite;
+        pointer-events: none;
+        mix-blend-mode: screen;
+    }
+
+    /* Animations */
+    @keyframes float-emoji {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-5px); }
+    }
+
+    @keyframes pulse {
+        0%, 100% { opacity: 0.5; transform: scale(1); }
+        50% { opacity: 1; transform: scale(1.1); }
+    }
+
+    @keyframes scanline {
+        0% { background-position: 0% 0%; }
+        100% { background-position: 0% 200%; }
+    }
+
+    @keyframes glitch-text {
+        0% { opacity: 1; transform: translate(0); }
+        2% { opacity: 0.8; transform: translate(2px, 0); }
+        4% { opacity: 1; transform: translate(-2px, 0); }
+        6% { opacity: 1; transform: translate(0); }
+        100% { opacity: 1; transform: translate(0); }
+    }
+
+    /* Particle Dust */
+    .particle {
+        position: absolute;
+        background: white;
+        border-radius: 50%;
+        opacity: 0.5;
+        pointer-events: none;
+    }
+
+</style>
+</head>
+<body>
+
+<div id="app-container">
+    <div class="grid-bg"></div>
+    
+    <div id="void-space">
+        <!-- Cards injected here -->
+    </div>
+
+    <div class="ui-layer">
+        <h1>Net // Tarot</h1>
+        
+        <div id="log">Awaiting input...</div>
+
+        <div class="controls">
+            <button id="btn-shuffle" onclick="deck.shuffle()">Initialize Shuffle</button>
+            <button id="btn-reset" onclick="deck.reset()" disabled>Reset Void</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Tarot Data: Cyberpunk Theme
+    const TAROT_DATA = [
+        { id: '00', name: 'The Null Pointer', emoji: '🤡', desc: "New beginnings, infinite potential, reckless curiosity." },
+        { id: '01', name: 'The Admin', emoji: '👑', desc: "Authority, structure, root access controlled." },
+        { id: '02', name: 'The Firewall', emoji: '🛡️', desc: "Intuition, secrets, hidden barriers." },
+        { id: '03', name: 'The Mainframe', emoji: '🏢', desc: "Fertility, creativity, abundance of data." },
+        { id: '04', name: 'The Override', emoji: '🕹️', desc: "Control, willpower, victory through code." },
+        { id: '05', name: 'The Encryptor', emoji: '🕯️', desc: "Soul searching, introspection, privacy." },
+        { id: '06', name: 'The Glitch', emoji: '⚡', desc: "Sudden change, upheaval, system crash." },
+        { id: '07', name: 'The Singularity', emoji: '🌍', desc: "Completion, integration, accomplishment." },
+        { id: '08', name: 'The Cyborg', emoji: '🤖', desc: "Balance between flesh and steel." },
+        { id: '09', name: 'The Update', emoji: '💀', desc: "Endings, transition, eliminating obsolescence." }
+    ];
+
+    class CyberDeck {
+        constructor() {
+            this.container = document.getElementById('void-space');
+            this.logEl = document.getElementById('log');
+            this.btnShuffle = document.getElementById('btn-shuffle');
+            this.btnReset = document.getElementById('btn-reset');
+            this.cards = [];
+            this.isShuffling = false;
+            this.active = false;
+            
+            this.initParticles();
+            this.spawnCards();
+            this.startZeroGravity();
+        }
+
+        log(msg) {
+            this.logEl.innerText = `> ${msg}`;
+            this.logEl.classList.add('visible');
+            // Glitch effect on text update
+            this.logEl.style.textShadow = `${Math.random()*4-2}px 0 var(--neon-cyan)`;
+            setTimeout(() => this.logEl.style.textShadow = '0 0 5px var(--neon-pink)', 200);
+        }
+
+        initParticles() {
+            for(let i=0; i<50; i++) {
+                let p = document.createElement('div');
+                p.className = 'particle';
+                let size = Math.random() * 2;
+                p.style.width = size + 'px';
+                p.style.height = size + 'px';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.top = Math.random() * 100 + '%';
+                p.style.animation = `float-emoji ${10 + Math.random()*20}s infinite linear`;
+                this.container.appendChild(p);
+            }
+        }
+
+        spawnCards() {
+            TAROT_DATA.forEach((data, index) => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'card-wrapper';
+                wrapper.dataset.index = index;
+                
+                // Random initial float offset variables for CSS or JS usage
+                wrapper.style.zIndex = Math.floor(Math.random() * 100);
+
+                const card = document.createElement('div');
+                card.className = 'card';
+
+                // Front Face
+                const front = document.createElement('div');
+                front.className = 'face front';
+                front.innerHTML = `
+                    <div class="hologram-overlay"></div>
+                    <span class="card-id">0x${data.id}</span>
+                    <div class="card-emoji">${data.emoji}</div>
+                    <div class="card-title">${data.name}</div>
+                `;
+
+                // Back Face
+                const back = document.createElement('div');
+                back.className = 'face back';
+                
+                card.appendChild(front);
+                card.appendChild(back);
+                wrapper.appendChild(card);
+                
+                // Event Listener
+                wrapper.addEventListener('click', () => this.revealCard(wrapper, data));
+
+                this.container.appendChild(wrapper);
+                
+                // Store state
+                this.cards.push({
+                    element: wrapper,
+                    data: data,
+                    x: (Math.random() - 0.5) * 80, // % offset from center
+                    y: (Math.random() - 0.5) * 60,
+                    z: (Math.random() - 0.5) * 200,
+                    rx: Math.random() * 30 - 15,
+                    ry: Math.random() * 30 - 15,
+                    rz: Math.random() * 30 - 15,
+                    vx: (Math.random() - 0.5) * 0.1,
+                    vy: (Math.random() - 0.5) * 0.1,
+                    vz: (Math.random() - 0.5) * 0.5,
+                    vrx: (Math.random() - 0.5) * 0.2,
+                    vry: (Math.random() - 0.5) * 0.2,
+                    vrz: (Math.random() - 0.5) * 0.1,
+                    flipped: false
+                });
+            });
+        }
+
+        startZeroGravity() {
+            const animate = () => {
+                if (!this.isShuffling) {
+                    this.cards.forEach(c => {
+                        // Apply velocity
+                        c.x += c.vx;
+                        c.y += c.vy;
+                        c.z += c.vz;
+                        c.rx += c.vrx;
+                        c.ry += c.vry;
+                        c.rz += c.vrz;
+
+                        // Bounds checking (Soft bounce)
+                        if (c.x > 40 || c.x < -40) c.vx *= -1;
+                        if (c.y > 30 || c.y < -30) c.vy *= -1;
+                        if (c.z > 200 || c.z < -200) c.vz *= -1;
+
+                        // Apply transform
+                        c.element.style.transform = `
+                            translate3d(${c.x}vmin, ${c.y}vmin, ${c.z}px) 
+                            rotateX(${c.rx}deg) 
+                            rotateY(${c.ry}deg) 
+                            rotateZ(${c.rz}deg)
+                        `;
+                    });
+                }
+                requestAnimationFrame(animate);
+            };
+            animate();
+        }
+
+        shuffle() {
+            if (this.isShuffling) return;
+            this.isShuffling = true;
+            this.btnShuffle.disabled = true;
+            this.log("PROTOCOL: RANDOMIZE...");
+
+            // 1. Gather to center
+            this.cards.forEach(c => {
+                c.element.style.transition = "transform 0.5s ease-in";
+                c.element.style.transform = `translate3d(0, 0, -100px) rotateY(0) rotateX(0)`;
+                // Reset internal positions
+                c.x = 0; c.y = 0; c.z = -100;
+            });
+
+            // 2. Rapid Shuffle Animation
+            setTimeout(() => {
+                let shuffles = 0;
+                const interval = setInterval(() => {
+                    this.cards.forEach(c => {
+                        const rZ = Math.random() * 5; // Slight stack wobble
+                        const z = -100 + (Math.random() * 50);
+                        c.element.style.transform = `translate3d(0, 0, ${z}px) rotateZ(${rZ}deg)`;
+                        c.element.style.zIndex = Math.floor(Math.random() * 50);
+                    });
+                    shuffles++;
+                    if (shuffles > 10) {
+                        clearInterval(interval);
+                        this.disperse();
+                    }
+                }, 100);
+            }, 600);
+        }
+
+        disperse() {
+            this.log("DISTRIBUTING DATA PACKETS...");
+            
+            // Randomize array order logic (Fisher-Yates)
+            // Just for data linking if we were drawing specific slots, 
+            // but here we just float them back out.
+
+            this.cards.forEach(c => {
+                // New random velocities and positions
+                c.x = (Math.random() - 0.5) * 60;
+                c.y = (Math.random() - 0.5) * 40;
+                c.z = (Math.random() - 0.5) * 100;
+                c.rx = Math.random() * 20 - 10;
+                c.ry = Math.random() * 20 - 10;
+                c.rz = Math.random() * 360; // Spin them out
+
+                c.element.style.transition = "transform 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.27)";
+                c.element.style.transform = `
+                    translate3d(${c.x}vmin, ${c.y}vmin, ${c.z}px) 
+                    rotateX(${c.rx}deg) 
+                    rotateY(${c.ry}deg) 
+                    rotateZ(${c.rz}deg)
+                `;
+            });
+
+            setTimeout(() => {
+                this.isShuffling = false;
+                this.active = true;
+                this.log("SYSTEM READY. SELECT PACKET.");
+                this.btnReset.disabled = false;
+                
+                // Remove the long transition for the physics loop
+                this.cards.forEach(c => {
+                    c.element.style.transition = "transform 0.1s linear"; 
+                });
+            }, 1500);
+        }
+
+        revealCard(element, data) {
+            if (this.isShuffling || !this.active) return;
+            
+            const cardObj = this.cards.find(c => c.element === element);
+            if (cardObj.flipped) return;
+
+            cardObj.flipped = true;
+            this.log(`DECRYPTING: ${data.name}...`);
+            
+            // Freeze movement for this card, bring to front center
+            cardObj.vx = 0; cardObj.vy = 0; cardObj.vz = 0;
+            cardObj.vrx = 0; cardObj.vry = 0; cardObj.vrz = 0;
+
+            // Transition
+            element.style.transition = "transform 1s ease";
+            element.style.zIndex = 999;
+            
+            // Move to center front
+            element.style.transform = `translate3d(0, 0, 200px) rotateX(0) rotateY(180deg) rotateZ(0)`;
+            
+            // Update physics object so it stays there if loop runs
+            cardObj.x = 0; cardObj.y = 0; cardObj.z = 200;
+            cardObj.rx = 0; cardObj.ry = 180; cardObj.rz = 0;
+
+            element.querySelector('.card').classList.add('flipped');
+
+            // Show description after flip
+            setTimeout(() => {
+                this.log(`>> ${data.desc}`);
+            }, 1000);
+        }
+
+        reset() {
+            // Flip all back
+            this.cards.forEach(c => {
+                c.flipped = false;
+                c.element.querySelector('.card').classList.remove('flipped');
+                c.element.style.zIndex = Math.floor(Math.random() * 100);
+            });
+            
+            this.active = false;
+            this.btnReset.disabled = true;
+            this.btnShuffle.disabled = false;
+            this.log("MEMORY CLEARED.");
+            
+            // Small reshuffle to reset positions
+            this.cards.forEach(c => {
+                c.vx = (Math.random() - 0.5) * 0.1;
+                c.vy = (Math.random() - 0.5) * 0.1;
+                c.vrz = (Math.random() - 0.5) * 0.1;
+            });
+        }
+    }
+
+    // Initialize
+    const deck = new CyberDeck();
+
+</script>
+</body>
+</html>

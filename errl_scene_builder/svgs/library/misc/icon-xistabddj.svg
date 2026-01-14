@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" id="icon-xistabddj">
+  <g xmlns="http://www.w3.org/2000/svg" fill="none">
+    <path d="M18 24 C24 28 40 28 46 24" stroke="#e5e7eb" stroke-width="1.4" stroke-linecap="round"/>
+    <circle cx="20" cy="26" r="1.2" fill="#facc15"/>
+    <circle cx="27" cy="27" r="1.2" fill="#22d3ee"/>
+    <circle cx="34" cy="27" r="1.2" fill="#a855f7"/>
+    <circle cx="41" cy="26" r="1.2" fill="#fb7185"/>
+  </g>
+</svg>

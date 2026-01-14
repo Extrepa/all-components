@@ -1,0 +1,16 @@
+<!-- 80) errl_woods_owl_01 – round owl on stump (char/prop) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="char" data-name="errl_woods_owl_01">
+  <g fill="none">
+    <!-- stump -->
+    <rect x="28" y="38" width="8" height="8" rx="2" fill="#78350f"/>
+    <!-- body -->
+    <circle cx="32" cy="30" r="6" fill="#111827"/>
+    <!-- face -->
+    <circle cx="30" cy="29" r="1.4" fill="#e5e7eb"/>
+    <circle cx="34" cy="29" r="1.4" fill="#e5e7eb"/>
+    <circle cx="30" cy="29" r="0.6" fill="#020617"/>
+    <circle cx="34" cy="29" r="0.6" fill="#020617"/>
+    <path d="M30 32 L32 33 L34 32" stroke="#facc15" stroke-width="1.2" stroke-linecap="round"/>
+  </g>
+</svg>

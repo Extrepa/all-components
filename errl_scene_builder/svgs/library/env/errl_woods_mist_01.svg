@@ -1,0 +1,8 @@
+<!-- 88) errl_woods_mist_01 – low ground fog band (fx/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="fx" data-name="errl_woods_mist_01">
+  <g fill="none">
+    <ellipse cx="32" cy="44" rx="18" ry="4" fill="#e5e7eb" opacity="0.35"/>
+    <ellipse cx="32" cy="47" rx="16" ry="3.2" fill="#e5e7eb" opacity="0.3"/>
+  </g>
+</svg>

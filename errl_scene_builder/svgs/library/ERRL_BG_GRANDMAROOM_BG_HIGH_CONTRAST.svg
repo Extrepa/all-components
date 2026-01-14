@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <pattern id="wallpaper" x="0" y="0" width="80" height="80" patternUnits="userSpaceOnUse">
+      <rect x="0" y="0" width="80" height="80" fill="#f8f5ff" />
+      <path d="M40 10l10 16-10 16-10-16z" fill="none" stroke="#ffe19c" stroke-width="4" />
+      <circle cx="20" cy="60" r="6" fill="none" stroke="#ffa9e1" stroke-width="3" />
+      <circle cx="60" cy="60" r="6" fill="none" stroke="#ffa9e1" stroke-width="3" />
+    </pattern>
+  </defs>
+  <rect id="BG_wall" x="0" y="0" width="1024" height="824" fill="url(#wallpaper)" />
+  <rect id="BG_baseboard" x="0" y="824" width="1024" height="28" fill="#ffe19c" stroke="#64646e" stroke-width="6" />
+  <rect id="BG_floor" x="0" y="852" width="1024" height="172" fill="#ffe19c" opacity="0.8" />
+</svg>

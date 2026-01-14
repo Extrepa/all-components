@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nexus // Menger Void</title>
+    <style>
+        body { margin: 0; background: #000; overflow: hidden; }
+        canvas { display: block; filter: contrast(1.2) brightness(1.1); }
+        /* The Tracer Effect: Using a blend mode on a semi-transparent overlay */
+        #ui {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #0ff;
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px #f0f;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="ui">Fractal Depth: Recursive // Status: Hyper-Aware</div>
+    <canvas id="canvas"></canvas>
+
+<script type="glsl" id="vert">
+    attribute vec2 position;
+    void main() {
+        gl_Position = vec4(position, 0.0, 1.0);
+    }
+</script>
+
+<script type="glsl" id="frag">
+    precision highp float;
+    uniform float time;
+    uniform vec2 resolution;
+
+    // The DNA: Menger Sponge SDF
+    float sdBox(vec3 p, vec3 b) {
+        vec3 q = abs(p) - b;
+        return length(max(q, 0.0)) + min(max(q.x, max(q.y, q.z)), 0.0);
+    }
+
+    float map(vec3 p) {
+        // Spatial Repetition (The Recursive Loop)
+        p.z = mod(p.z, 4.0) - 2.0;
+        p.xy = mod(p.xy, 4.0) - 2.0;
+
+        float d = sdBox(p, vec3(1.0));
+        
+        // Fractal Iterations
+        float s = 1.0;
+        for(int m=0; m<3; m++) {
+            vec3 a = mod(p * s, 2.0) - 1.0;
+            s *= 3.0;
+            vec3 r = abs(1.0 - 3.0 * abs(a));
+            float da = max(r.x, r.y);
+            float db = max(r.y, r.z);
+            float dc = max(r.z, r.x);
+            float c = (min(da, min(db, dc)) - 1.0) / s;
+            d = max(d, c);
+        }
+        return d;
+    }
+
+    void main() {
+        vec2 uv = (gl_FragCoord.xy - 0.5 * resolution.xy) / resolution.y;
+        vec3 ro = vec3(0.0, 0.0, time * 2.0); // Camera movement
+        vec3 rd = normalize(vec3(uv, 1.0));
+        
+        // Raymarching
+        float t = 0.0;
+        for(int i=0; i<64; i++) {
+            float d = map(ro + rd * t);
+            if(d < 0.001 || t > 20.0) break;
+            t += d;
+        }
+
+        vec3 p = ro + rd * t;
+        vec3 col = vec3(0.0);
+
+        if(t < 20.0) {
+            // Metallic Oil-Slick Coloring (Chromatic Aberration)
+            vec3 normal = normalize(vec3(
+                map(p + vec3(0.01, 0, 0)) - map(p - vec3(0.01, 0, 0)),
+                map(p + vec3(0, 0.01, 0)) - map(p - vec3(0, 0.01, 0)),
+                map(p + vec3(0, 0, 0.01)) - map(p - vec3(0, 0, 0.01))
+            ));
+            
+            float colorShift = sin(p.z * 0.5 + time);
+            col = 0.5 + 0.5 * cos(time + normal.xyy + vec3(0, 2, 4));
+            col *= exp(-0.2 * t); // Fog for fractal depth
+        }
+
+        gl_FragColor = vec4(col, 1.0);
+    }
+</script>
+
+<script>
+    const canvas = document.getElementById('canvas');
+    const gl = canvas.getContext('webgl', { preserveDrawingBuffer: true });
+
+    function createShader(gl, type, source) {
+        const shader = gl.createShader(type);
+        gl.shaderSource(shader, source);
+        gl.compileShader(shader);
+        return shader;
+    }
+
+    const program = gl.createProgram();
+    gl.attachShader(program, createShader(gl, gl.VERTEX_SHADER, document.getElementById('vert').text));
+    gl.attachShader(program, createShader(gl, gl.FRAGMENT_SHADER, document.getElementById('frag').text));
+    gl.linkProgram(program);
+    gl.useProgram(program);
+
+    const vertices = new Float32Array([-1,-1, 1,-1, -1,1, -1,1, 1,-1, 1,1]);
+    const buffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+    gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+
+    const pos = gl.getAttribLocation(program, "position");
+    gl.enableVertexAttribArray(pos);
+    gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+
+    const timeLoc = gl.getUniformLocation(program, "time");
+    const resLoc = gl.getUniformLocation(program, "resolution");
+
+    function render(now) {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        gl.viewport(0, 0, canvas.width, canvas.height);
+        
+        gl.uniform1f(timeLoc, now * 0.001);
+        gl.uniform2f(resLoc, canvas.width, canvas.height);
+        
+        // The Tracer Logic: Don't fully clear the buffer or use a semi-transparent overlay
+        gl.drawArrays(gl.TRIANGLES, 0, 6);
+        requestAnimationFrame(render);
+    }
+    requestAnimationFrame(render);
+</script>
+</body>
+</html>

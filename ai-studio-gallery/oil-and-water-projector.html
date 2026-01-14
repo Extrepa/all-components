@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oil & Water Projector</title>
+    <style>
+        :root {
+            --frame-color: #2c2c2c;
+            --screen-bg: #f5f5e0;
+            --bg-color: #4a4a4a;
+            --text-color: #e0e0e0;
+            --shadow-color: rgba(0, 0, 0, 0.4);
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            background-color: var(--bg-color);
+            font-family: 'SF Mono', 'Courier New', monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-color);
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .projector {
+            width: 85vmin;
+            aspect-ratio: 4 / 3;
+            background-color: var(--frame-color);
+            border: 1.5vmin solid #1a1a1a;
+            border-radius: 1vmin;
+            box-shadow: 
+                inset 0 0 2vmin rgba(0,0,0,0.5),
+                0 0.5vmin 1vmin var(--shadow-color),
+                0 1.5vmin 3vmin var(--shadow-color);
+            padding: 3vmin;
+            box-sizing: border-box;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .projector::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: -6vmin;
+            transform: translateY(-50%);
+            width: 4vmin;
+            height: 4vmin;
+            background: #ddd;
+            border-radius: 50%;
+            border: 0.5vmin solid #aaa;
+            box-shadow: 0 0 1vmin rgba(0,0,0,0.3);
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            background-color: var(--screen-bg);
+            box-shadow: inset 0 0 2vmin rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            /* Filter: Blur merges the shapes, Contrast sharpens the edges */
+            filter: blur(1.5vmin) contrast(20);
+            border-radius: 0.5vmin;
+        }
+
+        /* Vignette overlay needs to be outside the blur filter to remain sharp */
+        .vignette {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background-image: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.2) 100%);
+            z-index: 10;
+        }
+
+        .blob {
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-radius: 50%;
+            /* Multiply creates the dark overlap effect */
+            mix-blend-mode: multiply;
+            will-change: transform;
+        }
+        
+        .title-bar {
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 3vmin;
+            margin: 0;
+            font-weight: 500;
+            letter-spacing: 0.2vmin;
+        }
+        
+        p {
+            font-size: 1.8vmin;
+            margin: 0.5vmin 0 0;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="projector">
+            <div class="screen">
+                <div class="vignette"></div>
+                <!-- Blobs are created here by JavaScript -->
+            </div>
+        </div>
+        <div class="title-bar">
+            <h1>🎨 Oil & Water Projector</h1>
+            <p>Click or Tap on the screen to add drops</p>
+        </div>
+    </div>
+
+    <script>
+        const screen = document.querySelector('.screen');
+        
+        let blobs = [];
+        const COLORS = ['#ff0055', '#00e5a6', '#ffdd00', '#0099ff'];
+        const NUM_INITIAL_BLOBS = 6;
+        const MIN_RADIUS = 3; // in vmin
+        const MAX_RADIUS = 7; // in vmin
+        const MAX_BLOBS = 50; // Performance limit
+
+        let bounds;
+        let vminUnit;
+
+        class Blob {
+            constructor(x, y, rVmin, color) {
+                this.x = x;
+                this.y = y;
+                this.rVmin = rVmin;
+                this.rPx = 0; // Calculated in updateSize
+                
+                // Random velocity
+                this.vx = (Math.random() - 0.5) * 4;
+                this.vy = (Math.random() - 0.5) * 4;
+
+                this.el = document.createElement('div');
+                this.el.classList.add('blob');
+                this.el.style.background = color;
+                
+                this.updateSize();
+                screen.appendChild(this.el);
+            }
+
+            updateSize() {
+                // Recalculate pixel size based on current vmin
+                this.rPx = this.rVmin * vminUnit;
+                this.el.style.width = `${this.rPx * 2}px`;
+                this.el.style.height = `${this.rPx * 2}px`;
+            }
+
+            update(dt) {
+                // Normalize speed for 60fps
+                const speedFactor = dt / 16;
+                this.x += this.vx * speedFactor;
+                this.y += this.vy * speedFactor;
+
+                // Wall Collisions with position correction (prevents sticking)
+                if (this.x - this.rPx < 0) {
+                    this.x = this.rPx; 
+                    this.vx *= -0.9;
+                }
+                if (this.x + this.rPx > bounds.width) {
+                    this.x = bounds.width - this.rPx;
+                    this.vx *= -0.9;
+                }
+                if (this.y - this.rPx < 0) {
+                    this.y = this.rPx;
+                    this.vy *= -0.9;
+                }
+                if (this.y + this.rPx > bounds.height) {
+                    this.y = bounds.height - this.rPx;
+                    this.vy *= -0.9;
+                }
+            }
+
+            draw() {
+                // Use translate3d for GPU acceleration
+                // Note: We subtract rPx to center the div on the x/y coordinate
+                this.el.style.transform = `translate3d(${this.x - this.rPx}px, ${this.y - this.rPx}px, 0)`;
+            }
+        }
+
+        function handleCollisions() {
+            for (let i = 0; i < blobs.length; i++) {
+                for (let j = i + 1; j < blobs.length; j++) {
+                    const blobA = blobs[i];
+                    const blobB = blobs[j];
+
+                    const dx = blobB.x - blobA.x;
+                    const dy = blobB.y - blobA.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    const minDistance = blobA.rPx + blobB.rPx;
+
+                    // If overlapping
+                    if (distance < minDistance) {
+                        const angle = Math.atan2(dy, dx);
+                        const overlap = minDistance - distance;
+                        
+                        // Spring force to push them apart
+                        const force = overlap * 0.05; 
+
+                        const forceX = Math.cos(angle) * force;
+                        const forceY = Math.sin(angle) * force;
+                        
+                        // Mass-based reaction (larger blobs move less)
+                        const totalRadius = blobA.rPx + blobB.rPx;
+                        const ratioA = blobB.rPx / totalRadius;
+                        const ratioB = blobA.rPx / totalRadius;
+
+                        blobA.vx -= forceX * ratioA;
+                        blobA.vy -= forceY * ratioA;
+                        blobB.vx += forceX * ratioB;
+                        blobB.vy += forceY * ratioB;
+                    }
+                }
+            }
+        }
+
+        function createBlob(x, y) {
+            if (blobs.length >= MAX_BLOBS) {
+                // Remove the oldest blob
+                const oldBlob = blobs.shift();
+                oldBlob.el.remove();
+            }
+
+            const radiusVmin = MIN_RADIUS + Math.random() * (MAX_RADIUS - MIN_RADIUS);
+            const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+            blobs.push(new Blob(x, y, radiusVmin, color));
+        }
+        
+        function updateBounds() {
+            bounds = screen.getBoundingClientRect();
+            vminUnit = Math.min(window.innerWidth, window.innerHeight) / 100;
+            
+            // Update all blobs to match new pixel sizes
+            blobs.forEach(blob => {
+                // Scale position relative to new bounds
+                // (optional logic, but keeps blobs on screen during resize)
+                if (bounds.width > 0 && bounds.height > 0) {
+                     // Simple constraint to keep them inside if window shrinks
+                     blob.x = Math.min(blob.x, bounds.width);
+                     blob.y = Math.min(blob.y, bounds.height);
+                }
+                blob.updateSize();
+            });
+        }
+
+        function init() {
+            updateBounds();
+            for (let i = 0; i < NUM_INITIAL_BLOBS; i++) {
+                createBlob(
+                    bounds.width / 2 + (Math.random() - 0.5) * 50,
+                    bounds.height / 2 + (Math.random() - 0.5) * 50
+                );
+            }
+        }
+        
+        screen.addEventListener('click', (e) => {
+            const rect = screen.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            createBlob(x, y);
+        });
+
+        // Touch support
+        screen.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Prevent scrolling
+            const rect = screen.getBoundingClientRect();
+            const x = e.touches[0].clientX - rect.left;
+            const y = e.touches[0].clientY - rect.top;
+            createBlob(x, y);
+        }, { passive: false });
+        
+        let lastTime = performance.now();
+
+        function animate(currentTime) {
+            const dt = currentTime - lastTime;
+            lastTime = currentTime;
+
+            handleCollisions();
+
+            blobs.forEach(blob => {
+                blob.update(dt);
+                blob.draw();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', updateBounds);
+
+        init();
+        requestAnimationFrame(animate);
+    </script>
+</body>
+</html>

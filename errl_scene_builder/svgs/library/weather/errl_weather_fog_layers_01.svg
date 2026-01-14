@@ -1,0 +1,9 @@
+<!-- errl_weather_fog_layers_01 – stacked fog (fx/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_weather" data-cat="fx" data-name="errl_weather_fog_layers_01">
+  <g fill="none">
+    <ellipse cx="32" cy="36" rx="18" ry="4" fill="#e5e7eb" opacity="0.35"/>
+    <ellipse cx="32" cy="40" rx="16" ry="3.5" fill="#e5e7eb" opacity="0.3"/>
+    <ellipse cx="32" cy="44" rx="14" ry="3" fill="#e5e7eb" opacity="0.25"/>
+  </g>
+</svg>

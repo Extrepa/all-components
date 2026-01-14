@@ -1,0 +1,7 @@
+<!-- errl_ui_button_primary_01 – pill button base (ui) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_ui" data-cat="ui" data-name="errl_ui_button_primary_01">
+  <g fill="none">
+    <rect x="20" y="28" width="24" height="8" rx="4" fill="#22d3ee"/>
+  </g>
+</svg>

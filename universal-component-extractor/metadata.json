@@ -1,0 +1,5 @@
+{
+  "name": "Universal Component Extractor",
+  "description": "A universal tool to extract, clean, and recreate web components (HTML, React, Three.js, etc.) from any source code or data, with AI-powered explanations and live previews.",
+  "requestFramePermissions": []
+}

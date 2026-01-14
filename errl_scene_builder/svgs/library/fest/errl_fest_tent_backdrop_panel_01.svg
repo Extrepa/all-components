@@ -1,0 +1,10 @@
+<!-- Example 134 | errl_fest_tent_backdrop_panel_01 (env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="env" data-name="errl_fest_tent_backdrop_panel_01">
+  <g fill="none">
+    <rect x="16" y="22" width="32" height="20" rx="2" fill="#020617"/>
+    <rect x="18" y="24" width="28" height="16" rx="1.5" fill="#111827"/>
+    <circle cx="26" cy="32" r="4" fill="#22d3ee" opacity="0.8"/>
+    <circle cx="38" cy="30" r="3" fill="#fb7185" opacity="0.8"/>
+  </g>
+</svg>

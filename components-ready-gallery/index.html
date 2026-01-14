@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Components Ready - Gallery</title>
+  <style>
+    :root {
+      --bg: #0a0a12;
+      --panel: rgba(255, 255, 255, 0.05);
+      --panel-hover: rgba(255, 255, 255, 0.1);
+      --border: rgba(255, 255, 255, 0.1);
+      --text: #f0f0ff;
+      --muted: rgba(240, 240, 255, 0.6);
+      --accent: #7b5cff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 24px;
+      min-height: 100vh;
+    }
+    header {
+      max-width: 1400px;
+      margin: 0 auto 32px;
+      text-align: center;
+    }
+    h1 {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+    .subtitle {
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .controls {
+      max-width: 1400px;
+      margin: 0 auto 24px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .search {
+      flex: 1;
+      min-width: 200px;
+      max-width: 400px;
+      padding: 10px 16px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 14px;
+    }
+    .filter-btn {
+      padding: 10px 16px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+    .filter-btn:hover {
+      background: var(--panel-hover);
+    }
+    .filter-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+    .grid {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all 0.2s;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent);
+      background: var(--panel-hover);
+    }
+    .preview {
+      width: 100%;
+      height: 180px;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .preview iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      pointer-events: none;
+      transform: scale(0.5);
+      transform-origin: top left;
+      width: 200%;
+      height: 200%;
+    }
+    .card-info {
+      padding: 16px;
+    }
+    .card-name {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .card-category {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .empty {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Components Ready</h1>
+    <p class="subtitle">48 standalone visual component experiments</p>
+  </header>
+
+  <div class="controls">
+    <input type="text" class="search" id="search" placeholder="Search components...">
+    <button class="filter-btn active" data-category="all">All</button>
+    <button class="filter-btn" data-category="particles">Particles</button>
+    <button class="filter-btn" data-category="effects">Effects</button>
+    <button class="filter-btn" data-category="animations">Animations</button>
+    <button class="filter-btn" data-category="errl">Errl</button>
+    <button class="filter-btn" data-category="rainbow">Rainbow</button>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <script>
+    const components = [
+      { name: "Blue Lightning Ball Zap Rings", file: "BlueLightningBall_ZapRings.html", category: "effects" },
+      { name: "Collapsing Rainbow Flower", file: "CollapsingRainbowFlower.html", category: "animations" },
+      { name: "Generative Phyllotaxis Bloom", file: "GenerativePhyllotaxisBloom.html", category: "animations" },
+      { name: "Grandma's TV", file: "GradnmasTv_1.html", category: "effects" },
+      { name: "Huge Particles And Flower", file: "HugeParticlesAndFlower_Gemini.html", category: "particles" },
+      { name: "Infinite Rainbow Orbs", file: "InfiniteRainbowOrbs.html", category: "rainbow" },
+      { name: "Iridescent Rainbow Bubbles", file: "IridescentRainbowBubbles.html", category: "rainbow" },
+      { name: "Meatballs 2", file: "Meatballs_2.html", category: "particles" },
+      { name: "Meatballs 3", file: "Meatballs_3.html", category: "particles" },
+      { name: "Meatballs 5", file: "Meatballs_5.html", category: "particles" },
+      { name: "Oil Dropper", file: "OilDropper.html", category: "effects" },
+      { name: "Old School TV SVG Fade", file: "OldSchoolTV_SVG_Fade.html", category: "effects" },
+      { name: "Optical", file: "Optical.html", category: "effects" },
+      { name: "Orbiting Rings Particles Rainbow", file: "OrbitingRingsParticlesRainbow.html", category: "rainbow" },
+      { name: "Psychedelic Arm", file: "PsychedelicArm_Gemini.html", category: "animations" },
+      { name: "Rainbow Space Cones Balls", file: "RainbowSpaceCones_Balls.html", category: "rainbow" },
+      { name: "Rainbow Swirls Mandala", file: "RainbowSwirlsMandala.html", category: "rainbow" },
+      { name: "Real Clear Bubbles Falling", file: "RealClearBubblesFalling.html", category: "particles" },
+      { name: "Simpler Rainbow Swirls", file: "SimplerRainbowSwirls.html", category: "rainbow" },
+      { name: "Slowly Rising Bubbles", file: "SlowlyRisingBubbles.html", category: "particles" },
+      { name: "Spikey Head Spin", file: "SpikeyHeadSpin.html", category: "animations" },
+      { name: "Stretchy Rainbow Dough", file: "StretchyRainbowDough_Gemini.html", category: "rainbow" },
+      { name: "Subtle Rainbow Bubbles", file: "SuttleRainbowBubbles.html", category: "rainbow" },
+      { name: "Three.js Oil Dropper", file: "ThreejsOilDropper.html", category: "effects" },
+      { name: "Triple Set Squish Pretzel", file: "TripleSet_Squish_Pretzel.html", category: "animations" },
+      { name: "Trippy AF", file: "TrippyAF_Gemini.html", category: "effects" },
+      { name: "Trippy GUI Components", file: "TrippyGUIComponents.html", category: "effects" },
+      { name: "Trippy Neon Swirls", file: "TrippyNeonSwirls_Gemini.html", category: "effects" },
+      { name: "Trippy Purple Waves", file: "TrippyPurpleWaves_Gemini.html", category: "effects" },
+      { name: "Trippy Rainbow Spider Swirl", file: "TrippyRainbowSpiderSwirl.html", category: "rainbow" },
+      { name: "Trippy Rainbow Stick Ball", file: "TrippyRainbowStickBall.html", category: "rainbow" },
+      { name: "Trippy Tunnel Flying Space", file: "TrippyTunnelFlyingSpace.html", category: "effects" },
+      { name: "Errl Text", file: "Text/Errl_Text.html", category: "errl" },
+      { name: "Almost Errl 3", file: "Mini_Errls_Different_Kinds/Almost_Errl_3.html", category: "errl" },
+      { name: "Almost Errl Long Arms", file: "Mini_Errls_Different_Kinds/Almost_Errl_LongArms.html", category: "errl" },
+      { name: "Almost Errl Minecraft Square", file: "Mini_Errls_Different_Kinds/Almost_Errl_MinecraftSquare.html", category: "errl" },
+      { name: "Almost Bubble Errl", file: "Mini_Errls_Different_Kinds/AlmostBubbleErrl.html", category: "errl" },
+      { name: "Almost Errl 2", file: "Mini_Errls_Different_Kinds/AlmostErrl_2.html", category: "errl" },
+      { name: "Bouncey Errl", file: "Mini_Errls_Different_Kinds/BounceyErrl.html", category: "errl" },
+      { name: "Errl Dancefloor", file: "Mini_Errls_Different_Kinds/ErrlDancefloor_2.html", category: "errl" },
+      { name: "Errl Interactive Buddy", file: "Mini_Errls_Different_Kinds/ErrlInteractiveBuddy.html", category: "errl" },
+      { name: "Errl Mini Stretch", file: "Mini_Errls_Different_Kinds/ErrlMiniStretch.html", category: "errl" },
+      { name: "Errls Watching", file: "Mini_Errls_Different_Kinds/ErrlsWatching.html", category: "errl" },
+      { name: "Poi Spinning Errl", file: "Mini_Errls_Different_Kinds/PoiSpinningErrl.html", category: "errl" },
+      { name: "Split Follow Errl", file: "Mini_Errls_Different_Kinds/SplitFollowErrl.html", category: "errl" },
+      { name: "Voxel Errl", file: "Mini_Errls_Different_Kinds/VoxelErrl.html", category: "errl" },
+    ];
+
+    let currentCategory = 'all';
+    let searchTerm = '';
+
+    function renderGrid() {
+      const grid = document.getElementById('grid');
+      const filtered = components.filter(c => {
+        const matchCategory = currentCategory === 'all' || c.category === currentCategory;
+        const matchSearch = c.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                          c.file.toLowerCase().includes(searchTerm.toLowerCase());
+        return matchCategory && matchSearch;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '<div class="empty">No components found</div>';
+        return;
+      }
+
+      grid.innerHTML = filtered.map(c => `
+        <a href="${c.file}" class="card" data-category="${c.category}">
+          <div class="preview">
+            <iframe src="${c.file}" loading="lazy"></iframe>
+          </div>
+          <div class="card-info">
+            <div class="card-name">${c.name}</div>
+            <div class="card-category">${c.category}</div>
+          </div>
+        </a>
+      `).join('');
+    }
+
+    document.getElementById('search').addEventListener('input', (e) => {
+      searchTerm = e.target.value;
+      renderGrid();
+    });
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentCategory = btn.dataset.category;
+        renderGrid();
+      });
+    });
+
+    renderGrid();
+  </script>
+</body>
+</html>
+

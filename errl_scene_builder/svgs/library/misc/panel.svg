@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" id="icon-ns36xq3tb">
+  <g xmlns="http://www.w3.org/2000/svg" fill="none">
+    <rect x="18" y="32" width="28" height="12" rx="2" fill="#111827"/>
+    <!-- panel -->
+    <rect x="20" y="34" width="12" height="4" rx="1" fill="#020617"/>
+    <!-- indicator -->
+    <circle cx="36" cy="38" r="1.4" fill="#22d3ee"/>
+    <circle cx="40" cy="38" r="1.4" fill="#facc15"/>
+    <ellipse cx="32" cy="46" rx="16" ry="2.6" fill="#020617" opacity="0.45"/>
+  </g>
+</svg>

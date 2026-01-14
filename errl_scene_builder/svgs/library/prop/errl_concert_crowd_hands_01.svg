@@ -1,0 +1,9 @@
+<!-- errl_concert_crowd_hands_01 – raised arms cluster (fx/char-ish) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_concert" data-cat="fx" data-name="errl_concert_crowd_hands_01">
+  <g fill="none">
+    <path d="M18 42 V34 M22 42 V33 M28 42 V32 M34 42 V34 M40 42 V33"
+      stroke="#e5e7eb" stroke-width="2" stroke-linecap="round"/>
+    <path d="M16 44 H48" stroke="#020617" stroke-width="4" stroke-linecap="round"/>
+  </g>
+</svg>

@@ -1,0 +1,11 @@
+<!-- 30) errl_woods_flower_02 – tall wildflower stalk (prop) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="prop" data-name="errl_woods_flower_02">
+  <g fill="none">
+    <path d="M28 50 C29 44 30 40 32 36 C34 32 36 30 38 29"
+      stroke="#166534" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+    <circle cx="39" cy="28" r="1.8" fill="#fb7185"/>
+    <circle cx="37" cy="30.5" r="1.2" fill="#facc15"/>
+    <circle cx="41" cy="30.5" r="1.2" fill="#22d3ee"/>
+  </g>
+</svg>

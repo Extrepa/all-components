@@ -1,0 +1,8 @@
+<!-- errl_concert_stage_steps_side_01 – side stairs (env/prop) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_concert" data-cat="env" data-name="errl_concert_stage_steps_side_01">
+  <g fill="none">
+    <path d="M18 40 H26 V38 H20 V36 H26 V34 H22 V32"
+      stroke="#111827" stroke-width="2" stroke-linecap="square"/>
+  </g>
+</svg>

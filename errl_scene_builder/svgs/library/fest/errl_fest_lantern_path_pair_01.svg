@@ -1,0 +1,14 @@
+<!-- Example 163 | errl_fest_lantern_path_pair_01 (fx/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="fx" data-name="errl_fest_lantern_path_pair_01">
+  <g fill="none">
+    <!-- left -->
+    <rect x="20" y="30" width="2.6" height="10" rx="1.3" fill="#0f172a"/>
+    <rect x="18.4" y="27" width="6" height="4" rx="2" fill="#111827"/>
+    <circle cx="21.4" cy="29" r="1.4" fill="#facc15"/>
+    <!-- right -->
+    <rect x="41" y="30" width="2.6" height="10" rx="1.3" fill="#0f172a"/>
+    <rect x="39.4" y="27" width="6" height="4" rx="2" fill="#111827"/>
+    <circle cx="42.4" cy="29" r="1.4" fill="#22d3ee"/>
+  </g>
+</svg>

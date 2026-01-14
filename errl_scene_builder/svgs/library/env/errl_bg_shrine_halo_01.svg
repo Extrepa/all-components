@@ -1,0 +1,10 @@
+<!-- errl_bg_shrine_halo_01 – dark wall with central halo (env/bg/fx) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_bg" data-cat="env" data-name="errl_bg_shrine_halo_01">
+  <g fill="none">
+    <rect x="8" y="8" width="48" height="48" rx="10" fill="#020617"/>
+    <circle cx="32" cy="26" r="10" fill="#22d3ee" opacity="0.18"/>
+    <circle cx="32" cy="26" r="5.5" stroke="#22d3ee" stroke-width="1.6" opacity="0.8"/>
+    <rect x="18" y="36" width="28" height="8" rx="3" fill="#0f172a"/>
+  </g>
+</svg>

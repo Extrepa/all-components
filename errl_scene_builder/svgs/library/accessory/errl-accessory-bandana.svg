@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <g id="bandana" fill="none" stroke="#0e0b1e" stroke-width="14" stroke-linejoin="round">
+    <path fill="#ff6f7d" d="M 210 500 C 360 400 540 380 760 430 L 730 500 C 566 486 420 500 270 540 Z"/>
+    <path fill="#ff9eb3" d="M 720 428 C 752 404 788 396 824 402 C 804 430 786 460 774 490 L 724 500 Z"/>
+    <path fill="#ff6f7d" d="M 216 542 C 240 562 268 582 290 612 C 254 606 224 596 198 582 Z"/>
+  </g>
+</svg>

@@ -1,0 +1,109 @@
+{
+  "minimap": [
+    {
+      "file": "errl_fest_gate_icon_minimap_01.svg",
+      "logicalName": "errl_fest_gate_icon_minimap_01",
+      "path": "svgs/library/fest/errl_fest_gate_icon_minimap_01.svg",
+      "kind": "gate",
+      "tags": [
+        "minimap",
+        "gate"
+      ]
+    },
+    {
+      "file": "errl_fest_gate_icon_minimap_01_1.svg",
+      "logicalName": "errl_fest_gate_icon_minimap_01",
+      "path": "svgs/library/fest/errl_fest_gate_icon_minimap_01_1.svg",
+      "kind": "gate",
+      "tags": [
+        "minimap",
+        "gate"
+      ]
+    },
+    {
+      "file": "errl_fest_minimap_node_01.svg",
+      "logicalName": "errl_fest_minimap_node_01",
+      "path": "svgs/library/fest/errl_fest_minimap_node_01.svg",
+      "kind": "other",
+      "tags": [
+        "minimap"
+      ]
+    },
+    {
+      "file": "errl_fest_minimap_node_01_1.svg",
+      "logicalName": "errl_fest_minimap_node_01",
+      "path": "svgs/library/fest/errl_fest_minimap_node_01_1.svg",
+      "kind": "other",
+      "tags": [
+        "minimap"
+      ]
+    },
+    {
+      "file": "errl_fest_minimap_node_01_2.svg",
+      "logicalName": "errl_fest_minimap_node_01",
+      "path": "svgs/library/fest/errl_fest_minimap_node_01_2.svg",
+      "kind": "other",
+      "tags": [
+        "minimap"
+      ]
+    },
+    {
+      "file": "errl_fest_minimap_node_vip_01.svg",
+      "logicalName": "errl_fest_minimap_node_vip_01",
+      "path": "svgs/library/fest/errl_fest_minimap_node_vip_01.svg",
+      "kind": "other",
+      "tags": [
+        "minimap"
+      ]
+    },
+    {
+      "file": "errl_fest_minimap_node_vip_01_1.svg",
+      "logicalName": "errl_fest_minimap_node_vip_01",
+      "path": "svgs/library/fest/errl_fest_minimap_node_vip_01_1.svg",
+      "kind": "other",
+      "tags": [
+        "minimap"
+      ]
+    },
+    {
+      "file": "errl_fest_stage_icon_minimap_01.svg",
+      "logicalName": "errl_fest_stage_icon_minimap_01",
+      "path": "svgs/library/fest/errl_fest_stage_icon_minimap_01.svg",
+      "kind": "stage",
+      "tags": [
+        "minimap",
+        "stage"
+      ]
+    },
+    {
+      "file": "errl_fest_stage_icon_minimap_01_1.svg",
+      "logicalName": "errl_fest_stage_icon_minimap_01",
+      "path": "svgs/library/fest/errl_fest_stage_icon_minimap_01_1.svg",
+      "kind": "stage",
+      "tags": [
+        "minimap",
+        "stage"
+      ]
+    },
+    {
+      "file": "errl_fest_tent_icon_minimap_01.svg",
+      "logicalName": "errl_fest_tent_icon_minimap_01",
+      "path": "svgs/library/fest/errl_fest_tent_icon_minimap_01.svg",
+      "kind": "tent",
+      "tags": [
+        "minimap",
+        "tent"
+      ]
+    },
+    {
+      "file": "errl_fest_tent_icon_minimap_01_1.svg",
+      "logicalName": "errl_fest_tent_icon_minimap_01",
+      "path": "svgs/library/fest/errl_fest_tent_icon_minimap_01_1.svg",
+      "kind": "tent",
+      "tags": [
+        "minimap",
+        "tent"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "name": "psychedelic-liquid-light-show",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 5180",
+    "build": "vite build",
+    "preview": "vite preview --port 4321",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "pixi.js": "^8.14.1",
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1",
+    "three": "^0.169.0",
+    "vite-plugin-glsl": "^1.5.4"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^16.1.0",
+    "@types/node": "^22.14.0",
+    "@types/three": "^0.169.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "jsdom": "^25.0.1",
+    "typescript": "~5.8.2",
+    "vite": "^6.2.0",
+    "vitest": "^4.0.13"
+  }
+}

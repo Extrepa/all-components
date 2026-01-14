@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 64 64">
+  <g id="dice" fill="#f4f0ff" stroke="#101020" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="12" y="12" width="24" height="24" rx="6" />
+    <rect x="28" y="28" width="24" height="24" rx="6" />
+  </g>
+  <g id="pips" fill="#101020">
+    <circle cx="24" cy="24" r="3" />
+    <circle cx="36" cy="36" r="3" />
+    <circle cx="44" cy="44" r="3" />
+  </g>
+  <g id="motion" fill="none" stroke="#5be0ff" stroke-width="4" stroke-linecap="round">
+    <path d="M18 50c4 4 8 6 14 6 8 0 14-4 18-10" />
+  </g>
+</svg>

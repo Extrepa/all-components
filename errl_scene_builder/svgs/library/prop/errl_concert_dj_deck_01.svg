@@ -1,0 +1,15 @@
+<!-- errl_concert_dj_deck_01 – front-on DJ table (prop/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_concert" data-cat="prop" data-name="errl_concert_dj_deck_01">
+  <g fill="none">
+    <!-- table -->
+    <rect x="16" y="32" width="32" height="8" rx="2" fill="#111827"/>
+    <!-- platters -->
+    <circle cx="22" cy="36" r="3" fill="#020617"/>
+    <circle cx="22" cy="36" r="1.6" fill="#22d3ee"/>
+    <circle cx="42" cy="36" r="3" fill="#020617"/>
+    <circle cx="42" cy="36" r="1.6" fill="#fb7185"/>
+    <!-- fader block -->
+    <rect x="28" y="34" width="8" height="4" rx="1.2" fill="#020617"/>
+  </g>
+</svg>

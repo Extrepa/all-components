@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" id="icon-ump15q6z6">
+  <g xmlns="http://www.w3.org/2000/svg" fill="none">
+    <rect x="24" y="10" width="16" height="34" rx="2" fill="#111827"/>
+    <path d="M26 12 H38 V38 L32 42 L26 38 Z" fill="#a855f7"/>
+    <!-- simple symbol placeholder -->
+    <circle cx="32" cy="20" r="4" fill="#facc15" opacity="0.9"/>
+  </g>
+</svg>

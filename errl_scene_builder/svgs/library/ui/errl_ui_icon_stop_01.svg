@@ -1,0 +1,8 @@
+<!-- errl_ui_icon_stop_01 – stop square in circle (ui/fx) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_ui" data-cat="ui" data-name="errl_ui_icon_stop_01">
+  <g fill="none">
+    <circle cx="32" cy="32" r="10" fill="#0f172a"/>
+    <rect x="28" y="28" width="8" height="8" rx="1.5" fill="#fb7185"/>
+  </g>
+</svg>

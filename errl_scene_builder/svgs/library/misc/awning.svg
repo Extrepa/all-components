@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" id="icon-0zdtnauel">
+  <g xmlns="http://www.w3.org/2000/svg" fill="none">
+    <!-- awning -->
+    <path d="M14 24 H50 V28 H14 Z" fill="#fb7185"/>
+    <path d="M14 28 C16 30 18 30 20 28 22 30 24 30 26 28 28 30 30 30 32 28 34 30 36 30 38 28 40 30 42 30 44 28 46 30 48 30 50 28" fill="none" stroke="#0f172a" stroke-width="1.2"/>
+    <!-- body -->
+    <rect x="16" y="28" width="32" height="14" rx="2" fill="#020617"/>
+    <!-- hanging shirts -->
+    <rect x="20" y="30" width="4" height="5" rx="1" fill="#22d3ee"/>
+    <rect x="28" y="30" width="4" height="5" rx="1" fill="#a855f7"/>
+    <rect x="36" y="30" width="4" height="5" rx="1" fill="#facc15"/>
+    <ellipse cx="32" cy="46" rx="18" ry="2.8" fill="#020617" opacity="0.45"/>
+  </g>
+</svg>

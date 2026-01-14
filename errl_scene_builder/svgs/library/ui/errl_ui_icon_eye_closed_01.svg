@@ -1,0 +1,9 @@
+<!-- errl_ui_icon_eye_closed_01 – crossed eye (ui/layers) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_ui" data-cat="ui" data-name="errl_ui_icon_eye_closed_01">
+  <g fill="none">
+    <path d="M18 32 C22 26 26 24 32 24s10 2 14 8"
+      stroke="#4b5563" stroke-width="1.4" stroke-linecap="round"/>
+    <line x1="20" y1="38" x2="44" y2="26" stroke="#4b5563" stroke-width="1.4" stroke-linecap="round"/>
+  </g>
+</svg>

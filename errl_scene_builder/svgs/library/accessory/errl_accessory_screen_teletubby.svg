@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_accessory" data-cat="wearable" data-name="errl_accessory_screen_teletubby">
+  <rect width="64" height="64" rx="12" fill="none"/>
+  <rect x="14" y="30" width="36" height="22" rx="10" fill="#8b5cf6" stroke="#5b21b6" stroke-width="2"/>
+  <rect x="22" y="34" width="20" height="14" rx="3" fill="#0f172a" stroke="#c4b5fd" stroke-width="2"/>
+  <circle cx="32" cy="41" r="4" fill="#34e1ff"/>
+  <path d="M26 40h12" stroke="#2dd4bf" stroke-width="2" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <g id="group_base" fill="#f4f0ff" stroke="#101020" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="300" y="340" width="424" height="280" rx="36" />
+    <rect x="340" y="380" width="344" height="200" rx="24" />
+  </g>
+  <g id="group_glass" fill="#5be0ff" stroke="#101020" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="400" y="420" width="224" height="120" rx="18" />
+  </g>
+  <g id="group_glow_cone" opacity="0.14">
+    <ellipse cx="512" cy="620" rx="240" ry="90" fill="#5be0ff" />
+  </g>
+</svg>

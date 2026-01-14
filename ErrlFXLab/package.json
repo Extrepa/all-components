@@ -1,0 +1,17 @@
+{
+  "name": "errl-fx-lab",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage"
+  },
+  "devDependencies": {
+    "jsdom": "^22.1.0",
+    "vitest": "^1.6.1",
+    "@vitest/ui": "^1.6.1",
+    "@vitest/coverage-v8": "^1.6.1"
+  }
+}

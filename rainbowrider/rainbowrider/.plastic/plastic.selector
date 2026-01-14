@@ -1,0 +1,4 @@
+repository "rainbowrider/rainbowrider@20067529922786@cloud"
+  path "/"
+    br "/main"
+    co "/main"

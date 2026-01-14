@@ -1,0 +1,10 @@
+<!-- Example 120 | errl_fest_corner_lightpost_01 (fx/prop) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="fx" data-name="errl_fest_corner_lightpost_01">
+  <g fill="none">
+    <rect x="18" y="30" width="3" height="16" rx="1.4" fill="#e5e7eb"/>
+    <rect x="19" y="26" width="6" height="3" rx="1.5" fill="#111827"/>
+    <circle cx="22" cy="27.5" r="1.4" fill="#facc15"/>
+    <ellipse cx="19.5" cy="48" rx="4" ry="1.6" fill="#020617" opacity="0.6"/>
+  </g>
+</svg>

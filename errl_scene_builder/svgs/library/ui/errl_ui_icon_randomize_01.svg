@@ -1,0 +1,10 @@
+<!-- errl_ui_icon_randomize_01 – dice-ish icon (ui/tool) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_ui" data-cat="ui" data-name="errl_ui_icon_randomize_01">
+  <g fill="none">
+    <rect x="24" y="24" width="16" height="16" rx="3" fill="#0f172a"/>
+    <circle cx="28" cy="28" r="1.4" fill="#22d3ee"/>
+    <circle cx="36" cy="32" r="1.4" fill="#22d3ee"/>
+    <circle cx="28" cy="36" r="1.4" fill="#22d3ee"/>
+  </g>
+</svg>

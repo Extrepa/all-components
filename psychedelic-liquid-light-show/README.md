@@ -1,0 +1,220 @@
+# Psychedelic Liquid Light Show
+
+## New Top-Left Layout (Preview)
+
+- Enable via URL: `?ui=top` (default on)
+- Classic layout: `?ui=classic`
+- Persist choice in devtools:
+  - `localStorage.setItem('ui:topPanel','1')`
+  - `localStorage.setItem('ui:topPanel','0')`
+
+### What’s New
+- AppBar at top-left with primary actions
+- Pull-down TopPanel for Simulation, Colors, Effects, Brush
+- Color Tray with larger swatches and hex input
+- Preset Strip with multi-select and cycling (Sequential / Ping-pong / Random)
+- Mini HUD shows current preset/mode while painting
+- Unified glass-box styling for modals
+
+### Preset Cycling
+- Select multiple presets (Cmd/Ctrl-click)
+- Toggle Cycle and choose Mode + Cadence (Per-stroke or Per-splat)
+- Painting applies presets ephemerally; on release one history entry is committed
+
+### Accessibility
+- TopPanel traps focus; ESC to close
+- Color and Preset trays support keyboard navigation
+
+### Dev
+- Tests: `npm run test`
+- Build: `npm run build`
+- Dev: `npm run dev` then open http://localhost:5180/?ui=top
+- Preview: `npm run preview` (defaults to port 4321)
+
+> A virtual recreation of 1960s-era liquid light shows using interactive Canvas2D particle simulations and AI-powered color palette generation.
+
+## Overview
+
+This app recreates the mesmerizing art form of projecting oil, water, and food coloring through overhead projectors—a staple of psychedelic performances in the 1960s. Now featuring **realistic two-phase fluid simulation** with oil floating above water, immiscible color mixing, buoyancy, surface tension, specular highlights, Fresnel reflections, refraction, and optional thin-film interference.
+
+Users can paint flowing, morphing blobs of color, toggle between oil and water droppers, tweak realistic physics parameters, generate AI-powered palettes, apply post-processing effects, and record their creations.
+
+Built with: React 19, TypeScript, Vite, **PIXI.js v8 + WebGL shaders**, Canvas2D fallback, and Google Gemini AI.
+
+---
+
+## Quickstart
+
+Prerequisites
+- Node.js (v16 or higher recommended)
+- A modern browser (Chrome, Firefox, Safari, Edge)
+
+Installation & Running
+
+```bash
+# Install dependencies
+npm install
+
+# Set your Gemini API key in .env.local
+echo "GEMINI_API_KEY=your_api_key_here" > .env.local
+
+# Run development server
+npm run dev
+```
+
+Open http://localhost:3000 in your browser.
+
+Building for Production
+
+```bash
+npm run build
+npm run preview
+```
+
+The built site will be in `dist/`.
+
+---
+
+## How to Use
+
+1. **Welcome Screen**: Click "OK" to start. You'll see an animated liquid demo.
+2. **Paint**: Click and drag to paint with the active phase (oil or water). Oil floats; water sinks.
+3. **Dropper Widget** (bottom-right): Toggle between Oil and Water droppers. See current phase palette.
+4. **Controls**:
+   - **Top-right dock**: Play/Pause, Undo/Redo, Save, Gallery, Clear, Export, Menu
+   - **Bottom dock**: Quick color picker, Studio button, and minimize toggle
+   - **Sidebar (Studio)**: Full controls for simulation, colors, effects, blending, and brush size
+     - **Simulation Panel**: Surface tension, oil/water density, gravity angle/strength, sim resolution
+     - **Effects Panel**: Gloss, refractive index, light angle/intensity, refraction, thin-film toggle
+     - **Color Panel**: Phase selector (Oil/Water), palette editor, AI generation
+5. **AI Features**:
+   - Generate color palettes or full "vibes" (palette + simulation params) from text prompts
+   - Example prompts: "Bioluminescent forest," "Cosmic soup," "Neon noir"
+6. **Presets**: Choose from 13 built-in palettes including **"Errl Day"** (golden oil + vibrant water)
+7. **Session Restore**: If you navigate away, you'll be prompted to restore your session on return
+8. **Gallery**: Save artworks locally with thumbnails; reload configurations anytime
+9. **Export Video**: Record 5–30 second WebM videos at various quality levels
+
+---
+
+## What We Did Today
+
+This app was built from the ground up with the following components and features:
+
+Core Architecture
+- React 19 + TypeScript: Strict typing with functional components and hooks
+- Vite: Fast dev server and optimized production builds
+- Canvas2D Particle System: Custom fluid-like simulation with ~1200 active particles, radial gradients, physics (velocity, damping, life cycle)
+- Dual Rendering Modes: Demo mode (auto-splat) and interactive painting mode
+
+UI/UX Features
+- Welcome Screen: Modal intro with fade-out animation
+- Floating Sidebar: Draggable, snaps to edges, persists position in localStorage
+- Bottom Dock: Minimizable color palette and tool selector
+- Quick Actions Dock: Top-right compact toolbar for play, undo, save, export, clear, menu
+- Tooltips: Contextual help on hover for all controls
+- Modals: Save artwork, gallery browser, video export wizard
+- Toast Notifications: Success/error feedback with auto-dismiss
+- Session Persistence: Auto-saves state on beforeunload; prompts to restore on return
+
+Simulation & Physics
+- Particle System:
+  - 5 particles per splat with random angle/speed
+  - Life cycle (350–600 frames), alpha fade, size decay
+  - Velocity damping (friction), random jitter
+  - Caps at 1200 particles (FIFO eviction)
+- Configurable Parameters:
+  - Density, velocity, viscosity, pressure, diffusion (0–1 range)
+  - Blend modes: lighter (additive), screen, overlay, soft-light, multiply, difference
+  - Splat radius: 0.1–1.0
+
+Color & Palette Management
+- Dynamic Palettes: Add/remove colors, edit hex/picker, shuffle order
+- AI Palette Generation (via Gemini 2.5 Flash):
+  - Palette mode: 5 hex codes from a text prompt
+  - Vibe mode: palette + density/velocity/viscosity tuned to the theme
+- 12 Built-in Presets: Cosmic Soup, Lava Lamp, Aurora Borealis, Neon Noir, Oceanic Depth, Fairy Garden, Ink Drop, Pastel Dreams, Psychedelic Storm, Retro Opal, Toxic Slime, Solar Flare
+- Paint Behaviors:
+  - Blend: Use active color
+  - Alternate/Sequence: Cycle through palette on each stroke
+
+Effects & Post-Processing
+- SVG Filters:
+  - Chromatic Aberration: RGB channel offset for retro fringe effect
+  - Grain: Fractal noise overlay at adjustable intensity
+- Canvas Effects:
+  - Configurable composite operations (lighter, screen, overlay, etc.)
+  - Fade trails via partial-alpha background clear
+- Grid Overlay: Optional alignment grid (32px)
+
+Undo/Redo & History
+- Visual Snapshots: WebP snapshots captured after strokes
+- Config History: 30-step parameter undo/redo
+- Clear Action: Undoable via snapshot system
+
+Saving & Export
+- Gallery:
+  - Save artworks with names and JPEG thumbnails
+  - Stored in localStorage (key: liquid-art-gallery)
+  - Load saved configs; delete unwanted artworks
+- Video Export:
+  - MediaRecorder API (WebM/VP9)
+  - Durations: 5s, 10s, 15s, 30s
+  - Quality: 1 Mbps (Low), 5 Mbps (Medium), 10 Mbps (High)
+  - Downloads as .webm file
+
+Accessibility & Polish
+- Keyboard Support: ESC closes panels/modals, Enter submits forms
+- ARIA Labels: Proper roles, labels, and live regions for screen readers
+- Responsive Layout: Sidebar and docks adapt to viewport; mobile-friendly touch events
+- Custom Cursor: SVG crosshair with active color preview
+- Dark Theme: Gray-900 base with purple accents, backdrop blur, subtle borders
+
+Performance Optimizations
+- ResizeObserver: Efficient canvas resizing with device pixel ratio
+- Refs for State: Avoid re-renders for high-frequency updates (pointer, config)
+- Particle Pooling: Cap at 1200, FIFO eviction
+- Debounced Snapshots: Only capture after stroke ends
+- Ambient Splats: Low-frequency (2s interval) background motion when idle
+
+Developer Experience
+- TypeScript: Strict mode, complete type coverage
+- ESM Imports: Modern module syntax
+- Path Alias: @/* maps to project root
+- Hot Module Replacement: Vite HMR for instant feedback
+- Environment Variables: Secure API key via .env.local
+
+---
+
+## Documentation
+
+- [INDEX.md](INDEX.md) - Workspace index
+- [PROJECT_STATUS.md](PROJECT_STATUS.md) - Current status
+- [Documentation Index](docs/index.md) - Detailed docs with links to all documentation
+
+### Specification & Guides
+
+- [WARP Guide](WARP_GUIDE.md) - WARP (warp.dev) AI assistant guide for working with this codebase
+- [Quick Start](QUICK_START.md) - Quick start guide
+
+### Detailed Guides
+
+- [Overview](docs/overview.md) - Project overview
+- [Structure](docs/structure.md) - Project structure
+- [Architecture](docs/architecture.md) - Technical architecture
+- [Components](docs/components.md) - Component documentation
+- [AI Integration](docs/ai-integration.md) - AI integration guide
+- [Development](docs/development.md) - Development guide
+- [Performance](docs/performance.md) - Performance guide
+- [Troubleshooting](docs/troubleshooting.md) - Troubleshooting guide
+- [Refactoring](docs/refactoring.md) - Refactoring documentation
+- [Roadmap](docs/roadmap.md) - Project roadmap
+
+---
+
+## Credits
+
+- Inspired by 1960s liquid light shows
+- Built with React, TypeScript, Vite
+- AI-powered palettes via Google Gemini
+- Icon components adapted from Heroicons

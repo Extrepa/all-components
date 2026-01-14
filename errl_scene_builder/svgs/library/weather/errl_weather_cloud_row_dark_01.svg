@@ -1,0 +1,11 @@
+<!-- errl_weather_cloud_row_dark_01 – darker storm row (env/fx) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_weather" data-cat="env" data-name="errl_weather_cloud_row_dark_01">
+  <g fill="none">
+    <circle cx="20" cy="26" r="4" fill="#1f2937"/>
+    <circle cx="28" cy="25" r="4.5" fill="#020617"/>
+    <circle cx="36" cy="26" r="4" fill="#1f2937"/>
+    <circle cx="44" cy="27" r="3.5" fill="#020617"/>
+    <rect x="20" y="26" width="24" height="4" rx="2" fill="#020617"/>
+  </g>
+</svg>

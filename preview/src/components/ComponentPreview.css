@@ -1,0 +1,93 @@
+.preview-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(2, 7, 10, 0.85);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 2rem;
+}
+
+.preview-modal {
+  background: var(--errl-panel);
+  border: 1px solid var(--errl-border);
+  border-radius: 12px;
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(52, 225, 255, 0.2);
+  backdrop-filter: blur(20px);
+}
+
+.preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--errl-border);
+  background: var(--errl-surface);
+}
+
+.preview-header h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--errl-accent);
+  text-shadow: 0 0 10px rgba(52, 225, 255, 0.5);
+}
+
+.close-button {
+  background: transparent;
+  border: 1px solid var(--errl-border);
+  font-size: 2rem;
+  color: var(--errl-text);
+  cursor: pointer;
+  padding: 0;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.close-button:hover {
+  background: var(--errl-accent-soft);
+  border-color: var(--errl-accent);
+  color: var(--errl-accent);
+  box-shadow: 0 0 10px rgba(52, 225, 255, 0.3);
+}
+
+.preview-content {
+  padding: 0;
+  overflow: auto;
+  flex: 1;
+  background: radial-gradient(circle at 20% 20%, rgba(52, 225, 255, 0.05), transparent 35%),
+    radial-gradient(circle at 80% 0%, rgba(255, 52, 245, 0.04), transparent 30%),
+    var(--errl-bg);
+  color: var(--errl-text);
+}
+
+.preview-error {
+  text-align: center;
+  padding: 3rem;
+  color: var(--errl-muted);
+}
+
+.preview-error p {
+  margin-bottom: 0.5rem;
+  color: var(--errl-text);
+}
+
+.error-details {
+  font-size: 0.9rem;
+  color: var(--errl-muted);
+  font-family: 'Monaco', 'Menlo', monospace;
+}
+

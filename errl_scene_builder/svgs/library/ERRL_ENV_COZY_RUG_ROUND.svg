@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <g id="group_base" fill="#ffd166" stroke="#101020" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
+    <ellipse cx="512" cy="640" rx="260" ry="140" />
+  </g>
+  <g id="group_pattern" fill="none" stroke="#ff7ad1" stroke-width="10" stroke-dasharray="30 24" stroke-linecap="round">
+    <ellipse cx="512" cy="640" rx="200" ry="100" />
+  </g>
+</svg>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>inside of lava lamp - GLSL Shader</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0a0a0a;
+      color: #fff;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .header {
+      padding: 1.5rem 2rem;
+      background: #1a1a1a;
+      border-bottom: 1px solid #333;
+    }
+    .header h1 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .header p {
+      color: #b0b0b0;
+      font-size: 0.875rem;
+    }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 1rem;
+      color: #6366f1;
+      text-decoration: none;
+      font-size: 0.875rem;
+    }
+    .back-link:hover {
+      text-decoration: underline;
+    }
+    #canvas-container {
+      flex: 1;
+      position: relative;
+      width: 100%;
+      height: calc(100vh - 200px);
+    }
+    .info {
+      padding: 1.5rem 2rem;
+      background: #1a1a1a;
+      border-top: 1px solid #333;
+      font-size: 0.875rem;
+    }
+    .info-item {
+      margin-bottom: 0.5rem;
+      display: flex;
+    }
+    .info-label {
+      width: 120px;
+      color: #b0b0b0;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="../index.html" class="back-link">← Back to Gallery</a>
+      <h1>inside of lava lamp</h1>
+      <p>GLSL Fragment Shader</p>
+    </div>
+    <div id="canvas-container"></div>
+    <div class="info">
+      <div class="info-item">
+        <span class="info-label">Prompt:</span>
+        <span>inside of lava lamp</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Model:</span>
+        <span>threePro</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Generation Time:</span>
+        <span>41.1s</span>
+      </div>
+    </div>
+  </div>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="../js/glsl-viewer.js"></script>
+  <script>
+    const shaderCode = "precision mediump float;\n\nuniform vec2 u_resolution;\nuniform float u_time;\n\n// Smooth minimum for metaball blending\nfloat smin(float a, float b, float k) {\n    float h = clamp(0.5 + 0.5 * (b - a) / k, 0.0, 1.0);\n    return mix(b, a, h) - k * h * (1.0 - h);\n}\n\n// Rotate function\nmat2 rot(float a) {\n    float s = sin(a);\n    float c = cos(a);\n    return mat2(c, -s, s, c);\n}\n\n// Scene mapping (Signed Distance Function)\nfloat map(vec3 p) {\n    float d = 100.0;\n    \n    // Container bound (cylinder-ish push)\n    float container = length(p.xz) - 1.8;\n    d = max(-container, d); \n\n    // Generate blobs\n    for (int i = 0; i < 6; i++) {\n        float fi = float(i);\n        float t = u_time * (0.3 + fi * 0.05);\n        \n        // Complex vertical movement simulating convection\n        float y = 2.5 * sin(t + fi * 1.5) + sin(t * 2.3) * 0.5;\n        \n        // Horizontal wandering\n        float x = sin(t * 0.8 + fi) * (0.6 + 0.2 * sin(u_time * 0.1));\n        float z = cos(t * 0.7 + fi * 2.0) * (0.6 + 0.2 * cos(u_time * 0.15));\n        \n        // Pulsating size\n        float r = 0.4 + 0.15 * sin(u_time * 1.5 + fi);\n        \n        vec3 spherePos = vec3(x, y, z);\n        float sphereDist = length(p - spherePos) - r;\n        \n        // Blend blobs\n        d = smin(d, sphereDist, 0.8);\n    }\n    \n    return d;\n}\n\n// Calculate surface normal\nvec3 calcNormal(vec3 p) {\n    const float h = 0.001;\n    const vec2 k = vec2(1, -1);\n    return normalize(k.xyy * map(p + k.xyy * h) +\n                     k.yyx * map(p + k.yyx * h) +\n                     k.yxy * map(p + k.yxy * h) +\n                     k.xxx * map(p + k.xxx * h));\n}\n\nvoid main() {\n    vec2 uv = (gl_FragCoord.xy - 0.5 * u_resolution.xy) / u_resolution.y;\n    \n    // Camera setup\n    vec3 ro = vec3(0.0, 0.0, 4.0);\n    vec3 rd = normalize(vec3(uv, -1.5));\n    \n    // Gentle camera sway\n    ro.xz *= rot(sin(u_time * 0.1) * 0.2);\n    rd.xz *= rot(sin(u_time * 0.1) * 0.2);\n    rd.xy *= rot(cos(u_time * 0.15) * 0.1);\n\n    // Raymarching\n    float t = 0.0;\n    int steps = 0;\n    for (int i = 0; i < 64; i++) {\n        vec3 p = ro + rd * t;\n        float h = map(p);\n        if (h < 0.001 || t > 10.0) break;\n        t += h;\n        steps = i;\n    }\n\n    // Base background gradient (Liquid fluid color)\n    vec3 col = mix(vec3(0.2, 0.0, 0.3), vec3(0.1, 0.0, 0.2), length(uv));\n\n    if (t < 10.0) {\n        vec3 p = ro + rd * t;\n        vec3 n = calcNormal(p);\n        \n        // Lighting setup\n        vec3 lightPos = vec3(2.0, 3.0, 2.0);\n        vec3 lightDir = normalize(lightPos - p);\n        vec3 viewDir = normalize(ro - p);\n        \n        // Diffuse\n        float diff = max(dot(n, lightDir), 0.0);\n        \n        // Specular\n        vec3 reflectDir = reflect(-lightDir, n);\n        float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);\n        \n        // Fresnel (Rim lighting for gooey look)\n        float fresnel = pow(1.0 - max(dot(viewDir, n), 0.0), 2.0);\n        \n        // Internal heat glow based on Y position\n        vec3 heatColor = mix(vec3(1.0, 0.1, 0.1), vec3(1.0, 0.8, 0.2), smoothstep(-2.0, 2.0, p.y));\n        \n        // Combine lighting\n        vec3 objCol = heatColor * (diff * 0.6 + 0.4);\n        objCol += vec3(1.0, 0.9, 0.8) * spec;\n        objCol += vec3(0.8, 0.2, 0.5) * fresnel * 1.5;\n        \n        col = objCol;\n    }\n    \n    // Volumetric glow effect based on raymarch steps (fake subsurface scattering)\n    float glow = float(steps) / 64.0;\n    col += vec3(1.0, 0.3, 0.0) * glow * 0.8;\n    \n    // Vignette\n    col *= 1.0 - dot(uv, uv) * 0.5;\n    \n    // Gamma correction\n    col = pow(col, vec3(0.4545));\n\n    gl_FragColor = vec4(col, 1.0);\n}";
+    const container = document.getElementById('canvas-container');
+    const viewer = new GLSLViewer(container, shaderCode);
+    
+    window.addEventListener('resize', () => {
+      viewer.handleResize();
+    });
+  </script>
+</body>
+</html>

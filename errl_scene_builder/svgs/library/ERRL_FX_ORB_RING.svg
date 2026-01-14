@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <g id="group_soft_glow" opacity="0.22">
+    <circle cx="512" cy="512" r="220" fill="#5be0ff" />
+  </g>
+  <g id="group_core" fill="none" stroke="#5be0ff" stroke-width="24" stroke-linecap="round">
+    <circle cx="512" cy="512" r="150" />
+  </g>
+  <g id="group_outline" fill="none" stroke="#101020" stroke-width="10" stroke-linecap="round">
+    <circle cx="512" cy="512" r="150" />
+  </g>
+</svg>

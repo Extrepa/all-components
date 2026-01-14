@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Errl FX Lab - Complete Edition</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+  <script src="https://unpkg.com/three@0.161.0/build/three.min.js"></script>
+  <style>
+    body {
+      background: radial-gradient(circle at top, #071b25 0, #02070a 55%, #000 100%);
+      color: #ecf9ff;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+    }
+    .errl-glow {
+      box-shadow: 0 0 40px rgba(52, 225, 255, 0.3), 0 0 80px rgba(255, 52, 245, 0.2);
+    }
+    .scrollbar-thin::-webkit-scrollbar { width: 6px; }
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.6);
+      border-radius: 999px;
+    }
+    .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+    .backdrop-blur-soft {
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+    input[type="range"]::-webkit-slider-thumb { cursor: pointer; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+  <header class="flex items-center justify-between px-4 py-2 border-b border-slate-800/70 bg-slate-900/70 backdrop-blur-soft">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-cyan-400 to-fuchsia-500 flex items-center justify-center errl-glow">
+        <span class="text-xs font-black tracking-tight">E</span>
+      </div>
+      <div>
+        <h1 class="text-sm font-semibold tracking-tight">
+          Errl FX Lab <span class="text-xs text-cyan-300/80">Complete Edition</span>
+        </h1>
+        <p class="text-[11px] text-slate-300/70">SVG → FX → Animations → Game-ready assets</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-3 text-xs">
+      <span id="status-text" class="px-2 py-1 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/40">Ready · No SVG loaded</span>
+      <div id="hintLabel" class="text-slate-400 hidden sm:block text-[11px]"></div>
+      <button id="quickStartBtn" class="px-2 py-1 rounded-md border border-emerald-500/70 text-emerald-200 text-[10px] hover:bg-emerald-500/15 hidden sm:inline-flex">Quick Start</button>
+      <button id="helpOverlayBtn" class="px-2 py-1 rounded-md border border-slate-700 text-slate-200 text-[10px] hover:bg-slate-900/80">Help / Keys</button>
+    </div>
+  </header>
+  <main class="flex-1 flex overflow-hidden">
+    <aside class="w-52 border-r border-slate-800/70 bg-slate-950/80 backdrop-blur-soft p-3 flex flex-col gap-3">
+      <h2 class="text-[11px] uppercase tracking-[0.16em] text-slate-400 mb-1">Modes</h2>
+      <nav class="flex flex-col gap-1 text-xs">
+        <button class="mode-btn flex items-center gap-2 px-2 py-1.5 rounded-md bg-cyan-500/15 border border-cyan-500/40 text-cyan-200" data-mode="lab">
+          <span>🧪</span><span>Lab (SVG + FX)</span>
+        </button>
+        <button class="mode-btn flex items-center gap-2 px-2 py-1.5 rounded-md hover:bg-slate-900/80 border border-slate-700/70 text-slate-200" data-mode="wire3d">
+          <span>📡</span><span>3D Wire</span>
+        </button>
+        <button class="mode-btn flex items-center gap-2 px-2 py-1.5 rounded-md hover:bg-slate-900/80 border border-slate-700/70 text-slate-200" data-mode="voxel">
+          <span>🧊</span><span>Voxels</span>
+        </button>
+      </nav>
+      <div class="mt-4">
+        <h2 class="text-[11px] uppercase tracking-[0.16em] text-slate-400 mb-1">Views</h2>
+        <div class="flex flex-col gap-1 text-xs">
+          <button id="navGalleryBtn" class="flex items-center gap-2 px-2 py-1.5 rounded-md hover:bg-slate-900/80 border border-slate-700/70 text-slate-200">
+            <span>📚</span><span>Gallery</span>
+          </button>
+          <button id="navFavoritesBtn" class="flex items-center gap-2 px-2 py-1.5 rounded-md hover:bg-slate-900/80 border border-slate-700/70 text-slate-200">
+            <span>❤️</span><span>Favorites</span>
+          </button>
+          <button id="navVsBtn" class="flex items-center gap-2 px-2 py-1.5 rounded-md hover:bg-slate-900/80 border border-slate-700/70 text-slate-200">
+            <span>⚔️</span><span>Versus Mode</span>
+          </button>
+        </div>
+      </div>
+      <div class="mt-auto text-[10px] text-slate-500">
+        <p>Errl FX Lab Complete Edition</p>
+        <p>All features integrated.</p>
+      </div>
+    </aside>
+    <section class="flex-1 flex flex-col border-r border-slate-800/70">
+      <div class="border-b border-slate-800/70 px-4 py-2 flex items-center justify-between bg-slate-950/50 backdrop-blur-soft">
+        <div class="flex items-center gap-2 text-xs">
+          <span class="text-slate-400">Step 1</span>
+          <span class="text-slate-200">Upload an Errl SVG</span>
+        </div>
+        <div class="flex items-center gap-2 text-xs">
+          <label for="svgFileInput" class="cursor-pointer px-3 py-1.5 rounded-md bg-cyan-500/10 border border-cyan-400/60 text-cyan-100 hover:bg-cyan-500/20">Choose file</label>
+          <input id="svgFileInput" type="file" accept=".svg" class="hidden" />
+        </div>
+      </div>
+      <div class="flex-1 flex flex-col lg:flex-row overflow-hidden">
+        <div class="w-full lg:w-1/3 border-r border-slate-800/70 flex flex-col">
+          <div id="dropzone" class="m-3 flex-1 rounded-xl border border-dashed border-slate-600/90 bg-slate-950/70 backdrop-blur-soft flex flex-col items-center justify-center text-center px-3 py-3 text-xs text-slate-300/80 hover:border-cyan-400/70 hover:bg-slate-900/70 transition cursor-pointer">
+            <p class="mb-1 text-slate-200 font-medium">Drop your Errl SVG here</p>
+            <p class="text-[11px] leading-snug">.svg files only.<br />We'll normalize the viewBox and render a preview.</p>
+            <p class="mt-2 text-[10px] text-slate-500">(Drag & drop or use "Choose file" above)</p>
+          </div>
+          <div class="px-3 pb-3 text-[11px] text-slate-400 space-y-1">
+            <div class="flex items-center justify-between"><span>Paths:</span><span id="pathCount" class="text-slate-100">–</span></div>
+            <div class="flex items-center justify-between"><span>Groups:</span><span id="groupCount" class="text-slate-100">–</span></div>
+            <div class="flex items-center justify-between"><span>ViewBox:</span><span id="viewBoxInfo" class="text-slate-100">–</span></div>
+          </div>
+        </div>
+        <div class="flex-1 flex flex-col">
+          <div class="px-4 pt-1.5 border-b border-slate-800/70 flex items-center justify-between">
+            <div class="flex items-center gap-1 text-xs">
+              <button id="tabSvg" class="preview-tab px-3 py-1.5 rounded-md bg-slate-800/80 text-slate-50 border border-slate-600/90" data-tab="svg">SVG Preview</button>
+              <button id="tabP5" class="preview-tab px-3 py-1.5 rounded-md text-slate-300 border border-transparent hover:border-slate-600/80 hover:bg-slate-900/80" data-tab="p5">p5 FX Lab</button>
+              <button id="tabHtmlFx" class="preview-tab px-3 py-1.5 rounded-md text-slate-300 border border-transparent hover:border-slate-600/80 hover:bg-slate-900/80" data-tab="htmlfx">HTML FX</button>
+              <button id="tabWire3d" class="preview-tab px-3 py-1.5 rounded-md text-slate-300 border border-transparent hover:border-slate-600/80 hover:bg-slate-900/80" data-tab="wire3d">3D Wire</button>
+              <button id="tabVoxel" class="preview-tab px-3 py-1.5 rounded-md text-slate-300 border border-transparent hover:border-slate-600/80 hover:bg-slate-900/80" data-tab="voxel">Voxels</button>
+            </div>
+            <div class="flex items-center gap-2 text-[11px] text-slate-400">
+              <span id="currentFileName" class="truncate max-w-[220px]">No file loaded</span>
+            </div>
+          </div>
+          <div class="flex-1 flex items-center justify-center bg-slate-900/40">
+            <div id="svgPreviewContainer" class="preview-panel w-full max-w-[420px] max-h-[420px] aspect-square rounded-2xl bg-slate-950/70 border border-slate-700/80 errl-glow flex items-center justify-center overflow-hidden p-4" data-tab="svg">
+              <div id="svgPreviewPlaceholder" class="text-[11px] text-slate-500 text-center px-4">No SVG yet.<br />Upload your Errl and we'll show it here at a normalized scale.</div>
+              <div id="svgPreview" class="hidden w-full h-full flex items-center justify-center"></div>
+            </div>
+            <div id="p5PreviewContainer" class="preview-panel hidden w-full max-w-[420px] max-h-[420px] aspect-square rounded-2xl bg-slate-950/70 border border-fuchsia-700/80 errl-glow flex flex-col overflow-hidden" data-tab="p5">
+              <div class="px-3 py-1.5 border-b border-slate-800/70 flex items-center justify-between text-[11px] text-slate-300">
+                <span>p5 FX Lab · Wobble</span>
+                <div class="flex items-center gap-2">
+                  <button id="captureFrameBtn" class="px-2 py-1 rounded-md border border-cyan-500/60 text-cyan-200 hover:bg-cyan-500/15 disabled:opacity-40 disabled:hover:bg-transparent" disabled>Capture frame (C)</button>
+                  <span id="p5Status" class="text-slate-500">Waiting for SVG…</span>
+                </div>
+              </div>
+              <div class="flex-1 flex items-center justify-center"><div id="p5CanvasHost" class="w-full h-full"></div></div>
+            </div>
+            <div id="htmlFxPreviewContainer" class="preview-panel hidden w-full max-w-[420px] max-h-[420px] aspect-square rounded-2xl bg-slate-950/70 border border-cyan-700/80 errl-glow flex flex-col overflow-hidden" data-tab="htmlfx">
+              <div class="px-3 py-1.5 border-b border-slate-800/70 flex items-center justify-between text-[11px] text-slate-300">
+                <span>HTML FX · CSS Filters</span>
+                <span id="htmlFxStatus" class="text-slate-500">Waiting for SVG…</span>
+              </div>
+              <div class="flex-1 flex items-center justify-center bg-slate-900/60">
+                <div class="w-full h-full flex items-center justify-center p-4">
+                  <img id="htmlFxImage" alt="Errl HTML FX" class="max-w-full max-h-full object-contain rounded-xl" src="" />
+                </div>
+              </div>
+            </div>
+            <div id="wire3dPreviewContainer" class="preview-panel hidden w-full max-w-[420px] max-h-[420px] aspect-square rounded-2xl bg-slate-950/70 border border-emerald-700/80 errl-glow flex flex-col overflow-hidden" data-tab="wire3d">
+              <div class="px-3 py-1.5 border-b border-slate-800/70 flex items-center justify-between text-[11px] text-slate-300">
+                <div class="flex items-center gap-2">
+                  <span>3D View</span>
+                  <div class="flex items-center gap-1">
+                    <button id="wire3dModeWireBtn" class="px-2 py-0.5 rounded-full border border-emerald-500/80 text-[10px] text-emerald-200 bg-slate-900/80" data-mode="wire">Wire</button>
+                    <button id="wire3dModeVoxel3dBtn" class="px-2 py-0.5 rounded-full border border-slate-600 text-[10px] text-slate-300 hover:bg-slate-900/80" data-mode="voxel3d">3D Voxels</button>
+                  </div>
+                </div>
+                <span id="wire3dStatus" class="text-slate-500">Waiting for SVG…</span>
+              </div>
+              <div class="flex-1 flex items-center justify-center bg-slate-900/60"><div id="wire3dCanvasHost" class="w-full h-full"></div></div>
+            </div>
+            <div id="voxelPreviewContainer" class="preview-panel hidden w-full max-w-[420px] max-h-[420px] aspect-square rounded-2xl bg-slate-950/70 border border-indigo-700/80 errl-glow flex flex-col overflow-hidden" data-tab="voxel">
+              <div class="px-3 py-1.5 border-b border-slate-800/70 flex items-center justify-between text-[11px] text-slate-300">
+                <span>Voxel View</span>
+                <span id="voxelStatus" class="text-slate-500">Waiting for SVG…</span>
+              </div>
+              <div class="flex-1 flex items-center justify-center bg-slate-900/60"><canvas id="voxelCanvas" class="w-full h-full"></canvas></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>    <section class="w-80 bg-slate-950/80 backdrop-blur-soft flex flex-col overflow-y-auto scrollbar-thin">
+      <div class="px-4 py-2 border-b border-slate-800/70 flex items-center justify-between">
+        <div><h2 class="text-xs font-semibold text-slate-100">SVG Inspector</h2><p class="text-[11px] text-slate-400">Structure of the uploaded Errl.</p></div>
+        <button id="clearBtn" class="text-[11px] px-2 py-1 rounded-md border border-slate-700/80 text-slate-300 hover:bg-slate-900/90">Clear</button>
+      </div>
+      <div id="inspector" class="flex-1 overflow-auto p-3 text-[11px] text-slate-200 space-y-1 scrollbar-thin min-h-[100px]">
+        <p class="text-slate-400">Once you upload an SVG, we'll show a simplified DOM tree here: &lt;svg&gt;, &lt;g&gt;, &lt;path&gt;, etc.</p>
+      </div>
+      <div class="border-t border-slate-800/70 px-3 py-2 text-[11px] text-slate-200">
+        <div class="flex items-center justify-between mb-1">
+          <span class="font-semibold text-slate-100">p5 Controls</span>
+          <span class="text-[10px] text-slate-500">Space = pause/play</span>
+        </div>
+        <div class="mb-2 flex items-center justify-between gap-2">
+          <div class="flex flex-col"><span>Preset</span><span class="text-[10px] text-slate-500">1/2 = cycle</span></div>
+          <select id="presetSelect" class="w-40 bg-slate-900 border border-slate-700 rounded-md px-2 py-1 text-[11px] text-slate-100">
+            <option value="wobbleChill">Wobble Chill</option>
+            <option value="hyperBounce">Hyper Bounce</option>
+            <option value="lowOrbit">Low Orbit Drift</option>
+          </select>
+        </div>
+        <div class="space-y-2">
+          <div><div class="flex justify-between"><span>Wobble amplitude</span><span id="labelAmp" class="text-slate-400">10</span></div><input id="sliderAmp" type="range" min="0" max="50" value="10" class="w-full" /></div>
+          <div><div class="flex justify-between"><span>Wobble speed</span><span id="labelFreq" class="text-slate-400">2.0×</span></div><input id="sliderFreq" type="range" min="5" max="40" value="20" class="w-full" /></div>
+          <div><div class="flex justify-between"><span>Rotation intensity</span><span id="labelRot" class="text-slate-400">0.07</span></div><input id="sliderRot" type="range" min="0" max="50" value="7" class="w-full" /></div>
+          <div><div class="flex justify-between"><span>Background hue</span><span id="labelHue" class="text-slate-400">210°</span></div><input id="sliderHue" type="range" min="0" max="360" value="210" class="w-full" /></div>
+        </div>
+      </div>
+      <div class="border-t border-slate-800/70 px-3 py-2 text-[11px] text-slate-200">
+        <div class="flex items-center justify-between mb-1"><span class="font-semibold text-slate-100">FX Dice</span><span id="fxDiceStatus" class="text-[10px] text-slate-500">Roll safe random FX</span></div>
+        <p class="text-[10px] text-slate-400 mb-1">Randomize wobble, zoom, glow, and HTML filters. Use locks to keep certain things stable.</p>
+        <div class="flex flex-wrap items-center gap-2 mb-1 text-[10px] text-slate-300">
+          <label class="inline-flex items-center gap-1"><input id="lockBgHue" type="checkbox" class="bg-slate-900 border-slate-600" /><span>Lock BG hue</span></label>
+          <label class="inline-flex items-center gap-1"><input id="lockZoom" type="checkbox" class="bg-slate-900 border-slate-600" /><span>Lock zoom</span></label>
+          <label class="inline-flex items-center gap-1"><input id="lockGlow" type="checkbox" class="bg-slate-900 border-slate-600" /><span>Lock glow</span></label>
+        </div>
+        <div class="flex items-center gap-2 mb-1">
+          <button id="fxDiceSoftBtn" class="px-2 py-1 rounded-md border border-slate-600 text-slate-200 text-[10px] hover:bg-slate-900/80">Soft roll</button>
+          <button id="fxDiceWildBtn" class="px-2 py-1 rounded-md border border-rose-500/80 text-rose-200 text-[10px] hover:bg-rose-500/15">Wild roll</button>
+        </div>
+        <p class="text-[9px] text-slate-500">Soft keeps current vibe and nudges. Wild goes full chaos (but still within reasonable ranges).</p>
+      </div>
+      <div class="border-t border-slate-800/70 px-3 py-2 text-[11px] text-slate-200">
+        <div class="flex items-center justify-between mb-1"><span class="font-semibold text-slate-100">HTML FX Controls</span><span class="text-[10px] text-slate-500">CSS filter stack</span></div>
+        <div class="mb-2 flex items-center justify-between gap-2">
+          <div class="flex flex-col"><span>HTML FX Preset</span><span class="text-[10px] text-slate-500">CSS filter recipes</span></div>
+          <select id="htmlFxPresetSelect" class="w-40 bg-slate-900 border border-slate-700 rounded-md px-2 py-1 text-[11px] text-slate-100">
+            <option value="clean">Clean</option><option value="oilSlick">Oil Slick</option><option value="neonBloom">Neon Bloom</option><option value="ghostFade">Ghost Fade</option>
+          </select>
+        </div>
+        <div class="space-y-2">
+          <div><div class="flex justify-between"><span>Blur</span><span id="labelHtmlBlur" class="text-slate-400">0 px</span></div><input id="sliderHtmlBlur" type="range" min="0" max="20" value="0" class="w-full" /></div>
+          <div><div class="flex justify-between"><span>Contrast</span><span id="labelHtmlContrast" class="text-slate-400">100%</span></div><input id="sliderHtmlContrast" type="range" min="50" max="250" value="100" class="w-full" /></div>
+          <div><div class="flex justify-between"><span>Hue rotate</span><span id="labelHtmlHue" class="text-slate-400">0°</span></div><input id="sliderHtmlHue" type="range" min="0" max="360" value="0" class="w-full" /></div>
+          <div><div class="flex justify-between"><span>Saturate</span><span id="labelHtmlSat" class="text-slate-400">100%</span></div><input id="sliderHtmlSat" type="range" min="0" max="300" value="100" class="w-full" /></div>
+          <div><div class="flex justify-between"><span>Brightness</span><span id="labelHtmlBright" class="text-slate-400">100%</span></div><input id="sliderHtmlBright" type="range" min="50" max="200" value="100" class="w-full" /></div>
+        </div>
+        <div class="mt-2 flex items-center justify-between">
+          <button id="copyCssFilterBtn" class="px-2 py-1 rounded-md border border-cyan-500/70 text-cyan-200 text-[11px] hover:bg-cyan-500/15">Copy CSS filter</button>
+          <span class="text-[10px] text-slate-500">Copies full filter: stack</span>
+        </div>
+      </div>
+      <div id="capturedFramesSection" class="border-t border-slate-800/70 px-3 py-2 text-[10px] text-slate-200">
+        <div class="flex items-center justify-between mb-1"><span class="font-semibold text-slate-100 text-[11px]">Captured frames</span><span id="thumbCount" class="text-slate-500">0</span></div>
+        <div id="thumbGallery" class="grid grid-cols-3 gap-1 max-h-24 overflow-auto scrollbar-thin"></div>
+      </div>
+      <div id="vsSection" class="border-t border-slate-800/70 px-3 py-2 text-[11px] text-slate-200">
+        <div class="flex items-center justify-between mb-1"><span class="font-semibold text-slate-100">VS Mode</span><span id="vsStatus" class="text-[10px] text-slate-500">Shift-click thumb = Left · Alt-click = Right</span></div>
+        <div class="flex items-center gap-2 mb-2">
+          <button id="vsUseFavoritesBtn" class="px-2 py-1 rounded-md border border-amber-400/80 text-amber-200 text-[10px] hover:bg-amber-500/15">Use first 2 favorites</button>
+          <button id="vsClearBtn" class="px-2 py-1 rounded-md border border-slate-600 text-slate-200 text-[10px] hover:bg-slate-800/80">Clear slots</button>
+          <button id="vsDownloadBtn" class="px-2 py-1 rounded-md border border-cyan-500 text-cyan-200 text-[10px] hover:bg-cyan-500/15">Download VS image</button>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div id="vsLeftSlot" class="relative aspect-[4/3] rounded-xl border border-slate-700/80 bg-slate-950/80 flex items-center justify-center overflow-hidden">
+            <span class="absolute top-1 left-1 text-[10px] px-1.5 py-0.5 rounded-full bg-slate-950/90 border border-slate-600 text-slate-200">LEFT</span>
+            <span class="text-[10px] text-slate-500 px-2 text-center">Shift-click a thumbnail<br />to set Left.</span>
+            <img id="vsLeftImg" class="hidden w-full h-full object-cover" alt="VS left" />
+          </div>
+          <div id="vsRightSlot" class="relative aspect-[4/3] rounded-xl border border-slate-700/80 bg-slate-950/80 flex items-center justify-center overflow-hidden">
+            <span class="absolute top-1 right-1 text-[10px] px-1.5 py-0.5 rounded-full bg-slate-950/90 border border-slate-600 text-slate-200">RIGHT</span>
+            <span class="text-[10px] text-slate-500 px-2 text-center">Alt-click a thumbnail<br />to set Right.</span>
+            <img id="vsRightImg" class="hidden w-full h-full object-cover" alt="VS right" />
+          </div>
+        </div>
+      </div>      <div class="border-t border-slate-800/70 px-3 py-2 text-[11px] text-slate-200">
+        <div class="flex items-center justify-between mb-1"><span class="font-semibold text-slate-100">Spritesheet Export</span><span id="spritesheetStatus" class="text-[10px] text-slate-500">Choose frames and export</span></div>
+        <div class="flex flex-wrap items-center gap-2 mb-1 text-[10px] text-slate-300">
+          <label class="inline-flex items-center gap-1"><input type="radio" name="spritesheetSource" value="all" checked class="bg-slate-900 border-slate-600" id="spritesheetSourceAll" /><span>All frames</span></label>
+          <label class="inline-flex items-center gap-1"><input type="radio" name="spritesheetSource" value="favorites" class="bg-slate-900 border-slate-600" id="spritesheetSourceFavorites" /><span>Favorites only</span></label>
+          <div class="flex items-center gap-1 ml-auto"><label for="spritesheetMaxCols" class="text-slate-400">Max cols:</label><input id="spritesheetMaxCols" type="number" min="1" max="20" value="8" class="w-12 px-1 py-0.5 rounded-md bg-slate-950 border border-slate-700 text-[10px] text-slate-100" /></div>
+        </div>
+        <div class="flex items-center gap-2 mb-1 text-[10px] text-slate-300">
+          <div class="flex items-center gap-1"><span class="text-slate-400">Tag subset:</span><select id="spritesheetTagFilter" class="px-1 py-0.5 rounded-md bg-slate-950 border border-slate-700 text-[10px] text-slate-100"><option value="">(any)</option><option value="idle">idle</option><option value="walk">walk</option><option value="jump">jump</option><option value="fx">fx</option></select></div>
+        </div>
+        <div class="flex items-center gap-2 mb-1">
+          <button id="exportSpritesheetBtn" class="px-2 py-1 rounded-md border border-cyan-500/70 text-cyan-200 text-[10px] hover:bg-cyan-500/15">Export PNG spritesheet</button>
+          <button id="copySpritesheetManifestBtn" class="px-2 py-1 rounded-md border border-slate-600 text-slate-200 text-[10px] hover:bg-slate-900/80">Copy JSON manifest</button>
+        </div>
+        <textarea id="spritesheetManifestOutput" class="w-full h-16 mt-1 bg-slate-950 border border-slate-700 rounded-md px-2 py-1 text-[10px] font-mono text-slate-100 scrollbar-thin" placeholder="// Manifest will appear here after export" spellcheck="false"></textarea>
+      </div>
+      <div class="border-t border-slate-800/70 px-3 py-2 text-[11px] text-slate-200">
+        <div class="flex items-center justify-between mb-1"><span class="font-semibold text-slate-100">Animation Timeline</span><span id="timelineStatus" class="text-[10px] text-slate-500">Build a loop from frames</span></div>
+        <div class="flex flex-wrap items-center gap-2 mb-1 text-[10px] text-slate-300">
+          <label class="inline-flex items-center gap-1"><input id="timelineUseFavorites" type="checkbox" class="bg-slate-900 border-slate-600" /><span>Favorites only</span></label>
+          <div class="flex items-center gap-1"><span class="text-slate-400">Tag:</span><select id="timelineTagFilter" class="px-1 py-0.5 rounded-md bg-slate-950 border border-slate-700 text-[10px] text-slate-100"><option value="">(any)</option><option value="idle">idle</option><option value="walk">walk</option><option value="jump">jump</option><option value="fx">fx</option></select></div>
+          <div class="flex items-center gap-1 ml-auto"><span class="text-slate-400">FPS:</span><input id="timelineFps" type="number" min="1" max="60" value="8" class="w-12 px-1 py-0.5 rounded-md bg-slate-950 border border-slate-700 text-[10px] text-slate-100" /></div>
+        </div>
+        <div class="flex items-center gap-2 mb-1">
+          <button id="timelineBuildBtn" class="px-2 py-1 rounded-md border border-slate-600 text-slate-200 text-[10px] hover:bg-slate-900/80">Build timeline</button>
+          <button id="timelinePlayPauseBtn" class="px-2 py-1 rounded-md border border-emerald-500/70 text-emerald-200 text-[10px] hover:bg-emerald-500/15 disabled:opacity-40 disabled:cursor-not-allowed" disabled>Play</button>
+          <button id="timelineExportJsonBtn" class="px-2 py-1 rounded-md border border-cyan-500/70 text-cyan-200 text-[10px] hover:bg-cyan-500/15 disabled:opacity-40 disabled:cursor-not-allowed" disabled>Copy JSON</button>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="w-24 h-24 rounded-md border border-slate-700/80 bg-slate-950/80 flex items-center justify-center overflow-hidden"><canvas id="timelinePreviewCanvas" class="w-full h-full block"></canvas></div>
+          <textarea id="timelineJsonOutput" class="flex-1 h-24 bg-slate-950 border border-slate-700 rounded-md px-2 py-1 text-[10px] font-mono text-slate-100 scrollbar-thin" placeholder="// Timeline JSON will appear here" spellcheck="false"></textarea>
+        </div>
+        <p class="mt-1 text-[9px] text-slate-500">Uses captured frames (respecting favorites + tag). Perfect for idle/walk/jump loops in ErrlStory.</p>
+      </div>
+      <div class="border-t border-slate-800/70 px-3 py-2 text-[11px] text-slate-200">
+        <div class="flex items-center justify-between mb-1"><span class="font-semibold text-slate-100">Animation Pack Export</span><span id="animPackStatus" class="text-[10px] text-slate-500">Build game-ready JSON</span></div>
+        <p class="text-[10px] text-slate-400 mb-1">Uses the last spritesheet + tags + timeline to create a single JSON animation pack.</p>
+        <div class="flex flex-wrap items-center gap-2 mb-1 text-[10px] text-slate-300">
+          <div class="flex items-center gap-1"><span class="text-slate-400">Sheet file name:</span><input id="animPackSheetName" type="text" value="errl-spritesheet.png" class="w-40 px-1 py-0.5 rounded-md bg-slate-950 border border-slate-700 text-[10px] text-slate-100" /></div>
+          <div class="flex items-center gap-1"><span class="text-slate-400">Animation tags:</span><input id="animPackTagsInput" type="text" value="idle,walk,jump,fx" class="w-40 px-1 py-0.5 rounded-md bg-slate-950 border border-slate-700 text-[10px] text-slate-100" /></div>
+        </div>
+        <div class="flex items-center gap-2 mb-1">
+          <button id="animPackBuildBtn" class="px-2 py-1 rounded-md border border-cyan-500/70 text-cyan-200 text-[10px] hover:bg-cyan-500/15">Build animation pack JSON</button>
+          <button id="animPackCopyBtn" class="px-2 py-1 rounded-md border border-slate-600 text-slate-200 text-[10px] hover:bg-slate-900/80 disabled:opacity-40 disabled:cursor-not-allowed" disabled>Copy pack JSON</button>
+        </div>
+        <textarea id="animPackOutput" class="w-full h-20 mt-1 bg-slate-950 border border-slate-700 rounded-md px-2 py-1 text-[10px] font-mono text-slate-100 scrollbar-thin" placeholder="// Animation pack JSON will appear here" spellcheck="false"></textarea>
+        <p class="mt-1 text-[9px] text-slate-500">Each tag becomes a named clip with ordered frames referencing the spritesheet cells.</p>
+      </div>
+      <div class="border-t border-slate-800/70 px-3 py-2 text-[11px] text-slate-200">
+        <div class="flex items-center justify-between mb-1"><span class="font-semibold text-slate-100">Audio Reactive</span><span class="text-[10px] text-slate-500" id="audioStatus">No audio loaded</span></div>
+        <p class="text-[10px] text-slate-400 mb-1">Load a track and let Errl's wobbles, voxels, and 3D spin respond to the beat.</p>
+        <div class="flex items-center gap-1 mb-1">
+          <button id="audioLoadBtn" class="px-2 py-1 rounded-md border border-slate-600 text-slate-200 text-[10px] hover:bg-slate-900/80">Load audio…</button>
+          <input id="audioFileInput" type="file" accept="audio/*" class="hidden" />
+          <button id="audioToggleBtn" class="px-2 py-1 rounded-md border border-emerald-500/70 text-emerald-200 text-[10px] hover:bg-emerald-500/15 disabled:opacity-40 disabled:cursor-not-allowed" disabled>Enable reactive</button>
+        </div>
+        <div class="w-full h-10 rounded-md border border-slate-700/80 bg-slate-950/80 overflow-hidden"><canvas id="audioSpectrumCanvas" class="w-full h-full block"></canvas></div>
+        <p class="mt-1 text-[9px] text-slate-500">Tip: audio boosts 3D rotation already. You can also hook it into your p5 wobble using <code>audioReactiveValue</code>.</p>
+      </div>
+      <div class="border-t border-slate-800/70 px-3 py-2 text-[11px] text-slate-200">
+        <div class="flex items-center justify-between mb-1"><span class="font-semibold text-slate-100">Projects</span><span id="projectsStatus" class="text-[10px] text-slate-500">Save / load named sessions</span></div>
+        <div class="flex flex-wrap items-center gap-1 mb-1 text-[10px] text-slate-300">
+          <input id="projectNameInput" type="text" placeholder="Project name (e.g., Errl Idle Lab)" class="flex-1 px-1.5 py-0.5 rounded-md bg-slate-950 border border-slate-700 text-[10px] text-slate-100 placeholder:text-slate-500" />
+          <button id="projectSaveBtn" class="px-2 py-1 rounded-md border border-emerald-500/70 text-emerald-200 text-[10px] hover:bg-emerald-500/15">Save</button>
+        </div>
+        <div class="flex items-center justify-between mb-1 text-[10px] text-slate-400"><span>Saved projects:</span><button id="projectsRefreshBtn" class="px-1.5 py-0.5 rounded-md border border-slate-600 text-slate-200 hover:bg-slate-900/80">Refresh</button></div>
+        <div id="projectsList" class="max-h-28 overflow-auto rounded-md border border-slate-800/80 bg-slate-950/60 text-[10px]"></div>
+        <p class="mt-1 text-[9px] text-slate-500">Each project stores the full session snapshot (FX, frames, VS, spritesheets, timelines, packs, etc.) in localStorage.</p>
+      </div>
+      <div class="border-t border-slate-800/70 px-3 py-2 text-[11px] text-slate-200">
+        <div class="flex items-center justify-between mb-1"><span class="font-semibold text-slate-100">Session Snapshot</span><span class="text-[10px] text-slate-500">JSON · export for Obsidian / AI</span></div>
+        <p class="text-[10px] text-slate-400 mb-1">Captures presets, current FX config, frames (with favorites) and VS setup into a single JSON blob.</p>
+        <div class="flex items-center gap-1 mb-1">
+          <button id="copySessionJsonBtn" class="px-2 py-1 rounded-md border border-cyan-500/70 text-cyan-200 text-[10px] hover:bg-cyan-500/15">Copy JSON</button>
+          <button id="downloadSessionJsonBtn" class="px-2 py-1 rounded-md border border-emerald-500/70 text-emerald-200 text-[10px] hover:bg-emerald-500/15">Download .json</button>
+          <button id="loadSessionJsonBtn" class="px-2 py-1 rounded-md border border-amber-400/70 text-amber-200 text-[10px] hover:bg-amber-500/15">Load JSON</button>
+          <input id="loadSessionJsonInput" type="file" accept="application/json,.json" class="hidden" />
+        </div>
+        <textarea id="sessionJsonOutput" class="w-full h-24 mt-1 bg-slate-950 border border-slate-700 rounded-md px-2 py-1 text-[10px] font-mono text-slate-100 scrollbar-thin" spellcheck="false"></textarea>
+        <button id="applySessionJsonFromTextareaBtn" class="mt-1 px-2 py-1 rounded-md border border-slate-600 text-slate-200 text-[10px] hover:bg-slate-900/80">Load from textarea</button>
+      </div>
+      <div class="border-t border-slate-800/70 px-3 py-2 text-[11px] text-slate-200">
+        <div class="flex items-center justify-between mb-1"><span class="font-semibold text-slate-100">AI Handoff Prompt</span><span id="aiHandoffStatus" class="text-[10px] text-slate-500">Build a prompt for another AI</span></div>
+        <p class="text-[10px] text-slate-400 mb-1">Generates a structured description of this session (FX, frames, spritesheets, timelines) that you can paste into ChatGPT, Gemini, Warp, or your game engine docs.</p>
+        <div class="flex flex-wrap items-center gap-2 mb-1 text-[10px] text-slate-300">
+          <div class="flex items-center gap-1"><span class="text-slate-400">Target:</span><select id="aiHandoffTarget" class="px-1 py-0.5 rounded-md bg-slate-950 border border-slate-700 text-[10px] text-slate-100"><option value="generic">Generic AI assistant</option><option value="game-engine">Game engine / animation system</option><option value="video">Video editor / motion graphics</option><option value="obsidian">Obsidian / documentation</option><option value="code">Code assistant (JS/TS/Phaser/Pixi)</option></select></div>
+          <div class="flex-1 flex items-center gap-1"><span class="text-slate-400">Goal:</span><input id="aiHandoffGoal" type="text" placeholder="e.g., turn these into ErrlStory walk cycles" class="flex-1 px-1 py-0.5 rounded-md bg-slate-950 border border-slate-700 text-[10px] text-slate-100 placeholder:text-slate-500" /></div>
+        </div>
+        <div class="flex items-center gap-2 mb-1">
+          <button id="aiHandoffBuildBtn" class="px-2 py-1 rounded-md border border-cyan-500/70 text-cyan-200 text-[10px] hover:bg-cyan-500/15">Build AI prompt</button>
+          <button id="aiHandoffCopyBtn" class="px-2 py-1 rounded-md border border-slate-600 text-slate-200 text-[10px] hover:bg-slate-900/80 disabled:opacity-40 disabled:cursor-not-allowed" disabled>Copy AI prompt</button>
+        </div>
+        <textarea id="aiHandoffOutput" class="w-full h-28 mt-1 bg-slate-950 border border-slate-700 rounded-md px-2 py-1 text-[10px] font-mono text-slate-100 scrollbar-thin" placeholder="// AI-friendly description will appear here" spellcheck="false"></textarea>
+        <p class="mt-1 text-[9px] text-slate-500">Paste this into another AI or doc so it understands your FX setup, frames, spritesheets, and timelines without guessing.</p>
+      </div>
+      <div class="border-t border-slate-800/70 px-3 py-2 text-[11px] text-slate-200">
+        <div class="flex items-center justify-between mb-1"><span class="font-semibold text-slate-100">Sandbox Snippet</span><span class="text-[10px] text-slate-500">Standalone HTML</span></div>
+        <p class="text-[10px] text-slate-400 mb-1">Generates a tiny HTML file that embeds the current Errl SVG + HTML FX filters. Save as <code class="bg-slate-900 px-1 rounded">errl-fx-sandbox.html</code> or drop into an <code>&lt;iframe srcdoc="..."&gt;</code>.</p>
+        <div class="flex items-center gap-1 mb-1">
+          <button id="copySandboxBtn" class="px-2 py-1 rounded-md border border-cyan-500/70 text-cyan-200 text-[10px] hover:bg-cyan-500/15">Copy HTML</button>
+          <button id="downloadSandboxBtn" class="px-2 py-1 rounded-md border border-emerald-500/70 text-emerald-200 text-[10px] hover:bg-emerald-500/15">Download .html</button>
+          <span class="text-[10px] text-slate-500">Uses current SVG + CSS filter</span>
+        </div>
+        <textarea id="sandboxHtmlOutput" class="w-full h-24 mt-1 bg-slate-950 border border-slate-700 rounded-md px-2 py-1 text-[10px] font-mono text-slate-100 scrollbar-thin" spellcheck="false"></textarea>
+      </div>
+      <div class="border-t border-slate-800/70 px-3 py-2 text-[11px] text-slate-200">
+        <div class="flex items-center justify-between mb-1"><span class="font-semibold text-slate-100">FX Preset Pack</span><span class="text-[10px] text-slate-500">S = quick-save</span></div>
+        <div class="flex items-center gap-1 mb-2">
+          <input id="presetNameInput" type="text" placeholder="Preset name (e.g. Oil Bounce)" class="flex-1 bg-slate-900 border border-slate-700 rounded-md px-2 py-1 text-[11px] text-slate-100 placeholder:text-slate-500" />
+          <button id="savePresetBtn" class="px-2 py-1 rounded-md border border-emerald-500/70 text-emerald-200 text-[11px] hover:bg-emerald-500/15">Save</button>
+        </div>
+        <div class="flex items-center justify-between mb-1 gap-2">
+          <div class="flex items-center gap-1">
+            <button id="exportPresetsBtn" class="px-2 py-1 rounded-md border border-slate-600 text-slate-200 text-[10px] hover:bg-slate-800/80">Export JSON</button>
+            <label for="importPresetsInput" class="px-2 py-1 rounded-md border border-slate-600 text-slate-200 text-[10px] hover:bg-slate-800/80 cursor-pointer">Import JSON</label>
+            <input id="importPresetsInput" type="file" accept=".json" class="hidden" />
+          </div>
+          <button id="batchCaptureBtn" class="px-2 py-1 rounded-md border border-cyan-500 text-cyan-200 text-[10px] hover:bg-cyan-500/15">Batch capture</button>
+        </div>
+        <div class="mb-1 text-[10px] text-slate-500">Batch capture walks all FX presets, applies them, and grabs frames into the gallery.</div>
+        <div id="presetList" class="mt-1 max-h-28 overflow-auto scrollbar-thin space-y-1 text-[10px]"><p class="text-slate-500">No presets yet. Tweak sliders, then click Save or press "S".</p></div>
+      </div>
+      <div class="border-t border-slate-800/70 px-3 py-2 text-[11px] text-slate-200">
+        <div class="flex items-center justify-between mb-1"><span class="font-semibold text-slate-100">Diagnostics</span><span id="diagStatus" class="text-[10px] text-slate-500">Runtime stats</span></div>
+        <div class="grid grid-cols-2 gap-2 text-[10px] text-slate-300 mb-2">
+          <div class="space-y-0.5"><div class="text-slate-400">FPS (approx)</div><div id="diagFpsP5" class="text-[10px]">p5: --</div><div id="diagFps3D" class="text-[10px]">3D: --</div><div id="diagFpsTimeline" class="text-[10px]">Timeline: --</div></div>
+          <div class="space-y-0.5"><div class="text-slate-400">Frames</div><div id="diagFrameCounts" class="text-[10px]">Total: 0 · Fav: 0</div><div id="diagTagSummary" class="text-[10px] text-slate-400">Tags: none</div><div id="diagMemory" class="text-[10px] text-slate-400">Captures: ~0 MB</div></div>
+        </div>
+        <div class="flex items-center justify-between text-[9px] text-slate-500"><span>Updates once per second.</span><button id="diagRefreshBtn" class="px-1.5 py-0.5 rounded-md border border-slate-600 text-slate-200 hover:bg-slate-900">Refresh now</button></div>
+      </div>
+    </section>
+  </main>
+  <footer class="h-7 px-3 flex items-center justify-between text-[10px] border-t border-slate-800/70 bg-slate-950/80 backdrop-blur-soft text-slate-400">
+    <div class="flex items-center gap-2"><span>Engine: SVG Shell + p5 Lab + HTML FX + Presets + 3D + Voxels + Audio + Animations</span><span class="text-slate-600">•</span><span id="modeLabel">Mode: Lab (SVG + FX)</span></div>
+    <div class="flex items-center gap-2"><span id="hintLabel">Hint: Press H for Help / keys. Capture from any tab with C, then VS or export session JSON.</span></div>
+  </footer>
+  <!-- Help / Keymap Overlay -->
+  <div id="helpOverlay" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
+    <div class="w-full max-w-2xl max-h-[90vh] overflow-auto bg-slate-950 border border-slate-700 rounded-xl shadow-2xl m-4">
+      <div class="sticky top-0 bg-slate-950 border-b border-slate-800 px-4 py-3 flex items-center justify-between">
+        <h2 class="text-sm font-semibold text-slate-100">Help / Keyboard Shortcuts</h2>
+        <button id="helpOverlayCloseBtn" class="px-2 py-1 rounded-md border border-slate-700 text-slate-200 text-[10px] hover:bg-slate-900/80">Close (Esc)</button>
+      </div>
+      <div class="p-4 space-y-4 text-[11px] text-slate-200">
+        <section><h3 class="font-semibold text-slate-100 mb-1">Navigation</h3><ul class="list-disc list-inside space-y-0.5 text-slate-300"><li><kbd class="px-1 py-0.5 rounded bg-slate-900 border border-slate-700 text-[10px]">Q</kbd> SVG Preview</li><li><kbd class="px-1 py-0.5 rounded bg-slate-900 border border-slate-700 text-[10px]">W</kbd> p5 FX Lab</li><li><kbd class="px-1 py-0.5 rounded bg-slate-900 border border-slate-700 text-[10px]">E</kbd> HTML FX</li><li><kbd class="px-1 py-0.5 rounded bg-slate-900 border border-slate-700 text-[10px]">R</kbd> 3D Wire</li><li><kbd class="px-1 py-0.5 rounded bg-slate-900 border border-slate-700 text-[10px]">T</kbd> Voxels</li><li><kbd class="px-1 py-0.5 rounded bg-slate-900 border border-slate-700 text-[10px]">G</kbd> Scroll to Gallery</li><li><kbd class="px-1 py-0.5 rounded bg-slate-900 border border-slate-700 text-[10px]">V</kbd> Scroll to VS Mode</li><li><kbd class="px-1 py-0.5 rounded bg-slate-900 border border-slate-700 text-[10px]">Ctrl+K</kbd> / <kbd class="px-1 py-0.5 rounded bg-slate-900 border border-slate-700 text-[10px]">⌘K</kbd> Command Palette</li></ul></section>
+        <section><h3 class="font-semibold text-slate-100 mb-1">Actions</h3><ul class="list-disc list-inside space-y-0.5 text-slate-300"><li><kbd class="px-1 py-0.5 rounded bg-slate-900 border border-slate-700 text-[10px]">C</kbd> Capture frame from active view</li><li><kbd class="px-1 py-0.5 rounded bg-slate-900 border border-slate-700 text-[10px]">S</kbd> Save current FX preset</li><li><kbd class="px-1 py-0.5 rounded bg-slate-900 border border-slate-700 text-[10px]">Space</kbd> Pause/play p5 animation</li><li><kbd class="px-1 py-0.5 rounded bg-slate-900 border border-slate-700 text-[10px]">1</kbd> / <kbd class="px-1 py-0.5 rounded bg-slate-900 border border-slate-700 text-[10px]">2</kbd> Cycle p5 presets</li><li><kbd class="px-1 py-0.5 rounded bg-slate-900 border border-slate-700 text-[10px]">D</kbd> Soft FX roll</li><li><kbd class="px-1 py-0.5 rounded bg-slate-900 border border-slate-700 text-[10px]">Shift+D</kbd> Wild FX roll</li><li><kbd class="px-1 py-0.5 rounded bg-slate-900 border border-slate-700 text-[10px]">H</kbd> Open this help</li><li><kbd class="px-1 py-0.5 rounded bg-slate-900 border border-slate-700 text-[10px]">Esc</kbd> Close overlays</li></ul></section>
+        <section><h3 class="font-semibold text-slate-100 mb-1">VS Mode</h3><ul class="list-disc list-inside space-y-0.5 text-slate-300"><li>Shift-click a thumbnail → set Left slot</li><li>Alt-click a thumbnail → set Right slot</li><li>Right-click a thumbnail → tag it (idle, walk, jump, fx, etc.)</li></ul></section>
+        <section><h3 class="font-semibold text-slate-100 mb-1">Tips</h3><ul class="list-disc list-inside space-y-0.5 text-slate-300"><li>All captured frames are stored with data URLs, so session snapshots are portable.</li><li>Spritesheet export includes a JSON manifest with cell positions.</li><li>Animation timeline builds loops from tagged or favorite frames.</li><li>Animation pack combines spritesheet + timeline into game-ready JSON.</li><li>Projects save full session state (FX, frames, VS, spritesheets, timelines, packs).</li><li>AI Handoff generates a structured prompt for other AI tools.</li></ul></section>
+      </div>
+    </div>
+  </div>
+  <!-- Quick Start Overlay -->
+  <div id="quickStartOverlay" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
+    <div class="w-full max-w-xl max-h-[90vh] overflow-auto bg-slate-950 border border-slate-700 rounded-xl shadow-2xl m-4">
+      <div class="sticky top-0 bg-slate-950 border-b border-slate-800 px-4 py-3 flex items-center justify-between">
+        <h2 class="text-sm font-semibold text-slate-100">Quick Start</h2>
+        <button id="quickStartCloseBtn" class="px-2 py-1 rounded-md border border-slate-700 text-slate-200 text-[10px] hover:bg-slate-900/80">Close (Esc)</button>
+      </div>
+      <div class="p-4 space-y-3 text-[11px] text-slate-200">
+        <section><h3 class="font-semibold text-slate-100 mb-1">1. Upload an Errl SVG</h3><p class="text-slate-300">Drag & drop or use "Choose file" above. The SVG will be normalized and displayed in the preview.</p></section>
+        <section><h3 class="font-semibold text-slate-100 mb-1">2. Try the FX tabs</h3><ul class="list-disc list-inside space-y-0.5 text-slate-300"><li>p5 FX Lab: Wobble, rotation, glow effects</li><li>HTML FX: CSS filters (blur, contrast, hue, etc.)</li><li>3D Wire: Three.js wireframe box or 3D voxel heightmap</li><li>Voxels: 2.5D pixelated mosaic</li></ul></section>
+        <section><h3 class="font-semibold text-slate-100 mb-1">3. Capture frames</h3><p class="text-slate-300">Press <kbd class="px-1 py-0.5 rounded bg-slate-900 border border-slate-700 text-[10px]">C</kbd> or click "Capture frame" to save the current view to the gallery. Mark favorites with the star button.</p></section>
+        <section><h3 class="font-semibold text-slate-100 mb-1">4. Export assets</h3><ul class="list-disc list-inside space-y-0.5 text-slate-300"><li>Spritesheet: Export all frames as a PNG grid with JSON manifest</li><li>Animation Timeline: Build looping animations from tagged/favorite frames</li><li>Animation Pack: Combine spritesheet + timeline into game-ready JSON</li><li>Session Snapshot: Export full state (FX, frames, VS, etc.) as JSON</li></ul></section>
+        <section><h3 class="font-semibold text-slate-100 mb-1">5. Save projects</h3><p class="text-slate-300">Name and save your session as a project. It stores everything in localStorage and can be loaded later.</p></section>
+        <section><h3 class="font-semibold text-slate-100 mb-1">Keyboard shortcuts</h3><p class="text-slate-300">Press <kbd class="px-1 py-0.5 rounded bg-slate-900 border border-slate-700 text-[10px]">H</kbd> for the full keymap, or <kbd class="px-1 py-0.5 rounded bg-slate-900 border border-slate-700 text-[10px]">Ctrl+K</kbd> / <kbd class="px-1 py-0.5 rounded bg-slate-900 border border-slate-700 text-[10px]">⌘K</kbd> for the command palette.</p></section>
+      </div>
+    </div>
+  </div>
+  <!-- Command Palette -->
+  <div id="commandPalette" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+    <div class="w-full max-w-lg bg-slate-950 border border-slate-700 rounded-xl shadow-2xl m-4">
+      <div class="px-4 py-2 border-b border-slate-800">
+        <input id="commandPaletteInput" type="text" placeholder="Type to search commands..." class="w-full bg-transparent text-slate-100 text-sm outline-none placeholder:text-slate-500" autofocus />
+      </div>
+      <div id="commandPaletteList" class="max-h-64 overflow-auto scrollbar-thin"></div>
+    </div>
+  </div>
+  <!-- Load all JavaScript modules -->
+  <script src="js/utils.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/svg-handler.js"></script>
+  <script src="js/p5-fx.js"></script>
+  <script src="js/html-fx.js"></script>
+  <script src="js/three-d.js"></script>
+  <script src="js/voxels.js"></script>
+  <script src="js/capture.js"></script>
+  <script src="js/export.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/projects.js"></script>
+  <script src="js/session.js"></script>
+  <script src="js/ai-handoff.js"></script>
+  <script src="js/command-palette.js"></script>
+  <script src="js/diagnostics.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/sandbox.js"></script>
+  <script src="js/fx-dice.js"></script>
+  <script src="js/presets.js"></script>
+  <script src="js/events.js"></script>
+  <script src="js/keyboard.js"></script>
+  <script>
+    "use strict";
+    // Initialize the application after all modules are loaded
+    (function() {
+      if (!window.ErrlFX || !window.ErrlFX.App) {
+        console.error("ErrlFX modules failed to load");
+        return;
+      }
+
+      const App = window.ErrlFX.App;
+      const Utils = window.ErrlFX.Utils;
+
+      // Initial setup
+      function initializeApp() {
+        // Apply default presets
+        if (window.ErrlFX && window.ErrlFX.P5Fx) {
+          window.ErrlFX.P5Fx.applyPreset("wobbleChill", false);
+        }
+        if (window.ErrlFX && window.ErrlFX.HtmlFx) {
+          window.ErrlFX.HtmlFx.applyHtmlFxPreset("clean", false);
+        }
+
+        // Update UI elements
+        if (window.ErrlFX && window.ErrlFX.Sandbox) {
+          window.ErrlFX.Sandbox.updateSandboxSnippet();
+        }
+        if (window.ErrlFX && window.ErrlFX.Presets) {
+          window.ErrlFX.Presets.renderFxPresetList();
+        }
+        if (window.ErrlFX && window.ErrlFX.Storage) {
+          window.ErrlFX.Storage.loadStateFromStorage();
+        }
+        if (window.ErrlFX && window.ErrlFX.Session) {
+          window.ErrlFX.Session.updateSessionJsonOutput();
+        }
+        if (window.ErrlFX && window.ErrlFX.Projects) {
+          window.ErrlFX.Projects.renderProjectsList();
+        }
+        if (window.ErrlFX && window.ErrlFX.Diagnostics) {
+          window.ErrlFX.Diagnostics.startDiagnosticsInterval();
+        }
+
+        // Auto-open Quick Start if first visit
+        try {
+          const hasSeenQuickStart = localStorage.getItem("errlFxHasSeenQuickStart");
+          if (!hasSeenQuickStart && !App.state.currentSvg) {
+            if (window.ErrlFX && window.ErrlFX.UI) {
+              window.ErrlFX.UI.openQuickStartOverlay();
+              localStorage.setItem("errlFxHasSeenQuickStart", "1");
+            }
+          }
+        } catch (e) {}
+
+        // Set initial hint
+        if (App.dom.hintLabel) {
+          App.dom.hintLabel.textContent = "Hint: Press H for Help / keys. Capture from any tab with C, then VS or export session JSON.";
+        }
+      }
+
+      // Wait for DOM and all modules
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initializeApp);
+      } else {
+        setTimeout(initializeApp, 100);
+      }
+    })();
+  </script>
+</body>
+</html>

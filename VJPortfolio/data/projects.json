@@ -1,0 +1,22 @@
+{
+  "meta": {
+    "totalProjects": 1,
+    "extractedAt": "2027-01-XX"
+  },
+  "projects": [
+    {
+      "id": "vjsynthlab",
+      "title": "VJ Synth Lab — Mixer",
+      "description": "Complete VJ mixer with MIDI Learn support, interactive gallery themes, spirograph visualizations, and SVG-based controls. Features draggable knobs, drum pads, multiple scopes, and MIDI device integration.",
+      "type": "vj",
+      "tech": "SVG + MIDI API",
+      "file": "VJsynthlab.html",
+      "category": "mixer",
+      "features": ["MIDI Learn", "Gallery Themes", "Spirograph Scope", "Superellipse Scope", "Kaleidoscope", "Drum Pads", "Interactive Knobs", "Auto-Advance"]
+    }
+  ],
+  "categories": {
+    "all": ["vjsynthlab"],
+    "mixer": ["vjsynthlab"]
+  }
+}

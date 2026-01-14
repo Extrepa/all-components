@@ -1,0 +1,8 @@
+<!-- errl_weather_lightning_icon_01 – standalone bolt (fx/ui) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_weather" data-cat="fx" data-name="errl_weather_lightning_icon_01">
+  <g fill="none">
+    <path d="M32 18 L26 30 H30 L26 42 L38 28 H34 L38 18 Z"
+      fill="#facc15"/>
+  </g>
+</svg>

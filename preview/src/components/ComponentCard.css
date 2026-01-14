@@ -1,0 +1,97 @@
+.component-card {
+  background: var(--errl-panel);
+  border: 1px solid var(--errl-border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+}
+
+.component-card.preview-disabled {
+  cursor: not-allowed;
+  opacity: 0.75;
+}
+
+.component-card.preview-disabled:hover {
+  border-color: var(--errl-border);
+  box-shadow: none;
+  transform: none;
+  background: var(--errl-panel);
+}
+
+.component-card:hover {
+  border-color: var(--errl-accent);
+  box-shadow: 0 0 20px rgba(52, 225, 255, 0.4), 0 4px 12px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
+  background: var(--errl-surface);
+}
+
+.component-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--errl-accent);
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 10px rgba(52, 225, 255, 0.3);
+}
+
+.component-path {
+  font-size: 0.85rem;
+  color: var(--errl-muted);
+  font-family: 'Monaco', 'Menlo', monospace;
+  margin-bottom: 0.75rem;
+  word-break: break-all;
+}
+
+.component-meta {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.component-type {
+  display: inline-block;
+  background: var(--errl-accent-soft);
+  color: var(--errl-text);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid var(--errl-border);
+}
+
+.component-type.tsx {
+  background: rgba(52, 225, 255, 0.2);
+  color: var(--errl-accent);
+  border-color: var(--errl-accent);
+}
+
+.component-type.ts {
+  background: rgba(52, 225, 255, 0.2);
+  color: var(--errl-accent);
+  border-color: var(--errl-accent);
+}
+
+.component-type.js {
+  background: rgba(255, 52, 245, 0.2);
+  color: var(--errl-accent-2);
+  border-color: var(--errl-accent-2);
+}
+
+.component-type.jsx {
+  background: rgba(255, 52, 245, 0.2);
+  color: var(--errl-accent-2);
+  border-color: var(--errl-accent-2);
+}
+
+.component-badge {
+  display: inline-block;
+  background: rgba(0, 245, 160, 0.2);
+  color: #00f5a0;
+  border: 1px solid #00f5a0;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  box-shadow: 0 0 10px rgba(0, 245, 160, 0.3);
+}

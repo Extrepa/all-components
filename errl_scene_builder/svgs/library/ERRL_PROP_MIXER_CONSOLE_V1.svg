@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <g id="group_base" fill="#f4f0ff" stroke="#101020" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="200" y="520" width="624" height="160" rx="24" />
+    <rect x="240" y="480" width="544" height="60" rx="16" />
+  </g>
+  <g id="group_surface" fill="#ffd166" stroke="#101020" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="230" y="500" width="564" height="80" rx="16" />
+  </g>
+  <g id="group_faders" fill="#101020">
+    <rect x="280" y="420" width="12" height="120" rx="6" />
+    <rect x="340" y="430" width="12" height="110" rx="6" />
+    <rect x="400" y="424" width="12" height="116" rx="6" />
+    <rect x="460" y="436" width="12" height="104" rx="6" />
+    <rect x="520" y="428" width="12" height="112" rx="6" />
+    <rect x="580" y="432" width="12" height="108" rx="6" />
+    <rect x="640" y="424" width="12" height="116" rx="6" />
+    <rect x="700" y="432" width="12" height="108" rx="6" />
+  </g>
+  <g id="group_knobs" fill="#101020">
+    <circle cx="300" cy="504" r="12" />
+    <circle cx="360" cy="504" r="12" />
+    <circle cx="420" cy="504" r="12" />
+    <circle cx="480" cy="504" r="12" />
+    <circle cx="540" cy="504" r="12" />
+    <circle cx="600" cy="504" r="12" />
+    <circle cx="660" cy="504" r="12" />
+    <circle cx="720" cy="504" r="12" />
+  </g>
+</svg>

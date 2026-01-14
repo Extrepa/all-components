@@ -1,0 +1,10 @@
+<!-- 69) errl_woods_rope_01 – coiled rope (prop) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="prop" data-name="errl_woods_rope_01">
+  <g fill="none">
+    <circle cx="32" cy="40" r="6" stroke="#a16207" stroke-width="2"/>
+    <circle cx="32" cy="40" r="3" stroke="#a16207" stroke-width="2"/>
+    <path d="M38 40 C42 40 44 38 45 36"
+      stroke="#a16207" stroke-width="2" stroke-linecap="round"/>
+  </g>
+</svg>

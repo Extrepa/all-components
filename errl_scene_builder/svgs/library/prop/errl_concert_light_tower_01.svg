@@ -1,0 +1,11 @@
+<!-- errl_concert_light_tower_01 – vertical truss with lights (prop/fx) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_concert" data-cat="prop" data-name="errl_concert_light_tower_01">
+  <g fill="none">
+    <rect x="28" y="18" width="8" height="26" rx="2" fill="#111827"/>
+    <path d="M30 20 L34 24 M30 24 L34 28 M30 28 L34 32 M30 32 L34 36"
+      stroke="#22d3ee" stroke-width="1" opacity="0.7"/>
+    <rect x="26" y="44" width="12" height="4" rx="2" fill="#020617"/>
+    <ellipse cx="32" cy="50" rx="9" ry="2.6" fill="#020617" opacity="0.5"/>
+  </g>
+</svg>

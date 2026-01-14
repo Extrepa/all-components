@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENTERING THE VOID | MOLTEN DICHROIC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #030303;
+            --dichroic-1: #ff00ff;
+            --dichroic-2: #00ffff;
+            --dichroic-3: #7000ff;
+            --dichroic-4: #ffea00;
+            --text-primary: #ffffff;
+            --mono-font: 'JetBrains Mono', monospace;
+            --sans-font: 'Inter', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-primary);
+            font-family: var(--sans-font);
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* Molten Dichroic Background */
+        .canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            filter: url(#turbulence-filter);
+        }
+
+        .gradient-mesh {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background: 
+                radial-gradient(circle at 30% 30%, var(--dichroic-1) 0%, transparent 40%),
+                radial-gradient(circle at 70% 20%, var(--dichroic-2) 0%, transparent 40%),
+                radial-gradient(circle at 40% 80%, var(--dichroic-3) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, var(--dichroic-4) 0%, transparent 40%);
+            animation: molten-drift 20s ease-in-out infinite alternate;
+            opacity: 0.6;
+            mix-blend-mode: screen;
+        }
+
+        @keyframes molten-drift {
+            0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+            50% { transform: translate(-5% , 5%) rotate(5deg) scale(1.1); }
+            100% { transform: translate(5%, -5%) rotate(-5deg) scale(1); }
+        }
+
+        /* UI Structure */
+        main {
+            position: relative;
+            height: 100vh;
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            padding: 40px;
+            z-index: 10;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .logo {
+            font-family: var(--mono-font);
+            font-size: 0.8rem;
+            letter-spacing: 0.2rem;
+            text-transform: uppercase;
+            border-left: 2px solid var(--text-primary);
+            padding-left: 15px;
+        }
+
+        .status-bits {
+            font-family: var(--mono-font);
+            font-size: 0.7rem;
+            text-align: right;
+            line-height: 1.5;
+            opacity: 0.7;
+        }
+
+        /* The Portal Visual */
+        .portal-center {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .portal-ring {
+            width: 50vh;
+            height: 50vh;
+            border-radius: 50%;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 100px rgba(255, 255, 255, 0.1);
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .portal-ring::before {
+            content: '';
+            position: absolute;
+            inset: -20px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--dichroic-1), var(--dichroic-2), var(--dichroic-3));
+            filter: blur(40px);
+            opacity: 0.3;
+            animation: rotate 10s linear infinite;
+        }
+
+        .portal-glass {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px) saturate(200%) contrast(150%);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .portal-label {
+            position: absolute;
+            font-size: 10vw;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -0.4vw;
+            mix-blend-mode: exclusion;
+            pointer-events: none;
+            text-align: center;
+            line-height: 0.8;
+        }
+
+        /* Interactive Elements */
+        .action-button {
+            margin-top: 40px;
+            padding: 20px 40px;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            font-family: var(--mono-font);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .action-button:hover {
+            border-color: white;
+            background: white;
+            color: black;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255,255,255,0.2);
+        }
+
+        footer {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            align-items: end;
+            font-family: var(--mono-font);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+        }
+
+        .coord-data {
+            color: var(--dichroic-2);
+        }
+
+        /* Custom Cursor */
+        #cursor {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            border: 1px solid white;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease, width 0.3s ease, height 0.3s ease;
+            mix-blend-mode: difference;
+        }
+
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.05);
+            position: absolute;
+            z-index: 100;
+            pointer-events: none;
+            animation: scanline 8s linear infinite;
+        }
+
+        @keyframes scanline {
+            0% { top: -10%; }
+            100% { top: 110%; }
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        svg {
+            position: absolute;
+            width: 0;
+            height: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="cursor"></div>
+    <div class="scanline"></div>
+
+    <svg>
+        <filter id="turbulence-filter">
+            <feTurbulence type="fractalNoise" baseFrequency="0.01 0.01" numOctaves="3" seed="2" result="noise">
+                <animate attributeName="baseFrequency" values="0.01 0.01; 0.015 0.02; 0.01 0.01" dur="10s" repeatCount="indefinite" />
+            </feTurbulence>
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="50" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+    </svg>
+
+    <div class="canvas-container">
+        <div class="gradient-mesh"></div>
+    </div>
+
+    <main>
+        <header>
+            <div class="logo">
+                NEURAL_TRANSIT<br>
+                <span style="font-weight: 700;">PHASE_09</span>
+            </div>
+            <div class="status-bits">
+                [ STABILITY: 88.4% ]<br>
+                [ SPECTRA: DICHROIC_HIGH ]<br>
+                [ LOCATION: UNKNOWN_SECTOR ]
+            </div>
+        </header>
+
+        <section class="portal-center">
+            <div class="portal-ring" id="portal">
+                <div class="portal-glass">
+                    <div class="portal-label">ENTER<br>VOID</div>
+                </div>
+            </div>
+            
+            <button class="action-button" id="init-sequence">Initiate Jump</button>
+        </section>
+
+        <footer>
+            <div class="coord-data">
+                LAT // 44.002.11<br>
+                LNG // 09.882.43<br>
+                ALT // 1.229.00
+            </div>
+            <div style="text-align: center; opacity: 0.5;">
+                PROCEED WITH EXTREME CAUTION<br>
+                REALITY DISTORTION IS IMMINENT
+            </div>
+            <div style="text-align: right;">
+                &copy; 2124 FLASH_UI<br>
+                NO_TRADEMARK_RESERVED
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        const cursor = document.getElementById('cursor');
+        const portal = document.getElementById('portal');
+        const btn = document.getElementById('init-sequence');
+
+        document.addEventListener('mousemove', (e) => {
+            // Smooth cursor movement
+            cursor.style.left = e.clientX - 20 + 'px';
+            cursor.style.top = e.clientY - 20 + 'px';
+
+            // Parallax effect on portal
+            const xAxis = (window.innerWidth / 2 - e.clientX) / 25;
+            const yAxis = (window.innerHeight / 2 - e.clientY) / 25;
+            portal.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+        });
+
+        document.addEventListener('mousedown', () => {
+            cursor.style.transform = 'scale(0.8)';
+            cursor.style.backgroundColor = 'white';
+        });
+
+        document.addEventListener('mouseup', () => {
+            cursor.style.transform = 'scale(1)';
+            cursor.style.backgroundColor = 'transparent';
+        });
+
+        btn.addEventListener('mouseenter', () => {
+            cursor.style.width = '80px';
+            cursor.style.height = '80px';
+            cursor.style.borderColor = 'var(--dichroic-2)';
+        });
+
+        btn.addEventListener('mouseleave', () => {
+            cursor.style.width = '40px';
+            cursor.style.height = '40px';
+            cursor.style.borderColor = 'white';
+        });
+
+        btn.addEventListener('click', () => {
+            // Psychedelic Flash Animation
+            const overlay = document.createElement('div');
+            overlay.style.position = 'fixed';
+            overlay.style.inset = '0';
+            overlay.style.zIndex = '9999';
+            overlay.style.background = 'white';
+            overlay.style.transition = 'opacity 1s ease';
+            document.body.appendChild(overlay);
+            
+            setTimeout(() => {
+                overlay.style.opacity = '0';
+                portal.style.transform = 'scale(10)';
+                portal.style.transition = 'transform 2s ease-in';
+                setTimeout(() => {
+                    overlay.remove();
+                    alert("TRANSIT SUCCESSFUL. WELCOME TO THE CHROMATIC PLANE.");
+                    window.location.reload();
+                }, 1500);
+            }, 100);
+        });
+    </script>
+</body>
+</html>

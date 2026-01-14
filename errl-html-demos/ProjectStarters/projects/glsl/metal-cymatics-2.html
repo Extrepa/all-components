@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>metal cymatics - GLSL Shader</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0a0a0a;
+      color: #fff;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .header {
+      padding: 1.5rem 2rem;
+      background: #1a1a1a;
+      border-bottom: 1px solid #333;
+    }
+    .header h1 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .header p {
+      color: #b0b0b0;
+      font-size: 0.875rem;
+    }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 1rem;
+      color: #6366f1;
+      text-decoration: none;
+      font-size: 0.875rem;
+    }
+    .back-link:hover {
+      text-decoration: underline;
+    }
+    #canvas-container {
+      flex: 1;
+      position: relative;
+      width: 100%;
+      height: calc(100vh - 200px);
+    }
+    .info {
+      padding: 1.5rem 2rem;
+      background: #1a1a1a;
+      border-top: 1px solid #333;
+      font-size: 0.875rem;
+    }
+    .info-item {
+      margin-bottom: 0.5rem;
+      display: flex;
+    }
+    .info-label {
+      width: 120px;
+      color: #b0b0b0;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="../index.html" class="back-link">← Back to Gallery</a>
+      <h1>metal cymatics</h1>
+      <p>GLSL Fragment Shader</p>
+    </div>
+    <div id="canvas-container"></div>
+    <div class="info">
+      <div class="info-item">
+        <span class="info-label">Prompt:</span>
+        <span>metal cymatics</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Model:</span>
+        <span>threePro</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Generation Time:</span>
+        <span>59.0s</span>
+      </div>
+    </div>
+  </div>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="../js/glsl-viewer.js"></script>
+  <script>
+    const shaderCode = "precision mediump float;\n\nuniform vec2 u_resolution;\nuniform float u_time;\n\n// Rotate vector\nvec2 rotate(vec2 v, float a) {\n    float s = sin(a);\n    float c = cos(a);\n    return mat2(c, -s, s, c) * v;\n}\n\n// Cymatic wave function\nfloat cymatics(vec2 p) {\n    float t = u_time * 0.5;\n    float d = length(p);\n    \n    // Base radial wave (standing wave)\n    float v = sin(d * 30.0 - t * 4.0);\n    \n    // Angular modulation (nodal lines)\n    float angle = atan(p.y, p.x);\n    v *= cos(angle * 6.0 + sin(t * 0.5) * 2.0);\n    \n    // Interference pattern (grid waves)\n    vec2 grid = p * 15.0;\n    v += sin(grid.x + t) * sin(grid.y + t) * 0.5;\n    \n    // Second layer of radial interference\n    v += sin(d * 50.0 + t * 2.0) * 0.2;\n    \n    return v * 0.5; // Amplitude scaling\n}\n\nvoid main() {\n    vec2 uv = (gl_FragCoord.xy * 2.0 - u_resolution) / min(u_resolution.x, u_resolution.y);\n    \n    // Calculate surface normal using finite differences\n    float epsilon = 0.005;\n    float h = cymatics(uv);\n    float h_x = cymatics(uv + vec2(epsilon, 0.0));\n    float h_y = cymatics(uv + vec2(0.0, epsilon));\n    \n    // Construct normal vector\n    vec3 normal = normalize(vec3(h - h_x, h - h_y, epsilon * 2.0));\n    \n    // Lighting setup\n    vec3 lightPos = vec3(sin(u_time) * 2.0, cos(u_time * 0.7) * 2.0, 2.0);\n    vec3 viewDir = normalize(vec3(uv, -2.0)); // Viewer is above\n    vec3 lightDir = normalize(lightPos - vec3(uv, 0.0));\n    vec3 halfVector = normalize(lightDir - viewDir);\n    \n    // Specular (Phong)\n    float spec = pow(max(dot(normal, halfVector), 0.0), 32.0);\n    \n    // Environment Reflection (Fake chrome)\n    vec3 ref = reflect(viewDir, normal);\n    // Create a procedural environment map using sine waves on the reflection vector\n    vec3 env = vec3(0.5) + 0.5 * cos(ref.xyx * 4.0 + vec3(0.0, 2.0, 4.0) + u_time * 0.2);\n    \n    // Frensel effect for metallic edges\n    float fresnel = pow(1.0 - max(dot(normal, -viewDir), 0.0), 3.0);\n    \n    // Combine for metallic look\n    vec3 col = vec3(0.1); // Base dark metal\n    col += env * 0.8; // Reflection\n    col += vec3(1.0, 0.95, 0.9) * spec * 2.0; // Bright highlights\n    col += fresnel * 0.5;\n    \n    // Add some dispersion/chromatic aberration at the edges of waves\n    col.r += cymatics(uv + vec2(0.002)) * 0.2;\n    col.b -= cymatics(uv - vec2(0.002)) * 0.2;\n\n    // Contrast and vignette\n    col = pow(col, vec3(1.2));\n    col *= 1.0 - length(uv) * 0.4;\n    \n    gl_FragColor = vec4(col, 1.0);\n}";
+    const container = document.getElementById('canvas-container');
+    const viewer = new GLSLViewer(container, shaderCode);
+    
+    window.addEventListener('resize', () => {
+      viewer.handleResize();
+    });
+  </script>
+</body>
+</html>

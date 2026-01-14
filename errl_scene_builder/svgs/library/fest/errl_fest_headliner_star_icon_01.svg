@@ -1,0 +1,9 @@
+<!-- Example 235 | errl_fest_headliner_star_icon_01 (ui) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="ui" data-name="errl_fest_headliner_star_icon_01">
+  <g fill="none">
+    <circle cx="32" cy="32" r="7" fill="#0f172a"/>
+    <path d="M32 26 L33.6 29.4 37.2 29.8 34.6 32.1 35.3 35.6 32 33.8 28.7 35.6 29.4 32.1 26.8 29.8 30.4 29.4 Z"
+      fill="#facc15"/>
+  </g>
+</svg>

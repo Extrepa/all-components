@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Living Liquid - Gentle Flow</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #050505;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    canvas {
+      display: block;
+      box-shadow: 0 0 80px rgba(0,0,0,0.9);
+    }
+    #instructions {
+      position: absolute;
+      bottom: 30px;
+      width: 100%;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.2);
+      font-family: 'Courier New', sans-serif; 
+      font-size: 12px;
+      pointer-events: none;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+</head>
+<body>
+
+  <div id="instructions">
+    Move to ripple • Hold to create • Space for Palette
+  </div>
+
+  <script>
+    let drops = [];
+    let currentDrop = null;
+    let mousePressStartTime = 0;
+    const CLICK_THRESHOLD = 200;
+
+    let grainImg;
+    let palettes = [
+      { name: "Deep Ocean", hues: [200, 220, 180, 240], bgHue: 220 },
+      { name: "Midnight Purple", hues: [260, 280, 240, 290], bgHue: 270 },
+      { name: "Ember", hues: [0, 20, 350, 40], bgHue: 10 },
+      { name: "Forest", hues: [100, 140, 80, 160], bgHue: 130 }
+    ];
+    let currentPalette = 0;
+
+    function setup() {
+      createCanvas(windowWidth, windowHeight);
+      colorMode(HSB, 360, 100, 100, 100);
+      
+      // Grain Texture
+      grainImg = createGraphics(width, height);
+      grainImg.noStroke();
+      for (let i = 0; i < 25000; i++) {
+        grainImg.fill(0, 0, 100, 2); 
+        grainImg.rect(random(width), random(height), 1, 1);
+      }
+    }
+
+    function windowResized() {
+      resizeCanvas(windowWidth, windowHeight);
+      grainImg = createGraphics(width, height);
+      grainImg.noStroke();
+      for (let i = 0; i < 25000; i++) {
+        grainImg.fill(0, 0, 100, 2);
+        grainImg.rect(random(width), random(height), 1, 1);
+      }
+    }
+
+    function draw() {
+      // 1. "Breathing" Background
+      blendMode(BLEND);
+      noStroke();
+      
+      let breath = map(sin(frameCount * 0.01), -1, 1, 3, 6); 
+      let baseHue = palettes[currentPalette].bgHue;
+      
+      fill(baseHue, 60, breath, 20); 
+      rect(0, 0, width, height);
+
+      // 2. Interactive Ripples
+      let mouseVel = createVector(mouseX - pmouseX, mouseY - pmouseY);
+      
+      blendMode(ADD);
+
+      for (let i = drops.length - 1; i >= 0; i--) {
+        let drop = drops[i];
+        
+        // --- REDUCED MOUSE REPULSION ---
+        let d = dist(mouseX, mouseY, drop.pos.x, drop.pos.y);
+        let hoverRadius = 120; // Slightly smaller radius
+        
+        if (d < hoverRadius) {
+          let force = p5.Vector.sub(drop.pos, createVector(mouseX, mouseY));
+          
+          // Reduced Max Strength from 0.5 to 0.1 (Much softer)
+          let strength = map(d, 0, hoverRadius, 0.1, 0);
+          force.setMag(strength);
+          
+          // Reduced Velocity impact from 0.05 to 0.01
+          force.add(mouseVel.copy().mult(0.01));
+          
+          drop.vel.add(force);
+          
+          // Interaction brightness
+          drop.tempBri = min(drop.bri + 20, 80);
+        } else {
+          if (drop.tempBri > drop.bri) drop.tempBri -= 0.5;
+          else drop.tempBri = drop.bri;
+        }
+
+        drop.update();
+        drop.display();
+        
+        if (drop.isGone()) {
+          drops.splice(i, 1);
+        }
+      }
+
+      // Handle Creation
+      if (mouseIsPressed && currentDrop) {
+        let growAmount = (millis() - mousePressStartTime) * 0.05;
+        currentDrop.r = 15 + growAmount;
+        currentDrop.display(); 
+      }
+
+      // Texture
+      blendMode(BLEND);
+      image(grainImg, 0, 0);
+    }
+
+    class Drop {
+      constructor(x, y, r, h) {
+        this.pos = createVector(x, y);
+        this.vel = createVector(0, 0);
+        this.r = r;
+        
+        this.hue = h + random(-20, 20);
+        this.sat = random(40, 60); 
+        this.bri = random(30, 50); 
+        this.tempBri = this.bri;   
+        
+        this.life = 255; 
+        this.maxSpread = this.r * random(2, 4);
+        
+        this.noiseOffset = random(1000);
+        this.shapeSpeed = random(0.01, 0.03);
+      }
+
+      setInitialVelocity() {
+        this.vel = p5.Vector.random2D().mult(random(0.2, 1.0));
+      }
+
+      update() {
+        // Natural wandering
+        let wanderAngle = noise(this.pos.x * 0.003, this.pos.y * 0.003, frameCount * 0.005) * TWO_PI * 2;
+        let wanderForce = p5.Vector.fromAngle(wanderAngle).mult(0.02);
+        this.vel.add(wanderForce);
+        
+        // --- REDUCED SIZE-BASED FRICTION ---
+        // Old: map(this.r, 10, 50, 0.99, 0.95);
+        // New: map(this.r, 10, 50, 0.995, 0.98); 
+        // This means big drops slide almost as easily as small ones now.
+        let friction = map(this.r, 10, 50, 0.995, 0.98);
+        this.vel.mult(friction); 
+        
+        this.pos.add(this.vel);
+
+        if (this.r < this.maxSpread) {
+          this.r += 0.05;
+        }
+
+        this.life -= 0.15; 
+
+        // Wrap around
+        if (this.pos.x < -this.r*3) this.pos.x = width + this.r*3;
+        if (this.pos.x > width + this.r*3) this.pos.x = -this.r*3;
+        if (this.pos.y < -this.r*3) this.pos.y = height + this.r*3;
+        if (this.pos.y > height + this.r*3) this.pos.y = -this.r*3;
+      }
+
+      display(extraSize = 0) {
+        noStroke();
+        let lifeFactor = this.life / 255;
+        
+        push();
+        translate(this.pos.x, this.pos.y);
+        
+        let b = this.tempBri;
+        
+        // Layer 1: Aura
+        fill(this.hue, this.sat, b, 3 * lifeFactor);
+        this.drawBlob(this.r * 2.5 + extraSize, 0);
+
+        // Layer 2: Soft Edge
+        fill(this.hue, this.sat, b, 5 * lifeFactor);
+        this.drawBlob(this.r * 1.8 + extraSize, 10);
+
+        // Layer 3: Body
+        fill(this.hue, this.sat, b, 8 * lifeFactor);
+        this.drawBlob(this.r * 1.2 + extraSize, 20);
+
+        // Layer 4: Core
+        fill(this.hue, this.sat, b + 20, 15 * lifeFactor);
+        this.drawBlob(this.r * 0.6 + extraSize, 30);
+        
+        pop();
+      }
+
+      drawBlob(radius, phaseOffset) {
+        beginShape();
+        for (let a = 0; a < TWO_PI; a += 0.1) {
+          let xoff = cos(a) * 0.5 + 1 + this.noiseOffset;
+          let yoff = sin(a) * 0.5 + 1 + this.noiseOffset;
+          let n = noise(xoff, yoff, frameCount * this.shapeSpeed + phaseOffset);
+          
+          let r = radius + map(n, 0, 1, -radius * 0.15, radius * 0.15);
+          let x = r * cos(a);
+          let y = r * sin(a);
+          vertex(x, y);
+        }
+        endShape(CLOSE);
+      }
+
+      isGone() {
+        return this.life <= 0;
+      }
+    }
+
+    function mousePressed() {
+      mousePressStartTime = millis();
+      let pal = palettes[currentPalette].hues;
+      let chosenHue = random(pal);
+      currentDrop = new Drop(mouseX, mouseY, 10, chosenHue);
+    }
+
+    function mouseReleased() {
+      if (currentDrop) {
+        if (millis() - mousePressStartTime < CLICK_THRESHOLD) {
+          currentDrop.r = random(20, 35);
+          currentDrop.maxSpread = currentDrop.r * random(1.5, 2.5);
+        }
+        currentDrop.setInitialVelocity();
+        drops.push(currentDrop);
+        currentDrop = null;
+      }
+    }
+
+    function keyPressed() {
+      if (key === ' ') {
+        currentPalette = (currentPalette + 1) % palettes.length;
+      }
+    }
+  </script>
+</body>
+</html>

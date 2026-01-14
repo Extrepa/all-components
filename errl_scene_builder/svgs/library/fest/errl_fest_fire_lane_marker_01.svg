@@ -1,0 +1,9 @@
+<!-- Example 190 | errl_fest_fire_lane_marker_01 (ui/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="ui" data-name="errl_fest_fire_lane_marker_01">
+  <g fill="none">
+    <rect x="18" y="40" width="28" height="4" rx="2" fill="#7f1d1d"/>
+    <path d="M20 42 H24 M26 42 H30 M32 42 H36 M38 42 H42"
+      stroke="#fecaca" stroke-width="1.2" stroke-linecap="round"/>
+  </g>
+</svg>

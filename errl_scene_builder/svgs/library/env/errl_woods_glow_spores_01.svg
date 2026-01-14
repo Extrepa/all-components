@@ -1,0 +1,12 @@
+<!-- 87) errl_woods_glow_spores_01 – particles around ground (fx) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="fx" data-name="errl_woods_glow_spores_01">
+  <g fill="none">
+    <circle cx="18" cy="46" r="1.2" fill="#22d3ee"/>
+    <circle cx="24" cy="44" r="1" fill="#a855f7"/>
+    <circle cx="30" cy="47" r="1.2" fill="#22d3ee"/>
+    <circle cx="38" cy="45" r="1" fill="#a855f7"/>
+    <circle cx="46" cy="46" r="1.2" fill="#22d3ee"/>
+    <ellipse cx="32" cy="48" rx="18" ry="4" fill="#22d3ee" opacity="0.06"/>
+  </g>
+</svg>

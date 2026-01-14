@@ -1,0 +1,10 @@
+<!-- Example 232 | errl_fest_bottle_crate_icon_01 (ui/prop) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="ui" data-name="errl_fest_bottle_crate_icon_01">
+  <g fill="none">
+    <rect x="24" y="30" width="16" height="8" rx="2" fill="#111827"/>
+    <rect x="26" y="28" width="3" height="4" rx="1.2" fill="#22d3ee"/>
+    <rect x="31" y="28" width="3" height="4" rx="1.2" fill="#22d3ee"/>
+    <rect x="36" y="28" width="3" height="4" rx="1.2" fill="#22d3ee"/>
+  </g>
+</svg>

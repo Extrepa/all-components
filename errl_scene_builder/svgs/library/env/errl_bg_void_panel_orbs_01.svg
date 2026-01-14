@@ -1,0 +1,10 @@
+<!-- errl_bg_void_panel_orbs_01 – void with orbs (env/bg/fx) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_bg" data-cat="env" data-name="errl_bg_void_panel_orbs_01">
+  <g fill="none">
+    <rect x="8" y="8" width="48" height="48" rx="10" fill="#020617"/>
+    <circle cx="26" cy="28" r="10" fill="#22d3ee" opacity="0.35"/>
+    <circle cx="40" cy="34" r="8" fill="#a855f7" opacity="0.3"/>
+    <circle cx="34" cy="24" r="4" fill="#facc15" opacity="0.6"/>
+  </g>
+</svg>

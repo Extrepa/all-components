@@ -1,0 +1,38 @@
+Complete File List for Errl Forge Asset Remixer
+
+Configuration Files:
+- package.json
+- tsconfig.json
+- vite.config.ts
+- .gitignore
+- .env.example
+- index.html
+
+Core Source Files:
+- types.ts
+- constants.ts
+- utils.ts
+- index.css
+
+Services:
+- services/aiProvider.ts
+- services/aiService.ts
+- services/mapleStoryService.ts
+- services/providers/geminiProvider.ts
+- services/providers/openaiProvider.ts
+- services/providers/anthropicProvider.ts
+
+Components:
+- components/AssetLibrary.tsx
+- components/AssetEditor.tsx
+
+Application:
+- App.tsx
+- index.tsx
+
+Build Instructions:
+- BUILD_INSTRUCTIONS.md
+- PROJECT_FILES.md
+- GEMINI_BUILD_PACKAGE.md
+- FILE_CHECKLIST.md
+- README_FOR_GEMINI.md

@@ -1,0 +1,140 @@
+# Migration Guide: [Migration Name]
+
+**Created:** [Date]  
+**Priority:** [High/Medium/Low]  
+**Complexity:** [Low/Medium/High]  
+**Estimated Time:** [Time estimate]
+
+---
+
+## Overview
+
+[Brief description of what this migration accomplishes]
+
+**Current State:**
+- [Current state description]
+
+**Target State:**
+- [Target state description]
+
+---
+
+## Current State Analysis
+
+### [Component/System Name]
+
+**Location:** [`path/to/component`](path/to/component)
+
+**Purpose:** [What it does]
+
+**Contents:**
+- [Item 1]
+- [Item 2]
+- [Item 3]
+
+**Status:** [Active/Deprecated/Archived]
+
+---
+
+## Migration Steps
+
+### Step 1: Preparation
+
+**Tasks:**
+- [ ] [Task 1]
+- [ ] [Task 2]
+- [ ] [Task 3]
+
+**Commands:**
+```bash
+# Commands to run
+```
+
+### Step 2: Implementation
+
+**Tasks:**
+- [ ] [Task 1]
+- [ ] [Task 2]
+- [ ] [Task 3]
+
+**Code Changes:**
+```typescript
+// Before
+[Old code]
+
+// After
+[New code]
+```
+
+### Step 3: Testing
+
+**Tasks:**
+- [ ] [Test 1]
+- [ ] [Test 2]
+- [ ] [Test 3]
+
+**Verification:**
+- [Verification step 1]
+- [Verification step 2]
+
+### Step 4: Cleanup
+
+**Tasks:**
+- [ ] [Cleanup task 1]
+- [ ] [Cleanup task 2]
+
+---
+
+## Code Examples
+
+### Example 1: [Description]
+
+**Before:**
+```typescript
+// Old code
+```
+
+**After:**
+```typescript
+// New code
+```
+
+### Example 2: [Description]
+
+**Before:**
+```typescript
+// Old code
+```
+
+**After:**
+```typescript
+// New code
+```
+
+---
+
+## Testing Checklist
+
+- [ ] Unit tests updated
+- [ ] Integration tests updated
+- [ ] Manual testing completed
+- [ ] Edge cases tested
+- [ ] Error cases tested
+
+---
+
+## Rollback Procedures
+
+If migration needs to be rolled back:
+
+1. [Rollback step 1]
+2. [Rollback step 2]
+3. [Rollback step 3]
+
+---
+
+## Related Documentation
+
+- [Architecture Decision Record](../Decisions/adr-template.md.template)
+- [Related Migration Guide](migration-guide-other.md.template)
+- [Project Structure](../Core/project-structure.md.template)

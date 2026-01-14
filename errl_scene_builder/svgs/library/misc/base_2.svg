@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" id="icon-adkfydur1">
+  <g xmlns="http://www.w3.org/2000/svg" fill="none">
+    <!-- base -->
+    <rect x="22" y="34" width="20" height="10" rx="2" fill="#111827"/>
+    <!-- upright sign -->
+    <rect x="29" y="22" width="6" height="10" rx="1.5" fill="#020617"/>
+    <rect x="30" y="23" width="4" height="8" rx="1" fill="#22d3ee"/>
+    <!-- tiny lightning bolt -->
+    <path d="M32 24 L30.8 27 H32.4 L31.6 30" fill="#facc15"/>
+    <!-- ports -->
+    <rect x="24" y="37" width="3" height="2" rx="1" fill="#22d3ee"/>
+    <rect x="30" y="37" width="3" height="2" rx="1" fill="#22d3ee"/>
+    <rect x="36" y="37" width="3" height="2" rx="1" fill="#22d3ee"/>
+  </g>
+</svg>

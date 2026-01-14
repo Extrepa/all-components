@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" id="icon-raugg638m">
+  <g xmlns="http://www.w3.org/2000/svg" fill="none">
+    <rect x="28" y="26" width="8" height="18" rx="2" fill="#111827"/>
+    <circle cx="32" cy="24" r="3" fill="#facc15"/>
+    <circle cx="32" cy="24" r="6" fill="#facc15" opacity="0.18"/>
+  </g>
+</svg>

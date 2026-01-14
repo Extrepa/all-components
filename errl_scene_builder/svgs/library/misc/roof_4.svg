@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" id="icon-g5cbkaee4">
+  <g xmlns="http://www.w3.org/2000/svg" fill="none">
+    <!-- roof -->
+    <path d="M16 34 L32 22 48 34 Z" fill="#22d3ee"/>
+    <!-- scalloped front edge -->
+    <path d="M16 34 C20 38 24 38 28 34 32 38 36 38 40 34 44 38 48 38 52 34" stroke="#0f172a" stroke-width="1.2" fill="none"/>
+    <!-- front wall -->
+    <rect x="18" y="34" width="28" height="11" rx="2" fill="#020617" opacity="0.9"/>
+    <!-- counter -->
+    <rect x="20" y="38" width="24" height="4" rx="1" fill="#f97316"/>
+    <ellipse cx="32" cy="48" rx="16" ry="3" fill="#111827" opacity="0.35"/>
+  </g>
+</svg>

@@ -1,0 +1,8 @@
+<!-- errl_weather_fog_strip_01 – low fog band (fx/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_weather" data-cat="fx" data-name="errl_weather_fog_strip_01">
+  <g fill="none">
+    <ellipse cx="24" cy="40" rx="10" ry="3" fill="#e5e7eb" opacity="0.4"/>
+    <ellipse cx="40" cy="42" rx="10" ry="3" fill="#e5e7eb" opacity="0.3"/>
+  </g>
+</svg>

@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recursive Fractal Orchard</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #050508;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            font-family: monospace;
+        }
+
+        #canvas-container {
+            width: 100vmin; /* Responsive base */
+            height: 75vmin; /* 4:3 aspect ratio relative to width (100 * 0.75) */
+            max-width: 800px;
+            max-height: 600px;
+            position: relative;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+            background: radial-gradient(circle at bottom, #1a1a2e 0%, #000000 100%);
+            border: 1px solid #333;
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        #ui {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: rgba(255, 255, 255, 0.5);
+            pointer-events: none;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="canvas-container">
+        <canvas id="canvas"></canvas>
+        <div id="ui">Click to plant a root</div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Logic dimensions (fixed for consistency, scaled by CSS)
+        const WIDTH = 800;
+        const HEIGHT = 600;
+        
+        canvas.width = WIDTH;
+        canvas.height = HEIGHT;
+
+        // State
+        const trees = [];
+        const particles = [];
+        let frame = 0;
+
+        // Configuration
+        const MAX_TREES = 30; // Prevent performance death
+        const GRAVITY = 0.05;
+        const WIND_FREQ = 0.02;
+        
+        // Helpers
+        const rand = (min, max) => Math.random() * (max - min) + min;
+        const randColor = () => `hsl(${rand(0, 360)}, 80%, 60%)`;
+
+        class Particle {
+            constructor(x, y, hue, isSeed) {
+                this.x = x;
+                this.y = y;
+                const angle = rand(0, Math.PI * 2);
+                const speed = rand(1, 4);
+                this.vx = Math.cos(angle) * speed;
+                this.vy = Math.sin(angle) * speed;
+                this.life = 1.0;
+                this.decay = rand(0.01, 0.03);
+                this.hue = hue;
+                this.isSeed = isSeed;
+                this.history = [];
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.vy += GRAVITY; // Gravity
+                this.vx *= 0.96; // Drag
+                this.vy *= 0.96;
+                this.life -= this.decay;
+
+                // Trail
+                this.history.push({x: this.x, y: this.y});
+                if(this.history.length > 5) this.history.shift();
+            }
+
+            draw() {
+                ctx.globalAlpha = this.life;
+                ctx.fillStyle = `hsl(${this.hue}, 100%, 70%)`;
+                
+                // Draw head
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 1.5, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Draw trail
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y);
+                for(let p of this.history) {
+                    ctx.lineTo(p.x, p.y);
+                }
+                ctx.strokeStyle = `hsl(${this.hue}, 100%, 50%)`;
+                ctx.lineWidth = 0.5;
+                ctx.stroke();
+
+                ctx.globalAlpha = 1;
+            }
+        }
+
+        class Fruit {
+            constructor(x, y, parentHue) {
+                this.x = x;
+                this.y = y;
+                this.size = 0;
+                this.maxSize = rand(3, 6);
+                this.hue = (parentHue + rand(60, 180)) % 360; // Complementary/offset colors
+                this.growthSpeed = rand(0.05, 0.1);
+                this.exploded = false;
+                this.phase = rand(0, Math.PI * 2); // Pulsing offset
+            }
+
+            update() {
+                if (this.size < this.maxSize) {
+                    this.size += this.growthSpeed;
+                } else {
+                    // Wiggle/Pulse when ripe
+                    this.size = this.maxSize + Math.sin(frame * 0.1 + this.phase) * 1;
+                    
+                    // Chance to explode
+                    if (Math.random() < 0.01) {
+                        this.explode();
+                    }
+                }
+            }
+
+            draw() {
+                if (this.exploded) return;
+                
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = `hsl(${this.hue}, 100%, 50%)`;
+                ctx.fillStyle = `hsl(${this.hue}, 100%, 80%)`;
+                
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, Math.max(0, this.size), 0, Math.PI * 2);
+                ctx.fill();
+                
+                ctx.shadowBlur = 0;
+            }
+
+            explode() {
+                this.exploded = true;
+                const particleCount = 10 + Math.floor(Math.random() * 10);
+                
+                // Determine if this explosion spawns a new tree (seed)
+                // Only if total trees are low and it's within bounds
+                let spawnedSeed = false;
+                
+                for (let i = 0; i < particleCount; i++) {
+                    // Only one seed per fruit max, and random chance
+                    let isSeed = false;
+                    if (!spawnedSeed && Math.random() < 0.2 && trees.length < MAX_TREES) {
+                        isSeed = true;
+                        spawnedSeed = true;
+                    }
+
+                    particles.push(new Particle(this.x, this.y, this.hue, isSeed));
+                }
+            }
+        }
+
+        class Tree {
+            constructor(x, y, size, depth, angleOffset = -Math.PI / 2) {
+                this.x = x;
+                this.y = y;
+                this.targetSize = size;
+                this.currentSize = 0;
+                this.growthRate = size / 100; // 100 frames to grow
+                this.maxDepth = depth;
+                this.angleOffset = angleOffset;
+                this.branchAngle = rand(Math.PI / 6, Math.PI / 4);
+                this.hue = rand(0, 360);
+                this.fruits = [];
+                this.fullyGrown = false;
+                this.alpha = 1.0;
+                this.dead = false;
+                
+                // Wind sway properties
+                this.swayOffset = rand(0, 100);
+                this.swaySpeed = rand(0.01, 0.03);
+            }
+
+            update() {
+                // Grow logic
+                if (this.currentSize < this.targetSize) {
+                    this.currentSize += this.growthRate;
+                } else if (!this.fullyGrown) {
+                    this.fullyGrown = true;
+                    this.spawnFruits();
+                }
+
+                // If fully grown, update fruits
+                if (this.fullyGrown) {
+                    let activeFruits = false;
+                    this.fruits.forEach(f => {
+                        if (!f.exploded) activeFruits = true;
+                        f.update();
+                    });
+
+                    // If all fruits exploded, tree starts dying
+                    if (!activeFruits && this.fruits.length > 0) {
+                        this.alpha -= 0.005;
+                        if (this.alpha <= 0) this.dead = true;
+                    }
+                }
+            }
+
+            spawnFruits() {
+                // We need to calculate tip positions. 
+                // We'll run a dry-run of the recursive draw to find tips.
+                this.calculateTips(this.x, this.y, this.currentSize, this.angleOffset, this.maxDepth);
+            }
+
+            calculateTips(x, y, len, angle, depth) {
+                const endX = x + Math.cos(angle) * len;
+                const endY = y + Math.sin(angle) * len;
+
+                if (depth === 0) {
+                    // Tip of the tree -> Fruit
+                    this.fruits.push(new Fruit(endX, endY, this.hue));
+                } else {
+                    // Branch out
+                    const sway = Math.sin(frame * this.swaySpeed + this.swayOffset + depth) * 0.05;
+                    this.calculateTips(endX, endY, len * 0.7, angle - this.branchAngle + sway, depth - 1);
+                    this.calculateTips(endX, endY, len * 0.7, angle + this.branchAngle + sway, depth - 1);
+                }
+            }
+
+            draw() {
+                if (this.dead) return;
+                ctx.globalAlpha = this.alpha;
+                ctx.strokeStyle = `hsl(${this.hue}, 40%, ${20 + this.alpha * 30}%)`; // Brownish tint based on hue
+                ctx.lineWidth = this.currentSize / 10;
+                ctx.lineCap = 'round';
+
+                // Sway calc
+                const currentSway = Math.sin(frame * this.swaySpeed + this.swayOffset);
+
+                this.drawBranch(this.x, this.y, this.currentSize, this.angleOffset, this.maxDepth, currentSway);
+                
+                // Draw fruits
+                if (this.fullyGrown) {
+                    this.fruits.forEach(f => f.draw());
+                }
+                ctx.globalAlpha = 1;
+            }
+
+            drawBranch(x, y, len, angle, depth, sway) {
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+                const endX = x + Math.cos(angle) * len;
+                const endY = y + Math.sin(angle) * len;
+                ctx.lineTo(endX, endY);
+                ctx.stroke();
+
+                if (depth > 0) {
+                    // Slight sway influence propagates
+                    const newSway = sway * 1.1; 
+                    // Recursion
+                    this.drawBranch(endX, endY, len * 0.7, angle - this.branchAngle + newSway, depth - 1, newSway);
+                    this.drawBranch(endX, endY, len * 0.7, angle + this.branchAngle + newSway, depth - 1, newSway);
+                }
+            }
+        }
+
+        // Main Loop
+        function loop() {
+            // Fade effect for trails
+            ctx.fillStyle = 'rgba(5, 5, 8, 0.2)'; 
+            ctx.fillRect(0, 0, WIDTH, HEIGHT);
+
+            // Update and Draw Trees
+            for (let i = trees.length - 1; i >= 0; i--) {
+                const t = trees[i];
+                t.update();
+                t.draw();
+                if (t.dead) {
+                    trees.splice(i, 1);
+                }
+            }
+
+            // Update and Draw Particles
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.update();
+                p.draw();
+
+                // Seed logic: If particle is slow or dying, it might become a tree
+                if (p.isSeed && p.life < 0.1) {
+                    // Check bounds to keep trees somewhat on screen
+                    if (p.x > 50 && p.x < WIDTH - 50 && p.y > 50 && p.y < HEIGHT - 50) {
+                        // New tree!
+                        // Size slightly randomized, but generally smaller than root unless we cap min size
+                        let newSize = rand(40, 70); 
+                        let newDepth = Math.floor(rand(3, 5));
+                        
+                        // Angle: roughly upwards but randomized
+                        let newAngle = -Math.PI / 2 + rand(-0.5, 0.5);
+
+                        trees.push(new Tree(p.x, p.y, newSize, newDepth, newAngle));
+                    }
+                    // Kill particle immediately so we don't spawn multiple trees
+                    p.life = -1;
+                }
+
+                if (p.life <= 0) {
+                    particles.splice(i, 1);
+                }
+            }
+
+            frame++;
+            requestAnimationFrame(loop);
+        }
+
+        // Input
+        canvas.addEventListener('mousedown', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            const x = (e.clientX - rect.left) * scaleX;
+            const y = (e.clientY - rect.top) * scaleY;
+
+            // Manual tree planting
+            trees.push(new Tree(x, y, 90, 5));
+            
+            // Hide UI
+            document.getElementById('ui').style.opacity = 0;
+        });
+
+        // Initialize with one tree
+        trees.push(new Tree(WIDTH / 2, HEIGHT, 100, 5));
+
+        loop();
+
+    </script>
+</body>
+</html>

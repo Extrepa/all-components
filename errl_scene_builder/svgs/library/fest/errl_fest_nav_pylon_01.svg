@@ -1,0 +1,9 @@
+<!-- Example 119 | errl_fest_nav_pylon_01 (env/ui) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="env" data-name="errl_fest_nav_pylon_01">
+  <g fill="none">
+    <rect x="28" y="24" width="8" height="16" rx="2" fill="#111827"/>
+    <rect x="26" y="22" width="12" height="4" rx="2" fill="#22d3ee"/>
+    <ellipse cx="32" cy="44" rx="8" ry="2.4" fill="#020617" opacity="0.45"/>
+  </g>
+</svg>

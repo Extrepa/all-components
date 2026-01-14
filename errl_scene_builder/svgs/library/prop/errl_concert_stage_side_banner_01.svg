@@ -1,0 +1,8 @@
+<!-- errl_concert_stage_side_banner_01 – vertical side banner (env/fx) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_concert" data-cat="env" data-name="errl_concert_stage_side_banner_01">
+  <g fill="none">
+    <rect x="14" y="18" width="6" height="26" rx="2" fill="#111827"/>
+    <path d="M16 20 H18 V40 L16 42 L14 40 V20 Z" fill="#22d3ee"/>
+  </g>
+</svg>

@@ -1,0 +1,11 @@
+<!-- 74) errl_woods_trail_marker_01 – tree-tag marker (prop/ui-ish) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="prop" data-name="errl_woods_trail_marker_01">
+  <g fill="none">
+    <!-- trunk fragment -->
+    <rect x="28" y="22" width="8" height="18" rx="3" fill="#78350f"/>
+    <!-- tag -->
+    <rect x="29" y="26" width="6" height="6" rx="1.5" fill="#22d3ee"/>
+    <circle cx="32" cy="29" r="0.9" fill="#0f172a"/>
+  </g>
+</svg>

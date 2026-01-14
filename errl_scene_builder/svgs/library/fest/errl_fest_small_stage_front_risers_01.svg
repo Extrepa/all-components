@@ -1,0 +1,10 @@
+<!-- Example 214 | errl_fest_small_stage_front_risers_01 (env/prop) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="env" data-name="errl_fest_small_stage_front_risers_01">
+  <g fill="none">
+    <rect x="18" y="38" width="28" height="4" rx="2" fill="#020617"/>
+    <rect x="20" y="36" width="6" height="2" rx="1" fill="#111827"/>
+    <rect x="26" y="36" width="6" height="2" rx="1" fill="#111827"/>
+    <rect x="32" y="36" width="6" height="2" rx="1" fill="#111827"/>
+  </g>
+</svg>

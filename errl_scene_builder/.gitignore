@@ -1,0 +1,16 @@
+public/svgs
+
+# OS cruft
+.DS_Store
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Logs
+localhost-*.log
+
+# Vite cache
+node_modules/.vite/

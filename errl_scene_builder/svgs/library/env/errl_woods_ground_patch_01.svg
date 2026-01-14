@@ -1,0 +1,9 @@
+<!-- 50) errl_woods_ground_patch_01 – generic ground texture patch (env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="env" data-name="errl_woods_ground_patch_01">
+  <g fill="none">
+    <ellipse cx="32" cy="48" rx="18" ry="5" fill="#a16207" opacity="0.9"/>
+    <ellipse cx="24" cy="48" rx="5" ry="1.4" fill="#92400e"/>
+    <ellipse cx="40" cy="48" rx="6" ry="1.6" fill="#92400e"/>
+  </g>
+</svg>

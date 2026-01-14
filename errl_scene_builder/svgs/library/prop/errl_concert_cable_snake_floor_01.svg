@@ -1,0 +1,8 @@
+<!-- errl_concert_cable_snake_floor_01 – cable bundle on floor (prop/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_concert" data-cat="prop" data-name="errl_concert_cable_snake_floor_01">
+  <g fill="none">
+    <path d="M10 44 C20 42 28 42 36 44 C44 46 52 46 54 44"
+      stroke="#020617" stroke-width="2.2" stroke-linecap="round"/>
+  </g>
+</svg>

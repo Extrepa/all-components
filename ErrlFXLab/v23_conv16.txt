@@ -1,0 +1,442 @@
+We have now crossed into “Errl animation studio” territory, so let’s give you an Animation Timeline panel: pick a subset of frames (by tag / favorites), preview as a looping animation, and export a JSON timeline you can feed into ErrlStory / Maple clones. 🕺🫠
+
+Patch-style as usual.
+
+⸻
+
+1. Add “Animation Timeline” panel (HTML)
+
+Stick this on the right column, near Spritesheet Export. Good place: right after Spritesheet Export and before Audio Reactive.
+
+Find this chunk:
+
+      <!-- Spritesheet Export -->
+      <div class="border-t border-slate-800/70 px-3 py-2 text-[11px] text-slate-200">
+        ...
+      </div>
+
+      <!-- Audio Reactive Mode -->
+      <div class="border-t border-slate-800/70 px-3 py-2 text-[11px] text-slate-200">
+        ...
+      </div>
+
+Insert this between them:
+
+      <!-- Animation Timeline -->
+      <div class="border-t border-slate-800/70 px-3 py-2 text-[11px] text-slate-200">
+        <div class="flex items-center justify-between mb-1">
+          <span class="font-semibold text-slate-100">Animation Timeline</span>
+          <span id="timelineStatus" class="text-[10px] text-slate-500">
+            Build a loop from frames
+          </span>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2 mb-1 text-[10px] text-slate-300">
+          <label class="inline-flex items-center gap-1">
+            <input
+              id="timelineUseFavorites"
+              type="checkbox"
+              class="bg-slate-900 border-slate-600"
+            />
+            <span>Favorites only</span>
+          </label>
+
+          <div class="flex items-center gap-1">
+            <span class="text-slate-400">Tag:</span>
+            <select
+              id="timelineTagFilter"
+              class="px-1 py-0.5 rounded-md bg-slate-950 border border-slate-700 text-[10px] text-slate-100"
+            >
+              <option value="">(any)</option>
+              <option value="idle">idle</option>
+              <option value="walk">walk</option>
+              <option value="jump">jump</option>
+              <option value="fx">fx</option>
+            </select>
+          </div>
+
+          <div class="flex items-center gap-1 ml-auto">
+            <span class="text-slate-400">FPS:</span>
+            <input
+              id="timelineFps"
+              type="number"
+              min="1"
+              max="60"
+              value="8"
+              class="w-12 px-1 py-0.5 rounded-md bg-slate-950 border border-slate-700 text-[10px] text-slate-100"
+            />
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 mb-1">
+          <button
+            id="timelineBuildBtn"
+            class="px-2 py-1 rounded-md border border-slate-600 text-slate-200 text-[10px] hover:bg-slate-900/80"
+          >
+            Build timeline
+          </button>
+          <button
+            id="timelinePlayPauseBtn"
+            class="px-2 py-1 rounded-md border border-emerald-500/70 text-emerald-200 text-[10px] hover:bg-emerald-500/15 disabled:opacity-40 disabled:cursor-not-allowed"
+            disabled
+          >
+            Play
+          </button>
+          <button
+            id="timelineExportJsonBtn"
+            class="px-2 py-1 rounded-md border border-cyan-500/70 text-cyan-200 text-[10px] hover:bg-cyan-500/15 disabled:opacity-40 disabled:cursor-not-allowed"
+            disabled
+          >
+            Copy JSON
+          </button>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <div
+            class="w-24 h-24 rounded-md border border-slate-700/80 bg-slate-950/80 flex items-center justify-center overflow-hidden"
+          >
+            <canvas
+              id="timelinePreviewCanvas"
+              class="w-full h-full block"
+            ></canvas>
+          </div>
+          <textarea
+            id="timelineJsonOutput"
+            class="flex-1 h-24 bg-slate-950 border border-slate-700 rounded-md px-2 py-1 text-[10px] font-mono text-slate-100 scrollbar-thin"
+            placeholder="// Timeline JSON will appear here"
+            spellcheck="false"
+          ></textarea>
+        </div>
+
+        <p class="mt-1 text-[9px] text-slate-500">
+          Uses captured frames (respecting favorites + tag). Perfect for idle/walk/jump loops in ErrlStory.
+        </p>
+      </div>
+
+
+⸻
+
+2. DOM refs (JS)
+
+In your big const ... = document.getElementById(...) section, add:
+
+    // Animation timeline
+    const timelineStatusEl = document.getElementById("timelineStatus");
+    const timelineUseFavoritesEl = document.getElementById("timelineUseFavorites");
+    const timelineTagFilterEl = document.getElementById("timelineTagFilter");
+    const timelineFpsInput = document.getElementById("timelineFps");
+    const timelineBuildBtn = document.getElementById("timelineBuildBtn");
+    const timelinePlayPauseBtn = document.getElementById("timelinePlayPauseBtn");
+    const timelineExportJsonBtn = document.getElementById("timelineExportJsonBtn");
+    const timelinePreviewCanvas = document.getElementById("timelinePreviewCanvas");
+    const timelineJsonOutput = document.getElementById("timelineJsonOutput");
+
+
+⸻
+
+3. Timeline globals
+
+Near other globals:
+
+    // ---- Timeline state ----
+    let timelineFrames = []; // array of { frame, img }
+    let timelineIsPlaying = false;
+    let timelineAnimId = null;
+    let timelineLastTime = 0;
+    let timelineAccum = 0;
+
+We’ll treat timelineFrames[i].frame as your captured frame object, timelineFrames[i].img as its loaded Image.
+
+⸻
+
+4. Build timeline from captured frames
+
+Add helpers:
+
+    function collectTimelineFrames() {
+      const useFavorites = timelineUseFavoritesEl?.checked;
+      const tagFilter = timelineTagFilterEl?.value || "";
+
+      let frames = capturedFrames.slice();
+
+      if (useFavorites) {
+        frames = frames.filter((f) => f.favorite);
+      }
+      if (tagFilter) {
+        frames = frames.filter((f) => f.tag === tagFilter);
+      }
+
+      // Sort by creation time for sensible order
+      frames.sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+
+      return frames;
+    }
+
+    function stopTimelineAnimation() {
+      if (timelineAnimId !== null) {
+        cancelAnimationFrame(timelineAnimId);
+        timelineAnimId = null;
+      }
+      timelineIsPlaying = false;
+      timelinePlayPauseBtn.textContent = "Play";
+    }
+
+    function buildTimeline() {
+      stopTimelineAnimation();
+      timelineFrames = [];
+
+      const frames = collectTimelineFrames();
+      if (!frames.length) {
+        timelineStatusEl.textContent = "No frames for timeline (check filters).";
+        timelinePlayPauseBtn.disabled = true;
+        timelineExportJsonBtn.disabled = true;
+        return;
+      }
+
+      // Load images
+      let loaded = 0;
+      let failed = false;
+      timelineStatusEl.textContent = "Loading frames…";
+
+      timelineFrames = frames.map((f) => ({
+        frame: f,
+        img: null,
+      }));
+
+      frames.forEach((f, idx) => {
+        const img = new Image();
+        img.onload = () => {
+          if (failed) return;
+          timelineFrames[idx].img = img;
+          loaded++;
+          if (loaded === frames.length) {
+            timelineStatusEl.textContent = `Timeline ready (${frames.length} frames).`;
+            timelinePlayPauseBtn.disabled = false;
+            timelineExportJsonBtn.disabled = false;
+            // Also update JSON immediately
+            updateTimelineJson();
+            // Draw first frame
+            drawTimelineFrame(0);
+          }
+        };
+        img.onerror = () => {
+          if (failed) return;
+          failed = true;
+          timelineStatusEl.textContent = "Failed to load one or more frame images.";
+        };
+        img.src = f.url;
+      });
+    }
+
+    function drawTimelineFrame(index) {
+      if (!timelinePreviewCanvas || !timelineFrames.length) return;
+      const ctx = timelinePreviewCanvas.getContext("2d");
+      if (!ctx) return;
+
+      const { width, height } = timelinePreviewCanvas;
+      ctx.clearRect(0, 0, width, height);
+
+      const entry = timelineFrames[index % timelineFrames.length];
+      const img = entry.img;
+      if (!img) return;
+
+      // Fit image inside canvas while preserving aspect ratio
+      const iw = img.width;
+      const ih = img.height;
+      const scale = Math.min(width / iw, height / ih);
+      const dw = iw * scale;
+      const dh = ih * scale;
+      const dx = (width - dw) / 2;
+      const dy = (height - dh) / 2;
+
+      ctx.drawImage(img, dx, dy, dw, dh);
+    }
+
+    function startTimelineAnimation() {
+      if (!timelineFrames.length) return;
+      if (!timelinePreviewCanvas) return;
+
+      const ctx = timelinePreviewCanvas.getContext("2d");
+      if (!ctx) return;
+
+      let fps = parseInt(timelineFpsInput.value, 10);
+      if (!Number.isFinite(fps) || fps <= 0) {
+        fps = 8;
+        timelineFpsInput.value = "8";
+      }
+      const frameDuration = 1 / fps;
+
+      let frameIndex = 0;
+      timelineLastTime = performance.now();
+      timelineAccum = 0;
+      timelineIsPlaying = true;
+      timelinePlayPauseBtn.textContent = "Pause";
+
+      function loop(now) {
+        if (!timelineIsPlaying) {
+          timelineAnimId = null;
+          return;
+        }
+        timelineAnimId = requestAnimationFrame(loop);
+
+        const dt = (now - timelineLastTime) / 1000;
+        timelineLastTime = now;
+        timelineAccum += dt;
+
+        while (timelineAccum >= frameDuration) {
+          timelineAccum -= frameDuration;
+          frameIndex = (frameIndex + 1) % timelineFrames.length;
+        }
+
+        drawTimelineFrame(frameIndex);
+      }
+
+      loop(timelineLastTime);
+    }
+
+    function updateTimelineJson() {
+      if (!timelineJsonOutput) return;
+      if (!timelineFrames.length) {
+        timelineJsonOutput.value = "";
+        return;
+      }
+
+      let fps = parseInt(timelineFpsInput.value, 10);
+      if (!Number.isFinite(fps) || fps <= 0) fps = 8;
+
+      const framesInfo = timelineFrames.map((entry, idx) => {
+        const f = entry.frame;
+        return {
+          index: idx,
+          id: f.id,
+          tag: f.tag || null,
+          source: f.source,
+          modeLabel: f.modeLabel,
+        };
+      });
+
+      const data = {
+        fps,
+        durationPerFrame: 1 / fps,
+        frameCount: framesInfo.length,
+        frames: framesInfo,
+      };
+
+      timelineJsonOutput.value = JSON.stringify(data, null, 2);
+    }
+
+
+⸻
+
+5. Wire up buttons
+
+Add these listeners:
+
+    timelineBuildBtn.addEventListener("click", () => {
+      buildTimeline();
+      playBeep(720, 0.07, "triangle");
+    });
+
+    timelinePlayPauseBtn.addEventListener("click", () => {
+      if (!timelineFrames.length) return;
+      if (timelineIsPlaying) {
+        stopTimelineAnimation();
+        playBeep(320, 0.07, "square");
+      } else {
+        startTimelineAnimation();
+        playBeep(760, 0.07, "triangle");
+      }
+    });
+
+    timelineExportJsonBtn.addEventListener("click", async () => {
+      try {
+        updateTimelineJson();
+        const text = timelineJsonOutput.value.trim();
+        if (!text) {
+          flashStatus("No timeline JSON to copy.", "error");
+          playBeep(200, 0.1, "square");
+          return;
+        }
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(text);
+        } else {
+          const textarea = document.createElement("textarea");
+          textarea.value = text;
+          textarea.style.position = "fixed";
+          textarea.style.left = "-9999px";
+          document.body.appendChild(textarea);
+          textarea.focus();
+          textarea.select();
+          document.execCommand("copy");
+          document.body.removeChild(textarea);
+        }
+
+        flashStatus("Timeline JSON copied ✅");
+        playBeep(800, 0.08, "sine");
+      } catch (err) {
+        console.error("Copy timeline JSON error:", err);
+        flashStatus("Could not copy timeline JSON.", "error");
+        playBeep(200, 0.1, "square");
+      }
+    });
+
+    // If FPS changes while timeline exists, refresh JSON
+    timelineFpsInput.addEventListener("change", () => {
+      updateTimelineJson();
+    });
+
+Optional nice touch: when you tag frames or update favorites, you can call buildTimeline() again to refresh, but keeping it manual (via button) is fine for now.
+
+⸻
+
+6. (Optional) Store last timeline in Session Snapshot
+
+If you want the session JSON to remember the last built timeline, you can stash it.
+
+Global:
+
+    let lastTimelineSnapshot = null;
+
+After updateTimelineJson() builds data, also set:
+
+      const data = {
+        fps,
+        durationPerFrame: 1 / fps,
+        frameCount: framesInfo.length,
+        frames: framesInfo,
+      };
+
+      timelineJsonOutput.value = JSON.stringify(data, null, 2);
+      lastTimelineSnapshot = data;
+
+Then in collectSessionSnapshot():
+
+        spritesheet: {
+          lastManifest: lastSpritesheetManifest,
+        },
+        timeline: {
+          last: lastTimelineSnapshot,
+        },
+
+So your session JSON is now fully “game-pipeline aware”.
+
+⸻
+
+What this gives you
+
+You’ve now got a tiny animation editor baked into Errl Lab:
+	•	Choose favorites only or all captured frames.
+	•	Filter by tag: idle, walk, jump, fx, etc.
+	•	Set FPS, build a timeline.
+	•	Preview it looping on a mini canvas.
+	•	Export a JSON timeline with:
+	•	fps, durationPerFrame, frameCount
+	•	ordered list of frame id/tag/source/modeLabel
+
+Combine this with:
+	•	The spritesheet export (PNG + manifest)
+	•	Frame tags
+	•	Session JSON + audio-reactive FX
+
+…and you’ve basically assembled a one-file Errl content factory: SVG → FX → frames → tagged animations → spritesheets → timelines ready to drop into the game engine.

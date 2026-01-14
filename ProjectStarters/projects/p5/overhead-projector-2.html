@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>An interactive overhead projector - P5.js Sketch</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0a0a0a;
+      color: #fff;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .header {
+      padding: 1.5rem 2rem;
+      background: #1a1a1a;
+      border-bottom: 1px solid #333;
+    }
+    .header h1 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .header p {
+      color: #b0b0b0;
+      font-size: 0.875rem;
+    }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 1rem;
+      color: #6366f1;
+      text-decoration: none;
+      font-size: 0.875rem;
+    }
+    .back-link:hover {
+      text-decoration: underline;
+    }
+    #p5-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background: #0a0a0a;
+    }
+    .info {
+      padding: 1.5rem 2rem;
+      background: #1a1a1a;
+      border-top: 1px solid #333;
+      font-size: 0.875rem;
+    }
+    .info-item {
+      margin-bottom: 0.5rem;
+      display: flex;
+    }
+    .info-label {
+      width: 120px;
+      color: #b0b0b0;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="../index.html" class="back-link">← Back to Gallery</a>
+      <h1>An interactive overhead projector</h1>
+      <p>P5.js Interactive Sketch</p>
+    </div>
+    <div id="p5-container"></div>
+    <div class="info">
+      <div class="info-item">
+        <span class="info-label">Prompt:</span>
+        <span>An interactive overhead projector</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Model:</span>
+        <span>threePro</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Generation Time:</span>
+        <span>56.4s</span>
+      </div>
+    </div>
+  </div>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+  <script>
+    const container = document.getElementById('p5-container');
+    const sketchCode = "let sheetLayer;\nlet lightLayer;\nlet noiseOffset = 0;\nlet isOn = true;\nlet currentColor;\nlet penSize = 8;\nlet colors = {};\n\nfunction setup() {\n  createCanvas(800, 600);\n  \n  // Create the transparency sheet layer\n  sheetLayer = createGraphics(width, height);\n  sheetLayer.clear();\n  sheetLayer.noFill();\n  sheetLayer.strokeJoin(ROUND);\n  sheetLayer.strokeCap(ROUND);\n  \n  // Define marker colors (simulating wet erase markers)\n  colors = {\n    black: color(20, 20, 30, 200),\n    red: color(200, 20, 20, 200),\n    blue: color(20, 20, 200, 200),\n    green: color(20, 150, 20, 200),\n    eraser: color(0, 0) // Special handling for eraser\n  };\n  currentColor = colors.black;\n  \n  // Pre-render fresnel lens effect to save performance\n  lightLayer = createGraphics(width, height);\n  drawFresnel(lightLayer);\n}\n\nfunction drawFresnel(pg) {\n  pg.background(255, 252, 240); // Warm bright white\n  pg.noFill();\n  pg.stroke(0, 0, 0, 3);\n  pg.strokeWeight(1);\n  let cx = width / 2;\n  let cy = height / 2;\n  let maxRad = dist(0, 0, cx, cy);\n  for (let r = 0; r < maxRad; r += 4) {\n    pg.ellipse(cx, cy, r * 2, r * 2);\n  }\n}\n\nfunction draw() {\n  background(10); // Dark classroom\n\n  if (isOn) {\n    // 1. Draw the Light Stage (The Glass)\n    // Clip to a rounded rectangle to simulate the projector bed\n    push();\n    rectMode(CENTER);\n    fill(20);\n    noStroke();\n    // Projector body/frame\n    rect(width/2, height/2, 760, 560, 10); \n    \n    // The illuminated glass area\n    image(lightLayer, 20, 20, 760, 560);\n    \n    // Add subtle flickering/humming noise\n    noiseOffset += 0.1;\n    let flicker = map(noise(noiseOffset), 0, 1, -5, 5);\n    fill(255, 255, 255, 10 + flicker);\n    rect(width/2, height/2, 760, 560);\n    pop();\n\n    // 2. Draw the Transparency Sheet (User Drawings)\n    image(sheetLayer, 0, 0);\n\n    // 3. Draw Shadows (Hand and Projector Head)\n    drawProjectorHeadShadow();\n    drawHandShadow();\n\n    // 4. Vignette / Glare\n    drawVignette();\n    \n    // 5. UI Instructions (projected softly)\n    drawUI();\n    \n    // 6. Handle Interaction\n    handleDrawing();\n    \n  } else {\n    // OFF state\n    fill(30);\n    textAlign(CENTER, CENTER);\n    textSize(20);\n    text(\"Projector Cooling Down... (Press SPACE to toggle power)\", width/2, height/2);\n  }\n}\n\nfunction handleDrawing() {\n  if (mouseIsPressed && mouseX > 20 && mouseX < width - 20 && mouseY > 20 && mouseY < height - 20) {\n    sheetLayer.strokeWeight(penSize);\n    \n    // Add a little jitter to line to simulate marker friction\n    let jx = random(-0.5, 0.5);\n    let jy = random(-0.5, 0.5);\n    \n    if (keyIsDown(SHIFT)) { // Eraser mode logic if Shift is held (or mapped to color)\n       sheetLayer.erase();\n       sheetLayer.strokeWeight(30);\n       sheetLayer.line(pmouseX, pmouseY, mouseX, mouseY);\n       sheetLayer.noErase();\n    } else {\n      sheetLayer.stroke(currentColor);\n      sheetLayer.line(pmouseX + jx, pmouseY + jy, mouseX + jx, mouseY + jy);\n    }\n  }\n}\n\nfunction drawHandShadow() {\n  // Create a blurry shadow of the hand moving over the projector\n  // The hand shadow is disconnected from the drawing point slightly to simulate height\n  \n  push();\n  noStroke();\n  fill(10, 10, 10, 180); // Dark shadow\n  \n  let handX = mouseX + 15;\n  let handY = mouseY + 25;\n  \n  // Only show shadow if mouse is over the canvas\n  if (mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height) {\n    \n    // Blur simulation using multiple circles\n    let shadowSize = 40;\n    for(let i = 0; i < 5; i++) {\n      fill(0, 0, 0, 30);\n      ellipse(handX, handY, shadowSize + (i*4), shadowSize + (i*4));\n    }\n    \n    // Main hand blob (holding a pen shape)\n    fill(0, 0, 0, 220);\n    \n    push();\n    translate(handX, handY);\n    rotate(-QUARTER_PI);\n    ellipse(0, 0, 50, 80); // Hand palm/knuckles\n    ellipse(20, -30, 20, 60); // Finger\n    ellipse(0, -40, 20, 60); // Finger\n    \n    // Pen shadow\n    rotate(QUARTER_PI); // Reset rotation relative to hand\n    stroke(0, 0, 0, 200);\n    strokeWeight(10);\n    line(-10, -10, -50, -50); // Pen stick\n    pop();\n  }\n  pop();\n}\n\nfunction drawProjectorHeadShadow() {\n  // The arm and mirror head that hangs over every overhead projector\n  // Usually casts a hard shadow on one side\n  push();\n  noStroke();\n  \n  // The post shadow (usually corner)\n  fill(10, 10, 10, 220);\n  rect(width - 60, height/2 - 100, 60, 200); // Post on the right\n  \n  // The arm shadow\n  push();\n  translate(width - 60, height/2);\n  rotate(PI/12);\n  rect(-150, -15, 160, 30);\n  \n  // The Head/Lens shadow (trapezoid shape)\n  translate(-160, 0);\n  beginShape();\n  vertex(-20, -40);\n  vertex(40, -40);\n  vertex(40, 40);\n  vertex(-20, 40);\n  endShape(CLOSE);\n  pop();\n  \n  // Blur the edges of the static shadow slightly\n  fill(0, 0, 0, 50);\n  rect(width - 65, height/2 - 105, 70, 210, 10); \n  \n  pop();\n}\n\nfunction drawVignette() {\n  // Simulates the light falloff at corners\n  push();\n  noFill();\n  strokeWeight(2);\n  for (let r = 0; r < 150; r+=5) {\n    let alpha = map(r, 0, 150, 255, 0);\n    stroke(0, 0, 0, alpha * 0.3);\n    rect(width/2, height/2, width - r, height - r, 40);\n  }\n  pop();\n}\n\nfunction drawUI() {\n  push();\n  fill(50, 50, 50, 150);\n  textSize(14);\n  textFont('monospace');\n  textAlign(LEFT, TOP);\n  \n  let x = 40;\n  let y = height - 50;\n  text(\"[1] Black  [2] Red  [3] Blue  [4] Green\", x, y);\n  text(\"[SHIFT] Eraser  [DEL] Clear Sheet  [SPACE] Power\", x, y + 20);\n  \n  // Color Indicator\n  noStroke();\n  if (keyIsDown(SHIFT)) {\n     fill(255);\n     stroke(0);\n     circle(width - 50, height - 40, 30);\n     fill(0);\n     textAlign(CENTER, CENTER);\n     noStroke();\n     text(\"E\", width-50, height-40);\n  } else {\n    fill(currentColor);\n    stroke(255, 100);\n    strokeWeight(2);\n    circle(width - 50, height - 40, 30);\n  }\n  pop();\n}\n\nfunction keyPressed() {\n  if (key === ' ') {\n    isOn = !isOn;\n  }\n  if (!isOn) return;\n  \n  if (key === '1') currentColor = colors.black;\n  if (key === '2') currentColor = colors.red;\n  if (key === '3') currentColor = colors.blue;\n  if (key === '4') currentColor = colors.green;\n  \n  if (keyCode === DELETE || keyCode === BACKSPACE) {\n    // Wipe the transparency with a \"wet\" look before clearing\n    sheetLayer.background(255, 255, 255, 50); \n    sheetLayer.clear();\n  }\n}";
+    
+    const sketch = function(p) {
+      let sheetLayer;
+let lightLayer;
+let noiseOffset = 0;
+let isOn = true;
+let currentColor;
+let penSize = 8;
+let colors = {};
+
+function setup() {
+  createCanvas(800, 600);
+  
+  // Create the transparency sheet layer
+  sheetLayer = createGraphics(width, height);
+  sheetLayer.clear();
+  sheetLayer.noFill();
+  sheetLayer.strokeJoin(ROUND);
+  sheetLayer.strokeCap(ROUND);
+  
+  // Define marker colors (simulating wet erase markers)
+  colors = {
+    black: color(20, 20, 30, 200),
+    red: color(200, 20, 20, 200),
+    blue: color(20, 20, 200, 200),
+    green: color(20, 150, 20, 200),
+    eraser: color(0, 0) // Special handling for eraser
+  };
+  currentColor = colors.black;
+  
+  // Pre-render fresnel lens effect to save performance
+  lightLayer = createGraphics(width, height);
+  drawFresnel(lightLayer);
+}
+
+function drawFresnel(pg) {
+  pg.background(255, 252, 240); // Warm bright white
+  pg.noFill();
+  pg.stroke(0, 0, 0, 3);
+  pg.strokeWeight(1);
+  let cx = width / 2;
+  let cy = height / 2;
+  let maxRad = dist(0, 0, cx, cy);
+  for (let r = 0; r < maxRad; r += 4) {
+    pg.ellipse(cx, cy, r * 2, r * 2);
+  }
+}
+
+function draw() {
+  background(10); // Dark classroom
+
+  if (isOn) {
+    // 1. Draw the Light Stage (The Glass)
+    // Clip to a rounded rectangle to simulate the projector bed
+    push();
+    rectMode(CENTER);
+    fill(20);
+    noStroke();
+    // Projector body/frame
+    rect(width/2, height/2, 760, 560, 10); 
+    
+    // The illuminated glass area
+    image(lightLayer, 20, 20, 760, 560);
+    
+    // Add subtle flickering/humming noise
+    noiseOffset += 0.1;
+    let flicker = map(noise(noiseOffset), 0, 1, -5, 5);
+    fill(255, 255, 255, 10 + flicker);
+    rect(width/2, height/2, 760, 560);
+    pop();
+
+    // 2. Draw the Transparency Sheet (User Drawings)
+    image(sheetLayer, 0, 0);
+
+    // 3. Draw Shadows (Hand and Projector Head)
+    drawProjectorHeadShadow();
+    drawHandShadow();
+
+    // 4. Vignette / Glare
+    drawVignette();
+    
+    // 5. UI Instructions (projected softly)
+    drawUI();
+    
+    // 6. Handle Interaction
+    handleDrawing();
+    
+  } else {
+    // OFF state
+    fill(30);
+    textAlign(CENTER, CENTER);
+    textSize(20);
+    text("Projector Cooling Down... (Press SPACE to toggle power)", width/2, height/2);
+  }
+}
+
+function handleDrawing() {
+  if (mouseIsPressed && mouseX > 20 && mouseX < width - 20 && mouseY > 20 && mouseY < height - 20) {
+    sheetLayer.strokeWeight(penSize);
+    
+    // Add a little jitter to line to simulate marker friction
+    let jx = random(-0.5, 0.5);
+    let jy = random(-0.5, 0.5);
+    
+    if (keyIsDown(SHIFT)) { // Eraser mode logic if Shift is held (or mapped to color)
+       sheetLayer.erase();
+       sheetLayer.strokeWeight(30);
+       sheetLayer.line(pmouseX, pmouseY, mouseX, mouseY);
+       sheetLayer.noErase();
+    } else {
+      sheetLayer.stroke(currentColor);
+      sheetLayer.line(pmouseX + jx, pmouseY + jy, mouseX + jx, mouseY + jy);
+    }
+  }
+}
+
+function drawHandShadow() {
+  // Create a blurry shadow of the hand moving over the projector
+  // The hand shadow is disconnected from the drawing point slightly to simulate height
+  
+  push();
+  noStroke();
+  fill(10, 10, 10, 180); // Dark shadow
+  
+  let handX = mouseX + 15;
+  let handY = mouseY + 25;
+  
+  // Only show shadow if mouse is over the canvas
+  if (mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height) {
+    
+    // Blur simulation using multiple circles
+    let shadowSize = 40;
+    for(let i = 0; i < 5; i++) {
+      fill(0, 0, 0, 30);
+      ellipse(handX, handY, shadowSize + (i*4), shadowSize + (i*4));
+    }
+    
+    // Main hand blob (holding a pen shape)
+    fill(0, 0, 0, 220);
+    
+    push();
+    translate(handX, handY);
+    rotate(-QUARTER_PI);
+    ellipse(0, 0, 50, 80); // Hand palm/knuckles
+    ellipse(20, -30, 20, 60); // Finger
+    ellipse(0, -40, 20, 60); // Finger
+    
+    // Pen shadow
+    rotate(QUARTER_PI); // Reset rotation relative to hand
+    stroke(0, 0, 0, 200);
+    strokeWeight(10);
+    line(-10, -10, -50, -50); // Pen stick
+    pop();
+  }
+  pop();
+}
+
+function drawProjectorHeadShadow() {
+  // The arm and mirror head that hangs over every overhead projector
+  // Usually casts a hard shadow on one side
+  push();
+  noStroke();
+  
+  // The post shadow (usually corner)
+  fill(10, 10, 10, 220);
+  rect(width - 60, height/2 - 100, 60, 200); // Post on the right
+  
+  // The arm shadow
+  push();
+  translate(width - 60, height/2);
+  rotate(PI/12);
+  rect(-150, -15, 160, 30);
+  
+  // The Head/Lens shadow (trapezoid shape)
+  translate(-160, 0);
+  beginShape();
+  vertex(-20, -40);
+  vertex(40, -40);
+  vertex(40, 40);
+  vertex(-20, 40);
+  endShape(CLOSE);
+  pop();
+  
+  // Blur the edges of the static shadow slightly
+  fill(0, 0, 0, 50);
+  rect(width - 65, height/2 - 105, 70, 210, 10); 
+  
+  pop();
+}
+
+function drawVignette() {
+  // Simulates the light falloff at corners
+  push();
+  noFill();
+  strokeWeight(2);
+  for (let r = 0; r < 150; r+=5) {
+    let alpha = map(r, 0, 150, 255, 0);
+    stroke(0, 0, 0, alpha * 0.3);
+    rect(width/2, height/2, width - r, height - r, 40);
+  }
+  pop();
+}
+
+function drawUI() {
+  push();
+  fill(50, 50, 50, 150);
+  textSize(14);
+  textFont('monospace');
+  textAlign(LEFT, TOP);
+  
+  let x = 40;
+  let y = height - 50;
+  text("[1] Black  [2] Red  [3] Blue  [4] Green", x, y);
+  text("[SHIFT] Eraser  [DEL] Clear Sheet  [SPACE] Power", x, y + 20);
+  
+  // Color Indicator
+  noStroke();
+  if (keyIsDown(SHIFT)) {
+     fill(255);
+     stroke(0);
+     circle(width - 50, height - 40, 30);
+     fill(0);
+     textAlign(CENTER, CENTER);
+     noStroke();
+     text("E", width-50, height-40);
+  } else {
+    fill(currentColor);
+    stroke(255, 100);
+    strokeWeight(2);
+    circle(width - 50, height - 40, 30);
+  }
+  pop();
+}
+
+function keyPressed() {
+  if (key === ' ') {
+    isOn = !isOn;
+  }
+  if (!isOn) return;
+  
+  if (key === '1') currentColor = colors.black;
+  if (key === '2') currentColor = colors.red;
+  if (key === '3') currentColor = colors.blue;
+  if (key === '4') currentColor = colors.green;
+  
+  if (keyCode === DELETE || keyCode === BACKSPACE) {
+    // Wipe the transparency with a "wet" look before clearing
+    sheetLayer.background(255, 255, 255, 50); 
+    sheetLayer.clear();
+  }
+}
+    };
+    
+    new p5(sketch, container);
+  </script>
+</body>
+</html>

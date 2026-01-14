@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" id="icon-z96s00udw">
+  <g xmlns="http://www.w3.org/2000/svg" fill="none">
+    <!-- roof -->
+    <rect x="18" y="22" width="28" height="4" rx="2" fill="#0f172a"/>
+    <!-- body -->
+    <rect x="18" y="26" width="28" height="14" rx="2" fill="#111827"/>
+    <!-- counter -->
+    <rect x="20" y="32" width="24" height="4" rx="1.5" fill="#22d3ee"/>
+    <!-- “i” icon -->
+    <circle cx="32" cy="28" r="2" fill="#facc15"/>
+    <rect x="31.3" y="26.2" width="1.4" height="3.2" fill="#0f172a"/>
+    <ellipse cx="32" cy="46" rx="16" ry="2.8" fill="#020617" opacity="0.45"/>
+  </g>
+</svg>

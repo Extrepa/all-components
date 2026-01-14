@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" id="icon-w821nzsop">
+  <g xmlns="http://www.w3.org/2000/svg" fill="none">
+    <!-- left post -->
+    <rect x="14" y="20" width="4" height="26" rx="1.5" fill="#166534"/>
+    <!-- right post -->
+    <rect x="46" y="20" width="4" height="26" rx="1.5" fill="#166534"/>
+    <!-- hammock fabric -->
+    <path d="M18 26 C24 38 40 38 46 26" fill="#22d3ee"/>
+    <!-- inner stripe -->
+    <path d="M20 27 C25 35 39 35 44 27" fill="#fb7185" opacity="0.85"/>
+    <!-- ropes -->
+    <path d="M18 26 L22 24" stroke="#e5e7eb" stroke-width="1.2" stroke-linecap="round"/>
+    <path d="M46 26 L42 24" stroke="#e5e7eb" stroke-width="1.2" stroke-linecap="round"/>
+    <!-- subtle ground -->
+    <ellipse cx="32" cy="49" rx="20" ry="3.2" fill="#020617" opacity="0.5"/>
+  </g>
+</svg>

@@ -1,0 +1,12 @@
+<!-- 23) errl_woods_mushroom_03 – glowy bioluminescent shroom (fx/prop) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="fx" data-name="errl_woods_mushroom_03">
+  <g fill="none">
+    <!-- cap -->
+    <path d="M24 30c0-4.5 4-8 9-8s9 3.5 9 8H24z" fill="#22d3ee"/>
+    <!-- stem -->
+    <rect x="32" y="30" width="4" height="10" rx="1.6" fill="#e0f2fe"/>
+    <!-- glow -->
+    <circle cx="32" cy="48" r="9" fill="#22d3ee" opacity="0.12"/>
+  </g>
+</svg>

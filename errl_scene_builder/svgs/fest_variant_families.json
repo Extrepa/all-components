@@ -1,0 +1,74 @@
+{
+  "errl_fest_banner_vertical": {
+    "canonical": "errl_fest_banner_vertical_01.svg",
+    "variants": [
+      "errl_fest_banner_vertical_02.svg"
+    ]
+  },
+  "errl_fest_checkpoint_flag": {
+    "canonical": "errl_fest_checkpoint_flag_01.svg",
+    "variants": [
+      "errl_fest_checkpoint_flag_02.svg"
+    ]
+  },
+  "errl_fest_checkpoint_flag_01": {
+    "canonical": "errl_fest_checkpoint_flag_01_1.svg",
+    "variants": [
+      "errl_fest_checkpoint_flag_01_2.svg"
+    ]
+  },
+  "errl_fest_ground_marker_star_01": {
+    "canonical": "errl_fest_ground_marker_star_01_1.svg",
+    "variants": [
+      "errl_fest_ground_marker_star_01_2.svg"
+    ]
+  },
+  "errl_fest_ground_tile": {
+    "canonical": "errl_fest_ground_tile_01.svg",
+    "variants": [
+      "errl_fest_ground_tile_02.svg"
+    ]
+  },
+  "errl_fest_light_donut_ring_01": {
+    "canonical": "errl_fest_light_donut_ring_01_1.svg",
+    "variants": [
+      "errl_fest_light_donut_ring_01_2.svg"
+    ]
+  },
+  "errl_fest_minimap_node_01": {
+    "canonical": "errl_fest_minimap_node_01_1.svg",
+    "variants": [
+      "errl_fest_minimap_node_01_2.svg"
+    ]
+  },
+  "errl_fest_portal_circle_fx_01": {
+    "canonical": "errl_fest_portal_circle_fx_01_1.svg",
+    "variants": [
+      "errl_fest_portal_circle_fx_01_2.svg"
+    ]
+  },
+  "errl_fest_queue_snake": {
+    "canonical": "errl_fest_queue_snake_01.svg",
+    "variants": [
+      "errl_fest_queue_snake_02.svg"
+    ]
+  },
+  "errl_fest_sign_arrow_post": {
+    "canonical": "errl_fest_sign_arrow_post_01.svg",
+    "variants": [
+      "errl_fest_sign_arrow_post_02.svg"
+    ]
+  },
+  "errl_fest_spiral_path_marker_01": {
+    "canonical": "errl_fest_spiral_path_marker_01_1.svg",
+    "variants": [
+      "errl_fest_spiral_path_marker_01_2.svg"
+    ]
+  },
+  "errl_fest_wayfinder_pole_01": {
+    "canonical": "errl_fest_wayfinder_pole_01_1.svg",
+    "variants": [
+      "errl_fest_wayfinder_pole_01_2.svg"
+    ]
+  }
+}

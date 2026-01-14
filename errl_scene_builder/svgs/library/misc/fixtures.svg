@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" id="icon-lnktgk662">
+  <g xmlns="http://www.w3.org/2000/svg" fill="none">
+    <!-- fixtures -->
+    <rect x="18" y="40" width="6" height="4" rx="1.5" fill="#020617"/>
+    <rect x="40" y="40" width="6" height="4" rx="1.5" fill="#020617"/>
+    <!-- beams -->
+    <path d="M21 40 L10 26 L22 26 Z" fill="#22d3ee" opacity="0.22"/>
+    <path d="M43 40 L54 26 L42 26 Z" fill="#fb7185" opacity="0.22"/>
+  </g>
+</svg>

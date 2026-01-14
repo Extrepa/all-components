@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "baseUrl": ".",
+    "paths": {
+      "@Errl_Components/*": ["../Errl_Components/*"],
+      "@errl_scene_builder/*": ["../errl_scene_builder/*"],
+      "@errl_vibecheck/*": ["../errl_vibecheck/*"],
+      "@errl-club-ui/*": ["../errl-club-ui/*"],
+      "@errl-forge/*": ["../errl-forge/*"],
+      "@errl-portal/*": ["../errl-portal/*"],
+      "@errl-portal-shared/*": ["../errl-portal-shared/*"],
+      "@figma-clone-engine/*": ["../figma-clone-engine/*"]
+    }
+  },
+  "include": ["src"],
+  "references": [{ "path": "./tsconfig.node.json" }]
+}
+

@@ -1,0 +1,786 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HTML & CSS Mini Sheets — 6 per page</title>
+  <style>
+    :root{
+      --bg:#0f1220;
+      --card:#151a2e;
+      --ink:#e6e7ef;
+      --muted:#a7acc9;
+      --accent:#7cf0ff;
+      --accent2:#ffd36a;
+      --code-bg:#0d0f1a;
+      --border:#232845;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font:14px/1.4 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji';
+      color:var(--ink);
+      background:linear-gradient(180deg,#0b1020 0%, #111633 100%);
+    }
+    header{
+      padding:24px 20px 8px;
+      text-align:center;
+    }
+    header h1{margin:0;font-size:clamp(22px,2.8vw,36px)}
+    header p{margin:6px 0 0;color:var(--muted)}
+    .sheet{
+      width:100%;
+      max-width:1050px;
+      margin:18px auto 28px;
+      padding:10px;
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap:12px;
+      page-break-inside: avoid;
+      background:transparent;
+    }
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.00));
+      border:1px solid var(--border);
+      border-radius:16px;
+      overflow:hidden;
+      box-shadow:0 10px 24px rgba(0,0,0,.25);
+      display:grid;
+      grid-template-rows:auto auto 1fr;
+    }
+    .card header{
+      text-align:left;
+      padding:12px 14px 8px;
+      border-bottom:1px solid var(--border);
+    }
+    .card header h2{
+      font-size:16px;
+      margin:0;
+    }
+    .card header small{
+      color:var(--muted);
+    }
+    .preview{
+      padding:14px;
+      background:radial-gradient(1200px 300px at 20% 0%, rgba(124,240,255,.12), transparent 55%);
+      border-bottom:1px dashed var(--border);
+      min-height:120px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .code{
+      background:var(--code-bg);
+      padding:10px 12px;
+      overflow:auto;
+      border-top:1px solid #0003;
+      font:12px/1.35 ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      position:relative;
+    }
+    .tips{
+      padding:10px 12px 14px;
+      color:var(--muted);
+      border-top:1px dashed var(--border);
+      background:linear-gradient(0deg, rgba(255,255,255,0.02), rgba(255,255,255,0.0));
+      font-size:12.5px;
+    }
+    code, pre{color:#e9f1ff}
+    pre{margin:0; white-space:pre; tab-size:2}
+    /* Utilities used inside previews */
+    .u-row{display:flex; gap:8px; flex-wrap:wrap; align-items:center; justify-content:center}
+    .u-col{display:grid; gap:8px}
+    .u-center{text-align:center}
+    /* Example-specific styles are namespaced by .example-XX within each preview to avoid leaking */
+    /* Print styles */
+    @media print{
+      body{background:white;color:black}
+      .sheet{page-break-after:always; background:transparent;}
+      .card{border-color:#ddd; box-shadow:none}
+      .code{background:#f7f7f7;color:#222}
+      .tips{color:#333}
+      header, .app-note{display:none}
+    }
+    .app-note{ text-align:center; color:var(--muted); margin-bottom:10px;}
+    .label{display:inline-block; padding:2px 6px; border:1px solid var(--border); border-radius:999px; font-size:11px; color:var(--muted)}
+  </style>
+
+<style>
+  .example-13 .open{padding:8px 12px; border:1px solid #2a335f; border-radius:10px; background:#182048; cursor:pointer}
+  .example-13 .overlay{position:fixed; inset:0; background:rgba(0,0,0,.55); opacity:0; pointer-events:none; transition:.2s}
+  .example-13 .modal{position:fixed; left:50%; top:50%; transform:translate(-50%,-52%) scale(.96); width:min(92vw,420px); background:#0e1330; border:1px solid #2a335f; border-radius:14px; padding:14px; opacity:0; pointer-events:none; transition:.2s}
+  .example-13 #m1:checked ~ .overlay, .example-13 #m1:checked ~ .modal{opacity:1; pointer-events:auto}
+  .example-13 #m1:checked ~ .modal{transform:translate(-50%,-52%) scale(1)}
+  .example-13 .close{display:inline-block; margin-top:8px; padding:6px 10px; border:1px solid #2a335f; border-radius:10px; cursor:pointer}
+
+  .example-14 .tabs{width:260px}
+  .example-14 .tabs input{display:none}
+  .example-14 .tablabels{display:flex; gap:6px}
+  .example-14 .tablabels label{padding:6px 10px; border:1px solid #2a335f; border-radius:8px; cursor:pointer}
+  .example-14 .panels > div{display:none; padding:8px; border:1px dashed #2a335f; border-radius:8px; margin-top:8px}
+  .example-14 #t1:checked ~ .panels > div:nth-child(1),
+  .example-14 #t2:checked ~ .panels > div:nth-child(2),
+  .example-14 #t3:checked ~ .panels > div:nth-child(3){display:block}
+
+  .example-15 .pill{padding:4px 10px; border-radius:999px; border:1px solid #2a335f; background:#161b39}
+  .example-15 .pill.ok{ border-color:#2f6; color:#9f9 }
+  .example-15 .pill.warn{ border-color:#fd6; color:#fd6 }
+  .example-15 .pill.off{ border-color:#a7acc9; color:#a7acc9; opacity:.8 }
+
+  .example-16 .skeleton{width:260px}
+  .example-16 .s-row{height:12px; border-radius:8px; margin:8px 0; background:linear-gradient(90deg,#1a2144 25%,#2a335f 50%,#1a2144 75%); background-size:200% 100%; animation:sk 1.2s linear infinite}
+  .example-16 .s-row.w60{width:60%}.example-16 .s-row.w75{width:75%}.example-16 .s-row.w90{width:90%}
+  @keyframes sk{to{background-position:100% 0}}
+
+  .example-17 .stars{display:inline-flex; flex-direction:row-reverse; gap:4px}
+  .example-17 .stars input{display:none}
+  .example-17 .stars label{font-size:22px; cursor:pointer; filter:grayscale(1) brightness(.7)}
+  .example-17 .stars label:hover, .example-17 .stars input:checked ~ label{filter:none}
+
+  .example-18 .marquee{width:260px; overflow:hidden; border:1px solid #2a335f; border-radius:10px}
+  .example-18 .marquee .track{display:inline-block; padding:6px 10px; white-space:nowrap; animation:mar 8s linear infinite}
+  @keyframes mar{to{transform:translateX(-50%)}}
+
+  .example-19 .toggle{display:inline-grid; place-items:center}
+  .example-19 .toggle input{display:none}
+  .example-19 .toggle span{width:56px; height:30px; border-radius:999px; position:relative; background:#2a335f; display:inline-block; transition:.2s}
+  .example-19 .toggle span::after{content:""; position:absolute; left:3px; top:3px; width:24px; height:24px; border-radius:50%; background:#eaf7ff; transition:.2s}
+  .example-19 .toggle input:checked + span{background:#2f6}
+  .example-19 .toggle input:checked + span::after{transform:translateX(26px)}
+
+  .example-20 .showtoast{padding:8px 12px; border:1px solid #2a335f; border-radius:10px; background:#182048}
+  .example-20 .toast{position:relative; top:8px; opacity:0; transform:translateY(-6px); background:#101636; border:1px solid #2a335f; border-radius:10px; padding:6px 10px; width:max-content; transition:.25s}
+  .example-20 .toast.on{opacity:1; transform:none}
+
+  .example-21 .crumbs{display:flex; gap:6px; align-items:center; border:1px solid #2a335f; padding:6px 10px; border-radius:10px}
+  .example-21 .crumbs a{padding:2px 6px; border-radius:6px}
+  .example-21 .crumbs a:hover{background:#1a2044}
+
+  .example-22 .fakecontent{height:120px; overflow:auto; border:1px solid #2a335f; border-radius:10px; padding:8px; margin-bottom:8px}
+  .example-22 .fakecontent::after{content:"\\A" "Lorem ipsum ".repeat(30); white-space:pre}
+  .example-22 .stickybar{position:sticky; bottom:0; padding:6px 10px; border:1px solid #2a335f; border-radius:10px; background:#121736}
+
+  .example-23 .spinner{width:36px; height:36px; border-radius:50%; border:3px solid #2a335f; border-top-color:#7cf0ff; animation:spin .8s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  .example-24 .hex{width:120px; aspect-ratio:1/1; clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0 50%); background: url('https://picsum.photos/300') center/cover no-repeat; border:3px solid #2a335f; border-radius:10px}
+</style>
+
+</head>
+<body>
+  <header>
+    <h1>HTML &amp; CSS Mini Sheets</h1>
+    <p>Live “pictures,” copy‑paste code, and quick edit tips. Six cards per printed page.</p>
+  </header>
+  <div class="app-note">Tip: Print to PDF for neat handouts. Each sheet holds six cards.</div>
+
+  <!-- SHEET 1 -->
+  <section class="sheet">
+    <!-- 1. Button hover -->
+    <article class="card">
+      <header><h2>1) Soft Glow Button</h2><small class="label">button + hover</small></header>
+      <div class="preview example-01">
+        <button class="btn">Hover Me</button>
+      </div>
+      <div class="code">
+<pre>&lt;button class="btn"&gt;Hover Me&lt;/button&gt;
+
+.btn{
+  padding:10px 16px;
+  border-radius:12px;
+  border:1px solid #2a335f;
+  background:#182048;
+  color:#eaf7ff;
+  box-shadow:0 0 0 0 rgba(124,240,255,.0);
+  transition:box-shadow .25s, transform .15s;
+}
+.btn:hover{ 
+  box-shadow:0 0 0 6px rgba(124,240,255,.15), 0 6px 18px rgba(0,0,0,.35);
+  transform:translateY(-1px);
+}</pre>
+      </div>
+      <div class="tips">Tweak <code>border-radius</code> for shape, change <code>box-shadow</code> blur/spread for glow size, and adjust <code>transform</code> for lift amount.</div>
+    </article>
+
+    <!-- 2. Card with image & text -->
+    <article class="card">
+      <header><h2>2) Media Card</h2><small class="label">figure + caption</small></header>
+      <div class="preview example-02">
+        <figure class="media-card">
+          <div class="img"></div>
+          <figcaption>Liquid Aurora</figcaption>
+        </figure>
+      </div>
+      <div class="code">
+<pre>&lt;figure class="media-card"&gt;
+  &lt;div class="img"&gt;&lt;/div&gt;
+  &lt;figcaption&gt;Liquid Aurora&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+.media-card{width:220px;border-radius:14px;overflow:hidden;border:1px solid #2a335f}
+.media-card .img{
+  height:120px;
+  background: radial-gradient(120px 40px at 30% 30%, #7cf0ff, transparent 60%),
+              radial-gradient(160px 50px at 70% 70%, #ffd36a, transparent 60%),
+              #131836;
+}
+.media-card figcaption{padding:8px 10px;background:#0d1228}</pre>
+      </div>
+      <div class="tips">Replace gradients with an image using <code>background-image:url(...)</code>, or change sizes for different aspect ratios.</div>
+    </article>
+
+    <!-- 3. Flex navbar -->
+    <article class="card">
+      <header><h2>3) Flex Navbar</h2><small class="label">flex layout</small></header>
+      <div class="preview example-03">
+        <nav class="nav">
+          <span>ERRL</span>
+          <div class="spacer"></div>
+          <a href="#">Home</a><a href="#">Gallery</a><a href="#">About</a>
+        </nav>
+      </div>
+      <div class="code">
+<pre>&lt;nav class="nav"&gt;
+  &lt;span&gt;ERRL&lt;/span&gt;
+  &lt;div class="spacer"&gt;&lt;/div&gt;
+  &lt;a&gt;Home&lt;/a&gt;&lt;a&gt;Gallery&lt;/a&gt;&lt;a&gt;About&lt;/a&gt;
+&lt;/nav&gt;
+
+.nav{display:flex; gap:10px; align-items:center; width:100%;
+     padding:8px 10px; border:1px solid #2a335f; border-radius:10px;}
+.nav .spacer{flex:1}
+.nav a{padding:6px 8px; border-radius:8px}
+.nav a:hover{background:#1a2044}</pre>
+      </div>
+      <div class="tips">Add items freely; the <code>.spacer</code> flexes. For vertical navs, change <code>display:flex</code> to column via <code>flex-direction</code>.</div>
+    </article>
+
+    <!-- 4. Grid gallery -->
+    <article class="card">
+      <header><h2>4) Mini Grid</h2><small class="label">css grid</small></header>
+      <div class="preview example-04">
+        <div class="grid4">
+          <div></div><div></div><div></div><div></div>
+          <div></div><div></div>
+        </div>
+      </div>
+      <div class="code">
+<pre>&lt;div class="grid4"&gt;
+  &lt;div&gt;&lt;/div&gt;... (6 cells)
+&lt;/div&gt;
+
+.grid4{
+  width:240px;
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:8px;
+}
+.grid4 > div{
+  aspect-ratio:1/1;
+  border-radius:10px;
+  background: conic-gradient(from 210deg, #7cf0ff, #ffd36a, #7cf0ff);
+  filter:saturate(85%);
+}</pre>
+      </div>
+      <div class="tips">Change <code>repeat(3,1fr)</code> to alter columns. Use <code>aspect-ratio</code> for squares, or set fixed heights for rectangles.</div>
+    </article>
+
+    <!-- 5. Avatar circle -->
+    <article class="card">
+      <header><h2>5) Circular Avatar</h2><small class="label">image mask</small></header>
+      <div class="preview example-05">
+        <div class="avatar"></div>
+      </div>
+      <div class="code">
+<pre>&lt;div class="avatar"&gt;&lt;/div&gt;
+
+.avatar{
+  width:96px; aspect-ratio:1/1; border-radius:50%;
+  border:3px solid #2a335f;
+  background:
+    radial-gradient(60% 40% at 30% 30%, rgba(124,240,255,.6), transparent 60%),
+    url('https://picsum.photos/200?blur=1') center/cover no-repeat;
+}</pre>
+      </div>
+      <div class="tips">Swap the URL for your image. Adjust border thickness, or add a glow with <code>box-shadow</code> for status rings.</div>
+    </article>
+
+    <!-- 6. Progress bar -->
+    <article class="card">
+      <header><h2>6) Animated Progress</h2><small class="label">keyframes</small></header>
+      <div class="preview example-06">
+        <div class="bar"><span style="--p:64%"></span></div>
+      </div>
+      <div class="code">
+<pre>&lt;div class="bar"&gt;&lt;span style="--p:64%"&gt;&lt;/span&gt;&lt;/div&gt;
+
+.bar{width:260px; height:12px; border-radius:999px; background:#0f1433; overflow:hidden}
+.bar span{
+  display:block; height:100%; width:var(--p);
+  background:linear-gradient(90deg,#7cf0ff,#ffd36a);
+  animation:shine 1.2s linear infinite;
+  background-size:200% 100%;
+}
+@keyframes shine{to{background-position:100% 0}}</pre>
+      </div>
+      <div class="tips">Set <code>--p</code> inline to any percentage. Change gradient stops for different themes.</div>
+    </article>
+  </section>
+
+  <!-- SHEET 2 -->
+  <section class="sheet">
+    <!-- 7. Tooltip (pure CSS) -->
+    <article class="card">
+      <header><h2>7) Tooltip</h2><small class="label">data-attr + ::after</small></header>
+      <div class="preview example-07">
+        <button class="tip" data-tip="I am a tooltip!">Hover</button>
+      </div>
+      <div class="code">
+<pre>&lt;button class="tip" data-tip="I am a tooltip!"&gt;Hover&lt;/button&gt;
+
+.tip{position:relative; padding:8px 12px; border-radius:10px; border:1px solid #2a335f; background:#182048}
+.tip::after{
+  content:attr(data-tip);
+  position:absolute; left:50%; transform:translateX(-50%) translateY(6px);
+  bottom:100%;
+  white-space:nowrap; padding:6px 8px; border-radius:8px;
+  background:#0e1330; border:1px solid #2a335f; opacity:0; pointer-events:none;
+  transition:.2s; font-size:12px;
+}
+.tip:hover::after{opacity:1; transform:translateX(-50%) translateY(2px)}</pre>
+      </div>
+      <div class="tips">Edit text via <code>data-tip</code>. Move placement by adjusting <code>bottom</code>/<code>top</code> and the transform.</div>
+    </article>
+
+    <!-- 8. Accordion (checkbox hack) -->
+    <article class="card">
+      <header><h2>8) Accordion</h2><small class="label">checkbox hack</small></header>
+      <div class="preview example-08">
+        <div class="accordion">
+          <input id="a1" type="checkbox">
+          <label for="a1">What is Errl?</label>
+          <div class="panel">Effervescent Remnant of Radical Luminosity 🌈</div>
+        </div>
+      </div>
+      <div class="code">
+<pre>&lt;div class="accordion"&gt;
+  &lt;input id="a1" type="checkbox"&gt;
+  &lt;label for="a1"&gt;What is Errl?&lt;/label&gt;
+  &lt;div class="panel"&gt;Answer...&lt;/div&gt;
+&lt;/div&gt;
+
+.accordion input{display:none}
+.accordion label{
+  display:block; padding:8px 10px; border:1px solid #2a335f; border-radius:8px;
+  cursor:pointer; background:#161b39
+}
+.accordion .panel{
+  max-height:0; overflow:hidden; transition:max-height .25s ease;
+  padding:0 10px; border-left:2px solid #2a335f; margin-top:6px
+}
+.accordion input:checked ~ .panel{max-height:120px; padding:8px 10px}</pre>
+      </div>
+      <div class="tips">Use unique IDs per item. Increase <code>max-height</code> for longer content or switch to <code>height:auto</code> with JS.</div>
+    </article>
+
+    <!-- 9. Speech bubble (simple drawing) -->
+    <article class="card">
+      <header><h2>9) Speech Bubble</h2><small class="label">css shape</small></header>
+      <div class="preview example-09">
+        <div class="bubble">blub blub 💬</div>
+      </div>
+      <div class="code">
+<pre>&lt;div class="bubble"&gt;blub blub 💬&lt;/div&gt;
+
+.bubble{
+  padding:10px 14px; border-radius:12px; background:#0e1330; border:1px solid #2a335f;
+  position:relative; width:max-content
+}
+.bubble::after{
+  content:""; position:absolute; left:18px; top:100%;
+  border:8px solid transparent; border-top-color:#0e1330;
+  filter:drop-shadow(0 -1px 0 #2a335f);
+}</pre>
+      </div>
+      <div class="tips">Move the tail by changing <code>left</code> and <code>top</code>. For different tail directions, swap which border gets the color.</div>
+    </article>
+
+    <!-- 10. Heart (CSS art) -->
+    <article class="card">
+      <header><h2>10) CSS Heart</h2><small class="label">before/after</small></header>
+      <div class="preview example-10">
+        <div class="heart"></div>
+      </div>
+      <div class="code">
+<pre>&lt;div class="heart"&gt;&lt;/div&gt;
+
+.heart{
+  width:48px; height:48px; background:#ff6aa9; transform:rotate(45deg);
+  position:relative; border-radius:8px;
+}
+.heart::before, .heart::after{
+  content:""; position:absolute; width:48px; height:48px; background:#ff6aa9; border-radius:50%;
+}
+.heart::before{left:-24px}
+.heart::after{top:-24px}</pre>
+      </div>
+      <div class="tips">Change the base color for different moods. Adjust the size by changing the base width/height and matching the pseudo-elements.</div>
+    </article>
+
+    <!-- 11. SVG Blob (inline) -->
+    <article class="card">
+      <header><h2>11) SVG Blob</h2><small class="label">inline svg</small></header>
+      <div class="preview example-11">
+        <svg class="blob" viewBox="0 0 120 80" width="220" height="120" aria-label="blob art">
+          <defs>
+            <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#7cf0ff"/>
+              <stop offset="1" stop-color="#ffd36a"/>
+            </linearGradient>
+          </defs>
+          <path d="M12,40 Q18,12 46,16 T92,20 Q112,40 92,60 T46,64 Q20,68 12,40 Z" fill="url(#g)"/>
+        </svg>
+      </div>
+      <div class="code">
+<pre>&lt;svg viewBox="0 0 120 80" width="220" height="120"&gt;
+  &lt;defs&gt;
+    &lt;linearGradient id="g" x1="0" y1="0" x2="1" y2="1"&gt;
+      &lt;stop offset="0" stop-color="#7cf0ff"/&gt;
+      &lt;stop offset="1" stop-color="#ffd36a"/&gt;
+    &lt;/linearGradient&gt;
+  &lt;/defs&gt;
+  &lt;path d="M12,40 ... Z" fill="url(#g)"/&gt;
+&lt;/svg&gt;</pre>
+      </div>
+      <div class="tips">Edit the <code>d</code> path to morph the blob; swap the gradient for solids or patterns.</div>
+    </article>
+
+    <!-- 12. CSS Variables Theme Toggle (no JS) -->
+    <article class="card">
+      <header><h2>12) Theme Variables</h2><small class="label">:root vars</small></header>
+      <div class="preview example-12">
+        <div class="theme-demo">
+          <div class="chip">Chip</div>
+          <div class="chip alt">Alt</div>
+        </div>
+      </div>
+      <div class="code">
+<pre>/* Base */
+:root{ --chip-bg:#182048; --chip-ink:#eaf7ff; --chip-bd:#2a335f }
+.chip{ display:inline-block; padding:6px 10px; border:1px solid var(--chip-bd);
+       background:var(--chip-bg); color:var(--chip-ink); border-radius:999px }
+/* Alternate theme */
+:root.alt{ --chip-bg:#1f2b13; --chip-ink:#f2ffe0; --chip-bd:#3f5a2a }
+/* Toggle by adding .alt on &lt;html&gt; or &lt;body&gt; */</pre>
+      </div>
+      <div class="tips">Define a palette as CSS variables in <code>:root</code>. Flip themes by toggling a class that overrides those variables.</div>
+    </article>
+  </section>
+
+  <script>
+    // Example-specific CSS injected to keep snippets minimal in the code blocks
+    const css = `
+    .example-01 .btn{padding:10px 16px;border-radius:12px;border:1px solid #2a335f;background:#182048;color:#eaf7ff;box-shadow:0 0 0 0 rgba(124,240,255,.0);transition:box-shadow .25s, transform .15s}
+    .example-01 .btn:hover{box-shadow:0 0 0 6px rgba(124,240,255,.15), 0 6px 18px rgba(0,0,0,.35);transform:translateY(-1px)}
+
+    .example-02 .media-card{width:220px;border-radius:14px;overflow:hidden;border:1px solid #2a335f}
+    .example-02 .media-card .img{height:120px;background: radial-gradient(120px 40px at 30% 30%, #7cf0ff, transparent 60%), radial-gradient(160px 50px at 70% 70%, #ffd36a, transparent 60%), #131836}
+    .example-02 .media-card figcaption{padding:8px 10px;background:#0d1228}
+
+    .example-03 .nav{display:flex; gap:10px; align-items:center; width:100%; padding:8px 10px; border:1px solid #2a335f; border-radius:10px;}
+    .example-03 .nav .spacer{flex:1}
+    .example-03 .nav a{padding:6px 8px; border-radius:8px}
+    .example-03 .nav a:hover{background:#1a2044}
+
+    .example-04 .grid4{width:240px; display:grid; grid-template-columns: repeat(3, 1fr); gap:8px}
+    .example-04 .grid4 > div{aspect-ratio:1/1;border-radius:10px;background: conic-gradient(from 210deg, #7cf0ff, #ffd36a, #7cf0ff); filter:saturate(85%)}
+
+    .example-05 .avatar{width:96px; aspect-ratio:1/1; border-radius:50%; border:3px solid #2a335f; background: radial-gradient(60% 40% at 30% 30%, rgba(124,240,255,.6), transparent 60%), url('https://picsum.photos/200?blur=1') center/cover no-repeat}
+
+    .example-06 .bar{width:260px; height:12px; border-radius:999px; background:#0f1433; overflow:hidden}
+    .example-06 .bar span{display:block; height:100%; width:var(--p); background:linear-gradient(90deg,#7cf0ff,#ffd36a); animation:shine 1.2s linear infinite; background-size:200% 100%}
+    @keyframes shine{to{background-position:100% 0}}
+
+    .example-07 .tip{position:relative; padding:8px 12px; border-radius:10px; border:1px solid #2a335f; background:#182048}
+    .example-07 .tip::after{content:attr(data-tip); position:absolute; left:50%; transform:translateX(-50%) translateY(6px); bottom:100%; white-space:nowrap; padding:6px 8px; border-radius:8px; background:#0e1330; border:1px solid #2a335f; opacity:0; pointer-events:none; transition:.2s; font-size:12px}
+    .example-07 .tip:hover::after{opacity:1; transform:translateX(-50%) translateY(2px)}
+
+    .example-08 .accordion input{display:none}
+    .example-08 .accordion label{display:block; padding:8px 10px; border:1px solid #2a335f; border-radius:8px; cursor:pointer; background:#161b39}
+    .example-08 .accordion .panel{max-height:0; overflow:hidden; transition:max-height .25s ease; padding:0 10px; border-left:2px solid #2a335f; margin-top:6px}
+    .example-08 .accordion input:checked ~ .panel{max-height:120px; padding:8px 10px}
+
+    .example-09 .bubble{padding:10px 14px; border-radius:12px; background:#0e1330; border:1px solid #2a335f; position:relative; width:max-content}
+    .example-09 .bubble::after{content:""; position:absolute; left:18px; top:100%; border:8px solid transparent; border-top-color:#0e1330; filter:drop-shadow(0 -1px 0 #2a335f)}
+
+    .example-10 .heart{width:48px; height:48px; background:#ff6aa9; transform:rotate(45deg); position:relative; border-radius:8px}
+    .example-10 .heart::before, .example-10 .heart::after{content:""; position:absolute; width:48px; height:48px; background:#ff6aa9; border-radius:50%}
+    .example-10 .heart::before{left:-24px}
+    .example-10 .heart::after{top:-24px}
+
+    .example-11 .blob{display:block}
+
+    .example-12 .theme-demo{display:flex; gap:10px}
+    .example-12 .chip{ display:inline-block; padding:6px 10px; border:1px solid var(--chip-bd); background:var(--chip-bg); color:var(--chip-ink); border-radius:999px }
+    .example-12 .alt{ --chip-bg:#1f2b13; --chip-ink:#f2ffe0; --chip-bd:#3f5a2a; background:var(--chip-bg); color:var(--chip-ink); border-color:var(--chip-bd) }
+    `;
+    const style = document.createElement('style');
+    style.textContent = css;
+    document.head.appendChild(style);
+  </script>
+
+  <!-- SHEET 3 -->
+  <section class="sheet">
+    <!-- 13. Modal (checkbox) -->
+    <article class="card">
+      <header><h2>13) Modal</h2><small class="label">checkbox hack</small></header>
+      <div class="preview example-13">
+        <input type="checkbox" id="m1" hidden>
+        <label class="open" for="m1">Open Modal</label>
+        <label class="overlay" for="m1"></label>
+        <div class="modal">
+          <h3>Hi from CSS-only modal</h3>
+          <p>Edit width/height or add form elements here.</p>
+          <label class="close" for="m1">Close</label>
+        </div>
+      </div>
+      <div class="code">
+<pre>&lt;input type="checkbox" id="m1" hidden&gt;
+&lt;label class="open" for="m1"&gt;Open Modal&lt;/label&gt;
+&lt;label class="overlay" for="m1"&gt;&lt;/label&gt;
+&lt;div class="modal"&gt;...&lt;/div&gt;
+
+.open{padding:8px 12px; border:1px solid #2a335f; border-radius:10px}
+.overlay{position:fixed; inset:0; background:rgba(0,0,0,.55); opacity:0; pointer-events:none; transition:.2s}
+.modal{position:fixed; left:50%; top:50%; transform:translate(-50%,-52%) scale(.96);
+       width:min(92vw,420px); background:#0e1330; border:1px solid #2a335f; border-radius:14px; padding:14px;
+       opacity:0; pointer-events:none; transition:.2s}
+#m1:checked ~ .overlay, #m1:checked ~ .modal{opacity:1; pointer-events:auto}
+#m1:checked ~ .modal{transform:translate(-50%,-52%) scale(1)}</pre>
+      </div>
+      <div class="tips">Use unique IDs for multiple modals. Tweak <code>width</code> and <code>transform</code> for size/animation.</div>
+    </article>
+
+    <!-- 14. Tabs -->
+    <article class="card">
+      <header><h2>14) Tabs</h2><small class="label">radio tabs</small></header>
+      <div class="preview example-14">
+        <div class="tabs">
+          <input type="radio" name="t" id="t1" checked>
+          <input type="radio" name="t" id="t2">
+          <input type="radio" name="t" id="t3">
+          <div class="tablabels">
+            <label for="t1">One</label>
+            <label for="t2">Two</label>
+            <label for="t3">Three</label>
+          </div>
+          <div class="panels">
+            <div>Panel One</div>
+            <div>Panel Two</div>
+            <div>Panel Three</div>
+          </div>
+        </div>
+      </div>
+      <div class="code">
+<pre>&lt;input type="radio" name="t" id="t1" checked&gt; ...
+.tablabels{display:flex; gap:6px}
+.tablabels label{padding:6px 10px; border:1px solid #2a335f; border-radius:8px; cursor:pointer}
+.panels &gt; div{display:none; padding:8px; border:1px dashed #2a335f; border-radius:8px; margin-top:8px}
+#t1:checked ~ .panels &gt; div:nth-child(1){display:block}
+#t2:checked ~ .panels &gt; div:nth-child(2){display:block}
+#t3:checked ~ .panels &gt; div:nth-child(3){display:block}</pre>
+      </div>
+      <div class="tips">Add more tabs by adding inputs/labels and a matching nth-child rule.</div>
+    </article>
+
+    <!-- 15. Status Badges -->
+    <article class="card">
+      <header><h2>15) Status Badges</h2><small class="label">pills</small></header>
+      <div class="preview example-15">
+        <div class="u-row">
+          <span class="pill ok">Live</span>
+          <span class="pill warn">Beta</span>
+          <span class="pill off">Offline</span>
+        </div>
+      </div>
+      <div class="code">
+<pre>&lt;span class="pill ok"&gt;Live&lt;/span&gt;
+.pill{padding:4px 10px; border-radius:999px; border:1px solid #2a335f; background:#161b39}
+.pill.ok{ border-color:#2f6; color:#9f9 }
+.pill.warn{ border-color:#fd6; color:#fd6 }
+.pill.off{ border-color:#a7acc9; color:#a7acc9; opacity:.8 }</pre>
+      </div>
+      <div class="tips">Swap colors to match your theme. Use icons by inserting an <code>&lt;svg&gt;</code> inside.</div>
+    </article>
+
+    <!-- 16. Skeleton Loader -->
+    <article class="card">
+      <header><h2>16) Skeleton Loader</h2><small class="label">shimmer</small></header>
+      <div class="preview example-16">
+        <div class="skeleton">
+          <div class="s-row w60"></div>
+          <div class="s-row w90"></div>
+          <div class="s-row w75"></div>
+        </div>
+      </div>
+      <div class="code">
+<pre>.skeleton{width:260px}
+.s-row{height:12px; border-radius:8px; margin:8px 0; background:linear-gradient(90deg,#1a2144 25%,#2a335f 50%,#1a2144 75%);
+       background-size:200% 100%; animation:sk 1.2s linear infinite}
+.s-row.w60{width:60%}.s-row.w75{width:75%}.s-row.w90{width:90%}
+@keyframes sk{to{background-position:100% 0}}</pre>
+      </div>
+      <div class="tips">Change animation speed for “loading pace.” Mix widths for realistic skeletons.</div>
+    </article>
+
+    <!-- 17. Star Rating (no JS) -->
+    <article class="card">
+      <header><h2>17) Star Rating</h2><small class="label">radio stars</small></header>
+      <div class="preview example-17">
+        <div class="stars">
+          <input type="radio" id="s5" name="s"><label for="s5">★</label>
+          <input type="radio" id="s4" name="s"><label for="s4">★</label>
+          <input type="radio" id="s3" name="s"><label for="s3">★</label>
+          <input type="radio" id="s2" name="s"><label for="s2">★</label>
+          <input type="radio" id="s1" name="s"><label for="s1">★</label>
+        </div>
+      </div>
+      <div class="code">
+<pre>.stars{display:inline-flex; flex-direction:row-reverse; gap:4px}
+.stars input{display:none}
+.stars label{font-size:22px; cursor:pointer; filter:grayscale(1) brightness(.7)}
+.stars label:hover, .stars input:checked ~ label{filter:none}</pre>
+      </div>
+      <div class="tips">Reverse order lets hover fill leftward via sibling selectors. Replace ★ with inline SVG for custom shapes.</div>
+    </article>
+
+    <!-- 18. Marquee Banner -->
+    <article class="card">
+      <header><h2>18) Marquee</h2><small class="label">CSS scroll</small></header>
+      <div class="preview example-18">
+        <div class="marquee">
+          <div class="track">ERRL • RADICAL LUMINOSITY • ERRL • RADICAL LUMINOSITY •</div>
+        </div>
+      </div>
+      <div class="code">
+<pre>.marquee{width:260px; overflow:hidden; border:1px solid #2a335f; border-radius:10px}
+.marquee .track{display:inline-block; padding:6px 10px; white-space:nowrap; animation:mar 8s linear infinite}
+@keyframes mar{to{transform:translateX(-50%)}}</pre>
+      </div>
+      <div class="tips">Duplicate the text inside the track to avoid gaps. Speed = duration of <code>@keyframes</code>.</div>
+    </article>
+  </section>
+
+  <!-- SHEET 4 -->
+  <section class="sheet">
+    <!-- 19. Toggle Switch -->
+    <article class="card">
+      <header><h2>19) Toggle Switch</h2><small class="label">checkbox</small></header>
+      <div class="preview example-19">
+        <label class="toggle">
+          <input type="checkbox" checked>
+          <span></span>
+        </label>
+      </div>
+      <div class="code">
+<pre>.toggle{display:inline-grid; place-items:center}
+.toggle input{display:none}
+.toggle span{width:56px; height:30px; border-radius:999px; position:relative; background:#2a335f; display:inline-block; transition:.2s}
+.toggle span::after{content:""; position:absolute; left:3px; top:3px; width:24px; height:24px; border-radius:50%; background:#eaf7ff; transition:.2s}
+.toggle input:checked + span{background:#2f6}
+.toggle input:checked + span::after{transform:translateX(26px)}</pre>
+      </div>
+      <div class="tips">Change sizes proportionally for bigger/smaller toggles. Color the track for states.</div>
+    </article>
+
+    <!-- 20. Toast Notification -->
+    <article class="card">
+      <header><h2>20) Toast</h2><small class="label">position + animation</small></header>
+      <div class="preview example-20">
+        <button class="showtoast">Show Toast</button>
+        <div class="toast">Saved! ✅</div>
+      </div>
+      <div class="code">
+<pre>.toast{position:relative; top:8px; opacity:0; transform:translateY(-6px); background:#101636; border:1px solid #2a335f; border-radius:10px; padding:6px 10px; width:max-content; transition:.25s}
+/* add .on to show */
+.toast.on{opacity:1; transform:none}</pre>
+      </div>
+      <div class="tips">In production, toggle a class with JS. For a demo, we’ll wire a tiny script below.</div>
+    </article>
+
+    <!-- 21. Breadcrumb -->
+    <article class="card">
+      <header><h2>21) Breadcrumb</h2><small class="label">nav trail</small></header>
+      <div class="preview example-21">
+        <nav class="crumbs">
+          <a href="#">Home</a><span>/</span><a href="#">Library</a><span>/</span><a href="#">Errl</a>
+        </nav>
+      </div>
+      <div class="code">
+<pre>.crumbs{display:flex; gap:6px; align-items:center; border:1px solid #2a335f; padding:6px 10px; border-radius:10px}
+.crumbs a{padding:2px 6px; border-radius:6px}
+.crumbs a:hover{background:#1a2044}</pre>
+      </div>
+      <div class="tips">Replace separators with &raquo; or SVGs. Wrap the last link in <code>&lt;span aria-current="page"&gt;</code> instead of a link.</div>
+    </article>
+
+    <!-- 22. Sticky Footer Bar -->
+    <article class="card">
+      <header><h2>22) Sticky Footer</h2><small class="label">position:sticky</small></header>
+      <div class="preview example-22">
+        <div class="fakecontent">Scroll this box</div>
+        <div class="stickybar">Actions • Save • Share</div>
+      </div>
+      <div class="code">
+<pre>.fakecontent{height:120px; overflow:auto; border:1px solid #2a335f; border-radius:10px; padding:8px; margin-bottom:8px}
+.fakecontent::after{content:"\\A" "Lorem ipsum ".repeat(30); white-space:pre}
+.stickybar{position:sticky; bottom:0; padding:6px 10px; border:1px solid #2a335f; border-radius:10px; background:#121736}</pre>
+      </div>
+      <div class="tips">Sticky sticks within the scroll container. Use <code>top</code> for sticky headers.</div>
+    </article>
+
+    <!-- 23. Spinner -->
+    <article class="card">
+      <header><h2>23) Spinner</h2><small class="label">border spin</small></header>
+      <div class="preview example-23">
+        <div class="spinner"></div>
+      </div>
+      <div class="code">
+<pre>.spinner{width:36px; height:36px; border-radius:50%; border:3px solid #2a335f; border-top-color:#7cf0ff; animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}</pre>
+      </div>
+      <div class="tips">Adjust size and border width to change the look. Swap <code>border-top-color</code> for theme.</div>
+    </article>
+
+    <!-- 24. Hexagon Avatar (clip-path) -->
+    <article class="card">
+      <header><h2>24) Hex Avatar</h2><small class="label">clip-path</small></header>
+      <div class="preview example-24">
+        <div class="hex"></div>
+      </div>
+      <div class="code">
+<pre>.hex{
+  width:120px; aspect-ratio:1/1;
+  clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0 50%);
+  background: url('https://picsum.photos/300') center/cover no-repeat;
+  border:3px solid #2a335f; border-radius:10px;
+}</pre>
+      </div>
+      <div class="tips">Swap the <code>background</code> for your image. Change the polygon for triangles, octagons, or stars.</div>
+    </article>
+  </section>
+
+  <script>
+    // Preview-only JS for Sheet 4 toast button
+    document.addEventListener('click', (e) => {
+      if(e.target.matches('.showtoast')){
+        const toast = e.target.nextElementSibling;
+        toast.classList.add('on');
+        setTimeout(()=>toast.classList.remove('on'), 1600);
+      }
+    });
+  </script>
+
+</body>
+</html>

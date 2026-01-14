@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI Studio Exports Index</title>
+  <style>
+    :root {
+      --bg: #0a0b10;
+      --panel: rgba(255, 255, 255, 0.06);
+      --panel-hover: rgba(255, 255, 255, 0.12);
+      --border: rgba(255, 255, 255, 0.12);
+      --text: #f5f6ff;
+      --muted: rgba(245, 246, 255, 0.6);
+      --accent: #22d3ee;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Space Grotesk", "Segoe UI", Tahoma, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1200px 600px at 15% 10%, rgba(34, 211, 238, 0.15), transparent 60%),
+        radial-gradient(900px 500px at 85% 20%, rgba(255, 0, 204, 0.12), transparent 60%),
+        radial-gradient(900px 500px at 70% 85%, rgba(255, 200, 0, 0.08), transparent 60%),
+        var(--bg);
+      padding: 32px;
+    }
+
+    header {
+      max-width: 1100px;
+      margin: 0 auto 24px auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin: 0;
+      letter-spacing: 0.5px;
+    }
+
+    p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .grid {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+    }
+
+    a.card {
+      display: block;
+      padding: 16px;
+      border-radius: 14px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      color: var(--text);
+      text-decoration: none;
+      transition: transform 120ms ease, background 120ms ease, border 120ms ease;
+    }
+
+    a.card:hover {
+      transform: translateY(-2px);
+      background: var(--panel-hover);
+      border-color: rgba(34, 211, 238, 0.5);
+    }
+
+    a.card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      border: 1px solid var(--border);
+      background: #0e1016;
+    }
+
+    .label {
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .name {
+      font-size: 16px;
+      line-height: 1.2;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>AI Studio Exports</h1>
+    <p>Quick index of single-file HTML demos staged in this folder.</p>
+  </header>
+
+  <section class="grid">
+    <a class="card" href="analog-liquid-light-projector.html" target="_blank" rel="noopener">
+      <img src="thumbnails/analog-liquid-light-projector.png" alt="Analog Liquid Light Projector thumbnail" loading="lazy" />
+      <div class="label">liquid</div>
+      <div class="name">Analog Liquid Light Projector</div>
+    </a>
+    <a class="card" href="bioluminescent-deep.html" target="_blank" rel="noopener">
+      <img src="thumbnails/bioluminescent-deep.png" alt="Bioluminescent Deep thumbnail" loading="lazy" />
+      <div class="label">liquid</div>
+      <div class="name">Bioluminescent Deep</div>
+    </a>
+    <a class="card" href="cosmic-tapestry.html" target="_blank" rel="noopener">
+      <img src="thumbnails/cosmic-tapestry.png" alt="Cosmic Tapestry thumbnail" loading="lazy" />
+      <div class="label">visual</div>
+      <div class="name">Cosmic Tapestry</div>
+    </a>
+    <a class="card" href="deep-bioluminescence.html" target="_blank" rel="noopener">
+      <img src="thumbnails/deep-bioluminescence.png" alt="Deep Bioluminescence thumbnail" loading="lazy" />
+      <div class="label">liquid</div>
+      <div class="name">Deep Bioluminescence</div>
+    </a>
+    <a class="card" href="deep-liquid-drops.html" target="_blank" rel="noopener">
+      <img src="thumbnails/deep-liquid-drops.png" alt="Deep Liquid Drops thumbnail" loading="lazy" />
+      <div class="label">liquid</div>
+      <div class="name">Deep Liquid Drops</div>
+    </a>
+    <a class="card" href="design-system-switcher-fixed.html" target="_blank" rel="noopener">
+      <img src="thumbnails/design-system-switcher-fixed.png" alt="Design System Switcher Fixed thumbnail" loading="lazy" />
+      <div class="label">ui</div>
+      <div class="name">Design System Switcher Fixed</div>
+    </a>
+    <a class="card" href="design-system-switcher.html" target="_blank" rel="noopener">
+      <img src="thumbnails/design-system-switcher.png" alt="Design System Switcher thumbnail" loading="lazy" />
+      <div class="label">ui</div>
+      <div class="name">Design System Switcher</div>
+    </a>
+    <a class="card" href="flash-ui-bioluminescent-mineral-drip.html" target="_blank" rel="noopener">
+      <img src="thumbnails/flash-ui-bioluminescent-mineral-drip.png" alt="Flash Ui Bioluminescent Mineral Drip thumbnail" loading="lazy" />
+      <div class="label">flash ui</div>
+      <div class="name">Flash Ui Bioluminescent Mineral Drip</div>
+    </a>
+    <a class="card" href="flash-ui-chromatic-resin-sedimentation.html" target="_blank" rel="noopener">
+      <img src="thumbnails/flash-ui-chromatic-resin-sedimentation.png" alt="Flash Ui Chromatic Resin Sedimentation thumbnail" loading="lazy" />
+      <div class="label">flash ui</div>
+      <div class="name">Flash Ui Chromatic Resin Sedimentation</div>
+    </a>
+    <a class="card" href="flash-ui-entering-the-void-molten-dichroic.html" target="_blank" rel="noopener">
+      <img src="thumbnails/flash-ui-entering-the-void-molten-dichroic.png" alt="Flash Ui Entering The Void Molten Dichroic thumbnail" loading="lazy" />
+      <div class="label">flash ui</div>
+      <div class="name">Flash Ui Entering The Void Molten Dichroic</div>
+    </a>
+    <a class="card" href="flash-ui-errl-prismatic-gateway.html" target="_blank" rel="noopener">
+      <img src="thumbnails/flash-ui-errl-prismatic-gateway.png" alt="Flash Ui Errl Prismatic Gateway thumbnail" loading="lazy" />
+      <div class="label">flash ui</div>
+      <div class="name">Flash Ui Errl Prismatic Gateway</div>
+    </a>
+    <a class="card" href="flash-ui-prism-threshold-interface.html" target="_blank" rel="noopener">
+      <img src="thumbnails/flash-ui-prism-threshold-interface.png" alt="Flash Ui Prism Threshold Interface thumbnail" loading="lazy" />
+      <div class="label">flash ui</div>
+      <div class="name">Flash Ui Prism Threshold Interface</div>
+    </a>
+    <a class="card" href="flash-ui-prismatic-mercury-spec-sheet.html" target="_blank" rel="noopener">
+      <img src="thumbnails/flash-ui-prismatic-mercury-spec-sheet.png" alt="Flash Ui Prismatic Mercury Spec Sheet thumbnail" loading="lazy" />
+      <div class="label">flash ui</div>
+      <div class="name">Flash Ui Prismatic Mercury Spec Sheet</div>
+    </a>
+    <a class="card" href="flash-ui-recursive-prismatic-diffraction.html" target="_blank" rel="noopener">
+      <img src="thumbnails/flash-ui-recursive-prismatic-diffraction.png" alt="Flash Ui Recursive Prismatic Diffraction thumbnail" loading="lazy" />
+      <div class="label">flash ui</div>
+      <div class="name">Flash Ui Recursive Prismatic Diffraction</div>
+    </a>
+    <a class="card" href="full-screen-lava-lamp.html" target="_blank" rel="noopener">
+      <img src="thumbnails/full-screen-lava-lamp.png" alt="Full Screen Lava Lamp thumbnail" loading="lazy" />
+      <div class="label">lava</div>
+      <div class="name">Full Screen Lava Lamp</div>
+    </a>
+    <a class="card" href="lava-lamp-projector.html" target="_blank" rel="noopener">
+      <img src="thumbnails/lava-lamp-projector.png" alt="Lava Lamp Projector thumbnail" loading="lazy" />
+      <div class="label">lava</div>
+      <div class="name">Lava Lamp Projector</div>
+    </a>
+    <a class="card" href="liquid-light-projector.html" target="_blank" rel="noopener">
+      <img src="thumbnails/liquid-light-projector.png" alt="Liquid Light Projector thumbnail" loading="lazy" />
+      <div class="label">liquid</div>
+      <div class="name">Liquid Light Projector</div>
+    </a>
+    <a class="card" href="living-liquid-gentle-flow.html" target="_blank" rel="noopener">
+      <img src="thumbnails/living-liquid-gentle-flow.png" alt="Living Liquid Gentle Flow thumbnail" loading="lazy" />
+      <div class="label">liquid</div>
+      <div class="name">Living Liquid Gentle Flow</div>
+    </a>
+    <a class="card" href="neon-void-tarot.html" target="_blank" rel="noopener">
+      <img src="thumbnails/neon-void-tarot.png" alt="Neon Void Tarot thumbnail" loading="lazy" />
+      <div class="label">visual</div>
+      <div class="name">Neon Void Tarot</div>
+    </a>
+    <a class="card" href="oil-and-water-projector.html" target="_blank" rel="noopener">
+      <img src="thumbnails/oil-and-water-projector.png" alt="Oil And Water Projector thumbnail" loading="lazy" />
+      <div class="label">liquid</div>
+      <div class="name">Oil And Water Projector</div>
+    </a>
+    <a class="card" href="organic-light-drops.html" target="_blank" rel="noopener">
+      <img src="thumbnails/organic-light-drops.png" alt="Organic Light Drops thumbnail" loading="lazy" />
+      <div class="label">visual</div>
+      <div class="name">Organic Light Drops</div>
+    </a>
+    <a class="card" href="quad-core-fluid-simulation.html" target="_blank" rel="noopener">
+      <img src="thumbnails/quad-core-fluid-simulation.png" alt="Quad Core Fluid Simulation thumbnail" loading="lazy" />
+      <div class="label">simulation</div>
+      <div class="name">Quad Core Fluid Simulation</div>
+    </a>
+    <a class="card" href="recursive-fractal-orchard.html" target="_blank" rel="noopener">
+      <img src="thumbnails/recursive-fractal-orchard.png" alt="Recursive Fractal Orchard thumbnail" loading="lazy" />
+      <div class="label">visual</div>
+      <div class="name">Recursive Fractal Orchard</div>
+    </a>
+    <a class="card" href="sentient-shard-swarm.html" target="_blank" rel="noopener">
+      <img src="thumbnails/sentient-shard-swarm.png" alt="Sentient Shard Swarm thumbnail" loading="lazy" />
+      <div class="label">visual</div>
+      <div class="name">Sentient Shard Swarm</div>
+    </a>
+    <a class="card" href="vaporwave-hyperspace-voxel-tunnel.html" target="_blank" rel="noopener">
+      <img src="thumbnails/vaporwave-hyperspace-voxel-tunnel.png" alt="Vaporwave Hyperspace Voxel Tunnel thumbnail" loading="lazy" />
+      <div class="label">three.js</div>
+      <div class="name">Vaporwave Hyperspace Voxel Tunnel</div>
+    </a>
+    <a class="card" href="walking-errl-loader.html" target="_blank" rel="noopener">
+      <img src="thumbnails/walking-errl-loader.png" alt="Walking Errl Loader thumbnail" loading="lazy" />
+      <div class="label">loader</div>
+      <div class="name">Walking Errl Loader</div>
+    </a>
+  </section>
+</body>
+</html>

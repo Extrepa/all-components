@@ -1,0 +1,458 @@
+Nice. Time for true 3D voxels, not just the fake isometric mosaic.
+Errl gets a little voxel mountain range version of himself. 🌋🫠
+
+We’re going to:
+	•	Turn the 3D Wire tab into Wire / 3D Voxels toggle.
+	•	Use Three.js to build an extruded voxel heightmap from the SVG’s brightness.
+	•	Reuse the same tab, renderer, and animation loop.
+
+I’ll keep this patch-style so you can drop it into your existing index.html.
+
+⸻
+
+1. Upgrade the 3D preview header (Wire ↔ Voxels toggle)
+
+Find the 3D preview container we added earlier:
+
+            <!-- 3D Wire Preview Container -->
+            <div
+              id="wire3dPreviewContainer"
+              class="preview-panel hidden w-full max-w-[420px] max-h-[420px] aspect-square rounded-2xl bg-slate-950/70 border border-emerald-700/80 errl-glow flex flex-col overflow-hidden"
+              data-tab="wire3d"
+            >
+              <div class="px-3 py-1.5 border-b border-slate-800/70 flex items-center justify-between text-[11px] text-slate-300">
+                <span>3D Wireframe</span>
+                <span id="wire3dStatus" class="text-slate-500">
+                  Waiting for SVG…
+                </span>
+              </div>
+              <div class="flex-1 flex items-center justify-center bg-slate-900/60">
+                <div id="wire3dCanvasHost" class="w-full h-full"></div>
+              </div>
+            </div>
+
+Replace the inner header <div> with this:
+
+              <div class="px-3 py-1.5 border-b border-slate-800/70 flex items-center justify-between text-[11px] text-slate-300">
+                <div class="flex items-center gap-2">
+                  <span>3D View</span>
+                  <div class="flex items-center gap-1">
+                    <button
+                      id="wire3dModeWireBtn"
+                      class="px-2 py-0.5 rounded-full border border-emerald-500/80 text-[10px] text-emerald-200 bg-slate-900/80"
+                      data-mode="wire"
+                    >
+                      Wire
+                    </button>
+                    <button
+                      id="wire3dModeVoxel3dBtn"
+                      class="px-2 py-0.5 rounded-full border border-slate-600 text-[10px] text-slate-300 hover:bg-slate-900/80"
+                      data-mode="voxel3d"
+                    >
+                      3D Voxels
+                    </button>
+                  </div>
+                </div>
+                <span id="wire3dStatus" class="text-slate-500">
+                  Waiting for SVG…
+                </span>
+              </div>
+
+Now that header has a tiny mode-toggle pill group: Wire and 3D Voxels.
+
+⸻
+
+2. New DOM refs + Three.js mode global
+
+In your <script>, where you grab the 3D elements:
+
+    const wire3dCanvasHost = document.getElementById("wire3dCanvasHost");
+    const wire3dStatusEl = document.getElementById("wire3dStatus");
+
+Extend it:
+
+    const wire3dCanvasHost = document.getElementById("wire3dCanvasHost");
+    const wire3dStatusEl = document.getElementById("wire3dStatus");
+    const wire3dModeWireBtn = document.getElementById("wire3dModeWireBtn");
+    const wire3dModeVoxel3dBtn = document.getElementById("wire3dModeVoxel3dBtn");
+
+Then in your globals (where you had Three.js state):
+
+    // three.js state
+    let threeRenderer = null;
+    let threeScene = null;
+    let threeCamera = null;
+    let threeMesh = null;
+    let threeFrameId = null;
+
+Add the mode:
+
+    let threeMode = "wire"; // "wire" | "voxel3d"
+
+
+⸻
+
+3. Add a helper to switch 3D modes
+
+Somewhere near your Three.js helpers, add:
+
+    function updateThreeModeButtons() {
+      if (!wire3dModeWireBtn || !wire3dModeVoxel3dBtn) return;
+
+      if (threeMode === "wire") {
+        wire3dModeWireBtn.classList.add(
+          "bg-slate-900/80",
+          "border-emerald-500/80",
+          "text-emerald-200"
+        );
+        wire3dModeVoxel3dBtn.classList.remove(
+          "bg-slate-900/80",
+          "border-emerald-500/80",
+          "text-emerald-200"
+        );
+        wire3dModeVoxel3dBtn.classList.add("border-slate-600", "text-slate-300");
+      } else {
+        wire3dModeVoxel3dBtn.classList.add(
+          "bg-slate-900/80",
+          "border-emerald-500/80",
+          "text-emerald-200"
+        );
+        wire3dModeWireBtn.classList.remove(
+          "bg-slate-900/80",
+          "border-emerald-500/80",
+          "text-emerald-200"
+        );
+        wire3dModeWireBtn.classList.add("border-slate-600", "text-slate-300");
+      }
+    }
+
+    function setThreeMode(mode) {
+      if (mode !== "wire" && mode !== "voxel3d") return;
+      threeMode = mode;
+      updateThreeModeButtons();
+
+      // If the 3D tab is currently visible, restart scene in new mode
+      const threeTabVisible =
+        !wire3dPreviewContainer.classList.contains("hidden");
+      if (threeTabVisible && currentSvg && currentSvgUrl) {
+        startWire3DWithCurrentSvg();
+      }
+
+      if (wire3dStatusEl) {
+        wire3dStatusEl.textContent =
+          currentSvg && currentSvgUrl
+            ? (threeMode === "wire"
+                ? "Wireframe box mode."
+                : "3D voxel heightmap mode.")
+            : "Waiting for SVG…";
+      }
+    }
+
+    // Initial button styling
+    updateThreeModeButtons();
+
+    wire3dModeWireBtn.addEventListener("click", () => {
+      setThreeMode("wire");
+      playBeep(620, 0.07, "triangle");
+    });
+
+    wire3dModeVoxel3dBtn.addEventListener("click", () => {
+      setThreeMode("voxel3d");
+      playBeep(700, 0.07, "triangle");
+    });
+
+This:
+	•	Keeps buttons visually in sync with the current mode.
+	•	If the tab is open and you switch mode, it rebuilds the 3D scene.
+
+⸻
+
+4. Update stopWire3D() to only be about cleanup
+
+Find your current stopWire3D() and replace it with:
+
+    function stopWire3D() {
+      if (threeFrameId !== null) {
+        cancelAnimationFrame(threeFrameId);
+        threeFrameId = null;
+      }
+      if (threeRenderer) {
+        threeRenderer.dispose();
+        if (wire3dCanvasHost) {
+          while (wire3dCanvasHost.firstChild) {
+            wire3dCanvasHost.removeChild(wire3dCanvasHost.firstChild);
+          }
+        }
+      }
+      threeRenderer = null;
+      threeScene = null;
+      threeCamera = null;
+      threeMesh = null;
+
+      if (wire3dStatusEl) {
+        wire3dStatusEl.textContent = currentSvg
+          ? (threeMode === "wire"
+              ? "Ready. Wireframe mode."
+              : "Ready. 3D voxels mode.")
+          : "Waiting for SVG…";
+      }
+    }
+
+We don’t reset threeMode here; we let the mode persist and just reflect it in the status message.
+
+⸻
+
+5. Replace startWire3DWithCurrentSvg() with dual-mode version
+
+Now we teach that function to build either:
+	•	The old textured wireframe box (wire mode), or
+	•	A 3D voxel “heightmap” of Errl’s brightness (voxel3d mode).
+
+Replace your whole startWire3DWithCurrentSvg() with:
+
+    function startWire3DWithCurrentSvg() {
+      if (!wire3dCanvasHost || typeof THREE === "undefined") {
+        if (wire3dStatusEl) {
+          wire3dStatusEl.textContent = "three.js not available.";
+        }
+        return;
+      }
+      if (!currentSvg || !currentSvgUrl) {
+        if (wire3dStatusEl) {
+          wire3dStatusEl.textContent = "Upload an SVG first.";
+        }
+        return;
+      }
+
+      // Reset any existing scene
+      stopWire3D();
+
+      const width = wire3dCanvasHost.clientWidth || 400;
+      const height = wire3dCanvasHost.clientHeight || 400;
+
+      threeRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      threeRenderer.setSize(width, height);
+      threeRenderer.setPixelRatio(window.devicePixelRatio || 1);
+      wire3dCanvasHost.appendChild(threeRenderer.domElement);
+
+      threeScene = new THREE.Scene();
+      threeScene.background = new THREE.Color(0x02070a);
+
+      threeCamera = new THREE.PerspectiveCamera(35, width / height, 0.1, 100);
+      threeCamera.position.set(0, 0, 4);
+
+      const light1 = new THREE.DirectionalLight(0xffffff, 1.0);
+      light1.position.set(3, 4, 5);
+      threeScene.add(light1);
+
+      const light2 = new THREE.DirectionalLight(0x34e1ff, 0.7);
+      light2.position.set(-3, -2, -4);
+      threeScene.add(light2);
+
+      threeScene.add(new THREE.AmbientLight(0x404040, 0.6));
+
+      const textureLoader = new THREE.TextureLoader();
+      textureLoader.load(
+        currentSvgUrl,
+        (texture) => {
+          if (threeMode === "wire") {
+            // ---- Original wireframe textured box ----
+            const geo = new THREE.BoxGeometry(1.8, 1.8, 0.3);
+
+            const mat = new THREE.MeshStandardMaterial({
+              map: texture,
+              metalness: 0.3,
+              roughness: 0.4,
+            });
+
+            threeMesh = new THREE.Mesh(geo, mat);
+
+            const edges = new THREE.EdgesGeometry(geo);
+            const hue = p5Config ? p5Config.bgHue || 210 : 210;
+            const wireColor = new THREE.Color().setHSL(hue / 360, 0.9, 0.6);
+            const lineMat = new THREE.LineBasicMaterial({
+              color: wireColor,
+              linewidth: 1,
+            });
+            const wire = new THREE.LineSegments(edges, lineMat);
+            threeMesh.add(wire);
+
+            threeScene.add(threeMesh);
+
+            if (wire3dStatusEl) {
+              wire3dStatusEl.textContent = "Spinning wireframe box.";
+            }
+          } else {
+            // ---- 3D Voxel heightmap mode ----
+            const img = texture.image;
+            const sampleSize = 32;
+            const sampleCanvas = document.createElement("canvas");
+            const sampleCtx = sampleCanvas.getContext("2d");
+            sampleCanvas.width = sampleSize;
+            sampleCanvas.height = sampleSize;
+            sampleCtx.drawImage(img, 0, 0, sampleSize, sampleSize);
+
+            const imageData = sampleCtx.getImageData(
+              0,
+              0,
+              sampleSize,
+              sampleSize
+            ).data;
+
+            const voxelGroup = new THREE.Group();
+            threeMesh = voxelGroup;
+
+            const cols = sampleSize;
+            const rows = sampleSize;
+            const span = 2.4; // world size
+            const step = span / cols;
+            const startX = -span / 2;
+            const startY = -span / 2;
+
+            const boxGeo = new THREE.BoxGeometry(step * 0.9, step * 0.9, 1);
+            const accentColor = new THREE.Color(0x34e1ff);
+            const cubeMat = new THREE.MeshStandardMaterial({
+              color: accentColor,
+              emissive: new THREE.Color(0x050814),
+              metalness: 0.2,
+              roughness: 0.5,
+            });
+
+            for (let y = 0; y < rows; y++) {
+              for (let x = 0; x < cols; x++) {
+                const idx = (y * cols + x) * 4;
+                const r = imageData[idx];
+                const g = imageData[idx + 1];
+                const b = imageData[idx + 2];
+                const a = imageData[idx + 3];
+
+                if (a < 40) continue; // skip transparent
+                const brightness = (r + g + b) / (3 * 255);
+                if (brightness < 0.08) continue; // very dark, ignore to keep it sparse
+
+                // Height from brightness
+                const minH = 0.15;
+                const maxH = 1.0;
+                const heightFactor = minH + (maxH - minH) * brightness;
+
+                const cube = new THREE.Mesh(boxGeo, cubeMat);
+                const wx = startX + x * step + step / 2;
+                const wy = startY + y * step + step / 2;
+                const hz = heightFactor;
+
+                cube.position.set(wx, wy, hz / 2);
+                cube.scale.z = hz;
+
+                voxelGroup.add(cube);
+              }
+            }
+
+            voxelGroup.position.z = -0.5; // pull back slightly
+            threeScene.add(voxelGroup);
+
+            if (wire3dStatusEl) {
+              wire3dStatusEl.textContent = "3D voxel heightmap from SVG.";
+            }
+          }
+
+          let lastTime = performance.now();
+          function animate(now) {
+            threeFrameId = requestAnimationFrame(animate);
+            const dt = (now - lastTime) / 1000;
+            lastTime = now;
+
+            if (threeMesh) {
+              threeMesh.rotation.y += dt * 0.7;
+              threeMesh.rotation.x += dt * 0.35;
+            }
+            threeRenderer.render(threeScene, threeCamera);
+          }
+          animate(lastTime);
+        },
+        undefined,
+        (err) => {
+          console.error("Three.js texture load error:", err);
+          if (wire3dStatusEl) {
+            wire3dStatusEl.textContent = "Failed to load SVG texture.";
+          }
+        }
+      );
+
+      function onResize() {
+        if (!threeRenderer || !threeCamera) return;
+        const w = wire3dCanvasHost.clientWidth || 400;
+        const h = wire3dCanvasHost.clientHeight || 400;
+        threeRenderer.setSize(w, h);
+        threeCamera.aspect = w / h;
+        threeCamera.updateProjectionMatrix();
+      }
+
+      window.addEventListener("resize", onResize);
+    }
+
+So:
+	•	Wire mode works exactly like before.
+	•	3D Voxels mode:
+	•	Samples the SVG image down to 32×32.
+	•	Uses brightness → height mapping.
+	•	Spawns a grid of cubes in 3D space.
+	•	Rotates the whole heightmap group.
+
+⸻
+
+6. Make sure tab switching uses the updated function
+
+Your tab-switch code already does something like:
+
+        // 3D wire tab
+        if (tab === "wire3d") {
+          startWire3DWithCurrentSvg();
+          return;
+        } else {
+          stopWire3D();
+        }
+
+You don’t need to change that—startWire3DWithCurrentSvg() now respects threeMode, and threeMode is controlled by the new header buttons.
+
+⸻
+
+7. Update SVG load status to mention the mode
+
+In handleSvgFile(file), after you set other statuses:
+
+          p5StatusEl.textContent = "Ready. Switch to this tab to see FX.";
+          htmlFxStatus.textContent = "CSS filters are live.";
+          if (wire3dStatusEl) {
+            wire3dStatusEl.textContent = "Ready. Switch to 3D Wire tab.";
+          }
+          if (voxelStatusEl) {
+            voxelStatusEl.textContent = "Ready. Switch to Voxels tab.";
+          }
+
+You can upgrade the 3D status line to be mode-aware:
+
+          if (wire3dStatusEl) {
+            wire3dStatusEl.textContent =
+              threeMode === "wire"
+                ? "Ready. Wireframe mode."
+                : "Ready. 3D voxels mode.";
+          }
+
+Totally optional but feels nice.
+
+⸻
+
+What you’ve got now
+
+Under a single 3D tab, you can:
+	•	Choose Wire → spinning textured Errl slab with neon edge overlay.
+	•	Choose 3D Voxels → voxelized heightmap of Errl, built from the SVG’s brightness.
+
+Which means that original wish-list is now effectively covered:
+	•	p5.js FX / wobble shaders
+	•	SVG + HTML/CSS filter “shaders”
+	•	3D wireframes
+	•	3D voxel images
+	•	Batch capture, keyboard shortcuts, audio feedback, favorites, VS mode, sandbox, persistence…
+
+All running out of a single index.html that is basically your personal Errl Visual OS.

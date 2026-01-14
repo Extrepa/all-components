@@ -1,0 +1,10 @@
+<!-- 62) errl_woods_mug_camp_01 – enamel mug variant (prop) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="prop" data-name="errl_woods_mug_camp_01">
+  <g fill="none">
+    <rect x="24" y="30" width="14" height="10" rx="2" fill="#e5e7eb"/>
+    <rect x="22" y="30" width="4" height="6" rx="3" fill="#cbd5f5"/>
+    <rect x="25" y="28" width="12" height="2" rx="1" fill="#94a3b8"/>
+    <ellipse cx="31" cy="40" rx="9" ry="2.4" fill="#111827" opacity="0.35"/>
+  </g>
+</svg>

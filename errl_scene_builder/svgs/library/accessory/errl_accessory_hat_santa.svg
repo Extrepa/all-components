@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_accessory" data-cat="wearable" data-name="errl_accessory_hat_santa">
+  <rect width="64" height="64" rx="12" fill="none"/>
+  <path d="M12 24c4-10 14-14 20-14s18 4 20 14" fill="#c41e1c" stroke="#8b1212" stroke-width="2" stroke-linecap="round"/>
+  <path d="M8 28h48l-2 6H10z" fill="#fff2e2" stroke="#f5d8cf" stroke-width="2" stroke-linejoin="round"/>
+  <circle cx="50" cy="20" r="4" fill="#fff2e2" stroke="#f5d8cf" stroke-width="2"/>
+</svg>

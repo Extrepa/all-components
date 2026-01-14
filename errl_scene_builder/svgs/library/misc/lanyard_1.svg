@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" id="icon-mo9qrxvjb">
+  <g xmlns="http://www.w3.org/2000/svg" fill="none">
+    <!-- lanyard -->
+    <path d="M24 14 L32 24 L40 14" stroke="#e5e7eb" stroke-width="1.6" stroke-linecap="round"/>
+    <!-- badge body -->
+    <rect x="26" y="24" width="12" height="16" rx="2" fill="#111827"/>
+    <rect x="28" y="26" width="8" height="10" rx="1.5" fill="#22d3ee"/>
+    <!-- star icon -->
+    <path d="M32 29 L33 31 L35 31.2 L33.7 32.4 L34 34 L32 33.1 L30 34 L30.3 32.4 29 31.2 31 31z" fill="#facc15"/>
+  </g>
+</svg>

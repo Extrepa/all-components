@@ -1,0 +1,311 @@
+Let’s give Errl Lab a unified capture brain so any view (p5 / 3D / Voxels) can dump frames into the gallery, with metadata you can use later. 🧠📸
+
+Right now, only p5 captures frames. We’ll upgrade to:
+	•	One “Capture Frame” that works for:
+	•	p5 FX tab
+	•	3D tab (Wire or 3D Voxels)
+	•	2D Voxels tab
+	•	Captured frames store:
+	•	source ("p5" | "3d" | "voxel")
+	•	a readable mode label (e.g. "p5 FX", "3D Wire", "3D Voxels")
+	•	timestamp
+	•	VS export writes the labels into the combined image.
+
+Same “patch” style as before.
+
+⸻
+
+1. Extend capturedFrames structure
+
+You already have something like:
+
+    // ---- Captured frames + favorites ----
+    let capturedFrames = [];
+
+We’ll just use that and add more properties when we create frames.
+
+⸻
+
+2. Refactor captureCurrentFrameToGallery to accept source + label
+
+Find your current captureCurrentFrameToGallery() that looks roughly like this (from earlier):
+
+    // ---- Captured frames + favorites ----
+    let capturedFrames = [];
+
+    function captureCurrentFrameToGallery() {
+      if (!p5CanvasElement) return false;
+      try {
+        const dataUrl = p5CanvasElement.toDataURL("image/png");
+        const id = Date.now() + "-" + Math.random().toString(16).slice(2);
+
+        const frame = {
+          id,
+          url: dataUrl,
+          favorite: false,
+        };
+        capturedFrames.unshift(frame);
+
+        const wrapper = document.createElement("div");
+        ...
+
+Change the signature + frame structure to:
+
+    function captureCurrentFrameToGallery(
+      canvas,
+      source = "p5",
+      modeLabel = "p5 FX"
+    ) {
+      if (!canvas) return false;
+      try {
+        const dataUrl = canvas.toDataURL("image/png");
+        const id = Date.now() + "-" + Math.random().toString(16).slice(2);
+
+        const frame = {
+          id,
+          url: dataUrl,
+          favorite: false,
+          el: null,
+          source,
+          modeLabel,
+          createdAt: Date.now(),
+        };
+        capturedFrames.unshift(frame);
+
+        const wrapper = document.createElement("div");
+        wrapper.className =
+          "relative group w-full h-full rounded-md overflow-hidden border border-slate-700/80 bg-slate-900/80";
+
+Then keep the rest of the function the same (img, star button, etc.), but make sure to set frame.el = wrapper; as we did earlier:
+
+        wrapper.appendChild(img);
+        wrapper.appendChild(favBtn);
+        thumbGallery.prepend(wrapper);
+
+        frame.el = wrapper; // link DOM to data
+
+        const maxThumbs = 48;
+        ...
+
+Inside this function, anywhere you see p5CanvasElement now use the canvas argument (we just did that at the top).
+
+So p5 will pass its canvas; 3D will pass threeRenderer.domElement; voxels pass voxelCanvas.
+
+⸻
+
+3. Add a captureActiveViewFrame() router
+
+We’ll create a small brain that checks which preview tab is active and routes capture to the right canvas.
+
+Somewhere near your capture code / keyboard shortcuts, add:
+
+    function getActivePreviewTabName() {
+      const activePanel = Array.from(previewPanels).find(
+        (panel) => !panel.classList.contains("hidden")
+      );
+      return activePanel ? activePanel.dataset.tab : null;
+    }
+
+    function captureActiveViewFrame() {
+      const tab = getActivePreviewTabName();
+
+      // p5 tab
+      if (tab === "p5") {
+        if (!p5CanvasElement) {
+          flashStatus("p5 canvas is not ready yet.", "error");
+          playBeep(200, 0.1, "square");
+          return false;
+        }
+        const ok = captureCurrentFrameToGallery(p5CanvasElement, "p5", "p5 FX");
+        if (ok) {
+          flashStatus("Captured p5 FX frame 📸");
+          playBeep(880, 0.08, "triangle");
+        }
+        return ok;
+      }
+
+      // 3D tab (wire or voxel3d)
+      if (tab === "wire3d") {
+        if (!threeRenderer || !threeRenderer.domElement) {
+          flashStatus("3D view not ready for capture.", "error");
+          playBeep(200, 0.1, "square");
+          return false;
+        }
+        const label = threeMode === "voxel3d" ? "3D Voxels" : "3D Wire";
+        const ok = captureCurrentFrameToGallery(
+          threeRenderer.domElement,
+          "3d",
+          label
+        );
+        if (ok) {
+          flashStatus(`Captured ${label} frame 📡`);
+          playBeep(860, 0.08, "triangle");
+        }
+        return ok;
+      }
+
+      // 2D Voxels tab
+      if (tab === "voxel") {
+        if (!voxelCanvas) {
+          flashStatus("Voxel canvas not ready.", "error");
+          playBeep(200, 0.1, "square");
+          return false;
+        }
+        const ok = captureCurrentFrameToGallery(voxelCanvas, "voxel", "2D Voxels");
+        if (ok) {
+          flashStatus("Captured 2D voxel frame 🧊");
+          playBeep(840, 0.08, "triangle");
+        }
+        return ok;
+      }
+
+      // Optional: future HTML FX / SVG capture
+      flashStatus("Capture supported in p5, 3D, and Voxels tabs only.", "info");
+      playBeep(320, 0.08, "sine");
+      return false;
+    }
+
+This uses things you already have:
+	•	previewPanels (NodeList of preview containers with data-tab)
+	•	p5CanvasElement
+	•	threeRenderer
+	•	voxelCanvas
+	•	threeMode
+	•	flashStatus, playBeep
+
+⸻
+
+4. Wire the “Capture Frame” button to the new router
+
+Previously, your capture button handler probably looked like:
+
+    captureFrameBtn.addEventListener("click", () => {
+      if (!p5CanvasElement) return;
+      const ok = captureCurrentFrameToGallery();
+      if (ok) {
+        flashStatus("Captured p5 frame 📸");
+        playBeep(880, 0.08, "triangle");
+      }
+    });
+
+Replace it with:
+
+    captureFrameBtn.addEventListener("click", () => {
+      captureActiveViewFrame();
+    });
+
+Let the router decide which canvas to grab.
+
+⸻
+
+5. Update the keyboard shortcut for C to use the router
+
+In your window.addEventListener("keydown", ...), you have:
+
+      // C: capture (p5)
+      if (key === "c") {
+        captureCurrentFrameToGallery();
+        return;
+      }
+
+Replace that with:
+
+      // C: capture (active view)
+      if (key === "c") {
+        captureActiveViewFrame();
+        return;
+      }
+
+Now C just means “capture whatever I’m looking at”.
+
+⸻
+
+6. Use modeLabel in VS export overlay
+
+We added modeLabel to each frame; let’s show it in the exported VS image.
+
+In your VS export function, we already draw the cards and then:
+
+        // Center VS label
+        ctx.fillStyle = "#ecf9ff";
+        ctx.font = "bold 32px system-ui, -apple-system, BlinkMacSystemFont, sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText("VS", width / 2, height / 2);
+
+        ctx.font = "12px system-ui, -apple-system, BlinkMacSystemFont, sans-serif";
+        ctx.fillStyle = "#8eb7c7";
+        ctx.fillText("Errl FX VS export", width / 2, height - 18);
+
+Right before the “Errl FX VS export” line, add mode labels under each card:
+
+        // Mode labels under each card
+        ctx.font = "14px system-ui, -apple-system, BlinkMacSystemFont, sans-serif";
+        ctx.fillStyle = "#ecf9ff";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+
+        const leftLabel =
+          (vsLeftFrame && vsLeftFrame.modeLabel) || "Left";
+        const rightLabel =
+          (vsRightFrame && vsRightFrame.modeLabel) || "Right";
+
+        ctx.fillText(leftLabel, padding + cardWidth / 2, height - 40);
+        ctx.fillText(
+          rightLabel,
+          padding * 2 + cardWidth + cardWidth / 2,
+          height - 40
+        );
+
+        // Center VS label
+        ctx.fillStyle = "#ecf9ff";
+        ctx.font = "bold 32px system-ui, -apple-system, BlinkMacSystemFont, sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText("VS", width / 2, height / 2);
+
+        ctx.font = "12px system-ui, -apple-system, BlinkMacSystemFont, sans-serif";
+        ctx.fillStyle = "#8eb7c7";
+        ctx.fillText("Errl FX VS export", width / 2, height - 18);
+
+Now your exported battle card literally says:
+	•	p5 FX vs 3D Voxels
+	•	or 3D Wire vs 2D Voxels, etc.
+
+Which looks legit for sharing and for feeding back into other tools.
+
+⸻
+
+7. Optional: tiny UI hint update
+
+Wherever you show capture hints (e.g. near the Capture button or in hintLabel at startup), you can switch from “p5 frame” to “active view frame”.
+
+For example in the initial hint:
+
+      hintLabel.textContent = "Hint: Upload Errl, tune FX, capture frames, then VS or sandbox.";
+
+That already works. If you want to be explicit:
+
+      hintLabel.textContent =
+        "Hint: C or Capture = snapshot of the active tab (p5 / 3D / Voxels).";
+
+Totally optional.
+
+⸻
+
+What you’ve got now
+
+The lab evolved from “p5-only capture” into a multi-view recorder:
+	•	Same Capture button (and C key) now works for:
+	•	p5 wobble
+	•	3D Wire
+	•	3D Voxel heightmap
+	•	2D Voxels
+	•	Each captured frame knows where it came from:
+	•	source: "p5" | "3d" | "voxel"
+	•	modeLabel: "p5 FX", "3D Wire", "3D Voxels", "2D Voxels"
+	•	VS export uses those labels so your battle cards show what’s fighting what.
+
+So you can spin Errl in 3D Voxels, tap C, then hop to p5 tab, hit C again, then go to VS, fill slots, export… and you’ve got “p5 FX vs 3D Voxels” as a ready-to-share PNG.
+
+You’ve basically built a mini visual synth workstation wrapped around a single goo.

@@ -1,0 +1,13 @@
+<!-- Example 191 | errl_fest_restock_cart_01 (prop/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="prop" data-name="errl_fest_restock_cart_01">
+  <g fill="none">
+    <rect x="18" y="30" width="24" height="10" rx="2" fill="#111827"/>
+    <rect x="18" y="28" width="10" height="3" rx="1.5" fill="#0f172a"/>
+    <!-- wheels -->
+    <circle cx="22" cy="42" r="2.3" fill="#020617"/>
+    <circle cx="22" cy="42" r="1.2" fill="#e5e7eb"/>
+    <circle cx="38" cy="42" r="2.3" fill="#020617"/>
+    <circle cx="38" cy="42" r="1.2" fill="#e5e7eb"/>
+  </g>
+</svg>

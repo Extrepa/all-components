@@ -1,0 +1,269 @@
+/* Global CSS gradient background with animated hue shift */
+@keyframes hueShift {
+    0% {
+        filter: hue-rotate(0deg);
+    }
+    100% {
+        filter: hue-rotate(360deg);
+    }
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: linear-gradient(
+        135deg,
+        #667eea 0%,
+        #764ba2 25%,
+        #f093fb 50%,
+        #4facfe 75%,
+        #00f2fe 100%
+    );
+    background-size: 400% 400%;
+    animation:
+        gradientShift 15s ease infinite,
+        hueShift 20s linear infinite;
+    font-family: 'Arial', sans-serif;
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Canvas fills viewport */
+#club-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    z-index: 1;
+}
+
+/* HUD Styles */
+#hud {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+#title {
+    color: #ffffff;
+    font-size: 3rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    text-shadow:
+        0 0 10px rgba(255, 255, 255, 0.5),
+        0 0 20px rgba(255, 255, 255, 0.3),
+        0 0 30px rgba(255, 255, 255, 0.2);
+    margin: 20px 0;
+    animation: titleGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes titleGlow {
+    0% {
+        text-shadow:
+            0 0 10px rgba(255, 255, 255, 0.5),
+            0 0 20px rgba(255, 255, 255, 0.3),
+            0 0 30px rgba(255, 255, 255, 0.2);
+    }
+    100% {
+        text-shadow:
+            0 0 20px rgba(255, 255, 255, 0.8),
+            0 0 30px rgba(255, 255, 255, 0.5),
+            0 0 40px rgba(255, 255, 255, 0.3);
+    }
+}
+
+#controls {
+    color: #ffffff;
+    font-size: 1rem;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    margin-top: auto;
+    margin-bottom: 30px;
+    padding: 10px 20px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    backdrop-filter: blur(5px);
+}
+
+#controls p {
+    margin: 0;
+}
+
+/* Step 169: Reticle for interactable objects */
+#reticle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 15;
+}
+
+.reticle-dot {
+    width: 8px;
+    height: 8px;
+    border: 2px solid #00ff00;
+    border-radius: 50%;
+    background: rgba(0, 255, 0, 0.3);
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.8);
+    margin: 0 auto;
+    animation: reticlePulse 1s ease-in-out infinite;
+}
+
+@keyframes reticlePulse {
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.8;
+    }
+}
+
+.reticle-label {
+    color: #00ff00;
+    font-size: 0.9rem;
+    text-align: center;
+    margin-top: 15px;
+    text-shadow: 0 0 10px rgba(0, 255, 0, 0.8);
+    background: rgba(0, 0, 0, 0.5);
+    padding: 5px 10px;
+    border-radius: 5px;
+    backdrop-filter: blur(5px);
+}
+
+/* Step 208: Fragment progress bar */
+#fragment-progress {
+    position: absolute;
+    top: 80px;
+    right: 20px;
+    width: 200px;
+    pointer-events: none;
+    z-index: 15;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 2px solid #ff00ff;
+    border-radius: 10px;
+    overflow: hidden;
+    backdrop-filter: blur(5px);
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ff00ff, #ff88ff);
+    width: 0%;
+    transition: width 0.3s ease;
+    box-shadow: 0 0 10px rgba(255, 0, 255, 0.8);
+}
+
+.progress-label {
+    color: #ff00ff;
+    font-size: 0.9rem;
+    text-align: center;
+    margin-top: 5px;
+    text-shadow: 0 0 10px rgba(255, 0, 255, 0.8);
+}
+
+/* Step 236: Radial emote wheel */
+.emote-wheel {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 300px;
+    pointer-events: all;
+    z-index: 100;
+}
+
+.emote-wheel.hidden {
+    display: none;
+}
+
+.emote-button {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.8);
+    border: 2px solid #00ffff;
+    color: #00ffff;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(10px);
+    left: 50%;
+    top: 50%;
+    margin-left: -30px;
+    margin-top: -30px;
+}
+
+.emote-button:hover,
+.emote-button.highlighted {
+    background: rgba(0, 255, 255, 0.3);
+    border-color: #ff00ff;
+    color: #ff00ff;
+    transform: scale(1.2);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+}
+
+.emote-icon {
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+.emote-label {
+    font-size: 0.7rem;
+    margin-top: 2px;
+    text-align: center;
+}
+
+.emote-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 0, 255, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    border: 2px solid #ff00ff;
+    pointer-events: none;
+}

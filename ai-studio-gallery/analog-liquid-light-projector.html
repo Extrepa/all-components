@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Analog Liquid Light Projector</title>
+    <meta charset="utf-8">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #020205;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+        #container {
+            position: relative;
+            width: 90vw;
+            height: 90vh;
+            /* Cinematic Projector Glow */
+            box-shadow: 
+                0 0 0 2px rgba(255, 255, 255, 0.05),
+                0 0 50px rgba(100, 150, 255, 0.15),
+                0 0 150px rgba(200, 50, 100, 0.1);
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        /* Dirty Lens / Vignette Effect */
+        #container::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: 12px;
+            background: radial-gradient(circle, rgba(0,0,0,0) 50%, rgba(0,0,0,0.6) 100%);
+            box-shadow: inset 0 0 80px rgba(0,0,0,0.5);
+            pointer-events: none;
+            z-index: 10;
+        }
+        #glcanvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        #ui-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 30px;
+            box-sizing: border-box;
+            z-index: 20;
+        }
+        #info {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 14px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-shadow: 0 2px 4px black;
+        }
+        #controls {
+            align-self: flex-end;
+            pointer-events: auto;
+            display: flex;
+            gap: 15px;
+        }
+        button {
+            background: rgba(10, 10, 15, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: rgba(255,255,255,0.8);
+            padding: 12px 24px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 12px;
+            backdrop-filter: blur(8px);
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            min-width: 120px;
+        }
+        button:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.4);
+            color: #fff;
+            transform: scale(1.05);
+        }
+        button.active-water {
+            border-color: #00ffff;
+            color: #00ffff;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+        }
+        button.active-oil {
+            border-color: #ff0055;
+            color: #ff0055;
+            box-shadow: 0 0 15px rgba(255, 0, 85, 0.2);
+        }
+        .key-hint {
+            font-size: 10px;
+            opacity: 0.5;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <canvas id="glcanvas"></canvas>
+        <div id="ui-layer">
+            <div id="controls">
+                <button id="btnOil" class="active-oil">Oil <span class="key-hint">[1]</span></button>
+                <button id="btnWater">Water <span class="key-hint">[2]</span></button>
+                <button id="btnClear">Clear <span class="key-hint">[Spc]</span></button>
+            </div>
+            <div id="info">
+                Liquid Light Projector • 1968 Edition
+            </div>
+        </div>
+    </div>
+
+<script>
+    const canvas = document.getElementById('glcanvas');
+    const gl = canvas.getContext('webgl', { alpha: false, depth: false, antialias: false });
+    
+    // --- State ---
+    const state = {
+        brushMode: 'oil', 
+        cursorColor: [0,0,0],
+        clearSignal: 0.0,
+        startTime: Date.now()
+    };
+
+    // --- UI Controls ---
+    const btnOil = document.getElementById('btnOil');
+    const btnWater = document.getElementById('btnWater');
+    const btnClear = document.getElementById('btnClear');
+
+    function setMode(mode) {
+        state.brushMode = mode;
+        if(mode === 'oil') {
+            btnOil.classList.add('active-oil');
+            btnWater.classList.remove('active-water');
+        } else {
+            btnWater.classList.add('active-water');
+            btnOil.classList.remove('active-oil');
+        }
+    }
+    
+    function triggerClear() {
+        state.clearSignal = 1.0;
+        requestAnimationFrame(() => state.clearSignal = 0.0);
+    }
+
+    btnOil.addEventListener('click', () => setMode('oil'));
+    btnWater.addEventListener('click', () => setMode('water'));
+    btnClear.addEventListener('click', triggerClear);
+
+    // Keyboard Shortcuts
+    window.addEventListener('keydown', (e) => {
+        if(e.key === '1') setMode('oil');
+        if(e.key === '2') setMode('water');
+        if(e.code === 'Space') triggerClear();
+    });
+
+    if (!gl) alert('WebGL not supported!');
+
+    // --- Shaders ---
+
+    const vertexShaderSource = `
+        attribute vec2 a_position;
+        void main() {
+            gl_Position = vec4(a_position, 0.0, 1.0);
+        }
+    `;
+
+    const simFragmentShaderSource = `
+        precision highp float;
+        uniform sampler2D u_state;
+        uniform vec2 u_resolution;
+        uniform vec3 u_color;
+        uniform vec2 u_mouse;
+        uniform float u_radius;
+        uniform float u_isAdding;
+        uniform float u_brushIsWater;
+        uniform float u_clear;
+        uniform float u_time;
+
+        void main() {
+            if (u_clear > 0.5) {
+                gl_FragColor = vec4(0.0);
+                return;
+            }
+
+            vec2 uv = gl_FragCoord.xy / u_resolution;
+            vec2 texel = 1.0 / u_resolution;
+
+            // --- 1. WAVE PHYSICS ---
+            float h_c = texture2D(u_state, uv).a;
+            float h_n = texture2D(u_state, uv + vec2(0.0, texel.y)).a;
+            float h_s = texture2D(u_state, uv - vec2(0.0, texel.y)).a;
+            float h_e = texture2D(u_state, uv + vec2(texel.x, 0.0)).a;
+            float h_w = texture2D(u_state, uv - vec2(texel.x, 0.0)).a;
+
+            float laplacian = (h_n + h_s + h_e + h_w) - 4.0 * h_c;
+            float newHeight = h_c + laplacian * 0.4; 
+            newHeight *= 0.992; // Damping
+            newHeight = clamp(newHeight, -5.0, 5.0);
+
+            // --- 2. TURBULENT ADVECTION (The "Heat" Swirl) ---
+            vec2 gradient = vec2(h_e - h_w, h_n - h_s);
+            
+            // Create a slow, rotating vector field using sine waves based on time
+            // This simulates convection currents in the projector
+            float t = u_time * 0.5;
+            vec2 heatSwirl = vec2(
+                sin(uv.y * 3.0 + t) * 0.01, 
+                cos(uv.x * 3.0 + t * 0.8) * 0.01
+            );
+            
+            // Combine gravity flow with heat swirl
+            vec2 flow = (gradient * 0.03) + heatSwirl;
+            flow = clamp(flow, -0.05, 0.05);
+
+            vec3 advectedColor = texture2D(u_state, uv - flow).rgb;
+            advectedColor *= 0.9995; 
+
+            // --- 3. INPUT ---
+            if (u_isAdding > 0.5) {
+                float dist = distance(gl_FragCoord.xy, u_mouse);
+                if (dist < u_radius) {
+                    float falloff = smoothstep(u_radius, 0.0, dist);
+                    newHeight += falloff * 0.4;
+                    vec3 newInk = u_color * falloff;
+                    advectedColor = mix(advectedColor, u_color, falloff * 0.5);
+                    advectedColor = max(advectedColor, newInk * 0.8);
+                }
+            }
+
+            gl_FragColor = vec4(advectedColor, newHeight);
+        }
+    `;
+
+    const renderFragmentShaderSource = `
+        precision highp float;
+        uniform sampler2D u_state;
+        uniform vec2 u_resolution;
+
+        void main() {
+            vec2 uv = gl_FragCoord.xy / u_resolution;
+            vec2 texel = 1.0 / u_resolution;
+
+            vec4 data = texture2D(u_state, uv);
+            float h = data.a;
+
+            // Calculate Normal
+            float h_n = texture2D(u_state, uv + vec2(0.0, texel.y)).a;
+            float h_s = texture2D(u_state, uv - vec2(0.0, texel.y)).a;
+            float h_e = texture2D(u_state, uv + vec2(texel.x, 0.0)).a;
+            float h_w = texture2D(u_state, uv - vec2(texel.x, 0.0)).a;
+            vec3 normal = normalize(vec3(h_w - h_e, h_s - h_n, 0.15));
+
+            // --- CHROMATIC ABERRATION (Prismatic Lens Effect) ---
+            // Instead of one lookup, we look up R, G, and B separately
+            // offset by the refractive index of the virtual glass.
+            
+            float aberrStrength = 0.025; // How much colors separate
+            
+            // Red Channel (Refracts least)
+            vec2 rUV = uv + normal.xy * (0.04 - aberrStrength);
+            float r = texture2D(u_state, rUV).r;
+            
+            // Green Channel
+            vec2 gUV = uv + normal.xy * 0.04;
+            float g = texture2D(u_state, gUV).g;
+            
+            // Blue Channel (Refracts most)
+            vec2 bUV = uv + normal.xy * (0.04 + aberrStrength);
+            float b = texture2D(u_state, bUV).b;
+            
+            vec3 refractedColor = vec3(r, g, b);
+
+            // Lighting
+            vec3 lightPos = vec3(0.5, 0.8, 1.0);
+            vec3 lightDir = normalize(lightPos);
+            float specFactor = max(0.0, dot(normal, lightDir));
+            float specular = pow(specFactor, 50.0);
+            float rim = pow(1.0 - max(0.0, dot(normal, vec3(0,0,1))), 2.5);
+
+            // Compositing
+            vec3 bg = vec3(0.0, 0.0, 0.02);
+            vec3 fluidColor = refractedColor * 2.5; 
+            float alpha = smoothstep(0.0, 0.2, length(refractedColor));
+            
+            vec3 finalColor = mix(bg, fluidColor, alpha);
+
+            // Highlights
+            finalColor += vec3(specular) * 0.9;
+            // Rim adds a subtle rainbow edge due to the aberration in the liquid
+            finalColor += vec3(0.5, 0.8, 1.0) * rim * 0.4 * (alpha + 0.1);
+
+            // Final Lens Tint (Vintage warmth)
+            finalColor *= vec3(1.0, 0.98, 0.95);
+
+            // Gamma
+            finalColor = pow(finalColor, vec3(0.8));
+
+            gl_FragColor = vec4(finalColor, 1.0);
+        }
+    `;
+
+    // --- Setup ---
+    function createShader(gl, type, source) {
+        const shader = gl.createShader(type);
+        gl.shaderSource(shader, source);
+        gl.compileShader(shader);
+        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+            gl.deleteShader(shader); return null;
+        }
+        return shader;
+    }
+    function createProgram(gl, vs, fs) {
+        const p = gl.createProgram();
+        gl.attachShader(p, createShader(gl, gl.VERTEX_SHADER, vs));
+        gl.attachShader(p, createShader(gl, gl.FRAGMENT_SHADER, fs));
+        gl.linkProgram(p);
+        if (!gl.getProgramParameter(p, gl.LINK_STATUS)) return null;
+        return p;
+    }
+
+    gl.getExtension('OES_texture_float');
+    gl.getExtension('OES_texture_float_linear');
+
+    const simProgram = createProgram(gl, vertexShaderSource, simFragmentShaderSource);
+    const renderProgram = createProgram(gl, vertexShaderSource, renderFragmentShaderSource);
+    
+    const quad = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, quad);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,1,1]), gl.STATIC_DRAW);
+
+    let w, h, framebuffers = [];
+    function resize() {
+        const dpr = Math.min(window.devicePixelRatio, 2);
+        const dw = Math.floor(gl.canvas.clientWidth * dpr);
+        const dh = Math.floor(gl.canvas.clientHeight * dpr);
+        if (gl.canvas.width !== dw || gl.canvas.height !== dh) {
+            gl.canvas.width = dw; gl.canvas.height = dh;
+            w = dw; h = dh;
+            const createFB = () => {
+                const fb = gl.createFramebuffer();
+                gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
+                const tex = gl.createTexture();
+                gl.bindTexture(gl.TEXTURE_2D, tex);
+                gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, w, h, 0, gl.RGBA, gl.FLOAT, null);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+                gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tex, 0);
+                return { fb, tex };
+            };
+            framebuffers = [createFB(), createFB()];
+        }
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    // Mouse Interaction
+    const mouse = { x:0, y:0, down:false, rad: 0 };
+    const updateMouse = (e) => {
+        const r = canvas.getBoundingClientRect();
+        mouse.x = (e.clientX - r.left) * (w / r.width);
+        mouse.y = (r.height - (e.clientY - r.top)) * (h / r.height);
+    };
+
+    function pickColor() {
+        if (state.brushMode === 'oil') {
+            // Warm Psychedelic
+            let hue = Math.random() * 0.25 - 0.1; 
+            if (hue < 0) hue += 1.0; 
+            return hslToRgb(hue, 0.95, 0.6);
+        } else {
+            // Cool Psychedelic
+            let hue = 0.5 + Math.random() * 0.3;
+            return hslToRgb(hue, 0.95, 0.65);
+        }
+    }
+
+    canvas.addEventListener('mousedown', e => {
+        mouse.down = true; 
+        mouse.rad = 5; 
+        state.cursorColor = pickColor();
+        updateMouse(e);
+    });
+    canvas.addEventListener('mousemove', e => { if(mouse.down) updateMouse(e); });
+    window.addEventListener('mouseup', () => mouse.down = false);
+
+    // Loop
+    let read = 0;
+    function loop() {
+        const write = 1 - read;
+        const time = (Date.now() - state.startTime) / 1000;
+        
+        // Sim
+        gl.useProgram(simProgram);
+        gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffers[write].fb);
+        gl.viewport(0, 0, w, h);
+        
+        gl.activeTexture(gl.TEXTURE0);
+        gl.bindTexture(gl.TEXTURE_2D, framebuffers[read].tex);
+        gl.uniform1i(gl.getUniformLocation(simProgram, "u_state"), 0);
+        
+        gl.uniform2f(gl.getUniformLocation(simProgram, "u_resolution"), w, h);
+        gl.uniform1f(gl.getUniformLocation(simProgram, "u_time"), time);
+        gl.uniform1f(gl.getUniformLocation(simProgram, "u_brushIsWater"), state.brushMode === 'water' ? 1.0 : 0.0);
+        gl.uniform1f(gl.getUniformLocation(simProgram, "u_clear"), state.clearSignal);
+
+        if (mouse.down) {
+            mouse.rad = Math.min(w * 0.15, mouse.rad + 1.5);
+            gl.uniform1f(gl.getUniformLocation(simProgram, "u_isAdding"), 1.0);
+            gl.uniform2f(gl.getUniformLocation(simProgram, "u_mouse"), mouse.x, mouse.y);
+            gl.uniform1f(gl.getUniformLocation(simProgram, "u_radius"), mouse.rad);
+            gl.uniform3fv(gl.getUniformLocation(simProgram, "u_color"), state.cursorColor);
+        } else {
+            gl.uniform1f(gl.getUniformLocation(simProgram, "u_isAdding"), 0.0);
+        }
+
+        const loc = gl.getAttribLocation(simProgram, "a_position");
+        gl.enableVertexAttribArray(loc);
+        gl.bindBuffer(gl.ARRAY_BUFFER, quad);
+        gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+        // Render
+        gl.useProgram(renderProgram);
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+        gl.viewport(0, 0, w, h);
+        gl.activeTexture(gl.TEXTURE0);
+        gl.bindTexture(gl.TEXTURE_2D, framebuffers[write].tex);
+        gl.uniform1i(gl.getUniformLocation(renderProgram, "u_state"), 0);
+        gl.uniform2f(gl.getUniformLocation(renderProgram, "u_resolution"), w, h);
+        
+        const loc2 = gl.getAttribLocation(renderProgram, "a_position");
+        gl.enableVertexAttribArray(loc2);
+        gl.bindBuffer(gl.ARRAY_BUFFER, quad);
+        gl.vertexAttribPointer(loc2, 2, gl.FLOAT, false, 0, 0);
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+        read = write;
+        requestAnimationFrame(loop);
+    }
+    loop();
+
+    function hslToRgb(h, s, l){
+        const hue = (p, q, t) => {
+            if(t < 0) t += 1;
+            if(t > 1) t -= 1;
+            if(t < 1/6) return p + (q - p) * 6 * t;
+            if(t < 1/2) return q;
+            if(t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+            return p;
+        }
+        const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+        const p = 2 * l - q;
+        return [hue(p, q, h + 1/3), hue(p, q, h), hue(p, q, h - 1/3)];
+    }
+</script>
+</body>
+</html>

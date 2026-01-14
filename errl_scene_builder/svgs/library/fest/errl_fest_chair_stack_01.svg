@@ -1,0 +1,12 @@
+<!-- Example 102 | errl_fest_chair_stack_01 (prop) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="prop" data-name="errl_fest_chair_stack_01">
+  <g fill="none">
+    <!-- back chair -->
+    <path d="M22 32 L40 32 38 40 24 40 Z" fill="#111827" opacity="0.7"/>
+    <!-- front chair -->
+    <path d="M24 34 L42 34 40 42 26 42 Z" fill="#111827"/>
+    <rect x="26" y="30" width="14" height="4" rx="2" fill="#0f172a"/>
+    <ellipse cx="33" cy="46" rx="12" ry="2.6" fill="#020617" opacity="0.5"/>
+  </g>
+</svg>

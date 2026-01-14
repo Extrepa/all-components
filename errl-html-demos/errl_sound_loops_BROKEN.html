@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Errl Ambient Goo Loops</title>
+  <style>
+    body {
+      font-family: monospace;
+      background: #0e0e0e;
+      color: #ffffff;
+      text-align: center;
+      padding: 2rem;
+    }
+    button {
+      margin: 0.5rem;
+      padding: 1rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 0.5rem;
+      background: #222;
+      color: #0ff;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #333;
+    }
+  </style>
+</head>
+<body>
+  <h1>🫧 Errl Ambient Goo Loops 💤</h1>
+  <p>Choose an ambient Errl loop to vibe with:</p>
+
+  <div id="loop-buttons"></div>
+  <button onclick="stopAll()">⛔ Stop All Loops</button>
+
+  <script>
+    const loops = {};
+    const loopNames = [
+      'SleepyLoop',
+      'DreamLoop',
+      'StickyNest',
+      'BubbleRise',
+      'WatcherIdle',
+      'BathChamber',
+      'MurmurLoop'
+    ];
+
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    let loopIntervals = {}; // Track intervals for looping
+
+    // Resume audio context on user interaction (required by browsers)
+    function resumeAudio() {
+      if (ctx.state === 'suspended') {
+        ctx.resume();
+      }
+    }
+    document.addEventListener('click', resumeAudio, { once: true });
+    document.addEventListener('touchstart', resumeAudio, { once: true });
+
+    function stopAll() {
+      // Clear all intervals
+      for (let name in loopIntervals) {
+        clearInterval(loopIntervals[name]);
+        delete loopIntervals[name];
+      }
+      // Stop all audio nodes
+      for (let name in loops) {
+        loops[name].forEach(node => {
+          try {
+            if (node.stop) node.stop();
+          } catch(e) {}
+        });
+      }
+      Object.keys(loops).forEach(k => loops[k] = []);
+    }
+
+    function playLoop(name) {
+      stopAll();
+      resumeAudio();
+      const time = ctx.currentTime;
+      loops[name] = [];
+
+      switch (name) {
+        case 'SleepyLoop':
+          dripLoop(time, 60, 0.8, 0.3);
+          // Set up continuous loop
+          loopIntervals[name] = setInterval(() => {
+            if (loops[name] && loops[name].length > 0) {
+              dripLoop(ctx.currentTime, 60, 0.8, 0.3);
+            }
+          }, 1000);
+          break;
+        case 'DreamLoop':
+          shimmerLoop(time);
+          loopIntervals[name] = setInterval(() => {
+            if (loops[name] && loops[name].length > 0) {
+              shimmerLoop(ctx.currentTime);
+            }
+          }, 3000);
+          break;
+        case 'StickyNest':
+          stickyGoo(time);
+          loopIntervals[name] = setInterval(() => {
+            if (loops[name] && loops[name].length > 0) {
+              stickyGoo(ctx.currentTime);
+            }
+          }, 1000);
+          break;
+        case 'BubbleRise':
+          bubbleBloop(time);
+          loopIntervals[name] = setInterval(() => {
+            if (loops[name] && loops[name].length > 0) {
+              bubbleBloop(ctx.currentTime);
+            }
+          }, 2500);
+          break;
+        case 'WatcherIdle':
+          watcherIdle(time);
+          loopIntervals[name] = setInterval(() => {
+            if (loops[name] && loops[name].length > 0) {
+              watcherIdle(ctx.currentTime);
+            }
+          }, 5000);
+          break;
+        case 'BathChamber':
+          bathChamber(time);
+          loopIntervals[name] = setInterval(() => {
+            if (loops[name] && loops[name].length > 0) {
+              bathChamber(ctx.currentTime);
+            }
+          }, 2000);
+          break;
+        case 'MurmurLoop':
+          murmurLoop(time);
+          loopIntervals[name] = setInterval(() => {
+            if (loops[name] && loops[name].length > 0) {
+              murmurLoop(ctx.currentTime);
+            }
+          }, 2000);
+          break;
+      }
+    }
+
+    function dripLoop(t, freq = 80, dur = 0.3, interval = 1) {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq * 4, t);
+      osc.frequency.exponentialRampToValueAtTime(freq, t + dur);
+      gain.gain.setValueAtTime(0.5, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + dur);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start(t);
+      osc.stop(t + dur);
+      if (loops['SleepyLoop']) {
+        loops['SleepyLoop'].push(osc);
+      }
+    }
+
+    function shimmerLoop(t) {
+      for (let i = 0; i < 3; i++) {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        const f = 800 + Math.random() * 400;
+        osc.frequency.setValueAtTime(f, t);
+        gain.gain.setValueAtTime(0.01, t);
+        gain.gain.linearRampToValueAtTime(0.001, t + 3);
+        osc.connect(gain).connect(ctx.destination);
+        osc.start(t + i);
+        osc.stop(t + i + 3);
+        loops['DreamLoop'].push(osc);
+      }
+    }
+
+    function stickyGoo(t) {
+      for (let i = 0; i < 6; i++) {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(120 + Math.random() * 80, t + i);
+        gain.gain.setValueAtTime(0.05, t + i);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + i + 1);
+        osc.connect(gain).connect(ctx.destination);
+        osc.start(t + i);
+        osc.stop(t + i + 1);
+        loops['StickyNest'].push(osc);
+      }
+    }
+
+    function bubbleBloop(t) {
+      for (let i = 0; i < 5; i++) {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(180 + i * 30, t + i * 0.5);
+        gain.gain.setValueAtTime(0.05, t + i * 0.5);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + i * 0.5 + 1);
+        osc.connect(gain).connect(ctx.destination);
+        osc.start(t + i * 0.5);
+        osc.stop(t + i * 0.5 + 1);
+        loops['BubbleRise'].push(osc);
+      }
+    }
+
+    function watcherIdle(t) {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(30, t);
+      gain.gain.setValueAtTime(0.05, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 5);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start(t);
+      osc.stop(t + 5);
+      loops['WatcherIdle'].push(osc);
+    }
+
+    function bathChamber(t) {
+      for (let i = 0; i < 4; i++) {
+        const noise = ctx.createBufferSource();
+        const buffer = ctx.createBuffer(1, ctx.sampleRate * 0.5, ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let j = 0; j < data.length; j++) data[j] = (Math.random() * 2 - 1) * 0.1;
+        noise.buffer = buffer;
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.value = 800;
+        noise.connect(filter).connect(ctx.destination);
+        noise.start(t + i * 1.5);
+        noise.stop(t + i * 1.5 + 0.5);
+        loops['BathChamber'].push(noise);
+      }
+    }
+
+    function murmurLoop(t) {
+      for (let i = 0; i < 3; i++) {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(200 + Math.random() * 50, t + i);
+        gain.gain.setValueAtTime(0.02, t + i);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + i + 2);
+        osc.connect(gain).connect(ctx.destination);
+        osc.start(t + i);
+        osc.stop(t + i + 2);
+        loops['MurmurLoop'].push(osc);
+      }
+    }
+
+    const container = document.getElementById("loop-buttons");
+    loopNames.forEach(name => {
+      const btn = document.createElement("button");
+      btn.innerText = `▶ ${name}`;
+      btn.onclick = () => playLoop(name);
+      container.appendChild(btn);
+    });
+  </script>
+</body>
+</html>

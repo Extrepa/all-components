@@ -1,0 +1,69 @@
+{
+  "meta": {
+    "totalProjects": 6,
+    "extractedAt": "2027-01-XX"
+  },
+  "projects": [
+    {
+      "id": "chromatic-flow",
+      "title": "Chromatic Flow Field",
+      "description": "Flow field visualization with bilateral symmetry. Guided by noise, rendered in RGB tracers.",
+      "type": "canvas",
+      "tech": "Canvas 2D",
+      "file": "chromatic-flow.html",
+      "category": "flow"
+    },
+    {
+      "id": "menger-void",
+      "title": "Menger Void",
+      "description": "Fractal raymarching shader using Menger Sponge SDF. Metallic oil-slick coloring with chromatic aberration.",
+      "type": "glsl",
+      "tech": "WebGL/GLSL",
+      "file": "menger-void.html",
+      "category": "fractal"
+    },
+    {
+      "id": "infinite-zoom",
+      "title": "Infinite Zoom Singularity",
+      "description": "Infinite zoom fractal with SVG layers. Traverse dimensions with scroll-based depth control.",
+      "type": "svg",
+      "tech": "SVG",
+      "file": "infinite-zoom.html",
+      "category": "fractal"
+    },
+    {
+      "id": "neural-lattice",
+      "title": "Neural Lattice Simulation",
+      "description": "3D neural network particle system with octahedral symmetry. Interactive particle connections.",
+      "type": "threejs",
+      "tech": "Three.js",
+      "file": "neural-lattice.html",
+      "category": "simulation"
+    },
+    {
+      "id": "kaleidoscope-singularity",
+      "title": "Kaleidoscopic Singularity",
+      "description": "Kaleidoscopic particle refraction with 12-fold symmetry. Post-processing effects with recursive patterns.",
+      "type": "threejs",
+      "tech": "Three.js",
+      "file": "kaleidoscope-singularity.html",
+      "category": "visual"
+    },
+    {
+      "id": "rgb-tracer",
+      "title": "RGB Tracer",
+      "description": "Simple CSS animation with recursive scaling and RGB separation. Minimal Nexus aesthetic.",
+      "type": "css",
+      "tech": "CSS Animation",
+      "file": "rgb-tracer.html",
+      "category": "animation"
+    }
+  ],
+  "categories": {
+    "all": ["chromatic-flow", "menger-void", "infinite-zoom", "neural-lattice", "kaleidoscope-singularity", "rgb-tracer"],
+    "fractal": ["menger-void", "infinite-zoom"],
+    "simulation": ["neural-lattice"],
+    "visual": ["chromatic-flow", "kaleidoscope-singularity"],
+    "animation": ["rgb-tracer"]
+  }
+}

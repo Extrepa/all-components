@@ -1,0 +1,10 @@
+<!-- errl_concert_laser_grid_ceiling_01 – criss-cross laser grid (fx) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_concert" data-cat="fx" data-name="errl_concert_laser_grid_ceiling_01">
+  <g fill="none">
+    <path d="M14 18 L50 22" stroke="#22d3ee" stroke-width="1.4" stroke-linecap="round" opacity="0.8"/>
+    <path d="M14 22 L50 18" stroke="#a855f7" stroke-width="1.4" stroke-linecap="round" opacity="0.8"/>
+    <path d="M20 16 V24 M32 16 V24 M44 16 V24"
+      stroke="#22d3ee" stroke-width="1.1" stroke-linecap="round" opacity="0.7"/>
+  </g>
+</svg>

@@ -1,0 +1,8 @@
+<!-- errl_concert_crowd_blob_back_01 – distant audience (env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_concert" data-cat="env" data-name="errl_concert_crowd_blob_back_01">
+  <g fill="none">
+    <path d="M6 34 C10 30 16 28 24 28s16 2 20 2 10-2 14-4c2 3 4 7 4 11H6z"
+      fill="#020617" opacity="0.85"/>
+  </g>
+</svg>

@@ -1,0 +1,10 @@
+<!-- errl_weather_wind_swirl_02 – stacked gusts (fx) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_weather" data-cat="fx" data-name="errl_weather_wind_swirl_02">
+  <g fill="none">
+    <path d="M12 30 H34a4 4 0 1 0-4-4"
+      stroke="#e5e7eb" stroke-width="1.6" stroke-linecap="round"/>
+    <path d="M16 36 H38a3.5 3.5 0 1 0-3.5-3.5"
+      stroke="#e5e7eb" stroke-width="1.6" stroke-linecap="round" opacity="0.8"/>
+  </g>
+</svg>

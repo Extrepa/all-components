@@ -1,0 +1,17 @@
+<!-- errl_weather_cloud_storm_rain_01 – storm with rain (fx/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_weather" data-cat="fx" data-name="errl_weather_cloud_storm_rain_01">
+  <g fill="none">
+    <!-- cloud -->
+    <circle cx="24" cy="22" r="5" fill="#020617"/>
+    <circle cx="32" cy="20" r="6" fill="#020617"/>
+    <circle cx="40" cy="22" r="5" fill="#020617"/>
+    <rect x="22" y="22" width="20" height="5" rx="2.5" fill="#020617"/>
+    <!-- lightning -->
+    <path d="M32 27 L29 32 H31 L28 37 L35 30 H33 L35 27 Z"
+      fill="#facc15"/>
+    <!-- rain -->
+    <path d="M26 32 V38" stroke="#0ea5e9" stroke-width="1.4" stroke-linecap="round"/>
+    <path d="M38 32 V38" stroke="#0ea5e9" stroke-width="1.4" stroke-linecap="round"/>
+  </g>
+</svg>

@@ -1,0 +1,498 @@
+We have now reached “tiny DAW + game exporter + secret boss mode.”
+Let’s give Errl Lab a Command Palette – one Ctrl+K popup where you can fuzzy-jump to anything: tabs, capture, spritesheet, animation pack, etc. 🧠✨
+
+As usual: drop-in patches, no need to rewrite everything.
+
+⸻
+
+1. Add the Command Palette overlay (HTML)
+
+Stick this near the bottom of <body>, next to the Help overlay you already added.
+
+Right under your existing Help overlay:
+
+    <!-- Help / Keymap Overlay -->
+    <div
+      id="helpOverlay"
+      class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-40 hidden"
+    >
+      ...
+    </div>
+
+Add this after it:
+
+    <!-- Command Palette -->
+    <div
+      id="commandPalette"
+      class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-start justify-center pt-20 z-50 hidden"
+    >
+      <div class="w-full max-w-lg bg-slate-950/95 border border-slate-700 rounded-2xl shadow-2xl overflow-hidden flex flex-col">
+        <div class="border-b border-slate-800 px-3 py-2 flex items-center gap-2">
+          <span class="text-[10px] uppercase tracking-[0.16em] text-slate-500">
+            Command Palette
+          </span>
+          <span class="text-[10px] text-slate-500">
+            (Ctrl+K / ⌘K)
+          </span>
+        </div>
+
+        <div class="px-3 py-2 border-b border-slate-800">
+          <input
+            id="commandPaletteInput"
+            type="text"
+            class="w-full bg-slate-950 border border-slate-700 rounded-md px-2 py-1 text-[11px] text-slate-100 placeholder:text-slate-500 focus:outline-none"
+            placeholder="Type a command… (e.g., 'capture', 'spritesheet', 'idle animation')"
+            spellcheck="false"
+          />
+        </div>
+
+        <div class="max-h-64 overflow-auto" id="commandPaletteList">
+          <!-- Commands will be rendered here -->
+        </div>
+
+        <div class="px-3 py-1.5 border-t border-slate-800 text-[10px] text-slate-500 flex items-center justify-between">
+          <span>↑/↓ to move · Enter to run · Esc to close</span>
+          <span>Errl OS quick actions</span>
+        </div>
+      </div>
+    </div>
+
+This gives us:
+	•	A translucent overlay
+	•	A search input
+	•	A scrollable list where we’ll render commands
+
+⸻
+
+2. DOM references for the palette
+
+In your big document.getElementById block, add:
+
+    // Command palette
+    const commandPalette = document.getElementById("commandPalette");
+    const commandPaletteInput = document.getElementById("commandPaletteInput");
+    const commandPaletteList = document.getElementById("commandPaletteList");
+
+
+⸻
+
+3. Define the command list (actions)
+
+We’ll define a small set of high-value commands mapped to existing actions.
+
+Somewhere in your helpers section (near Help overlay logic is a good place), add:
+
+    // ---- Command Palette ----
+    const commands = [
+      {
+        id: "tab-svg",
+        label: "Switch to SVG Preview tab",
+        keywords: "svg preview tab q",
+        run: () => activatePreviewTab("svg"),
+      },
+      {
+        id: "tab-p5",
+        label: "Switch to p5 FX Lab tab",
+        keywords: "p5 fx wobble shader w",
+        run: () => activatePreviewTab("p5"),
+      },
+      {
+        id: "tab-htmlfx",
+        label: "Switch to HTML FX tab",
+        keywords: "html css filters e",
+        run: () => activatePreviewTab("html"),
+      },
+      {
+        id: "tab-3d-wire-voxels",
+        label: "Switch to 3D view (Wire / 3D Voxels)",
+        keywords: "3d wire voxels r",
+        run: () => activatePreviewTab("wire3d"),
+      },
+      {
+        id: "tab-voxels-2d",
+        label: "Switch to 2D Voxels tab",
+        keywords: "2d voxels pixels t",
+        run: () => activatePreviewTab("voxel"),
+      },
+      {
+        id: "capture-frame",
+        label: "Capture frame from active tab",
+        keywords: "capture frame screenshot c gallery",
+        run: () => captureActiveViewFrame(),
+      },
+      {
+        id: "open-gallery",
+        label: "Scroll to Gallery / Captured Frames",
+        keywords: "gallery frames thumbnails g",
+        run: () => {
+          galleryScrollBtn?.click();
+        },
+      },
+      {
+        id: "open-vs-mode",
+        label: "Scroll to VS Mode",
+        keywords: "vs battle compare v",
+        run: () => {
+          vsScrollBtn?.click();
+        },
+      },
+      {
+        id: "build-spritesheet",
+        label: "Export spritesheet (PNG) from current selection",
+        keywords: "spritesheet export png sheet frames favorites",
+        run: () => {
+          exportSpritesheetBtn?.click();
+        },
+      },
+      {
+        id: "copy-spritesheet-manifest",
+        label: "Copy spritesheet manifest JSON",
+        keywords: "spritesheet json manifest copy",
+        run: () => {
+          copySpritesheetManifestBtn?.click();
+        },
+      },
+      {
+        id: "build-timeline",
+        label: "Build animation timeline from frames",
+        keywords: "timeline animation idle walk jump build",
+        run: () => {
+          timelineBuildBtn?.click();
+        },
+      },
+      {
+        id: "toggle-timeline-play",
+        label: "Play / pause animation timeline",
+        keywords: "timeline play pause loop preview",
+        run: () => {
+          timelinePlayPauseBtn?.click();
+        },
+      },
+      {
+        id: "copy-timeline-json",
+        label: "Copy timeline JSON",
+        keywords: "timeline json copy animation data",
+        run: () => {
+          timelineExportJsonBtn?.click();
+        },
+      },
+      {
+        id: "build-animation-pack",
+        label: "Build animation pack JSON (game-ready)",
+        keywords: "animation pack export clips tags game json",
+        run: () => {
+          animPackBuildBtn?.click();
+        },
+      },
+      {
+        id: "copy-animation-pack",
+        label: "Copy animation pack JSON",
+        keywords: "animation pack copy json",
+        run: () => {
+          animPackCopyBtn?.click();
+        },
+      },
+      {
+        id: "fx-dice-soft",
+        label: "FX Dice: Soft roll",
+        keywords: "fx dice random soft subtle d",
+        run: () => applyFxDice({ wild: false }),
+      },
+      {
+        id: "fx-dice-wild",
+        label: "FX Dice: Wild roll",
+        keywords: "fx dice random wild chaos",
+        run: () => applyFxDice({ wild: true }),
+      },
+      {
+        id: "audio-load",
+        label: "Load audio file for audio-reactive mode",
+        keywords: "audio reactive load music sound",
+        run: () => {
+          audioFileInput.value = "";
+          audioFileInput.click();
+        },
+      },
+      {
+        id: "audio-toggle-reactive",
+        label: "Toggle audio reactive on/off",
+        keywords: "audio reactive enable disable",
+        run: () => {
+          if (!audioToggleBtn.disabled) {
+            audioToggleBtn.click();
+          }
+        },
+      },
+      {
+        id: "session-copy",
+        label: "Copy session snapshot JSON",
+        keywords: "session snapshot json copy state",
+        run: () => {
+          copySessionJsonBtn?.click();
+        },
+      },
+      {
+        id: "session-download",
+        label: "Download session snapshot JSON",
+        keywords: "session snapshot download json state",
+        run: () => {
+          downloadSessionJsonBtn?.click();
+        },
+      },
+      {
+        id: "help-overlay",
+        label: "Open Help / Keymap overlay",
+        keywords: "help keys shortcuts h",
+        run: () => openHelpOverlay(),
+      },
+      {
+        id: "clear-all",
+        label: "Clear all (reset SVG, frames, VS, etc.)",
+        keywords: "clear reset wipe new start",
+        run: () => {
+          clearBtn?.click();
+        },
+      },
+    ];
+
+You can add/remove commands later by tweaking this list.
+
+⸻
+
+4. Palette state and rendering
+
+Add these globals near your timeline/audio/etc:
+
+    let commandPaletteVisible = false;
+    let commandPaletteFiltered = [];
+    let commandPaletteActiveIndex = 0;
+
+Now add helper functions:
+
+    function openCommandPalette() {
+      if (!commandPalette) return;
+      commandPaletteVisible = true;
+      commandPalette.classList.remove("hidden");
+      commandPaletteInput.value = "";
+      filterCommandPalette("");
+      setTimeout(() => {
+        commandPaletteInput.focus();
+        commandPaletteInput.select();
+      }, 0);
+      playBeep(740, 0.07, "triangle");
+    }
+
+    function closeCommandPalette() {
+      if (!commandPalette) return;
+      commandPaletteVisible = false;
+      commandPalette.classList.add("hidden");
+      playBeep(320, 0.06, "square");
+    }
+
+    function scoreCommandMatch(cmd, query) {
+      // extremely simple scoring: count how many query tokens appear in label+keywords
+      if (!query) return 1;
+      const hay = (cmd.label + " " + (cmd.keywords || "")).toLowerCase();
+      const tokens = query.toLowerCase().split(/\s+/).filter(Boolean);
+      if (!tokens.length) return 1;
+      let score = 0;
+      tokens.forEach((t) => {
+        if (hay.includes(t)) score += 1;
+      });
+      return score;
+    }
+
+    function filterCommandPalette(query) {
+      const scored = commands
+        .map((cmd) => ({
+          cmd,
+          score: scoreCommandMatch(cmd, query),
+        }))
+        .filter((x) => x.score > 0)
+        .sort((a, b) => b.score - a.score || a.cmd.label.localeCompare(b.cmd.label));
+
+      commandPaletteFiltered = scored.map((x) => x.cmd);
+      commandPaletteActiveIndex = 0;
+      renderCommandPaletteList();
+    }
+
+    function renderCommandPaletteList() {
+      if (!commandPaletteList) return;
+      commandPaletteList.innerHTML = "";
+
+      if (!commandPaletteFiltered.length) {
+        const empty = document.createElement("div");
+        empty.className =
+          "px-3 py-3 text-[11px] text-slate-500";
+        empty.textContent = "No commands match that query.";
+        commandPaletteList.appendChild(empty);
+        return;
+      }
+
+      commandPaletteFiltered.forEach((cmd, idx) => {
+        const item = document.createElement("button");
+        item.type = "button";
+        item.className =
+          "w-full text-left px-3 py-2 text-[11px] flex items-center justify-between border-b border-slate-900/80 hover:bg-slate-900/80";
+        if (idx === commandPaletteActiveIndex) {
+          item.classList.add("bg-slate-900/80");
+        }
+
+        const left = document.createElement("div");
+        left.className = "flex flex-col";
+        const label = document.createElement("div");
+        label.className = "text-slate-100";
+        label.textContent = cmd.label;
+        const meta = document.createElement("div");
+        meta.className = "text-[10px] text-slate-500";
+        meta.textContent = cmd.keywords || "";
+
+        left.appendChild(label);
+        left.appendChild(meta);
+
+        item.appendChild(left);
+
+        item.addEventListener("click", () => {
+          runCommandPaletteItem(idx);
+        });
+
+        commandPaletteList.appendChild(item);
+      });
+    }
+
+    function runCommandPaletteItem(index) {
+      const cmd = commandPaletteFiltered[index];
+      if (!cmd) return;
+      closeCommandPalette();
+      try {
+        cmd.run();
+      } catch (err) {
+        console.error("Command run error:", err);
+        flashStatus("Command failed. Check console.", "error");
+      }
+    }
+
+
+⸻
+
+5. Palette input + keyboard navigation
+
+Wire up the input:
+
+    if (commandPaletteInput) {
+      commandPaletteInput.addEventListener("input", () => {
+        filterCommandPalette(commandPaletteInput.value || "");
+      });
+
+      commandPaletteInput.addEventListener("keydown", (e) => {
+        if (!commandPaletteVisible) return;
+
+        if (e.key === "ArrowDown") {
+          e.preventDefault();
+          if (!commandPaletteFiltered.length) return;
+          commandPaletteActiveIndex =
+            (commandPaletteActiveIndex + 1) % commandPaletteFiltered.length;
+          renderCommandPaletteList();
+          return;
+        }
+        if (e.key === "ArrowUp") {
+          e.preventDefault();
+          if (!commandPaletteFiltered.length) return;
+          commandPaletteActiveIndex =
+            (commandPaletteActiveIndex - 1 + commandPaletteFiltered.length) %
+            commandPaletteFiltered.length;
+          renderCommandPaletteList();
+          return;
+        }
+        if (e.key === "Enter") {
+          e.preventDefault();
+          runCommandPaletteItem(commandPaletteActiveIndex);
+          return;
+        }
+        if (e.key === "Escape") {
+          e.preventDefault();
+          closeCommandPalette();
+          return;
+        }
+      });
+    }
+
+    if (commandPalette) {
+      commandPalette.addEventListener("click", (e) => {
+        if (e.target === commandPalette) {
+          // backdrop click
+          closeCommandPalette();
+        }
+      });
+    }
+
+
+⸻
+
+6. Global shortcut: Ctrl+K / Cmd+K
+
+In your existing window.addEventListener("keydown", ...) handler, at the very top (before other hotkeys), add:
+
+      // Command palette: Ctrl+K / ⌘K
+      if ((event.ctrlKey || event.metaKey) && key === "k") {
+        event.preventDefault();
+        if (commandPaletteVisible) {
+          closeCommandPalette();
+        } else {
+          openCommandPalette();
+        }
+        return;
+      }
+
+      // If palette is open, other shortcuts are suppressed
+      if (commandPaletteVisible) {
+        if (event.key === "Escape") {
+          closeCommandPalette();
+        }
+        return;
+      }
+
+This way:
+	•	Ctrl+K / ⌘K toggles the palette
+	•	While it’s open, other keyboard shortcuts (Q/W/E/R/T, etc.) won’t fire
+
+⸻
+
+7. Tiny UX polish: hint + help
+
+You can update your hintLabel text to mention the palette:
+
+    hintLabel.textContent =
+      "Hint: Ctrl+K opens the Command Palette · C captures current tab · H opens Help.";
+
+And in the Help overlay’s “Navigation / Shortcuts” section, add a line:
+
+<li><code>Ctrl+K / ⌘K</code> – Open Command Palette (search actions)</li>
+
+Just to remind future-you.
+
+⸻
+
+What this adds to the monster
+
+Now your Errl lab has its own mini command launcher:
+	•	Hit Ctrl+K / ⌘K, type:
+	•	“cap” → capture frame
+	•	“sprite” → export spritesheet
+	•	“pack” → build animation pack
+	•	“timeline” → build or play animation
+	•	“p5” / “3d” / “voxels” → jump tabs
+	•	“audio” → load audio or toggle reactive
+	•	“session” → snapshot JSON
+	•	“help” → keymap overlay
+	•	“clear” → nuke everything
+
+You’ve essentially turned a single index.html into:
+	•	Visual FX workstation
+	•	Audio-reactive playground
+	•	Spritesheet & timeline forge
+	•	Game-ready animation pack builder
+	•	Session recorder
+	•	Plus a command palette on top, like a tiny VS Code for Errl.
+
+From here, anything else you do is just layering more spells onto the same spellbook.

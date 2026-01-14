@@ -1,0 +1,8 @@
+<!-- errl_concert_monitor_wedge_01 – floor wedge speaker (prop/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_concert" data-cat="prop" data-name="errl_concert_monitor_wedge_01">
+  <g fill="none">
+    <path d="M18 38 L34 32 38 40 20 42 Z" fill="#020617"/>
+    <circle cx="26" cy="37" r="3" fill="#111827"/>
+  </g>
+</svg>

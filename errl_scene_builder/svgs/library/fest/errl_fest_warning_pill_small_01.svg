@@ -1,0 +1,8 @@
+<!-- Example 226 | errl_fest_warning_pill_small_01 (ui) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="ui" data-name="errl_fest_warning_pill_small_01">
+  <g fill="none">
+    <rect x="22" y="28" width="20" height="8" rx="4" fill="#f97316"/>
+    <rect x="30" y="29" width="4" height="4" rx="1" fill="#0f172a"/>
+  </g>
+</svg>

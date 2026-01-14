@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" id="icon-caszbqr50">
+  <g xmlns="http://www.w3.org/2000/svg" fill="none">
+    <rect x="30" y="30" width="4" height="12" rx="1.5" fill="#78350f"/>
+    <path d="M32 24 C29 26 29 29 30 31.5s1.5 2.5 2 3.5c0.7-1 1.5-1.9 2-3.5s1-3.5-1-5.5S32 24 32 24z" fill="#f97316"/>
+    <path d="M32 26 C30.8 27.2 30.8 28.8 31.2 30s0.8 1.7 1.2 2.3c0.7-0.9 1.2-1.6 1.5-2.7s0.2-2.2-0.6-3.1z" fill="#facc15"/>
+    <ellipse cx="32" cy="44" rx="7" ry="2.2" fill="#020617" opacity="0.4"/>
+  </g>
+</svg>

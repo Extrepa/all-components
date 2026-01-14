@@ -1,0 +1,79 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model SiteArchive {
+  id              String   @id @default(cuid())
+  rootUrl         String   @unique
+  domain          String
+  status          CrawlStatus @default(PENDING)
+  lastCrawledAt   DateTime?
+  pages           PageSnapshot[]
+  createdAt       DateTime @default(now())
+}
+
+model PageSnapshot {
+  id              String   @id @default(cuid())
+  url             String
+  title           String?
+  siteArchiveId   String
+  siteArchive     SiteArchive @relation(fields: [siteArchiveId], references: [id])
+  capturedCss     String?  @db.Text
+  localHtmlPath   String?
+  screenshotPath  String?
+  components      Component[]
+  createdAt       DateTime @default(now())
+}
+
+model Component {
+  id              String   @id @default(cuid())
+  name            String
+  type            ComponentType @default(UNKNOWN)
+  pageSnapshotId  String
+  pageSnapshot    PageSnapshot @relation(fields: [pageSnapshotId], references: [id])
+  isReact         Boolean @default(false)
+  isTailwind      Boolean @default(false)
+  hasCanvas       Boolean @default(false)
+  isFavorite      Boolean @default(false)
+  htmlSnippet     String   @db.Text
+  reactCode       String?  @db.Text
+  tags            String[]
+  complexityScore Int      @default(0)
+  explanation     ExplanationDoc?
+  createdAt       DateTime @default(now())
+}
+
+model ExplanationDoc {
+  id              String   @id @default(cuid())
+  componentId     String   @unique
+  component       Component @relation(fields: [componentId], references: [id])
+  summary         String   @db.Text
+  technicalNotes  String   @db.Text
+  markdownContent String   @db.Text
+  complexityRating Int      @default(1)
+  tags            String[]
+  createdAt       DateTime @default(now())
+}
+
+enum CrawlStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+enum ComponentType {
+  NAV
+  HERO
+  CARD
+  BUTTON
+  SLIDER
+  EFFECT
+  FOOTER
+  UNKNOWN
+}

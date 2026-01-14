@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <g id="glyph" fill="none" stroke="#5be0ff" stroke-width="16" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="256" cy="256" r="120" />
+    <path d="M256 136c-60 30-60 150 0 180 60-30 60-150 0-180z" />
+    <path d="M196 200h120" />
+    <path d="M196 312h120" />
+    <path d="M256 336v60" />
+    <path d="M256 116v-36" />
+  </g>
+  <g id="outline" fill="none" stroke="#101020" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" opacity="0.8">
+    <circle cx="256" cy="256" r="120" />
+  </g>
+</svg>

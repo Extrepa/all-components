@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flash UI | Chromatic Resin Sedimentation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Space+Mono&family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #050505;
+            --surface: #0d0d0d;
+            --primary-iridescent: linear-gradient(135deg, #ff00ff, #00ffff, #ffea00, #ff00ff);
+            --text-main: #ffffff;
+            --text-dim: #a0a0a0;
+            --accent-glow: rgba(0, 255, 255, 0.4);
+            --resin-blur: 16px;
+            --mono-font: 'Space Mono', monospace;
+            --sans-font: 'Inter', sans-serif;
+            --heading-font: 'Syncopate', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 20% 20%, rgba(255, 0, 255, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(0, 255, 255, 0.05) 0%, transparent 40%);
+            color: var(--text-main);
+            font-family: var(--sans-font);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- Global Iridescent Animation --- */
+        @keyframes flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .chroma-text {
+            background: var(--primary-iridescent);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: flow 8s ease infinite;
+        }
+
+        /* --- Layout Structure --- */
+        .spec-sheet {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            min-height: 100vh;
+        }
+
+        .gallery {
+            padding: 80px 60px;
+            max-width: 1200px;
+        }
+
+        section {
+            margin-bottom: 120px;
+            position: relative;
+        }
+
+        .section-label {
+            font-family: var(--mono-font);
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 0.3em;
+            color: var(--text-dim);
+            margin-bottom: 30px;
+            display: block;
+            border-left: 2px solid #ff00ff;
+            padding-left: 15px;
+        }
+
+        /* --- Navbar --- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: rgba(13, 13, 13, 0.7);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-logo {
+            font-family: var(--heading-font);
+            font-weight: 700;
+            font-size: 1.2rem;
+            letter-spacing: -1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #fff;
+        }
+
+        /* --- Sidebar --- */
+        .sidebar {
+            background: rgba(10, 10, 10, 0.5);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 100px 30px;
+            height: 100vh;
+            position: sticky;
+            top: 0;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-item {
+            margin-bottom: 20px;
+        }
+
+        .sidebar-link {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-family: var(--mono-font);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            transition: 0.3s;
+        }
+
+        .sidebar-link:hover {
+            color: #00ffff;
+            padding-left: 10px;
+        }
+
+        .sidebar-link.active {
+            color: #ff00ff;
+            font-weight: bold;
+        }
+
+        /* --- Buttons --- */
+        .btn-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            position: relative;
+            padding: 16px 32px;
+            border: none;
+            background: transparent;
+            color: white;
+            font-family: var(--heading-font);
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            cursor: pointer;
+            overflow: visible;
+            transition: transform 0.2s;
+        }
+
+        .btn:active { transform: scale(0.95); }
+
+        .btn-drip {
+            background: var(--surface);
+            border-radius: 4px;
+            z-index: 1;
+        }
+
+        .btn-drip::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: var(--primary-iridescent);
+            background-size: 300% 300%;
+            animation: flow 4s linear infinite;
+            z-index: -1;
+            border-radius: 6px;
+        }
+
+        .btn-drip::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 10%;
+            width: 80%;
+            height: 10px;
+            background: inherit;
+            background: var(--primary-iridescent);
+            filter: blur(8px);
+            opacity: 0.6;
+            border-radius: 50%;
+        }
+
+        /* --- Cards --- */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .resin-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(var(--resin-blur));
+            padding: 40px;
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            transition: 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .resin-card:hover {
+            border-color: rgba(0, 255, 255, 0.3);
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .resin-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(255, 0, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .card-title {
+            font-family: var(--heading-font);
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+
+        .card-body {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        /* --- Badges --- */
+        .badge-container {
+            display: flex;
+            gap: 15px;
+        }
+
+        .chroma-badge {
+            padding: 4px 12px;
+            border-radius: 100px;
+            font-family: var(--mono-font);
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            font-weight: bold;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #00ffff;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.1);
+        }
+
+        /* --- Inputs --- */
+        .input-group {
+            max-width: 400px;
+        }
+
+        .resin-input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 16px 20px;
+            color: white;
+            font-family: var(--mono-font);
+            border-radius: 8px;
+            outline: none;
+            transition: 0.3s;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .resin-input:focus {
+            border-color: #ff00ff;
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.2), inset 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        /* --- Toggle --- */
+        .toggle-wrap {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .toggle {
+            width: 50px;
+            height: 26px;
+            background: #222;
+            border-radius: 50px;
+            position: relative;
+            cursor: pointer;
+            transition: 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .toggle::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 18px;
+            height: 18px;
+            background: var(--primary-iridescent);
+            background-size: 200%;
+            border-radius: 50%;
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .toggle.active {
+            background: rgba(255, 0, 255, 0.2);
+        }
+
+        .toggle.active::after {
+            left: 27px;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        /* --- Accordion --- */
+        .accordion {
+            background: var(--surface);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+            max-width: 600px;
+        }
+
+        .accordion-item {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .accordion-header {
+            padding: 20px;
+            cursor: pointer;
+            font-family: var(--heading-font);
+            font-size: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .accordion-content {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: 0.4s ease;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .accordion-item.open .accordion-content {
+            padding: 10px 20px 20px 20px;
+            max-height: 200px;
+        }
+
+        /* --- Tabs --- */
+        .tabs-container {
+            margin-top: 20px;
+        }
+
+        .tabs-nav {
+            display: flex;
+            gap: 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .tab-link {
+            padding: 10px 0;
+            cursor: pointer;
+            font-family: var(--mono-font);
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            position: relative;
+        }
+
+        .tab-link.active {
+            color: #fff;
+        }
+
+        .tab-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary-iridescent);
+            box-shadow: 0 0 10px #00ffff;
+        }
+
+        /* --- Alert --- */
+        .alert {
+            padding: 20px;
+            border-radius: 8px;
+            background: rgba(255, 0, 255, 0.1);
+            border: 1px solid rgba(255, 0, 255, 0.2);
+            color: #ff00ff;
+            font-family: var(--sans-font);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .alert::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--primary-iridescent);
+        }
+
+        /* --- Breadcrumb --- */
+        .breadcrumb {
+            display: flex;
+            gap: 10px;
+            font-family: var(--mono-font);
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            list-style: none;
+        }
+
+        .breadcrumb li::after {
+            content: '/';
+            margin-left: 10px;
+            color: #444;
+        }
+
+        .breadcrumb li:last-child::after { content: ''; }
+        .breadcrumb a { color: #00ffff; text-decoration: none; }
+
+        /* --- Modal --- */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        .modal {
+            background: var(--surface);
+            width: 500px;
+            padding: 50px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+            position: relative;
+        }
+
+        .modal::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 6px;
+            background: var(--primary-iridescent);
+            border-radius: 0 0 10px 10px;
+        }
+
+        /* --- Animations --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-logo chroma-text">FLASH UI</div>
+        <ul class="nav-links">
+            <li><a href="#">Components</a></li>
+            <li><a href="#">Documentation</a></li>
+            <li><a href="#">Showcase</a></li>
+        </ul>
+        <button class="btn btn-drip" style="padding: 10px 20px;">v1.0.4</button>
+    </nav>
+
+    <div class="spec-sheet">
+        <aside class="sidebar">
+            <ul class="sidebar-menu">
+                <li class="sidebar-item"><a href="#buttons" class="sidebar-link active">Buttons</a></li>
+                <li class="sidebar-item"><a href="#cards" class="sidebar-link">Cards & Layout</a></li>
+                <li class="sidebar-item"><a href="#forms" class="sidebar-link">Forms & Inputs</a></li>
+                <li class="sidebar-item"><a href="#navigation" class="sidebar-link">Navigation</a></li>
+                <li class="sidebar-item"><a href="#feedback" class="sidebar-link">Feedback</a></li>
+                <li class="sidebar-item"><a href="#disclosure" class="sidebar-link">Disclosure</a></li>
+            </ul>
+        </aside>
+
+        <main class="gallery">
+            <header style="margin-bottom: 100px;">
+                <h1 class="chroma-text" style="font-family: var(--heading-font); font-size: 3.5rem; line-height: 1;">CHROMATIC<br>RESIN</h1>
+                <p style="font-family: var(--mono-font); color: var(--text-dim); margin-top: 20px;">Sedimentary Design Language for Iridescent Interfaces</p>
+            </header>
+
+            <!-- Buttons Section -->
+            <section id="buttons" class="reveal">
+                <span class="section-label">01. Interactive Triggers</span>
+                <div class="btn-container">
+                    <button class="btn btn-drip">EXECUTE ACTION</button>
+                    <button class="btn" style="border: 1px solid rgba(255,255,255,0.2); border-radius: 4px;">SECONDARY</button>
+                    <button class="btn" style="font-family: var(--mono-font); text-decoration: underline; color: #00ffff;">GHOST_LINK</button>
+                </div>
+            </section>
+
+            <!-- Breadcrumbs Section -->
+            <section id="navigation" class="reveal">
+                <span class="section-label">02. Hierarchy</span>
+                <ul class="breadcrumb">
+                    <li><a href="#">Library</a></li>
+                    <li><a href="#">Sedimentation</a></li>
+                    <li style="color: #fff">Active Node</li>
+                </ul>
+            </section>
+
+            <!-- Badges & Toggle -->
+            <section id="feedback" class="reveal">
+                <span class="section-label">03. Status & State</span>
+                <div style="display: flex; gap: 50px; align-items: center;">
+                    <div class="badge-container">
+                        <span class="chroma-badge">Stable</span>
+                        <span class="chroma-badge" style="color: #ff00ff; border-color: rgba(255,0,255,0.3);">Experimental</span>
+                        <span class="chroma-badge" style="color: #ffff00; border-color: rgba(255,255,0,0.3);">Legacy</span>
+                    </div>
+                    <div class="toggle-wrap">
+                        <div class="toggle" onclick="this.classList.toggle('active')"></div>
+                        <span style="font-family: var(--mono-font); font-size: 0.8rem;">REALTIME_SYNC</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Input Section -->
+            <section id="forms" class="reveal">
+                <span class="section-label">04. Data Entry</span>
+                <div class="input-group">
+                    <input type="text" class="resin-input" placeholder="Enter resonance frequency...">
+                </div>
+            </section>
+
+            <!-- Cards Section -->
+            <section id="cards" class="reveal">
+                <span class="section-label">05. Containment</span>
+                <div class="card-grid">
+                    <div class="resin-card">
+                        <h3 class="card-title">Neural Flux</h3>
+                        <p class="card-body">The interaction of chromatic light waves through thick polymer layers creates unique visual artifacts.</p>
+                        <div style="margin-top: 25px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">
+                             <span style="font-family: var(--mono-font); font-size: 0.7rem; color: #ff00ff;">#A900XF</span>
+                        </div>
+                    </div>
+                    <div class="resin-card">
+                        <h3 class="card-title">Resin Depth</h3>
+                        <p class="card-body">Each component uses multiple levels of Gaussian blur to simulate physical depth and refraction.</p>
+                        <div style="margin-top: 25px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">
+                             <span style="font-family: var(--mono-font); font-size: 0.7rem; color: #00ffff;">#00FF88</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tabs Section -->
+            <section class="reveal">
+                <span class="section-label">06. Switcher</span>
+                <div class="tabs-container">
+                    <div class="tabs-nav">
+                        <div class="tab-link active">ANALYSIS</div>
+                        <div class="tab-link">SPECTRUM</div>
+                        <div class="tab-link">HISTORY</div>
+                    </div>
+                    <div style="font-family: var(--mono-font); font-size: 0.9rem; color: var(--text-dim);">
+                        > LOADED 1.42ms<br>
+                        > CACHE: HIT<br>
+                        > STATUS: IRIDESCENT
+                    </div>
+                </div>
+            </section>
+
+            <!-- Accordion & Alert -->
+            <section id="disclosure" class="reveal">
+                <span class="section-label">07. Disclosure & Warnings</span>
+                <div style="display: flex; flex-direction: column; gap: 30px;">
+                    <div class="accordion">
+                        <div class="accordion-item" onclick="this.classList.toggle('open')">
+                            <div class="accordion-header">
+                                SYSTEM OVERRIDE
+                                <span>+</span>
+                            </div>
+                            <div class="accordion-content">
+                                Overriding the core chromatic parameters will cause significant visual variance in the sedimentation layers. Proceed with caution.
+                            </div>
+                        </div>
+                        <div class="accordion-item" onclick="this.classList.toggle('open')">
+                            <div class="accordion-header">
+                                VISCOSITY SETTINGS
+                                <span>+</span>
+                            </div>
+                            <div class="accordion-content">
+                                Control the speed of the chromatic flow. Current setting: HIGH_DENSITY.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert">
+                        <div style="font-family: var(--heading-font); font-size: 0.8rem; font-weight: bold;">CRITICAL:</div>
+                        <div style="font-size: 0.85rem;">Spectrum leakage detected in the primary resonance chamber.</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="reveal" style="text-align: center; padding: 100px 0;">
+                <button class="btn btn-drip" onclick="toggleModal()">INITIALIZE MODAL SYSTEM</button>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal Component -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <h2 class="chroma-text" style="font-family: var(--heading-font); margin-bottom: 20px;">SYSTEM ARCHIVE</h2>
+            <p style="color: var(--text-dim); margin-bottom: 30px;">You are accessing a high-fidelity sediment container. All visual assets are rendered in real-time chromatic flow.</p>
+            <button class="btn btn-drip" style="width: 100%;" onclick="toggleModal()">ACKNOWLEDGE</button>
+        </div>
+    </div>
+
+    <script>
+        // Modal Logic
+        function toggleModal() {
+            const modal = document.getElementById('modalOverlay');
+            modal.classList.toggle('active');
+        }
+
+        // Reveal Animation logic
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Smooth Sidebar Active State
+        window.addEventListener('scroll', () => {
+            let current = "";
+            const sections = document.querySelectorAll('section');
+            sections.forEach((section) => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 150) {
+                    current = section.getAttribute("id");
+                }
+            });
+
+            document.querySelectorAll('.sidebar-link').forEach((link) => {
+                link.classList.remove("active");
+                if (link.getAttribute("href").includes(current) && current !== "") {
+                    link.classList.add("active");
+                }
+            });
+        });
+    </script>
+</body>
+</html>

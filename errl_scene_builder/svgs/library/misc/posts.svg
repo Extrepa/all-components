@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" id="icon-4mot19o7p">
+  <g xmlns="http://www.w3.org/2000/svg" fill="none">
+    <!-- posts -->
+    <rect x="18" y="30" width="3" height="14" rx="1.4" fill="#e5e7eb"/>
+    <rect x="43" y="30" width="3" height="14" rx="1.4" fill="#e5e7eb"/>
+    <!-- rope -->
+    <path d="M20 32 C26 28 35 28 44 32" stroke="#fb7185" stroke-width="2" stroke-linecap="round"/>
+    <!-- bases -->
+    <ellipse cx="19.5" cy="46" rx="4" ry="1.5" fill="#020617" opacity="0.6"/>
+    <ellipse cx="44.5" cy="46" rx="4" ry="1.5" fill="#020617" opacity="0.6"/>
+  </g>
+</svg>

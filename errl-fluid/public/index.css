@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-oil-900 text-white overflow-hidden; [cite_start]/* [cite: 27] */
+  }
+}

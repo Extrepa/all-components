@@ -1,0 +1,190 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" id="icon-c63syhr1p"><!-- Example 141 | errl_fest_ground_marker_star_01 (ui/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="ui" data-name="errl_fest_ground_marker_star_01">
+  <g fill="none">
+    <ellipse cx="32" cy="44" rx="12" ry="3.2" fill="#020617"/>
+    <path d="M32 38 L33.4 40.8 36.4 41.2 34 43.2 34.6 46.2 32 44.8 29.4 46.2 30 43.2 27.6 41.2 30.6 40.8 Z" fill="#facc15"/>
+  </g>
+</svg>
+
+<!-- Example 142 | errl_fest_ground_marker_heart_01 (ui/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="ui" data-name="errl_fest_ground_marker_heart_01">
+  <g fill="none">
+    <ellipse cx="32" cy="44" rx="12" ry="3.2" fill="#020617"/>
+    <path d="M32 40l-3.5-3.5a2.5 2.5 0 0 1 3.5-3.5 2.5 2.5 0 0 1 3.5 3.5z" fill="#fb7185"/>
+  </g>
+</svg>
+
+<!-- Example 143 | errl_fest_beam_cross_01 (fx) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="fx" data-name="errl_fest_beam_cross_01">
+  <g fill="none">
+    <path d="M14 46 L50 18" stroke="#22d3ee" stroke-width="2.4" stroke-linecap="round" opacity="0.85"/>
+    <path d="M50 46 L14 18" stroke="#fb7185" stroke-width="2.4" stroke-linecap="round" opacity="0.85"/>
+  </g>
+</svg>
+
+<!-- Example 144 | errl_fest_beam_fan_vertical_01 (fx) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="fx" data-name="errl_fest_beam_fan_vertical_01">
+  <g fill="none">
+    <path d="M32 48 L20 20" stroke="#22d3ee" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+    <path d="M32 48 L26 18" stroke="#a855f7" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+    <path d="M32 48 L32 16" stroke="#facc15" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+    <path d="M32 48 L38 18" stroke="#fb7185" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+    <path d="M32 48 L44 20" stroke="#22d3ee" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+  </g>
+</svg>
+
+<!-- Example 145 | errl_fest_tent_icon_minimap_01 (ui) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="ui" data-name="errl_fest_tent_icon_minimap_01">
+  <g fill="none">
+    <rect x="24" y="24" width="16" height="16" rx="4" fill="#0f172a"/>
+    <path d="M26 36 L32 26 38 36 Z" fill="#22d3ee"/>
+    <path d="M32 26 L32 36" stroke="#0f172a" stroke-width="1.6" stroke-linecap="round" opacity="0.8"/>
+  </g>
+</svg>
+
+<!-- Example 146 | errl_fest_stage_icon_minimap_01 (ui) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="ui" data-name="errl_fest_stage_icon_minimap_01">
+  <g fill="none">
+    <rect x="24" y="24" width="16" height="16" rx="4" fill="#0f172a"/>
+    <rect x="26" y="32" width="12" height="4" rx="1.5" fill="#22d3ee"/>
+    <rect x="26" y="28" width="12" height="2" rx="1" fill="#111827"/>
+  </g>
+</svg>
+
+<!-- Example 147 | errl_fest_gate_icon_minimap_01 (ui) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="ui" data-name="errl_fest_gate_icon_minimap_01">
+  <g fill="none">
+    <rect x="24" y="24" width="16" height="16" rx="4" fill="#0f172a"/>
+    <rect x="26" y="28" width="3" height="10" rx="1.5" fill="#22d3ee"/>
+    <rect x="35" y="28" width="3" height="10" rx="1.5" fill="#22d3ee"/>
+    <path d="M27.5 28 C30 24.5 32 24 34.5 28" stroke="#facc15" stroke-width="1.4" stroke-linecap="round"/>
+  </g>
+</svg>
+
+<!-- Example 148 | errl_fest_stage_back_truss_01 (env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="env" data-name="errl_fest_stage_back_truss_01">
+  <g fill="none">
+    <rect x="12" y="20" width="8" height="24" rx="2" fill="#111827"/>
+    <rect x="44" y="20" width="8" height="24" rx="2" fill="#111827"/>
+    <path d="M16 22 L48 22" stroke="#22d3ee" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M16 30 L48 30" stroke="#22d3ee" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+    <path d="M16 38 L48 38" stroke="#22d3ee" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+  </g>
+</svg>
+
+<!-- Example 149 | errl_fest_deco_orb_ring_01 (fx) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="fx" data-name="errl_fest_deco_orb_ring_01">
+  <g fill="none">
+    <circle cx="32" cy="32" r="8" fill="#0f172a"/>
+    <circle cx="32" cy="32" r="5" fill="#22d3ee"/>
+    <circle cx="38" cy="26" r="2" fill="#fb7185"/>
+    <circle cx="26" cy="38" r="2" fill="#facc15"/>
+  </g>
+</svg>
+
+<!-- Example 150 | errl_fest_text_pillar_01 (env/ui) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="env" data-name="errl_fest_text_pillar_01">
+  <g fill="none">
+    <rect x="26" y="20" width="12" height="26" rx="3" fill="#111827"/>
+    <rect x="28" y="22" width="8" height="3" rx="1.5" fill="#22d3ee" opacity="0.9"/>
+    <rect x="28" y="27" width="8" height="2" rx="1" fill="#4b5563"/>
+    <rect x="28" y="31" width="8" height="2" rx="1" fill="#4b5563"/>
+    <rect x="28" y="35" width="8" height="2" rx="1" fill="#4b5563"/>
+    <ellipse cx="32" cy="48" rx="9" ry="2.4" fill="#020617" opacity="0.45"/>
+  </g>
+</svg>
+
+<!-- Example 151 | errl_fest_ground_path_curve_01 (env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="env" data-name="errl_fest_ground_path_curve_01">
+  <g fill="none">
+    <path d="M14 46 C22 44 28 40 32 36 C36 32 42 30 50 30" stroke="#a16207" stroke-width="3" stroke-linecap="round" opacity="0.95"/>
+    <path d="M16 46 C22 44 28 42 32 38 C36 34 42 32 48 32" stroke="#f97316" stroke-width="1.6" stroke-linecap="round" opacity="0.8"/>
+  </g>
+</svg>
+
+<!-- Example 152 | errl_fest_barrel_ice_bucket_01 (prop) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="prop" data-name="errl_fest_barrel_ice_bucket_01">
+  <g fill="none">
+    <ellipse cx="32" cy="30" rx="8" ry="3" fill="#0f172a"/>
+    <rect x="24" y="30" width="16" height="8" rx="3" fill="#111827"/>
+    <ellipse cx="32" cy="30" rx="6" ry="2" fill="#e5e7eb" opacity="0.85"/>
+    <ellipse cx="32" cy="40" rx="8" ry="3" fill="#111827" opacity="0.9"/>
+  </g>
+</svg>
+
+<!-- Example 153 | errl_fest_path_arrow_stack_01 (ui/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="ui" data-name="errl_fest_path_arrow_stack_01">
+  <g fill="none">
+    <ellipse cx="32" cy="46" rx="14" ry="3.4" fill="#020617"/>
+    <path d="M32 38 L28 42 H30.5 V46 H33.5 V42 H36 Z" fill="#22d3ee"/>
+    <path d="M32 34 L28 38 H30.2 V40 H33.8 V38 H36 Z" fill="#fb7185"/>
+  </g>
+</svg>
+
+<!-- Example 154 | errl_fest_tree_rope_banner_01 (env/fx) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="env" data-name="errl_fest_tree_rope_banner_01">
+  <g fill="none">
+    <rect x="14" y="26" width="4" height="18" rx="2" fill="#166534"/>
+    <rect x="46" y="26" width="4" height="18" rx="2" fill="#166534"/>
+    <path d="M18 28 C24 24 40 24 46 28" stroke="#e5e7eb" stroke-width="1.4" stroke-linecap="round"/>
+    <path d="M22 29 L26 33 L30 29 Z" fill="#22d3ee"/>
+    <path d="M34 29 L38 33 L42 29 Z" fill="#fb7185"/>
+  </g>
+</svg>
+
+<!-- Example 155 | errl_fest_small_stage_box_01 (env/prop) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="env" data-name="errl_fest_small_stage_box_01">
+  <g fill="none">
+    <rect x="20" y="36" width="24" height="6" rx="2" fill="#020617"/>
+    <rect x="22" y="34" width="20" height="3" rx="1.5" fill="#111827"/>
+  </g>
+</svg>
+
+<!-- Example 156 | errl_fest_small_stage_box_light_01 (env/fx) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="fx" data-name="errl_fest_small_stage_box_light_01">
+  <g fill="none">
+    <rect x="20" y="36" width="24" height="6" rx="2" fill="#020617"/>
+    <rect x="22" y="34" width="20" height="3" rx="1.5" fill="#22d3ee"/>
+    <circle cx="26" cy="37" r="0.9" fill="#facc15"/>
+    <circle cx="38" cy="37" r="0.9" fill="#a855f7"/>
+  </g>
+</svg>
+
+<!-- Example 157 | errl_fest_exit_pylon_01 (ui/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="ui" data-name="errl_fest_exit_pylon_01">
+  <g fill="none">
+    <rect x="28" y="26" width="8" height="18" rx="2" fill="#111827"/>
+    <rect x="26" y="24" width="12" height="4" rx="2" fill="#f97316"/>
+    <path d="M30 32 H35" stroke="#facc15" stroke-width="1.6" stroke-linecap="round"/>
+    <path d="M35 30 L38 32 L35 34 Z" fill="#facc15"/>
+    <ellipse cx="32" cy="46" rx="8" ry="2.4" fill="#020617" opacity="0.45"/>
+  </g>
+</svg>
+
+<!-- Example 158 | errl_fest_first_aid_pylon_01 (ui/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="ui" data-name="errl_fest_first_aid_pylon_01">
+  <g fill="none">
+    <rect x="28" y="26" width="8" height="18" rx="2" fill="#111827"/>
+    <rect x="26" y="24" width="12" height="4" rx="2" fill="#22c55e"/>
+    <rect x="30" y="30" width="4" height="1.8" rx="0.9" fill="#facc15"/>
+    <rect x="31.1" y="28.6" width="1.8" height="4" rx="0.9" fill="#facc15"/>
+    <ellipse cx="32" cy="46" rx="8" ry="2.4" fill="#020617" opacity="0.45"/>
+  </g>
+</svg>
+
+<!-- Example 159 | errl_fest_info_ribbon_01 (ui/fx) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="ui" data-name="errl_fest_info_ribbon_01">
+  <g fill="none">
+    <path d="M18 26 H46 a3 3 0 0 1 3 3 V34 L46 32 43 34 40 32 37 34 34 32 31 34 28 32 25 34 22 32 18 34 V29 a3 3 0 0 1 3-3z" fill="#22d3ee"/>
+  </g>
+</svg>
+
+<!-- Example 160 | errl_fest_badge_staff_lanyard_01 (ui) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_fest" data-cat="ui" data-name="errl_fest_badge_staff_lanyard_01">
+  <g fill="none">
+    <path d="M24 14 L32 24 L40 14" stroke="#e5e7eb" stroke-width="1.6" stroke-linecap="round"/>
+    <rect x="26" y="24" width="12" height="14" rx="2" fill="#111827"/>
+    <rect x="28" y="26" width="8" height="6" rx="1.5" fill="#fb7185"/>
+    <rect x="28" y="34" width="8" height="2.5" rx="1.2" fill="#0f172a"/>
+  </g>
+</svg></svg>

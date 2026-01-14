@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <radialGradient id="halo" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#5be0ff" stop-opacity="0.6" />
+      <stop offset="100%" stop-color="#0c0e18" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+  <rect x="0" y="0" width="1024" height="1024" fill="#0c0e18" />
+  <circle id="BG_halo" cx="512" cy="340" r="320" fill="url(#halo)" />
+  <g id="BG_wall" fill="none" stroke="#5be0ff" stroke-width="8" opacity="0.2">
+    <circle cx="512" cy="340" r="260" />
+    <path d="M200 520h624" />
+  </g>
+</svg>

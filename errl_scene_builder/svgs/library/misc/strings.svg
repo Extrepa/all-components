@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" id="icon-hyadjrg2s">
+  <g xmlns="http://www.w3.org/2000/svg" fill="none">
+    <!-- strings -->
+    <path d="M26 30 C24 36 24 42 26 48" stroke="#e5e7eb" stroke-width="1" stroke-linecap="round"/>
+    <path d="M32 28 C31 35 31 42 32 48" stroke="#e5e7eb" stroke-width="1" stroke-linecap="round"/>
+    <path d="M38 30 C40 36 40 42 38 48" stroke="#e5e7eb" stroke-width="1" stroke-linecap="round"/>
+    <!-- balloons -->
+    <ellipse cx="26" cy="26" rx="4" ry="5.5" fill="#fb7185"/>
+    <ellipse cx="32" cy="24" rx="4.5" ry="6" fill="#22d3ee"/>
+    <ellipse cx="38" cy="26" rx="4" ry="5.5" fill="#facc15"/>
+  </g>
+</svg>

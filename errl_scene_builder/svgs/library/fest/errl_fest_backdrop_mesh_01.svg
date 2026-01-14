@@ -1,0 +1,10 @@
+<!-- Example 174 | errl_fest_backdrop_mesh_01 (fx/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="fx" data-name="errl_fest_backdrop_mesh_01">
+  <g fill="none">
+    <rect x="16" y="18" width="32" height="20" rx="2" fill="#020617"/>
+    <path d="M18 20 L46 36 M18 24 L46 40 M18 28 L46 44
+             M22 18 L38 38 M18 32 L42 18"
+      stroke="#111827" stroke-width="1.2" stroke-linecap="round" opacity="0.7"/>
+  </g>
+</svg>

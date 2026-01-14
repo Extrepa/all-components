@@ -1,0 +1,8 @@
+<!-- Example 197 | errl_fest_gate_link_chain_01 (fx/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="fx" data-name="errl_fest_gate_link_chain_01">
+  <g fill="none">
+    <path d="M22 36 C26 34 30 34 34 36 C38 38 42 38 46 36"
+      stroke="#4b5563" stroke-width="1.8" stroke-linecap="round"/>
+  </g>
+</svg>

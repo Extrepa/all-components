@@ -1,0 +1,114 @@
+# User Guide
+
+**Project:** [Project Name]  
+**Last Updated:** [Date]
+
+## Overview
+
+[Brief overview of what users can do with this project]
+
+## Getting Started
+
+### Installation
+
+```bash
+# Installation steps
+npm install
+```
+
+### Quick Start
+
+```bash
+# Quick start command
+npm run dev
+```
+
+## Features
+
+### [Feature Name]
+**Description:** [What this feature does]
+
+**How to Use:**
+1. [Step 1]
+2. [Step 2]
+3. [Step 3]
+
+**Example:**
+```typescript
+// Example code or usage
+```
+
+### [Feature Name]
+**Description:** [What this feature does]
+
+**How to Use:**
+1. [Step 1]
+2. [Step 2]
+
+## Common Workflows
+
+### [Workflow Name]
+**Purpose:** [What this workflow accomplishes]
+
+**Steps:**
+1. [Step 1]
+2. [Step 2]
+3. [Step 3]
+
+**Tips:**
+- [Tip 1]
+- [Tip 2]
+
+### [Workflow Name]
+**Purpose:** [What this workflow accomplishes]
+
+**Steps:**
+1. [Step 1]
+2. [Step 2]
+
+## Configuration
+
+### Settings
+
+- **[Setting Name]**: [Description]
+  - Default: [Default value]
+  - Options: [Available options]
+
+- **[Setting Name]**: [Description]
+  - Default: [Default value]
+  - Options: [Available options]
+
+### Environment Variables
+
+- `VARIABLE_NAME` - [Description]
+- `VARIABLE_NAME` - [Description]
+
+## Troubleshooting
+
+### Common Issues
+
+**Issue:** [Problem description]  
+**Solution:** [How to fix it]
+
+**Issue:** [Problem description]  
+**Solution:** [How to fix it]
+
+## Best Practices
+
+- [Best practice 1]
+- [Best practice 2]
+- [Best practice 3]
+
+## FAQ
+
+**Q: [Question]**  
+A: [Answer]
+
+**Q: [Question]**  
+A: [Answer]
+
+## Related Documentation
+
+- [Developer Guide](developer-guide.md.template)
+- [API Documentation](api.md) (if applicable)
+- [Troubleshooting Guide](troubleshooting.md.template)

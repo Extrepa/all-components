@@ -1,0 +1,13 @@
+<!-- errl_weather_drizzle_01 – tiny sparse drops (fx) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_weather" data-cat="fx" data-name="errl_weather_drizzle_01">
+  <g fill="none">
+    <circle cx="26" cy="30" r="4.5" fill="#e5e7eb"/>
+    <circle cx="34" cy="28" r="5" fill="#e5e7eb"/>
+    <circle cx="42" cy="30" r="4.5" fill="#e5e7eb"/>
+    <rect x="24" y="30" width="20" height="4" rx="2" fill="#e5e7eb"/>
+    <circle cx="26" cy="37" r="0.9" fill="#38bdf8"/>
+    <circle cx="32" cy="39" r="0.9" fill="#38bdf8"/>
+    <circle cx="38" cy="37" r="0.9" fill="#38bdf8"/>
+  </g>
+</svg>

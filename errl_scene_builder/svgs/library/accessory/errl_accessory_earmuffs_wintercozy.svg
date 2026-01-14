@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_accessory" data-cat="wearable" data-name="errl_accessory_earmuffs_wintercozy">
+  <rect width="64" height="64" rx="12" fill="none"/>
+  <path d="M18 30c3-10 9-16 14-16s11 6 14 16" fill="none" stroke="#8ed8ff" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="16" cy="34" r="9" fill="#0d2330" stroke="#8ed8ff" stroke-width="2"/>
+  <circle cx="48" cy="34" r="9" fill="#0d2330" stroke="#8ed8ff" stroke-width="2"/>
+  <circle cx="16" cy="34" r="5" fill="#8ed8ff"/>
+  <circle cx="48" cy="34" r="5" fill="#8ed8ff"/>
+</svg>

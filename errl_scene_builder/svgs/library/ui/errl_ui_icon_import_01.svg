@@ -1,0 +1,9 @@
+<!-- errl_ui_icon_import_01 – arrow into box (ui/tool) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_ui" data-cat="ui" data-name="errl_ui_icon_import_01">
+  <g fill="none">
+    <rect x="22" y="30" width="20" height="10" rx="2" fill="#0f172a"/>
+    <path d="M32 26 L32 36" stroke="#22d3ee" stroke-width="1.6" stroke-linecap="round"/>
+    <path d="M28 32 L32 36 L36 32 Z" fill="#22d3ee"/>
+  </g>
+</svg>

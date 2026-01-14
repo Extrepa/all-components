@@ -1,0 +1,11 @@
+<!-- 41) errl_woods_vine_02 – ground creeper vine (prop/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="prop" data-name="errl_woods_vine_02">
+  <g fill="none">
+    <path d="M8 46 C16 44 22 44 30 46c8 2 14 2 26-2"
+      stroke="#166534" stroke-width="2" stroke-linecap="round" fill="none"/>
+    <path d="M16 44 L18 48 L14 48 Z" fill="#22c55e"/>
+    <path d="M28 45 L30 49 L26 49 Z" fill="#22c55e"/>
+    <path d="M44 44 L46 48 L42 48 Z" fill="#4ade80"/>
+  </g>
+</svg>

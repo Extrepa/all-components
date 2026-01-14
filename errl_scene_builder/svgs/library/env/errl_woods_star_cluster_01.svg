@@ -1,0 +1,10 @@
+<!-- 95) errl_woods_star_cluster_01 – treetop stars (fx/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="fx" data-name="errl_woods_star_cluster_01">
+  <g fill="none">
+    <rect x="8" y="8" width="48" height="32" rx="10" fill="#020617"/>
+    <path d="M22 16l1.2 2.4 2.4 1.2-2.4 1.2-1.2 2.4-1.2-2.4-2.4-1.2 2.4-1.2z" fill="#facc15"/>
+    <path d="M34 12l1 2 2 1-2 1-1 2-1-2-2-1 2-1z" fill="#fbbf24"/>
+    <circle cx="44" cy="18" r="1.4" fill="#facc15"/>
+  </g>
+</svg>

@@ -1,0 +1,22 @@
+<!-- errl_concert_stage_main_01 – wide concert stage (env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_concert" data-cat="env" data-name="errl_concert_stage_main_01">
+  <g fill="none">
+    <!-- deck -->
+    <rect x="8" y="38" width="48" height="6" rx="2" fill="#020617"/>
+    <!-- front fascia -->
+    <rect x="8" y="44" width="48" height="5" rx="2" fill="#0f172a"/>
+    <!-- back wall/screen -->
+    <rect x="12" y="20" width="40" height="16" rx="2" fill="#020617"/>
+    <rect x="14" y="22" width="36" height="12" rx="2" fill="#111827"/>
+    <!-- subtle gradient-ish split -->
+    <rect x="14" y="22" width="18" height="12" fill="#1e293b" opacity="0.7"/>
+    <rect x="32" y="22" width="18" height="12" fill="#020617" opacity="0.8"/>
+    <!-- little footlights -->
+    <circle cx="16" cy="46" r="1" fill="#22d3ee"/>
+    <circle cx="24" cy="46" r="1" fill="#a855f7"/>
+    <circle cx="32" cy="46" r="1" fill="#facc15"/>
+    <circle cx="40" cy="46" r="1" fill="#22d3ee"/>
+    <circle cx="48" cy="46" r="1" fill="#a855f7"/>
+  </g>
+</svg>

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_accessory" data-cat="wearable" data-name="errl_accessory_scarf_wintercozy">
+  <rect width="64" height="64" rx="12" fill="none"/>
+  <path d="M14 30c4-6 11-10 18-10s14 4 18 10c0 8-8 12-18 12s-18-4-18-12z" fill="#0d2330" stroke="#8ed8ff" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M22 38v14l-6-3v-12" fill="#123345" stroke="#8ed8ff" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M42 36v16l6-4V36" fill="#123345" stroke="#8ed8ff" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M18 36h28" stroke="#ff8db9" stroke-width="2" stroke-linecap="round" stroke-dasharray="4 4"/>
+</svg>

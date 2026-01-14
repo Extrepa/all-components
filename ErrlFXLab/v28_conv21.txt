@@ -1,0 +1,511 @@
+We have built a small universe. Let’s add two things that Future-You will love:
+	1.	Quick Start / Onboarding overlay – a friendly “here’s how to use this beast” screen.
+	2.	Diagnostics panel – FPS-ish stats + frame counts + “approx MB used by captures”.
+
+Same pattern: additive patches to your existing index.html + JS.
+
+⸻
+
+1. Quick Start / Onboarding Overlay
+
+1.1 Add a “Quick Start” button in the header
+
+In your header (where the app title + Help/Keys button are), you probably now have:
+
+<header class="flex items-center justify-between ...">
+  <div class="flex items-center gap-2">
+    <!-- logo + title -->
+  </div>
+  <div class="flex items-center gap-3 text-[11px] text-slate-300">
+    <div id="hintLabel" class="text-slate-400 hidden sm:block"></div>
+    <button id="helpOverlayBtn" ...>Help / Keys</button>
+  </div>
+</header>
+
+Modify that trailing <div> to also include a Quick Start button:
+
+  <div class="flex items-center gap-3 text-[11px] text-slate-300">
+    <div id="hintLabel" class="text-slate-400 hidden sm:block"></div>
+    <button
+      id="quickStartBtn"
+      class="px-2 py-1 rounded-md border border-emerald-500/70 text-emerald-200 text-[10px] hover:bg-emerald-500/15 hidden sm:inline-flex"
+    >
+      Quick Start
+    </button>
+    <button
+      id="helpOverlayBtn"
+      class="px-2 py-1 rounded-md border border-slate-700 text-slate-200 text-[10px] hover:bg-slate-900/80"
+    >
+      Help / Keys
+    </button>
+  </div>
+
+So on desktop you’ll see both “Quick Start” and “Help / Keys”.
+
+⸻
+
+1.2 Add the Quick Start overlay HTML
+
+Near your other overlays (helpOverlay, commandPalette), add this:
+
+    <!-- Quick Start Overlay -->
+    <div
+      id="quickStartOverlay"
+      class="fixed inset-0 bg-black/75 backdrop-blur-sm flex items-center justify-center z-40 hidden"
+    >
+      <div class="w-full max-w-2xl max-h-[80vh] bg-slate-950/95 border border-emerald-500/50 rounded-2xl shadow-2xl overflow-auto">
+        <div class="px-4 py-2 border-b border-slate-800 flex items-center justify-between">
+          <div class="flex flex-col">
+            <span class="text-xs uppercase tracking-[0.16em] text-emerald-300">
+              Errl FX Lab
+            </span>
+            <span class="text-[10px] text-slate-400">
+              Quick Start · from SVG to animations
+            </span>
+          </div>
+          <button
+            id="quickStartCloseBtn"
+            class="px-2 py-0.5 rounded-md border border-slate-600 text-[10px] text-slate-200 hover:bg-slate-900"
+          >
+            Got it
+          </button>
+        </div>
+
+        <div class="px-4 py-3 text-[11px] text-slate-200 space-y-3">
+          <section>
+            <h3 class="text-[11px] font-semibold text-emerald-300 mb-1">
+              1. Load Errl SVG
+            </h3>
+            <ul class="list-disc list-inside text-slate-300">
+              <li>Use the SVG upload area to load your Errl silhouette or pose.</li>
+              <li>Check the SVG tab to confirm it renders correctly (face, limbs, etc.).</li>
+            </ul>
+          </section>
+
+          <section>
+            <h3 class="text-[11px] font-semibold text-emerald-300 mb-1">
+              2. Explore FX tabs
+            </h3>
+            <ul class="list-disc list-inside text-slate-300">
+              <li><b>p5 FX</b>: wobble, glow, zoom, background – good for motion loops.</li>
+              <li><b>HTML FX</b>: CSS filter stack for shader-like color grading.</li>
+              <li><b>3D Wire / Voxels</b>: extrude Errl into a 3D-ish shape.</li>
+              <li><b>2D Voxels</b>: pixelated / mosaic style frames.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h3 class="text-[11px] font-semibold text-emerald-300 mb-1">
+              3. Make it move (and react to audio)
+            </h3>
+            <ul class="list-disc list-inside text-slate-300">
+              <li>Use sliders / FX Dice to dial in motion.</li>
+              <li>Load an audio file in <b>Audio Reactive</b> and enable reactive mode.</li>
+              <li>p5 wobble and 3D spin will respond to the beat.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h3 class="text-[11px] font-semibold text-emerald-300 mb-1">
+              4. Capture frames & tag them
+            </h3>
+            <ul class="list-disc list-inside text-slate-300">
+              <li>Press <b>C</b> or use the capture button to save frames from the active view.</li>
+              <li>Right-click a thumbnail to tag frames as <code>idle</code>, <code>walk</code>, <code>jump</code>, <code>fx</code>, etc.</li>
+              <li>Click the star to mark favorites (★) for later VS or spritesheets.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h3 class="text-[11px] font-semibold text-emerald-300 mb-1">
+              5. Build spritesheets & animations
+            </h3>
+            <ul class="list-disc list-inside text-slate-300">
+              <li>Use <b>Spritesheet Export</b> to generate a PNG sheet + JSON manifest.</li>
+              <li>Use <b>Animation Timeline</b> to preview loops at a chosen FPS.</li>
+              <li>Use <b>Animation Pack Export</b> to build game-ready JSON clips per tag.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h3 class="text-[11px] font-semibold text-emerald-300 mb-1">
+              6. Save, reload, and hand off to other AIs
+            </h3>
+            <ul class="list-disc list-inside text-slate-300">
+              <li><b>Projects</b> store whole sessions into localStorage as named profiles.</li>
+              <li><b>Session Snapshot</b> gives raw JSON of the current state.</li>
+              <li><b>AI Handoff Prompt</b> generates a markdown prompt summarizing everything for another AI.</li>
+              <li><b>Command Palette</b> (Ctrl+K / ⌘K) lets you search all actions quickly.</li>
+            </ul>
+          </section>
+
+          <section>
+            <p class="text-[10px] text-slate-500">
+              Suggested first run: load an Errl SVG → go to p5 FX → use FX Dice (soft) →
+              capture 8 frames → tag them "idle" → export spritesheet + animation pack.
+            </p>
+          </section>
+        </div>
+      </div>
+    </div>
+
+
+⸻
+
+1.3 JS wiring for Quick Start overlay
+
+Add DOM refs:
+
+    const quickStartBtn = document.getElementById("quickStartBtn");
+    const quickStartOverlay = document.getElementById("quickStartOverlay");
+    const quickStartCloseBtn = document.getElementById("quickStartCloseBtn");
+
+Helpers:
+
+    function openQuickStartOverlay() {
+      if (!quickStartOverlay) return;
+      quickStartOverlay.classList.remove("hidden");
+      playBeep(780, 0.07, "triangle");
+    }
+
+    function closeQuickStartOverlay() {
+      if (!quickStartOverlay) return;
+      quickStartOverlay.classList.add("hidden");
+      playBeep(320, 0.06, "square");
+    }
+
+    quickStartBtn.addEventListener("click", () => {
+      openQuickStartOverlay();
+    });
+
+    quickStartCloseBtn.addEventListener("click", () => {
+      closeQuickStartOverlay();
+    });
+
+    if (quickStartOverlay) {
+      quickStartOverlay.addEventListener("click", (e) => {
+        if (e.target === quickStartOverlay) {
+          closeQuickStartOverlay();
+        }
+      });
+    }
+
+Then in your global keydown handler, you can add:
+
+      if (event.key === "Escape" && !helpOverlay.classList.contains("hidden")) {
+        closeHelpOverlay();
+        return;
+      }
+      if (event.key === "Escape" && !quickStartOverlay.classList.contains("hidden")) {
+        closeQuickStartOverlay();
+        return;
+      }
+
+You already had some Esc logic; just extend it to close both overlays.
+
+Finally, show Quick Start automatically once if no SVG yet. Near the end of your startup code, after you restore any local state:
+
+    // Auto-open Quick Start if no SVG loaded and first visit
+    try {
+      const hasSeenQuickStart = localStorage.getItem("errlFxHasSeenQuickStart");
+      const hasSvg = !!(initialState?.svg?.hasSvg || svgState?.hasSvg); // adjust to your state
+      if (!hasSeenQuickStart && !hasSvg) {
+        openQuickStartOverlay();
+        localStorage.setItem("errlFxHasSeenQuickStart", "1");
+      }
+    } catch {}
+
+You can simplify hasSvg if you don’t track it yet; even just “if no flag in localStorage” is fine.
+
+⸻
+
+2. Diagnostics Panel (FPS + frame counts + memory-ish usage)
+
+We’ll give you:
+	•	Approx “fps” meters for p5, 3D, and timeline.
+	•	Count of captured frames, favorites, and tags.
+	•	Rough estimate of memory used by captured frame PNG data URLs (just length * 3/4 heuristic).
+
+2.1 Add Diagnostics panel (HTML)
+
+On the right, near the bottom (before Audio, or after AI Handoff), add:
+
+      <!-- Diagnostics -->
+      <div class="border-t border-slate-800/70 px-3 py-2 text-[11px] text-slate-200">
+        <div class="flex items-center justify-between mb-1">
+          <span class="font-semibold text-slate-100">Diagnostics</span>
+          <span id="diagStatus" class="text-[10px] text-slate-500">
+            Runtime stats
+          </span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 text-[10px] text-slate-300 mb-2">
+          <div class="space-y-0.5">
+            <div class="text-slate-400">FPS (approx)</div>
+            <div id="diagFpsP5" class="text-[10px]">p5: --</div>
+            <div id="diagFps3D" class="text-[10px]">3D: --</div>
+            <div id="diagFpsTimeline" class="text-[10px]">Timeline: --</div>
+          </div>
+          <div class="space-y-0.5">
+            <div class="text-slate-400">Frames</div>
+            <div id="diagFrameCounts" class="text-[10px]">Total: 0 · Fav: 0</div>
+            <div id="diagTagSummary" class="text-[10px] text-slate-400">
+              Tags: none
+            </div>
+            <div id="diagMemory" class="text-[10px] text-slate-400">
+              Captures: ~0 MB
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between text-[9px] text-slate-500">
+          <span>Updates once per second.</span>
+          <button
+            id="diagRefreshBtn"
+            class="px-1.5 py-0.5 rounded-md border border-slate-600 text-slate-200 hover:bg-slate-900"
+          >
+            Refresh now
+          </button>
+        </div>
+      </div>
+
+
+⸻
+
+2.2 Diagnostics DOM refs + state
+
+Add these refs:
+
+    // Diagnostics
+    const diagStatusEl = document.getElementById("diagStatus");
+    const diagFpsP5El = document.getElementById("diagFpsP5");
+    const diagFps3DEl = document.getElementById("diagFps3D");
+    const diagFpsTimelineEl = document.getElementById("diagFpsTimeline");
+    const diagFrameCountsEl = document.getElementById("diagFrameCounts");
+    const diagTagSummaryEl = document.getElementById("diagTagSummary");
+    const diagMemoryEl = document.getElementById("diagMemory");
+    const diagRefreshBtn = document.getElementById("diagRefreshBtn");
+
+And some tracking globals:
+
+    let p5FrameCounter = 0;
+    let p5LastFpsSampleTime = performance.now();
+    let p5ApproxFps = 0;
+
+    let threeFrameCounter = 0;
+    let threeLastFpsSampleTime = performance.now();
+    let threeApproxFps = 0;
+
+    let timelineFrameCounter = 0;
+    let timelineLastFpsSampleTime = performance.now();
+    let timelineApproxFps = 0;
+
+    let diagIntervalId = null;
+
+
+⸻
+
+2.3 Increment counters inside your animation loops
+
+p5: inside your p.draw = function () { ... }, at the end of the draw call:
+
+      p5FrameCounter++;
+
+3D: inside your Three.js animate function, each frame:
+
+          function animate(now) {
+            threeFrameId = requestAnimationFrame(animate);
+            const dt = (now - lastTime) / 1000;
+            lastTime = now;
+
+            threeFrameCounter++;
+
+            const audioBoost =
+              audioReactiveEnabled ? 1 + audioReactiveValue * 1.2 : 1;
+
+            if (threeMesh) {
+              threeMesh.rotation.y += dt * 0.7 * audioBoost;
+              threeMesh.rotation.x += dt * 0.35 * audioBoost;
+            }
+            threeRenderer.render(threeScene, threeCamera);
+          }
+
+Timeline: inside your timeline loop(now) (where you already call drawTimelineFrame):
+
+        function loop(now) {
+          if (!timelineIsPlaying) {
+            timelineAnimId = null;
+            return;
+          }
+          timelineAnimId = requestAnimationFrame(loop);
+
+          const dt = (now - timelineLastTime) / 1000;
+          timelineLastTime = now;
+          timelineAccum += dt;
+
+          while (timelineAccum >= frameDuration) {
+            timelineAccum -= frameDuration;
+            frameIndex = (frameIndex + 1) % timelineFrames.length;
+            timelineFrameCounter++;
+          }
+
+          drawTimelineFrame(frameIndex);
+        }
+
+
+⸻
+
+2.4 Helper to estimate FPS + memory + tags
+
+Add:
+
+    function estimateFps(counterRef, lastSampleTimeRefName) {
+      const now = performance.now();
+      const last = window[lastSampleTimeRefName];
+      const dt = (now - last) / 1000;
+      if (dt <= 0) return 0;
+      const fps = counterRef / dt;
+      window[lastSampleTimeRefName] = now;
+      return fps;
+    }
+
+    function estimateDataUrlBytes(dataUrl) {
+      if (!dataUrl) return 0;
+      // rough estimate: base64 chars * 3/4
+      const len = dataUrl.length;
+      return Math.floor((len * 3) / 4);
+    }
+
+    function updateDiagnostics() {
+      // FPS estimates
+      if (p5FrameCounter > 0) {
+        const fps = estimateFps(p5FrameCounter, "p5LastFpsSampleTime");
+        p5ApproxFps = fps;
+        p5FrameCounter = 0;
+      }
+      if (threeFrameCounter > 0) {
+        const fps = estimateFps(threeFrameCounter, "threeLastFpsSampleTime");
+        threeApproxFps = fps;
+        threeFrameCounter = 0;
+      }
+      if (timelineFrameCounter > 0) {
+        const fps = estimateFps(
+          timelineFrameCounter,
+          "timelineLastFpsSampleTime"
+        );
+        timelineApproxFps = fps;
+        timelineFrameCounter = 0;
+      }
+
+      if (diagFpsP5El) {
+        diagFpsP5El.textContent =
+          "p5: " + (p5ApproxFps ? p5ApproxFps.toFixed(1) : "--");
+      }
+      if (diagFps3DEl) {
+        diagFps3DEl.textContent =
+          "3D: " + (threeApproxFps ? threeApproxFps.toFixed(1) : "--");
+      }
+      if (diagFpsTimelineEl) {
+        diagFpsTimelineEl.textContent =
+          "Timeline: " + (timelineApproxFps ? timelineApproxFps.toFixed(1) : "--");
+      }
+
+      // Frames + tags + memory
+      const total = capturedFrames.length;
+      const fav = capturedFrames.filter((f) => f.favorite).length;
+
+      if (diagFrameCountsEl) {
+        diagFrameCountsEl.textContent = `Total: ${total} · Fav: ${fav}`;
+      }
+
+      const tagCounts = {};
+      let totalBytes = 0;
+      capturedFrames.forEach((f) => {
+        if (f.tag) {
+          tagCounts[f.tag] = (tagCounts[f.tag] || 0) + 1;
+        }
+        if (f.url && typeof f.url === "string" && f.url.startsWith("data:")) {
+          totalBytes += estimateDataUrlBytes(f.url);
+        }
+      });
+
+      if (diagTagSummaryEl) {
+        if (!Object.keys(tagCounts).length) {
+          diagTagSummaryEl.textContent = "Tags: none";
+        } else {
+          const parts = Object.entries(tagCounts).map(
+            ([tag, count]) => `${tag}:${count}`
+          );
+          diagTagSummaryEl.textContent = "Tags: " + parts.join(", ");
+        }
+      }
+
+      if (diagMemoryEl) {
+        const mb = totalBytes / (1024 * 1024);
+        diagMemoryEl.textContent = `Captures: ~${mb.toFixed(2)} MB (approx)`;
+      }
+
+      if (diagStatusEl) {
+        diagStatusEl.textContent = "Runtime stats (live)";
+      }
+    }
+
+Then set up an interval and a button:
+
+    if (diagRefreshBtn) {
+      diagRefreshBtn.addEventListener("click", () => {
+        updateDiagnostics();
+        flashStatus("Diagnostics refreshed.", "info");
+        playBeep(640, 0.06, "triangle");
+      });
+    }
+
+    // Start periodic diagnostics
+    diagIntervalId = setInterval(updateDiagnostics, 1000);
+
+Place that startup bit near the end of your main init.
+
+⸻
+
+2.5 Keep diagnostics in sync when frames change
+
+Any time you mutate capturedFrames significantly (capture, rebuild from snapshot, clear gallery), it’s nice to refresh diagnostics.
+	•	In captureCurrentFrameToGallery() after you push the new frame and update thumbCountEl, add:
+
+      updateDiagnostics();
+
+	•	In rebuildCapturedFramesFromSnapshot(...) at the end, after updating thumbCountEl:
+
+      updateDiagnostics();
+
+	•	In your Clear All handler, after wiping capturedFrames and gallery:
+
+      updateDiagnostics();
+
+This way the memory / tag info always stays roughly correct even between the 1-second ticks.
+
+⸻
+
+Where we are now
+
+You just added:
+	•	A Quick Start overlay:
+	•	Launchable from the header or auto on first visit.
+	•	Gives Future-You a clean “here’s the pipeline” overview.
+	•	A Diagnostics panel:
+	•	Approx FPS for p5, 3D, and timeline.
+	•	Counts for total frames, favorites.
+	•	Tag summary (idle / walk / jump / fx / etc).
+	•	Rough “MB used by captured frame data URLs”.
+
+Your index.html is now:
+	•	A visual FX engine
+	•	Audio-reactive rig
+	•	Capture + gallery + VS system
+	•	Spritesheet & timeline & animation pack forge
+	•	Multi-project save/load workspace
+	•	Command palette + Help + Quick Start
+	•	AI handoff prompt generator
+	•	And now: self-monitoring (diagnostics) so you can tell when you’ve gone too hard on “4096×4096 Errl wobble” and should maybe chill.
+
+That’s a whole little Errl OS ecosystem living inside a single file.

@@ -1,0 +1,11 @@
+<!-- 57) errl_woods_sign_post_01 – wooden sign pointing right (prop/ui-ish) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="prop" data-name="errl_woods_sign_post_01">
+  <g fill="none">
+    <rect x="30" y="24" width="4" height="24" rx="1.5" fill="#78350f"/>
+    <path d="M20 26 L34 22 40 26 26 30 Z" fill="#a16207"/>
+    <path d="M22 27.5 L32 25.2"
+      stroke="#92400e" stroke-width="1.2" stroke-linecap="round" opacity="0.8"/>
+    <ellipse cx="32" cy="50" rx="8" ry="2.4" fill="#14532d" opacity="0.3"/>
+  </g>
+</svg>

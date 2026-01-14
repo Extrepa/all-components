@@ -1,0 +1,9 @@
+<!-- Example 139 | errl_fest_first_aid_icon_01 (ui) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_fest" data-cat="ui" data-name="errl_fest_first_aid_icon_01">
+  <g fill="none">
+    <rect x="24" y="24" width="16" height="16" rx="3" fill="#111827"/>
+    <rect x="29" y="28" width="6" height="2.4" rx="1.2" fill="#facc15"/>
+    <rect x="31.3" y="26.2" width="2.4" height="6" rx="1.2" fill="#facc15"/>
+  </g>
+</svg>

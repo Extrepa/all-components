@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_accessory" data-cat="wearable" data-name="errl_accessory_face_diamuertos">
+  <rect width="64" height="64" rx="12" fill="none"/>
+  <circle cx="32" cy="32" r="18" fill="#fff7f2" stroke="#e2b6a7" stroke-width="2"/>
+  <circle cx="22" cy="28" r="6" fill="#0f172a" stroke="#f87171" stroke-width="2"/>
+  <circle cx="42" cy="28" r="6" fill="#0f172a" stroke="#f87171" stroke-width="2"/>
+  <circle cx="22" cy="28" r="2" fill="#fff"/>
+  <circle cx="42" cy="28" r="2" fill="#fff"/>
+  <path d="M20 38c4 4 8 5 12 5s8-1 12-5" fill="none" stroke="#f472b6" stroke-width="2" stroke-linecap="round"/>
+  <path d="M32 18l2 3-2 2-2-2z" fill="#34e1ff"/>
+  <circle cx="18" cy="22" r="1.5" fill="#facc15"/>
+  <circle cx="46" cy="22" r="1.5" fill="#facc15"/>
+  <path d="M16 44c3-3 10-3 16-3s13 0 16 3" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/>
+</svg>

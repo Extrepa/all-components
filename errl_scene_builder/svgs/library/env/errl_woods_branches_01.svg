@@ -1,0 +1,8 @@
+<!-- 36) errl_woods_branches_01 – bare branch (prop) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="prop" data-name="errl_woods_branches_01">
+  <g fill="none">
+    <path d="M12 44 C22 40 30 36 40 30 M28 36 L26 30 M34 34 L36 28 M20 40 L18 34"
+      stroke="#78350f" stroke-width="2" stroke-linecap="round" fill="none"/>
+  </g>
+</svg>

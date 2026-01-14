@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <g id="group_soft_glow" opacity="0.26">
+    <circle cx="512" cy="512" r="200" fill="#5be0ff" />
+  </g>
+  <g id="group_core">
+    <circle cx="512" cy="512" r="140" fill="#5be0ff" />
+    <circle cx="512" cy="512" r="140" fill="none" stroke="#101020" stroke-width="8" />
+  </g>
+  <g id="group_inner_noise" opacity="0.2" fill="#ffffff">
+    <circle cx="560" cy="470" r="14" />
+    <circle cx="440" cy="556" r="12" />
+    <circle cx="520" cy="580" r="10" />
+  </g>
+</svg>

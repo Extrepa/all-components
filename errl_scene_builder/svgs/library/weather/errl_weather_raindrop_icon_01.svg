@@ -1,0 +1,8 @@
+<!-- errl_weather_raindrop_icon_01 – single drop (fx/ui) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_weather" data-cat="fx" data-name="errl_weather_raindrop_icon_01">
+  <g fill="none">
+    <path d="M32 18 C28 24 26 28 26 31a6 6 0 0 0 12 0c0-3-2-7-6-13z"
+      fill="#0ea5e9"/>
+  </g>
+</svg>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrippyNeonSwirls_Gemini</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+    <style> body { margin: 0; padding: 0; overflow: hidden; background: #000; } canvas { display: block; } </style>
+</head>
+<body>
+    <script>
+let worms = [];
+let numWorms = 300;
+let noiseScale = 0.008;
+let time = 0;
+let symmetry = 8;
+let angleIncrement;
+let baseHue;
+
+function setup() {
+    createCanvas(800, 600);
+    colorMode(HSB, 360, 100, 100, 100);
+    angleMode(DEGREES);
+    background(0);
+    strokeWeight(1.5);
+    angleIncrement = 360 / symmetry;
+    baseHue = random(360);
+
+    for (let i = 0; i < numWorms; i++) {
+        worms.push(new Worm());
+    }
+}
+
+function draw() {
+    background(0, 0, 0, 3);
+
+    let pulse = sin(frameCount * 0.2) * 10;
+    let glowHue = (baseHue + frameCount * 0.1) % 360;
+    
+    for (let r = height; r > 0; r -= 30) {
+        fill(glowHue, 60, 20, 0.5);
+        noStroke();
+        ellipse(width / 2, height / 2, r + pulse, r + pulse);
+    }
+    
+    translate(width / 2, height / 2);
+
+    for (let w of worms) {
+        w.update();
+        w.display();
+    }
+
+    time += 0.01;
+    baseHue = (baseHue + 0.1) % 360;
+}
+
+
+class Worm {
+    constructor() {
+        this.reset();
+        this.hue = random(360);
+    }
+
+    reset() {
+        this.pos = p5.Vector.random2D();
+        this.pos.setMag(random(10, width / 4));
+        this.vel = createVector();
+        this.acc = createVector();
+        this.maxSpeed = random(1, 3);
+        this.history = [];
+    }
+
+    update() {
+        let angle = noise(this.pos.x * noiseScale, this.pos.y * noiseScale, time) * 360 * 6;
+        this.acc.x = cos(angle);
+        this.acc.y = sin(angle);
+        
+        this.vel.add(this.acc);
+        this.vel.limit(this.maxSpeed);
+        this.pos.add(this.vel);
+
+        this.history.push(this.pos.copy());
+        if (this.history.length > 50) {
+            this.history.splice(0, 1);
+        }
+        
+        if (this.pos.mag() > width / 1.8) {
+            this.reset();
+        }
+
+        let mouse = createVector(mouseX - width / 2, mouseY - height / 2);
+        let d = this.pos.dist(mouse);
+        if (d < 120) {
+            let repel = p5.Vector.sub(this.pos, mouse);
+            repel.setMag(map(d, 0, 120, 5, 0));
+            this.pos.add(repel);
+        }
+    }
+
+    display() {
+        let d = this.pos.mag();
+        let brightness = map(d, 0, width / 2, 100, 40);
+        let alpha = map(d, 0, width / 2, 90, 10);
+        let sat = map(sin(frameCount * 0.5 + this.hue), -1, 1, 70, 100);
+
+        let currentHue = (baseHue + this.hue + d * 0.2) % 360;
+        
+        for (let i = 0; i < symmetry; i++) {
+            push();
+            rotate(i * angleIncrement);
+            
+            noFill();
+            
+            // Draw mirrored trail for more complexity
+            stroke(currentHue, sat, brightness, alpha * 0.5);
+            beginShape();
+            for(let p of this.history) {
+                 vertex(p.x, -p.y);
+            }
+            endShape();
+
+            // Draw main trail
+            stroke(currentHue, sat, brightness, alpha);
+            strokeWeight(map(d, 0, width/2, 4, 1));
+            beginShape();
+            for(let p of this.history) {
+                 vertex(p.x, p.y);
+            }
+            endShape();
+            
+            pop();
+        }
+    }
+}
+
+function mousePressed() {
+    background(0);
+    worms = [];
+    for (let i = 0; i < numWorms; i++) {
+        worms.push(new Worm());
+    }
+}
+    </script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<!-- 31) errl_woods_flower_patch_01 – patch of 3–4 flowers (prop/env) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="prop" data-name="errl_woods_flower_patch_01">
+  <g fill="none">
+    <ellipse cx="32" cy="47" rx="14" ry="3.5" fill="#22c55e" opacity="0.5"/>
+    <path d="M24 44 V32" stroke="#166534" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M32 45 V30" stroke="#166534" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M40 44 V33" stroke="#166534" stroke-width="1.5" stroke-linecap="round"/>
+    <circle cx="24" cy="30" r="2.2" fill="#f97316"/>
+    <circle cx="32" cy="28" r="2.5" fill="#fb7185"/>
+    <circle cx="40" cy="31" r="2.2" fill="#22d3ee"/>
+    <circle cx="24" cy="30" r="0.8" fill="#fefce8"/>
+    <circle cx="32" cy="28" r="0.9" fill="#fefce8"/>
+    <circle cx="40" cy="31" r="0.8" fill="#fefce8"/>
+  </g>
+</svg>

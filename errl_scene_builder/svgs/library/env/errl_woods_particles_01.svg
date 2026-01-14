@@ -1,0 +1,13 @@
+<!-- 90) errl_woods_particles_01 – dust motes in sunbeam (fx) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="fx" data-name="errl_woods_particles_01">
+  <g fill="none">
+    <!-- soft beam -->
+    <path d="M20 16 L40 16 48 40 28 40 Z" fill="#facc15" opacity="0.08"/>
+    <!-- motes -->
+    <circle cx="28" cy="22" r="0.9" fill="#facc15" opacity="0.9"/>
+    <circle cx="34" cy="26" r="0.9" fill="#facc15" opacity="0.8"/>
+    <circle cx="30" cy="30" r="0.9" fill="#facc15" opacity="0.7"/>
+    <circle cx="38" cy="34" r="0.9" fill="#facc15" opacity="0.6"/>
+  </g>
+</svg>

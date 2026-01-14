@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <rect x="0" y="0" width="1024" height="1024" fill="#0c0e18" />
+  <g id="stars" fill="#f4f0ff" opacity="0.8">
+    <circle cx="120" cy="180" r="4" />
+    <circle cx="260" cy="120" r="3" />
+    <circle cx="420" cy="200" r="4" />
+    <circle cx="560" cy="140" r="3" />
+    <circle cx="720" cy="180" r="4" />
+    <circle cx="880" cy="140" r="3" />
+    <circle cx="200" cy="360" r="4" />
+    <circle cx="380" cy="340" r="3" />
+    <circle cx="560" cy="320" r="4" />
+    <circle cx="760" cy="360" r="3" />
+    <circle cx="940" cy="300" r="4" />
+    <circle cx="160" cy="520" r="3" />
+    <circle cx="360" cy="520" r="4" />
+    <circle cx="520" cy="500" r="3" />
+    <circle cx="700" cy="520" r="4" />
+    <circle cx="860" cy="520" r="3" />
+  </g>
+</svg>

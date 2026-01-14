@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Interactive Buddy</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            font-family: sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        #container {
+            position: relative;
+            width: 100%;
+            max-width: 80vh; /* Keeps 4:3 roughly within view */
+            aspect-ratio: 4/3;
+            background-color: #e0e5ec;
+            border-radius: 20px;
+            box-shadow: 
+                20px 20px 60px #bebebe, 
+                -20px -20px 60px #ffffff;
+            overflow: hidden;
+            cursor: crosshair;
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .instruction {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+            color: #889bb3;
+            font-size: 14px;
+            pointer-events: none;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="container">
+        <svg id="stage" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid meet">
+            <!-- Shadow -->
+            <ellipse id="shadow" cx="0" cy="0" rx="60" ry="15" fill="rgba(0,0,0,0.2)" style="opacity: 0;"/>
+            
+            <!-- The Buddy Group -->
+            <g id="buddy">
+                <!-- Body -->
+                <path id="body-path" fill="#312b75" d="" />
+                
+                <!-- Face Group -->
+                <g id="face">
+                    <!-- Face Base -->
+                    <ellipse cx="0" cy="-30" rx="55" ry="50" fill="#ffffff" />
+                    
+                    <!-- Eyes -->
+                    <ellipse id="eye-l" cx="-25" cy="-40" rx="12" ry="18" fill="#312b75" />
+                    <ellipse id="eye-r" cx="25" cy="-40" rx="12" ry="18" fill="#312b75" />
+                    
+                    <!-- Mouth -->
+                    <path id="mouth" d="M -15 -10 Q 0 0 15 -10" stroke="#312b75" stroke-width="8" stroke-linecap="round" fill="none"/>
+                </g>
+            </g>
+        </svg>
+        <div class="instruction">Grab, Throw, Shake</div>
+    </div>
+
+<script>
+    /* 
+       Logic:
+       1. A central physics body (x, y, vx, vy).
+       2. A set of "nodes" that define the shape. These nodes are attached to the central body via springs.
+       3. This creates a "soft body" effect where the limbs (drips) lag behind movement.
+    */
+
+    const container = document.getElementById('container');
+    const stage = document.getElementById('stage');
+    const bodyPath = document.getElementById('body-path');
+    const buddyGroup = document.getElementById('buddy');
+    const faceGroup = document.getElementById('face');
+    const eyeL = document.getElementById('eye-l');
+    const eyeR = document.getElementById('eye-r');
+    const mouth = document.getElementById('mouth');
+    const shadow = document.getElementById('shadow');
+
+    // Physics Constants
+    const GRAVITY = 0.8;
+    const FRICTION = 0.96;
+    const BOUNCE = 0.7;
+    const FLOOR_Y = 550;
+    const WALL_L = 50;
+    const WALL_R = 750;
+    const CEILING = 50;
+
+    // State
+    let mouse = { x: 0, y: 0 };
+    let isDragging = false;
+    let dragOffset = { x: 0, y: 0 };
+    let lastMousePos = { x: 0, y: 0 };
+    let throwVel = { x: 0, y: 0 };
+
+    // The Main Body
+    let body = {
+        x: 400,
+        y: 300,
+        vx: 0,
+        vy: 0,
+        angle: 0,
+        vAngle: 0
+    };
+
+    // Define the "Hull" nodes relative to center
+    // Using a spring system: current pos (x,y) and target offset (ox, oy)
+    const nodes = [
+        { id: 'head-top', ox: 0, oy: -95, stiffness: 0.2, damping: 0.8 },
+        { id: 'head-r', ox: 70, oy: -40, stiffness: 0.2, damping: 0.8 },
+        { id: 'arm-r', ox: 85, oy: 60, stiffness: 0.04, damping: 0.85 }, // Loose drip
+        { id: 'hip-r', ox: 45, oy: 70, stiffness: 0.3, damping: 0.7 },
+        { id: 'leg-r', ox: 40, oy: 130, stiffness: 0.1, damping: 0.75 }, // Leg
+        { id: 'crotch', ox: 0, oy: 100, stiffness: 0.3, damping: 0.8 },
+        { id: 'leg-l', ox: -40, oy: 130, stiffness: 0.1, damping: 0.75 }, // Leg
+        { id: 'hip-l', ox: -45, oy: 70, stiffness: 0.3, damping: 0.7 },
+        { id: 'arm-l', ox: -85, oy: 60, stiffness: 0.04, damping: 0.85 }, // Loose drip
+        { id: 'head-l', ox: -70, oy: -40, stiffness: 0.2, damping: 0.8 },
+    ];
+
+    // Initialize node current positions
+    nodes.forEach(n => {
+        n.x = body.x + n.ox;
+        n.y = body.y + n.oy;
+        n.vx = 0;
+        n.vy = 0;
+    });
+
+    function updatePhysics() {
+        // Handle Dragging
+        if (isDragging) {
+            // Spring to mouse
+            const dx = mouse.x - body.x - dragOffset.x;
+            const dy = mouse.y - body.y - dragOffset.y;
+            body.vx += dx * 0.15;
+            body.vy += dy * 0.15;
+            
+            // Calculate throw velocity
+            throwVel.x = mouse.x - lastMousePos.x;
+            throwVel.y = mouse.y - lastMousePos.y;
+            lastMousePos = { ...mouse };
+
+            body.vx *= 0.8; // Heavy drag damping
+            body.vy *= 0.8;
+        } else {
+            // Apply Gravity
+            body.vy += GRAVITY;
+            
+            // Apply Air Friction
+            body.vx *= FRICTION;
+            body.vy *= FRICTION;
+        }
+
+        // Update Position
+        body.x += body.vx;
+        body.y += body.vy;
+
+        // Floor Collision
+        if (body.y > FLOOR_Y - 100) { // Approx height offset
+            body.y = FLOOR_Y - 100;
+            body.vy *= -BOUNCE;
+            // Add some friction on floor
+            body.vx *= 0.9;
+        }
+        // Ceiling
+        if (body.y < CEILING + 50) {
+            body.y = CEILING + 50;
+            body.vy *= -BOUNCE;
+        }
+        // Walls
+        if (body.x < WALL_L + 50) {
+            body.x = WALL_L + 50;
+            body.vx *= -BOUNCE;
+        }
+        if (body.x > WALL_R - 50) {
+            body.x = WALL_R - 50;
+            body.vx *= -BOUNCE;
+        }
+
+        // Tilt based on x velocity
+        let targetAngle = body.vx * 1.5;
+        body.angle += (targetAngle - body.angle) * 0.1;
+
+        // Update Shadow
+        const distToFloor = (FLOOR_Y - 100) - body.y;
+        let shadowScale = 1 - (distToFloor / 400);
+        if(shadowScale < 0) shadowScale = 0;
+        shadow.setAttribute('transform', `translate(${body.x}, ${FLOOR_Y + 40}) scale(${shadowScale})`);
+        shadow.style.opacity = shadowScale * 0.5;
+
+        // Update Nodes (Soft Body Physics)
+        nodes.forEach(n => {
+            // Calculate ideal position based on body pos and rotation
+            const rad = body.angle * Math.PI / 180;
+            const rotatedOx = n.ox * Math.cos(rad) - n.oy * Math.sin(rad);
+            const rotatedOy = n.ox * Math.sin(rad) + n.oy * Math.cos(rad);
+            
+            const targetX = body.x + rotatedOx;
+            const targetY = body.y + rotatedOy;
+
+            // Spring force
+            const ax = (targetX - n.x) * n.stiffness;
+            const ay = (targetY - n.y) * n.stiffness;
+
+            n.vx += ax;
+            n.vy += ay;
+            
+            // Add some "wiggle" from body velocity inertia
+            n.vx -= body.vx * 0.05; 
+            n.vy -= body.vy * 0.05;
+
+            // Gravity on loose limbs (arms/legs) for droop effect
+            if(n.id.includes('arm') || n.id.includes('leg')) {
+               n.vy += 0.5;
+            }
+
+            n.vx *= n.damping;
+            n.vy *= n.damping;
+
+            n.x += n.vx;
+            n.y += n.vy;
+
+            // Simple floor collision for feet
+            if (n.y > FLOOR_Y + 40) {
+                n.y = FLOOR_Y + 40;
+                n.vy = 0;
+            }
+        });
+    }
+
+    function draw() {
+        // Generate Smooth Spline Path
+        // Start at first node, curve through the rest
+        if (nodes.length === 0) return;
+
+        let d = `M ${(nodes[0].x + nodes[nodes.length-1].x)/2} ${(nodes[0].y + nodes[nodes.length-1].y)/2}`;
+        
+        for (let i = 0; i < nodes.length; i++) {
+            const n1 = nodes[i];
+            const n2 = nodes[(i + 1) % nodes.length];
+            // Midpoint for quadratic bezier
+            const midX = (n1.x + n2.x) / 2;
+            const midY = (n1.y + n2.y) / 2;
+            d += ` Q ${n1.x} ${n1.y}, ${midX} ${midY}`;
+        }
+        
+        bodyPath.setAttribute('d', d);
+
+        // Face Logic
+        // Face should lag slightly and look at mouse
+        const faceX = body.x + body.vx * -2;
+        const faceY = body.y - 20 + body.vy * -2;
+        
+        faceGroup.setAttribute('transform', `translate(${faceX}, ${faceY}) rotate(${body.angle})`);
+
+        // Eye Tracking
+        // Calculate relative mouse pos
+        const relMouseX = mouse.x - faceX;
+        const relMouseY = mouse.y - faceY;
+        
+        const angleToMouse = Math.atan2(relMouseY, relMouseX);
+        const dist = Math.min(10, Math.hypot(relMouseX, relMouseY) / 10);
+        
+        const eyeOffsetX = Math.cos(angleToMouse) * dist;
+        const eyeOffsetY = Math.sin(angleToMouse) * dist;
+
+        eyeL.setAttribute('cx', -25 + eyeOffsetX);
+        eyeL.setAttribute('cy', -40 + eyeOffsetY);
+        eyeR.setAttribute('cx', 25 + eyeOffsetX);
+        eyeR.setAttribute('cy', -40 + eyeOffsetY);
+
+        // Mouth Expression
+        // If moving fast, open mouth (surprise/fear)
+        // If stationary, smile
+        const speed = Math.hypot(body.vx, body.vy);
+        if (speed > 15) {
+            // Open O shape
+            mouth.setAttribute('d', 'M 0 -5 Q 8 -5 0 15 Q -8 -5 0 -5'); 
+            mouth.setAttribute('fill', '#312b75');
+        } else if (speed > 5) {
+            // Flat line
+            mouth.setAttribute('d', 'M -10 5 Q 0 5 10 5');
+            mouth.setAttribute('fill', 'none');
+        } else {
+            // Smile
+            mouth.setAttribute('d', 'M -15 0 Q 0 15 15 0');
+            mouth.setAttribute('fill', 'none');
+        }
+    }
+
+    function loop() {
+        updatePhysics();
+        draw();
+        requestAnimationFrame(loop);
+    }
+
+    // Input Handling
+    function getSVGPoint(event) {
+        const point = stage.createSVGPoint();
+        point.x = event.clientX;
+        point.y = event.clientY;
+        const ctm = stage.getScreenCTM();
+        if (ctm) return point.matrixTransform(ctm.inverse());
+        return {x:0, y:0};
+    }
+
+    function handleStart(e) {
+        const p = getSVGPoint(e.touches ? e.touches[0] : e);
+        mouse.x = p.x;
+        mouse.y = p.y;
+        
+        // Check collision with body approx radius 100
+        const dist = Math.hypot(mouse.x - body.x, mouse.y - body.y);
+        if (dist < 100) {
+            isDragging = true;
+            dragOffset.x = mouse.x - body.x;
+            dragOffset.y = mouse.y - body.y;
+            lastMousePos = { ...mouse };
+            container.style.cursor = "grabbing";
+            
+            // Little pop effect
+            body.vy -= 5;
+        }
+    }
+
+    function handleMove(e) {
+        const p = getSVGPoint(e.touches ? e.touches[0] : e);
+        mouse.x = p.x;
+        mouse.y = p.y;
+    }
+
+    function handleEnd() {
+        if(isDragging) {
+            isDragging = false;
+            // Apply throw force
+            body.vx += throwVel.x * 0.5;
+            body.vy += throwVel.y * 0.5;
+            container.style.cursor = "crosshair";
+        }
+    }
+
+    // Event Listeners
+    container.addEventListener('mousedown', handleStart);
+    window.addEventListener('mousemove', handleMove);
+    window.addEventListener('mouseup', handleEnd);
+
+    container.addEventListener('touchstart', (e) => { e.preventDefault(); handleStart(e); }, {passive: false});
+    window.addEventListener('touchmove', (e) => { e.preventDefault(); handleMove(e); }, {passive: false});
+    window.addEventListener('touchend', handleEnd);
+
+    // Initial Kick
+    body.vy = -10;
+
+    loop();
+
+</script>
+</body>
+</html>

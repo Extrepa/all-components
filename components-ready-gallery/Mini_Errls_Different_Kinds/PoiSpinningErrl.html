@@ -1,0 +1,355 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PoiSpinningErrl</title>
+    <style>
+        :root {
+    --blob-color: #2E236C;
+    --bg-color: #1a1a24;
+    --face-color: #ffffff;
+    --poi-color-1: #ff00ff; /* Magenta */
+    --poi-color-2: #00ffff; /* Cyan */
+    --string-color: rgba(255, 255, 255, 0.3);
+    --animation-bob-duration: 0.5s;
+    --eye-base-rotation: 10deg;
+    --poi-string-height: 120px;
+    --poi-head-size: 20px;
+    --poi-string-width: 2px; /* Fixed missing var */
+}
+
+/* Global styles for preview - can be removed if integrated into existing app */
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--bg-color);
+    font-family: sans-serif;
+    overflow: hidden;
+    transition: background-color 0.1s ease-out; /* For click feedback */
+}
+
+.app-container {
+    width: 100vmin;
+    height: 75vmin; /* 4:3 roughly */
+    max-width: 800px;
+    max-height: 600px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    cursor: pointer;
+}
+
+/* --- The Character (Blob) --- */
+.blob-container {
+    position: relative;
+    width: 220px;
+    height: 280px;
+    animation: bob var(--animation-bob-duration) ease-in-out infinite alternate;
+    z-index: 10;
+}
+
+.body-main {
+    position: absolute;
+    top: 0;
+    left: 10px;
+    width: 200px;
+    height: 200px;
+    background-color: var(--blob-color);
+    border-radius: 50%;
+    z-index: 2;
+}
+
+/* Drips construction */
+.drip {
+    position: absolute;
+    background-color: var(--blob-color);
+    border-radius: 0 0 50px 50px;
+    z-index: 2;
+}
+
+.drip.leg {
+    width: 45px;
+    height: 120px;
+    top: 140px;
+}
+.drip.leg.left { left: 45px; }
+.drip.leg.right { right: 45px; }
+
+.drip.arm {
+    width: 30px;
+    height: 80px;
+    top: 120px;
+    border-radius: 0 0 30px 30px;
+}
+.drip.arm.left { left: 0; }
+.drip.arm.right { right: 10px; }
+
+/* Smoothing connections */
+.filler.crotch {
+    position: absolute;
+    background-color: var(--blob-color);
+    width: 60px;
+    height: 40px;
+    top: 160px;
+    left: 80px;
+    z-index: 2;
+}
+
+/* Face */
+.face {
+    position: absolute;
+    top: 30px;
+    left: 35px;
+    width: 150px;
+    height: 150px;
+    background-color: var(--face-color);
+    border-radius: 50%;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.eyes-row {
+    display: flex;
+    gap: 30px;
+    margin-top: -10px;
+}
+
+.eye {
+    width: 30px;
+    height: 45px;
+    background-color: var(--blob-color);
+    border-radius: 50%;
+    transform: rotate(0deg); /* Base rotation is applied by JS */
+}
+
+/* --- POI Rig --- */
+.poi-anchor {
+    position: absolute;
+    top: 180px; /* End of arm roughly */
+    width: 0;
+    height: 0;
+    z-index: 11; /* In front of blob-container (z-index: 10) */
+}
+.poi-anchor.left { left: 15px; }
+.poi-anchor.right { right: 25px; }
+
+.poi-spinner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    transform-origin: top center; /* Rotation will be applied here */
+}
+
+.poi-string {
+    position: absolute;
+    top: 0;
+    left: calc(-1 * var(--poi-string-width) / 2); /* Center the string */
+    width: var(--poi-string-width);
+    height: var(--poi-string-height);
+    background: var(--string-color);
+    transform-origin: top center;
+}
+
+.poi-head {
+    position: absolute;
+    bottom: 0;
+    left: calc(-1 * var(--poi-head-size) / 2); /* Center the head */
+    width: var(--poi-head-size);
+    height: var(--poi-head-size);
+    border-radius: 50%;
+    box-shadow: 0 0 10px 2px currentColor, 0 0 20px 5px currentColor;
+}
+.poi-head--left {
+    background-color: var(--poi-color-1);
+    color: var(--poi-color-1); /* For currentColor in box-shadow */
+}
+.poi-head--right {
+    background-color: var(--poi-color-2);
+    color: var(--poi-color-2); /* For currentColor in box-shadow */
+}
+
+/* Instructions */
+.instructions {
+    position: absolute;
+    bottom: 20px;
+    color: rgba(255,255,255,0.5);
+    font-size: 14px;
+    text-align: center;
+    width: 100%;
+    pointer-events: none;
+}
+
+/* Animations */
+@keyframes bob {
+    from { transform: translateY(0); }
+    to { transform: translateY(10px); }
+}
+    </style>
+</head>
+<body>
+    <div class="app-container">
+    <div class="blob-container">
+        <!-- Body Parts -->
+        <div class="drip arm left"></div>
+        <div class="drip arm right"></div>
+        <div class="drip leg left"></div>
+        <div class="drip leg right"></div>
+        <div class="filler crotch"></div>
+        <div class="body-main"></div>
+        
+        <!-- Face -->
+        <div class="face">
+            <div class="eyes-row">
+                <div class="eye left" id="eye-left"></div>
+                <div class="eye right" id="eye-right"></div>
+            </div>
+            <div class="mouth" id="mouth"></div>
+        </div>
+
+        <!-- Poi Left -->
+        <div class="poi-anchor left">
+            <div class="poi-spinner" id="poi-left">
+                <div class="poi-string">
+                    <div class="poi-head poi-head--left"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Poi Right -->
+        <div class="poi-anchor right">
+            <div class="poi-spinner" id="poi-right">
+                <div class="poi-string">
+                    <div class="poi-head poi-head--right"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="instructions">Click to change pattern • Move mouse to look</div>
+</div>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+    // DOM Elements
+    const appContainer = document.querySelector('.app-container');
+    const eyeLeft = document.getElementById('eye-left');
+    const eyeRight = document.getElementById('eye-right');
+    const mouth = document.getElementById('mouth');
+    const poiLeft = document.getElementById('poi-left');
+    const poiRight = document.getElementById('poi-right');
+    const blobContainer = document.querySelector('.blob-container');
+
+    if (!appContainer || !eyeLeft || !eyeRight || !mouth || !poiLeft || !poiRight || !blobContainer) {
+        console.error('One or more required DOM elements not found.');
+        return;
+    }
+
+    // State
+    let patternIndex = 0;
+    const patterns = [
+        { name: 'Butterfly', leftDir: 1, rightDir: -1, phase: 0 }, // Inwards
+        { name: 'Split-Time Butterfly', leftDir: 1, rightDir: -1, phase: Math.PI },
+        { name: 'Parallel Same', leftDir: 1, rightDir: 1, phase: 0 },
+        { name: 'Parallel Split', leftDir: 1, rightDir: 1, phase: Math.PI },
+        { name: 'Opposite Same', leftDir: -1, rightDir: 1, phase: 0 }, // Outwards
+        { name: 'Weave-ish', leftDir: 1, rightDir: 1, phase: 0.5 }
+    ];
+
+    let time = 0;
+    const speed = 0.1; // Speed of rotation
+    const maxEyeOffset = 8;
+    const initialBobTransform = blobContainer.style.transform || 'translateY(0)'; // Capture initial transform, or default
+
+    // Eye Tracking Logic
+    window.addEventListener('mousemove', (e) => {
+        const rect = appContainer.getBoundingClientRect();
+        // Center of container
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        
+        // Mouse pos relative to center
+        const dx = e.clientX - cx;
+        const dy = e.clientY - cy;
+        
+        // Calculate offset (clamped)
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        const factor = Math.min(dist, 1000) / 1000 * maxEyeOffset; // Normalize
+        
+        const angle = Math.atan2(dy, dx);
+        const ox = Math.cos(angle) * factor;
+        const oy = Math.sin(angle) * factor;
+
+        // Apply to eyes (with base rotation preserved)
+        eyeLeft.style.transform = `translate(${ox}px, ${oy}px) rotate(-10deg)`;
+        eyeRight.style.transform = `translate(${ox}px, ${oy}px) rotate(10deg)`;
+        
+        // Subtle mouth movement
+        mouth.style.transform = `translate(${ox*0.5}px, ${oy*0.5}px)`;
+    });
+
+    // Pattern Switching
+    appContainer.addEventListener('click', () => {
+        patternIndex = (patternIndex + 1) % patterns.length;
+        // Visual feedback on change (flash background slightly)
+        document.body.style.backgroundColor = '#252530';
+        setTimeout(() => document.body.style.backgroundColor = 'var(--bg-color)', 100);
+    });
+
+    // Animation Loop
+    function animate() {
+        const p = patterns[patternIndex];
+        time += speed;
+
+        const angleLeft = (time * p.leftDir) % (Math.PI * 2);
+        const angleRight = (time * p.rightDir + p.phase) % (Math.PI * 2);
+
+        // Convert Radians to Degrees
+        const degLeft = angleLeft * (180 / Math.PI);
+        const degRight = angleRight * (180 / Math.PI);
+
+        // Apply rotation
+        poiLeft.style.transform = `rotate(${degLeft}deg)`;
+        poiRight.style.transform = `rotate(${degRight}deg)`;
+
+        // Sway logic based on pattern to make the character dance
+        if (p.leftDir === p.rightDir) {
+            // Parallel - sway
+            const sway = Math.sin(time) * 5;
+            // Retain original bobbing animation via CSS
+            blobContainer.style.transform = `rotate(${sway}deg)`;
+        } else {
+            // Butterfly - no sway, let CSS animation handle bobbing
+            blobContainer.style.transform = initialBobTransform; // Reset to CSS animation's baseline
+        }
+
+        requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    // Dynamic Glow Effect for Poi Heads
+    setInterval(() => {
+        // Pulse the glow
+        const pulse = 10 + Math.sin(Date.now() / 200) * 5;
+        const heads = document.querySelectorAll('.poi-head');
+        const boxShadowValue = `0 0 ${pulse}px 2px currentColor, 0 0 ${pulse*2}px 5px currentColor`;
+        heads.forEach(h => {
+            if (h instanceof HTMLElement) {
+                h.style.boxShadow = boxShadowValue;
+            }
+        });
+    }, 50);
+});
+    </script>
+</body>
+</html>

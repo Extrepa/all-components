@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" id="icon-lrinoj4rr">
+  <g xmlns="http://www.w3.org/2000/svg" fill="none">
+    <rect x="16" y="30" width="32" height="12" rx="2" fill="#111827"/>
+    <rect x="16" y="28" width="32" height="3" rx="1.5" fill="#0f172a"/>
+    <!-- taps / bottles -->
+    <rect x="20" y="26" width="3" height="4" rx="1" fill="#22d3ee"/>
+    <rect x="30" y="26" width="3" height="4" rx="1" fill="#a855f7"/>
+    <rect x="40" y="26" width="3" height="4" rx="1" fill="#facc15"/>
+    <ellipse cx="32" cy="46" rx="18" ry="2.8" fill="#020617" opacity="0.45"/>
+  </g>
+</svg>

@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Errl – Mom Tribute Loop</title>
+<style>
+  :root{
+    --bg:#0b0c14;
+    --fg:#f7f2e9;
+    --neon1:#ff75ff;
+    --neon2:#6be7ff;
+    --neon3:#ffd36b;
+    --glow: drop-shadow(0 0 12px rgba(255,255,255,.4));
+  }
+  html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;overflow:hidden}
+  #ui{
+    position:fixed;inset:auto 12px 12px auto;display:flex;gap:.5rem;z-index:10;align-items:center;
+    background:rgba(15,18,28,.55);backdrop-filter:blur(8px);padding:10px 12px;border-radius:14px;border:1px solid rgba(255,255,255,.08)
+  }
+  button, .toggle{
+    appearance:none;border:none;background:linear-gradient(180deg,#1a2030,#0d1018);color:var(--fg);
+    border:1px solid rgba(255,255,255,.12);padding:.55rem .8rem;border-radius:10px;font-weight:600;cursor:pointer
+  }
+  button:hover{filter:brightness(1.1)}
+  .brand{position:fixed;left:12px;bottom:12px;color:#9fb4ff;opacity:.9;font-weight:600;font-size:.9rem;z-index:3}
+  #c{position:fixed;inset:0;width:100vw;height:100vh;display:block}
+  #noise{position:fixed;inset:0;mix-blend-mode:soft-light;opacity:.15;pointer-events:none}
+  .glowText{
+    position:absolute;left:50%;top:8vh;transform:translateX(-50%);
+    font-weight:900;letter-spacing:.08em;text-align:center;line-height:1.1;
+    text-shadow:
+      0 0 14px rgba(255,255,255,.35),
+      0 0 40px #7dd3fc66,
+      0 0 70px #fb718566;
+    user-select:none;pointer-events:none;z-index:2
+  }
+  .line1{font-size:clamp(28px,6vw,86px)}
+  .line2{font-size:clamp(16px,3.2vw,40px);opacity:.92;margin-top:.25em}
+  /* subtle gradient vignette */
+  #vignette{position:fixed;inset:0;pointer-events:none;
+    background:
+      radial-gradient(120vmax 90vmax at 50% 50%, transparent 40%, rgba(0,0,0,.35) 70%),
+      radial-gradient(160vmax 120vmax at 70% 10%, #2b1b6a33 0, transparent 40%),
+      radial-gradient(140vmax 110vmax at 20% 90%, #0a7d8a33 0, transparent 40%)
+  }
+  /* small helper badges */
+  .badge{padding:.2rem .55rem;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:999px;font-size:.75rem;margin-left:.35rem}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<canvas id="noise"></canvas>
+<div id="vignette"></div>
+
+<h1 class="glowText" id="title">
+  <div class="line1" id="t1">I LOVE YOU MOM</div>
+  <div class="line2" id="t2">YOU'RE MAGIC ✶ SAFE &amp; SOUND</div>
+</h1>
+
+<div id="ui" role="toolbar" aria-label="Controls">
+  <button id="rec">● Record 10s</button>
+  <button id="toggleSound" aria-pressed="false">🔈 Sound</button>
+  <button id="shuffle">✨ Shuffle Colors</button>
+  <span class="badge">Loops perfectly</span>
+</div>
+
+<div class="brand">Errl ☆ For Mom</div>
+
+<script>
+// ===== Canvas Setup =====
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const noiseCanvas = document.getElementById('noise');
+const nctx = noiseCanvas.getContext('2d');
+let W=canvas.width=innerWidth, H=canvas.height=innerHeight;
+noiseCanvas.width=W; noiseCanvas.height=H;
+addEventListener('resize', ()=>{
+  W=canvas.width=innerWidth; H=canvas.height=innerHeight;
+  noiseCanvas.width=W; noiseCanvas.height=H;
+});
+
+// ===== Palette + Helpers =====
+let palette = [
+  '#ff6ee8','#7af9ff','#ffd36b','#b693ff','#67ffb3','#ff8f6b'
+];
+function rand(a,b){return a + Math.random()*(b-a)}
+function rint(a,b){return Math.floor(rand(a,b+1))}
+function lerp(a,b,t){return a+(b-a)*t}
+function hsla(h,s,l,a){return `hsla(${h},${s}%,${l}%,${a})`}
+function shuffle(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]]}return arr}
+
+// ===== Errl SVG Path (face style per reference) =====
+// We'll draw body blob + face disc holes manually, to keep it single-file.
+function drawErrl(x,y,scale,t){
+  ctx.save();
+  ctx.translate(x,y);
+  ctx.scale(scale,scale);
+
+  // Body goo shape
+  const baseHue = (t*10)%360;
+  const grad = ctx.createRadialGradient(0,-40,20, 0,20,160);
+  grad.addColorStop(0, hsla(baseHue,90,70,1));
+  grad.addColorStop(0.4, hsla((baseHue+50)%360,90,60,1));
+  grad.addColorStop(1, hsla((baseHue+120)%360,80,45,1));
+  ctx.fillStyle = grad;
+
+  ctx.beginPath();
+  ctx.moveTo(-110,-40);
+  ctx.bezierCurveTo(-140,-120,  140,-120, 110,-40);
+  ctx.bezierCurveTo(120,40, 90,80, 60,120);
+  // legs
+  ctx.lineTo(30,180);
+  ctx.bezierCurveTo(20,210,-20,210,-30,180);
+  ctx.lineTo(-30,120);
+  ctx.bezierCurveTo(-60,80,-90,40,-110,-40);
+  // side drips
+  ctx.moveTo(-90,60);
+  ctx.bezierCurveTo(-100,120,-130,140,-135,110);
+  ctx.bezierCurveTo(-125,80,-105,40,-90,60);
+  ctx.moveTo(95,55);
+  ctx.bezierCurveTo(110,120,140,140,145,110);
+  ctx.bezierCurveTo(130,80,110,40,95,55);
+  ctx.fill();
+
+  // Rim light
+  ctx.strokeStyle = hsla((baseHue+200)%360,100,85,0.9);
+  ctx.lineWidth = 6;
+  ctx.shadowColor = 'rgba(255,255,255,.25)';
+  ctx.shadowBlur = 16;
+  ctx.stroke();
+
+  // Face disc (black)
+  ctx.shadowBlur = 0;
+  ctx.fillStyle = '#07090e';
+  ctx.beginPath();
+  ctx.arc(0,10,70,0,Math.PI*2);
+  ctx.fill();
+
+  // Eyes (white ovals)
+  const blink = (Math.sin(t*2)+1)/2; // 0..1
+  const eyeH = lerp(22, 4, Math.pow(blink, 6)); // quick blink
+  ctx.fillStyle = '#ffe6c9';
+  ctx.beginPath();
+  ctx.ellipse(-22,0,14,eyeH,0,0,Math.PI*2);
+  ctx.ellipse(22,0,14,eyeH,0,0,Math.PI*2);
+  ctx.fill();
+
+  // Mouth (sideways oval)
+  ctx.beginPath();
+  ctx.ellipse(0,28,20,10,0,0,Math.PI*2);
+  ctx.fill();
+
+  ctx.restore();
+}
+
+// ===== Hearts rising =====
+const hearts = Array.from({length:24}, ()=>({
+  x: rand(0.15*W,0.85*W), y: rand(0.55*H,0.9*H),
+  r: rand(12,28), t: rand(0,Math.PI*2), hue: rint(0,360)
+}));
+function drawHeart(x,y,r,clr){
+  ctx.save(); ctx.translate(x,y); ctx.rotate(-Math.PI/4);
+  ctx.fillStyle = clr;
+  ctx.beginPath();
+  ctx.moveTo(0,0);
+  ctx.bezierCurveTo(0,-r, -r,-r, -r,0);
+  ctx.bezierCurveTo(-r,r, 0,r, 0,2*r);
+  ctx.bezierCurveTo(0,r, r,r, r,0);
+  ctx.bezierCurveTo(r,-r, 0,-r, 0,0);
+  ctx.fill();
+  ctx.restore();
+}
+
+// ===== Pot + Steam =====
+function drawPot(x,y,t){
+  ctx.save(); ctx.translate(x,y);
+
+  // Pot
+  const g = ctx.createLinearGradient(0,-30,0,60);
+  g.addColorStop(0,'#0d1020'); g.addColorStop(.9,'#22263d');
+  ctx.fillStyle = g;
+  ctx.strokeStyle = '#5161aa'; ctx.lineWidth = 3;
+
+  ctx.beginPath();
+  ctx.roundRect(-200,-10,400,90,16); ctx.fill(); ctx.stroke();
+
+  // Handles
+  ctx.beginPath();
+  ctx.ellipse(-220,35,28,16,0,0,Math.PI*2);
+  ctx.ellipse(220,35,28,16,0,0,Math.PI*2);
+  ctx.strokeStyle = '#34406f'; ctx.stroke();
+
+  // Soup glow
+  const glow = ctx.createRadialGradient(0,0,10, 0,0,180);
+  glow.addColorStop(0, hsla(38,100,65,.95));
+  glow.addColorStop(1, 'rgba(255,180,64,0)');
+  ctx.globalCompositeOperation = 'lighter';
+  ctx.fillStyle = glow;
+  ctx.beginPath(); ctx.arc(0,0,170,0,Math.PI*2); ctx.fill();
+  ctx.globalCompositeOperation = 'source-over';
+
+  // Soup surface w/ wobble
+  ctx.fillStyle = hsla(38,100,60,1);
+  ctx.beginPath();
+  const wob = Math.sin(t*2)*6;
+  ctx.ellipse(0,0,170,26+wob,0,0,Math.PI*2);
+  ctx.fill();
+
+  // Steam particles
+  for(let i=0;i<18;i++){
+    const px = Math.sin(t*1.3 + i)*40 + rand(-10,10);
+    const py = -Math.abs(Math.sin(t*0.8 + i))*rint(20,120)-20;
+    const a = 0.18 + Math.abs(Math.sin(t*1.5+i))*0.18;
+    ctx.fillStyle = `rgba(255,245,220,${a})`;
+    ctx.beginPath();
+    ctx.ellipse(px, py, rint(6,18), rint(10,32), rand(0,Math.PI), 0, Math.PI*2);
+    ctx.fill();
+  }
+
+  ctx.restore();
+}
+
+// ===== Noise Layer =====
+function drawNoise(){
+  const id = nctx.createImageData(noiseCanvas.width, noiseCanvas.height);
+  for (let i = 0; i < id.data.length; i += 4) {
+    const v = Math.random() * 255;
+    id.data[i] = v; id.data[i+1] = v; id.data[i+2] = v; id.data[i+3] = 30;
+  }
+  nctx.putImageData(id, 0, 0);
+}
+
+// ===== Audio (WebAudio) =====
+let audioCtx, master, bubbleGain, padGain, hissGain;
+let audioOn = false;
+function setupAudio(){
+  audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+  master = audioCtx.createGain(); master.gain.value = 0.7;
+  master.connect(audioCtx.destination);
+
+  // Hiss
+  const bufferSize = 2 * audioCtx.sampleRate;
+  const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+  const out = noiseBuffer.getChannelData(0);
+  for (let i = 0; i < bufferSize; i++) out[i] = Math.random() * 2 - 1;
+  const noise = audioCtx.createBufferSource();
+  noise.buffer = noiseBuffer; noise.loop = true;
+  hissGain = audioCtx.createGain(); hissGain.gain.value = 0.02;
+  noise.connect(hissGain).connect(master);
+  noise.start();
+
+  // Pad chord (Cmaj add6)
+  padGain = audioCtx.createGain(); padGain.gain.value = 0.08;
+  padGain.connect(master);
+  [261.63, 329.63, 392.00, 523.25].forEach((f,i)=>{
+    const o = audioCtx.createOscillator(); o.type = 'sine'; o.frequency.value = f;
+    const g = audioCtx.createGain(); g.gain.value = 0.0;
+    o.connect(g).connect(padGain); o.start();
+    // gentle breathing
+    setInterval(()=>{
+      g.gain.linearRampToValueAtTime(0.03, audioCtx.currentTime + 2.0);
+      g.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 6.0);
+    }, 6000 + i*300);
+  });
+
+  // Bubble pops
+  bubbleGain = audioCtx.createGain(); bubbleGain.gain.value = 0.18;
+  bubbleGain.connect(master);
+  function bubble(){
+    if(!audioOn) return;
+    const o = audioCtx.createOscillator(); o.type='triangle';
+    const g = audioCtx.createGain(); g.gain.value=0.0;
+    o.connect(g).connect(bubbleGain);
+    const f = rand(300,700);
+    o.frequency.setValueAtTime(f, audioCtx.currentTime);
+    o.start();
+    g.gain.linearRampToValueAtTime(0.25, audioCtx.currentTime+0.01);
+    g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime+0.22);
+    o.stop(audioCtx.currentTime+0.25);
+    setTimeout(()=>bubble(), rint(300,900));
+  }
+  setTimeout(()=>bubble(), 600);
+}
+
+// ===== Recorder (WebM) =====
+const recBtn = document.getElementById('rec');
+let recorder, recordedChunks=[];
+recBtn.onclick = async ()=>{
+  const stream = canvas.captureStream(30);
+  const acStream = audioOn && audioCtx ? audioCtx.createMediaStreamDestination().stream : null;
+  if(audioOn && audioCtx){
+    // Route master to destination for recording
+    const dest = audioCtx.createMediaStreamDestination();
+    master.disconnect();
+    master.connect(dest); master.connect(audioCtx.destination);
+    dest.stream.getAudioTracks().forEach(t=>stream.addTrack(t));
+  }
+  recorder = new MediaRecorder(stream, {mimeType:'video/webm; codecs=vp9'});
+  recordedChunks = [];
+  recorder.ondataavailable = e=>{ if(e.data.size>0) recordedChunks.push(e.data); };
+  recorder.onstop = ()=>{
+    const blob = new Blob(recordedChunks, {type:'video/webm'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href=url; a.download='errl_mom_tribute.webm';
+    a.click(); URL.revokeObjectURL(url);
+  }
+  recorder.start();
+  recBtn.textContent = '● Recording…';
+  setTimeout(()=>{ recorder.stop(); recBtn.textContent='● Record 10s'; }, 10000);
+};
+
+// ===== UI Hooks =====
+document.getElementById('toggleSound').onclick = async (e)=>{
+  audioOn = !audioOn;
+  e.currentTarget.setAttribute('aria-pressed', String(audioOn));
+  e.currentTarget.textContent = audioOn ? '🔊 Sound On' : '🔈 Sound';
+  if(audioOn && !audioCtx){setupAudio();}
+  if(audioOn && audioCtx?.state==='suspended'){await audioCtx.resume();}
+};
+document.getElementById('shuffle').onclick = ()=>{
+  palette = shuffle(palette);
+};
+
+// ===== Main Loop =====
+let t0 = performance.now();
+function frame(now){
+  const t = (now - t0)/1000; // seconds
+  // background
+  ctx.clearRect(0,0,W,H);
+  const bgGrad = ctx.createRadialGradient(W*0.5, H*0.65, 60, W*0.5, H*0.5, Math.max(W,H)*0.8);
+  bgGrad.addColorStop(0, 'rgba(21,24,39,1)');
+  bgGrad.addColorStop(1, 'rgba(6,7,13,1)');
+  ctx.fillStyle = bgGrad; ctx.fillRect(0,0,W,H);
+
+  // glow pulses
+  const pulse = (Math.sin(t*2)+1)/2;
+  ctx.globalCompositeOperation='lighter';
+  ctx.fillStyle = hsla(220, 100, 60, 0.08+0.08*pulse);
+  ctx.beginPath(); ctx.arc(W/2, H*0.73, 220, 0, Math.PI*2); ctx.fill();
+  ctx.globalCompositeOperation='source-over';
+
+  // pot + soup
+  drawPot(W/2, H*0.78, t);
+
+  // hearts
+  hearts.forEach(h=>{
+    h.y -= .35 + 0.25*Math.sin(t+h.t);
+    if(h.y < H*0.18) { h.y = rand(H*0.6,H*0.9); h.x = rand(W*0.2,W*0.8); h.hue = rint(0,360); }
+    const c = hsla(h.hue, 100, 65, 0.8);
+    drawHeart(h.x, h.y, h.r*(0.8+0.2*Math.sin(t+h.t)), c);
+  });
+
+  // errl
+  drawErrl(W/2, H*0.52, 1.1, t);
+
+  // slight RGB glitch pass (cheap)
+  const dx = Math.sin(t*3)*2.2, dy = Math.cos(t*2.3)*1.6;
+  const img = ctx.getImageData(0,0,W,H);
+  const g = ctx.createImageData(W,H);
+  // copy as is
+  g.data.set(img.data);
+  // simple channel offset (only a hint)
+  ctx.putImageData(img, dx, dy);
+  requestAnimationFrame(frame);
+}
+drawNoise(); // one-time static
+requestAnimationFrame(frame);
+
+// Accessibility: space toggles sound
+addEventListener('keydown', e=>{
+  if(e.code==='Space'){document.getElementById('toggleSound').click(); e.preventDefault();}
+});
+</script>
+
+<!--
+Export to MP4 (optional) using ffmpeg (after recording to WebM):
+ffmpeg -y -i errl_mom_tribute.webm -c:v libx264 -crf 18 -preset slow -pix_fmt yuv420p -c:a aac -b:a 192k errl_mom_tribute.mp4
+-->
+</body>
+</html>

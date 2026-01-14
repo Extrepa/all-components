@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <g id="wizard-hat" fill="none" stroke="#0e0b1e" stroke-width="12" stroke-linejoin="round">
+    <path fill="#5f7bff" d="M 240 600 C 400 540 580 530 780 560 L 720 620 C 560 604 420 616 300 642 Z"/>
+    <path fill="#241555" d="M 360 620 C 420 470 500 360 620 260 C 600 360 606 460 650 570 C 540 564 440 584 360 620 Z"/>
+    <circle cx="500" cy="420" r="12" fill="#ffe8ff"/>
+    <circle cx="550" cy="360" r="10" fill="#ffe8ff"/>
+    <circle cx="600" cy="460" r="10" fill="#ffe8ff"/>
+  </g>
+</svg>

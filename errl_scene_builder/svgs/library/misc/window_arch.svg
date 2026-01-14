@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" id="icon-tte7gfn78">
+  <g xmlns="http://www.w3.org/2000/svg" fill="none">
+    <rect x="18" y="24" width="28" height="18" rx="2" fill="#111827"/>
+    <!-- window arch -->
+    <path d="M22 36 Q32 28 42 36 V38 H22 Z" fill="#020617"/>
+    <!-- ledge -->
+    <rect x="22" y="38" width="20" height="2.5" rx="1.3" fill="#0f172a"/>
+  </g>
+</svg>

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_accessory" data-cat="wearable" data-name="errl_accessory_slippers_cloud9">
+  <rect width="64" height="64" rx="12" fill="none"/>
+  <path d="M18 46c0-4 2-6 6-6s6 2 6 6-2 10-6 10-6-6-6-10z" fill="#dff3ff" stroke="#8ed8ff" stroke-width="2"/>
+  <path d="M34 46c0-4 2-6 6-6s6 2 6 6-2 10-6 10-6-6-6-10z" fill="#dff3ff" stroke="#8ed8ff" stroke-width="2"/>
+  <circle cx="24" cy="48" r="2" fill="#34e1ff"/>
+  <circle cx="40" cy="48" r="2" fill="#34e1ff"/>
+</svg>

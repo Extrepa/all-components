@@ -1,0 +1,9 @@
+<!-- 63) errl_woods_can_01 – little can (prop/litter) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="prop" data-name="errl_woods_can_01">
+  <g fill="none">
+    <rect x="28" y="30" width="8" height="10" rx="2" fill="#64748b"/>
+    <rect x="28" y="29" width="8" height="2" rx="1" fill="#94a3b8"/>
+    <ellipse cx="32" cy="40" rx="5" ry="1.8" fill="#020617" opacity="0.4"/>
+  </g>
+</svg>

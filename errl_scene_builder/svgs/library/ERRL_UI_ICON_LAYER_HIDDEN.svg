@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 64 64">
+  <g id="eye" fill="none" stroke="#101020" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M6 32c8-10 18-16 26-16 2 0 4 0 6 0.2" />
+    <path d="M58 32c-8 10-18 16-26 16-2 0-4 0-6-0.2" />
+    <line x1="12" y1="12" x2="52" y2="52" />
+  </g>
+  <g id="pupil" fill="#101020">
+    <circle cx="32" cy="32" r="6" />
+  </g>
+</svg>

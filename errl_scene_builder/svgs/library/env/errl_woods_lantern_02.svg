@@ -1,0 +1,10 @@
+<!-- 56) errl_woods_lantern_02 – lantern on ground (prop/fx) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+  data-pack="errl_woods" data-cat="prop" data-name="errl_woods_lantern_02">
+  <g fill="none">
+    <rect x="26" y="24" width="12" height="16" rx="3" fill="#020617"/>
+    <rect x="28" y="26" width="8" height="12" rx="2" fill="#facc15" opacity="0.9"/>
+    <rect x="28" y="22" width="8" height="2" rx="1" fill="#111827"/>
+    <ellipse cx="32" cy="44" rx="8" ry="2.2" fill="#111827" opacity="0.35"/>
+  </g>
+</svg>

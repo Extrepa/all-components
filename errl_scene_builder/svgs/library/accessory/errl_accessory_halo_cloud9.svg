@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-pack="errl_accessory" data-cat="wearable" data-name="errl_accessory_halo_cloud9">
+  <rect width="64" height="64" rx="12" fill="none"/>
+  <ellipse cx="32" cy="16" rx="18" ry="8" fill="none" stroke="#9de1ff" stroke-width="3"/>
+  <ellipse cx="32" cy="16" rx="12" ry="5" fill="rgba(157,225,255,0.4)"/>
+  <circle cx="18" cy="10" r="2" fill="#34e1ff"/>
+  <circle cx="46" cy="9" r="1.8" fill="#34e1ff"/>
+  <circle cx="52" cy="16" r="1.5" fill="#ff7ad1"/>
+  <circle cx="12" cy="15" r="1.5" fill="#ff7ad1"/>
+</svg>

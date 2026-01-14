@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>An interactive overhead projector where you drop oil and water in different colors and then it shines on the wall - P5.js Sketch</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0a0a0a;
+      color: #fff;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .header {
+      padding: 1.5rem 2rem;
+      background: #1a1a1a;
+      border-bottom: 1px solid #333;
+    }
+    .header h1 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .header p {
+      color: #b0b0b0;
+      font-size: 0.875rem;
+    }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 1rem;
+      color: #6366f1;
+      text-decoration: none;
+      font-size: 0.875rem;
+    }
+    .back-link:hover {
+      text-decoration: underline;
+    }
+    #p5-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background: #0a0a0a;
+    }
+    .info {
+      padding: 1.5rem 2rem;
+      background: #1a1a1a;
+      border-top: 1px solid #333;
+      font-size: 0.875rem;
+    }
+    .info-item {
+      margin-bottom: 0.5rem;
+      display: flex;
+    }
+    .info-label {
+      width: 120px;
+      color: #b0b0b0;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="../index.html" class="back-link">← Back to Gallery</a>
+      <h1>An interactive overhead projector where you drop oil and water in different colors and then it shines on the wall</h1>
+      <p>P5.js Interactive Sketch</p>
+    </div>
+    <div id="p5-container"></div>
+    <div class="info">
+      <div class="info-item">
+        <span class="info-label">Prompt:</span>
+        <span>An interactive overhead projector where you drop oil and water in different colors and then it shines on the wall</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Model:</span>
+        <span>threePro</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Generation Time:</span>
+        <span>40.9s</span>
+      </div>
+    </div>
+  </div>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+  <script>
+    const container = document.getElementById('p5-container');
+    const sketchCode = "let blobs = [];\nlet textureLayer;\nlet baseColors;\n\nfunction setup() {\n  createCanvas(800, 600);\n  \n  // Define a psychedelic/liquid light show palette\n  baseColors = [\n    color(255, 0, 100, 200),   // Magenta\n    color(0, 200, 255, 200),   // Cyan\n    color(255, 200, 0, 200),   // Yellow\n    color(100, 0, 255, 200),   // Purple\n    color(0, 255, 100, 200)    // Lime\n  ];\n\n  // Create a static texture for the \"Projector Wall\" feel (dust + vignette)\n  textureLayer = createGraphics(width, height);\n  textureLayer.noStroke();\n  \n  // Add Vignette\n  for (let r = 0; r < width * 1.2; r += 5) {\n    let alpha = map(r, 0, width * 1.2, 0, 255);\n    textureLayer.fill(20, 15, 10, alpha * 0.1); // Very subtle dark rim\n    textureLayer.ellipse(width / 2, height / 2, r, r * 0.75);\n  }\n  \n  // Add Dust/Grain\n  textureLayer.loadPixels();\n  for (let i = 0; i < textureLayer.width; i++) {\n    for (let j = 0; j < textureLayer.height; j++) {\n      if (random(1) > 0.98) {\n        let index = (i + j * textureLayer.width) * 4;\n        textureLayer.pixels[index] = 0;\n        textureLayer.pixels[index + 1] = 0;\n        textureLayer.pixels[index + 2] = 0;\n        textureLayer.pixels[index + 3] = random(20, 50); // slight dust\n      }\n    }\n  }\n  textureLayer.updatePixels();\n  \n  // Initialize with a few drops\n  for(let i=0; i<5; i++) {\n    addBlob(random(width), random(height), false);\n  }\n}\n\nfunction draw() {\n  // 1. The Light Source (Background)\n  background(250, 248, 240); \n  \n  // 2. Update and Draw Blobs\n  // We use blendMode MULTIPLY to simulate ink/oil subtractive color mixing\n  blendMode(MULTIPLY);\n  \n  for (let i = blobs.length - 1; i >= 0; i--) {\n    let b = blobs[i];\n    b.update();\n    b.checkEdges();\n    b.display();\n    \n    // Interactions between blobs\n    for (let j = i - 1; j >= 0; j--) {\n      let other = blobs[j];\n      b.collide(other);\n    }\n  }\n\n  // 3. Overlay the projector texture (Dust/Vignette)\n  blendMode(BLEND);\n  image(textureLayer, 0, 0);\n  \n  // 4. UI Instructions\n  noStroke();\n  fill(50);\n  textAlign(CENTER);\n  textSize(14);\n  text(\"CLICK to drop OIL  |  SHIFT+CLICK to drop WATER  |  Wait for settling\", width/2, height - 20);\n}\n\nfunction mousePressed() {\n  let isWater = keyIsDown(SHIFT);\n  addBlob(mouseX, mouseY, isWater);\n}\n\nfunction mouseDragged() {\n  // Allow dragging to pour liquid\n  if (frameCount % 5 === 0) {\n    let isWater = keyIsDown(SHIFT);\n    addBlob(mouseX + random(-10, 10), mouseY + random(-10, 10), isWater);\n  }\n}\n\nfunction addBlob(x, y, isWater) {\n  let r = random(20, 60);\n  let c;\n  \n  if (isWater) {\n    // Water is clear but distorts (we represent it as light grey/white displacing others)\n    c = color(240, 240, 255, 150);\n    r *= 1.5; // Water blobs are often bigger/spread out\n  } else {\n    c = random(baseColors);\n  }\n  \n  blobs.push(new Blob(x, y, r, c, isWater));\n  \n  // Cap performance\n  if (blobs.length > 100) {\n    blobs.shift();\n  }\n}\n\nclass Blob {\n  constructor(x, y, r, c, isWater) {\n    this.pos = createVector(x, y);\n    this.vel = p5.Vector.random2D().mult(0.5);\n    this.acc = createVector(0, 0);\n    this.r = r; // Target radius\n    this.currentR = 0; // Animation start radius\n    this.color = c;\n    this.isWater = isWater;\n    this.id = random(1000);\n    this.noiseOffset = random(1000);\n  }\n\n  update() {\n    // Grow effect on spawn\n    if (this.currentR < this.r) {\n      this.currentR = lerp(this.currentR, this.r, 0.1);\n    }\n\n    // Add subtle organic drift (convection currents)\n    this.acc.add(p5.Vector.fromAngle(noise(this.pos.x * 0.01, this.pos.y * 0.01, frameCount * 0.005) * TWO_PI).mult(0.02));\n\n    // Apply physics\n    this.vel.add(this.acc);\n    this.vel.limit(2); // Viscosity limit\n    this.pos.add(this.vel);\n    this.acc.mult(0);\n    \n    // Friction\n    this.vel.mult(0.98);\n  }\n\n  collide(other) {\n    let d = dist(this.pos.x, this.pos.y, other.pos.x, other.pos.y);\n    let minDist = (this.currentR + other.currentR) * 0.6; // Allow some overlap for mixing look\n\n    if (d < minDist) {\n      // Calculate repulsion force\n      let angle = atan2(other.pos.y - this.pos.y, other.pos.x - this.pos.x);\n      let force = p5.Vector.fromAngle(angle);\n      \n      // Water repels oil more strongly (immiscible fluids)\n      let magnitude = 0.05;\n      if (this.isWater || other.isWater) {\n        magnitude = 0.15; \n      }\n      \n      force.mult(magnitude);\n      \n      this.acc.sub(force); // Push away\n      other.acc.add(force); // Push away\n      \n      // \"Surface Tension\" Jiggle\n      this.noiseOffset += 0.05;\n    }\n  }\n\n  checkEdges() {\n    let buffer = this.currentR;\n    if (this.pos.x < buffer) this.acc.x += 0.1;\n    if (this.pos.x > width - buffer) this.acc.x -= 0.1;\n    if (this.pos.y < buffer) this.acc.y += 0.1;\n    if (this.pos.y > height - buffer) this.acc.y -= 0.1;\n  }\n\n  display() {\n    noStroke();\n    fill(this.color);\n    \n    push();\n    translate(this.pos.x, this.pos.y);\n    \n    // Draw organic shape using noise\n    beginShape();\n    let resolution = 30; // vertices per blob\n    for (let a = 0; a < TWO_PI; a += TWO_PI / resolution) {\n      let xoff = map(cos(a), -1, 1, 0, 2);\n      let yoff = map(sin(a), -1, 1, 0, 2);\n      \n      // Noise makes the blob wobble\n      let offset = map(noise(xoff + this.noiseOffset, yoff + this.noiseOffset, frameCount * 0.01), 0, 1, 0.8, 1.2);\n      \n      let r = this.currentR * offset;\n      let x = r * cos(a);\n      let y = r * sin(a);\n      vertex(x, y);\n    }\n    endShape(CLOSE);\n    \n    // Add a \"highlight\" to simulate surface reflection/thickness\n    if (!this.isWater) {\n      fill(255, 255, 255, 50);\n      ellipse(this.currentR * 0.2, -this.currentR * 0.2, this.currentR * 0.4, this.currentR * 0.3);\n    }\n    \n    pop();\n  }\n}";
+    
+    const sketch = function(p) {
+      let blobs = [];
+let textureLayer;
+let baseColors;
+
+function setup() {
+  createCanvas(800, 600);
+  
+  // Define a psychedelic/liquid light show palette
+  baseColors = [
+    color(255, 0, 100, 200),   // Magenta
+    color(0, 200, 255, 200),   // Cyan
+    color(255, 200, 0, 200),   // Yellow
+    color(100, 0, 255, 200),   // Purple
+    color(0, 255, 100, 200)    // Lime
+  ];
+
+  // Create a static texture for the "Projector Wall" feel (dust + vignette)
+  textureLayer = createGraphics(width, height);
+  textureLayer.noStroke();
+  
+  // Add Vignette
+  for (let r = 0; r < width * 1.2; r += 5) {
+    let alpha = map(r, 0, width * 1.2, 0, 255);
+    textureLayer.fill(20, 15, 10, alpha * 0.1); // Very subtle dark rim
+    textureLayer.ellipse(width / 2, height / 2, r, r * 0.75);
+  }
+  
+  // Add Dust/Grain
+  textureLayer.loadPixels();
+  for (let i = 0; i < textureLayer.width; i++) {
+    for (let j = 0; j < textureLayer.height; j++) {
+      if (random(1) > 0.98) {
+        let index = (i + j * textureLayer.width) * 4;
+        textureLayer.pixels[index] = 0;
+        textureLayer.pixels[index + 1] = 0;
+        textureLayer.pixels[index + 2] = 0;
+        textureLayer.pixels[index + 3] = random(20, 50); // slight dust
+      }
+    }
+  }
+  textureLayer.updatePixels();
+  
+  // Initialize with a few drops
+  for(let i=0; i<5; i++) {
+    addBlob(random(width), random(height), false);
+  }
+}
+
+function draw() {
+  // 1. The Light Source (Background)
+  background(250, 248, 240); 
+  
+  // 2. Update and Draw Blobs
+  // We use blendMode MULTIPLY to simulate ink/oil subtractive color mixing
+  blendMode(MULTIPLY);
+  
+  for (let i = blobs.length - 1; i >= 0; i--) {
+    let b = blobs[i];
+    b.update();
+    b.checkEdges();
+    b.display();
+    
+    // Interactions between blobs
+    for (let j = i - 1; j >= 0; j--) {
+      let other = blobs[j];
+      b.collide(other);
+    }
+  }
+
+  // 3. Overlay the projector texture (Dust/Vignette)
+  blendMode(BLEND);
+  image(textureLayer, 0, 0);
+  
+  // 4. UI Instructions
+  noStroke();
+  fill(50);
+  textAlign(CENTER);
+  textSize(14);
+  text("CLICK to drop OIL  |  SHIFT+CLICK to drop WATER  |  Wait for settling", width/2, height - 20);
+}
+
+function mousePressed() {
+  let isWater = keyIsDown(SHIFT);
+  addBlob(mouseX, mouseY, isWater);
+}
+
+function mouseDragged() {
+  // Allow dragging to pour liquid
+  if (frameCount % 5 === 0) {
+    let isWater = keyIsDown(SHIFT);
+    addBlob(mouseX + random(-10, 10), mouseY + random(-10, 10), isWater);
+  }
+}
+
+function addBlob(x, y, isWater) {
+  let r = random(20, 60);
+  let c;
+  
+  if (isWater) {
+    // Water is clear but distorts (we represent it as light grey/white displacing others)
+    c = color(240, 240, 255, 150);
+    r *= 1.5; // Water blobs are often bigger/spread out
+  } else {
+    c = random(baseColors);
+  }
+  
+  blobs.push(new Blob(x, y, r, c, isWater));
+  
+  // Cap performance
+  if (blobs.length > 100) {
+    blobs.shift();
+  }
+}
+
+class Blob {
+  constructor(x, y, r, c, isWater) {
+    this.pos = createVector(x, y);
+    this.vel = p5.Vector.random2D().mult(0.5);
+    this.acc = createVector(0, 0);
+    this.r = r; // Target radius
+    this.currentR = 0; // Animation start radius
+    this.color = c;
+    this.isWater = isWater;
+    this.id = random(1000);
+    this.noiseOffset = random(1000);
+  }
+
+  update() {
+    // Grow effect on spawn
+    if (this.currentR < this.r) {
+      this.currentR = lerp(this.currentR, this.r, 0.1);
+    }
+
+    // Add subtle organic drift (convection currents)
+    this.acc.add(p5.Vector.fromAngle(noise(this.pos.x * 0.01, this.pos.y * 0.01, frameCount * 0.005) * TWO_PI).mult(0.02));
+
+    // Apply physics
+    this.vel.add(this.acc);
+    this.vel.limit(2); // Viscosity limit
+    this.pos.add(this.vel);
+    this.acc.mult(0);
+    
+    // Friction
+    this.vel.mult(0.98);
+  }
+
+  collide(other) {
+    let d = dist(this.pos.x, this.pos.y, other.pos.x, other.pos.y);
+    let minDist = (this.currentR + other.currentR) * 0.6; // Allow some overlap for mixing look
+
+    if (d < minDist) {
+      // Calculate repulsion force
+      let angle = atan2(other.pos.y - this.pos.y, other.pos.x - this.pos.x);
+      let force = p5.Vector.fromAngle(angle);
+      
+      // Water repels oil more strongly (immiscible fluids)
+      let magnitude = 0.05;
+      if (this.isWater || other.isWater) {
+        magnitude = 0.15; 
+      }
+      
+      force.mult(magnitude);
+      
+      this.acc.sub(force); // Push away
+      other.acc.add(force); // Push away
+      
+      // "Surface Tension" Jiggle
+      this.noiseOffset += 0.05;
+    }
+  }
+
+  checkEdges() {
+    let buffer = this.currentR;
+    if (this.pos.x < buffer) this.acc.x += 0.1;
+    if (this.pos.x > width - buffer) this.acc.x -= 0.1;
+    if (this.pos.y < buffer) this.acc.y += 0.1;
+    if (this.pos.y > height - buffer) this.acc.y -= 0.1;
+  }
+
+  display() {
+    noStroke();
+    fill(this.color);
+    
+    push();
+    translate(this.pos.x, this.pos.y);
+    
+    // Draw organic shape using noise
+    beginShape();
+    let resolution = 30; // vertices per blob
+    for (let a = 0; a < TWO_PI; a += TWO_PI / resolution) {
+      let xoff = map(cos(a), -1, 1, 0, 2);
+      let yoff = map(sin(a), -1, 1, 0, 2);
+      
+      // Noise makes the blob wobble
+      let offset = map(noise(xoff + this.noiseOffset, yoff + this.noiseOffset, frameCount * 0.01), 0, 1, 0.8, 1.2);
+      
+      let r = this.currentR * offset;
+      let x = r * cos(a);
+      let y = r * sin(a);
+      vertex(x, y);
+    }
+    endShape(CLOSE);
+    
+    // Add a "highlight" to simulate surface reflection/thickness
+    if (!this.isWater) {
+      fill(255, 255, 255, 50);
+      ellipse(this.currentR * 0.2, -this.currentR * 0.2, this.currentR * 0.4, this.currentR * 0.3);
+    }
+    
+    pop();
+  }
+}
+    };
+    
+    new p5(sketch, container);
+  </script>
+</body>
+</html>
