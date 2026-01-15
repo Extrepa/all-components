@@ -456,6 +456,52 @@
       background: var(--bg-primary);
     }
 
+    .html-overview-section {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      border-radius: 10px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+    }
+
+    .html-overview-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .html-overview-header h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .html-overview-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .html-overview-button {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      padding: 0.35rem 0.7rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .html-overview-button:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: var(--shadow-sm);
+    }
+
     .html-demo-empty {
       padding: 2rem;
       border: 1px dashed var(--border-color);
@@ -3301,6 +3347,12 @@
         )
         : htmlDemos;
 
+      const isOverviewDemo = (demo) =>
+        demo.path === 'project-overview.html' || demo.path.startsWith('project-overviews/');
+
+      const filteredOverviews = filtered.filter(isOverviewDemo);
+      const filteredDemos = filtered.filter((demo) => !isOverviewDemo(demo));
+
       htmlContainer.style.display = 'block';
       htmlContainer.innerHTML = '';
 
@@ -3335,16 +3387,52 @@
 
       section.appendChild(header);
 
+      if (filteredOverviews.length > 0) {
+        const overviewSection = document.createElement('div');
+        overviewSection.className = 'html-overview-section';
+
+        const overviewHeader = document.createElement('div');
+        overviewHeader.className = 'html-overview-header';
+
+        const overviewTitle = document.createElement('h3');
+        overviewTitle.textContent = 'Project Overviews';
+        overviewHeader.appendChild(overviewTitle);
+
+        const overviewCount = document.createElement('span');
+        overviewCount.className = 'html-demo-count';
+        overviewCount.textContent = `${filteredOverviews.length} overview${filteredOverviews.length === 1 ? '' : 's'}`;
+        overviewHeader.appendChild(overviewCount);
+
+        overviewSection.appendChild(overviewHeader);
+
+        const overviewButtons = document.createElement('div');
+        overviewButtons.className = 'html-overview-buttons';
+
+        filteredOverviews.forEach((demo) => {
+          const btn = document.createElement('button');
+          btn.className = 'html-overview-button';
+          btn.textContent = demo.name;
+          btn.title = `errl-html-demos/${demo.path}`;
+          btn.addEventListener('click', () => {
+            window.open(`errl-html-demos/${demo.path}`, '_blank');
+          });
+          overviewButtons.appendChild(btn);
+        });
+
+        overviewSection.appendChild(overviewButtons);
+        section.appendChild(overviewSection);
+      }
+
       const grid = document.createElement('div');
       grid.className = 'html-demo-grid';
 
-      if (filtered.length === 0) {
+      if (filteredDemos.length === 0 && filteredOverviews.length === 0) {
         const empty = document.createElement('div');
         empty.className = 'html-demo-empty';
         empty.textContent = 'No HTML demos match this search.';
         grid.appendChild(empty);
       } else {
-        filtered.forEach((demo) => {
+        filteredDemos.forEach((demo) => {
         const card = document.createElement('div');
         card.className = 'html-demo-card';
 
