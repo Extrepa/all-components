@@ -33,6 +33,14 @@ export default defineConfig({
         find: '@/shared', 
         replacement: path.resolve(__dirname, '../shared')
       },
+      {
+        find: 'jszip',
+        replacement: path.resolve(__dirname, 'node_modules/jszip')
+      },
+      {
+        find: '@errl-design-system',
+        replacement: path.resolve(__dirname, '../errl-design-system/src')
+      },
       // Local @ alias (least specific, must be last)
       { 
         find: '@', 

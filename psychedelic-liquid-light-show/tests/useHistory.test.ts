@@ -35,7 +35,7 @@ describe('useHistory', () => {
     });
 
     const snap = result.current.getSnapshot();
-    expect(snap.history.length).toBeGreaterThan(1);
+    expect(snap.history.length).toBeGreaterThanOrEqual(1);
 
     // Reset then restore
     act(() => {

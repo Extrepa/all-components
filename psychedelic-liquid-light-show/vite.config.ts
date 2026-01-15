@@ -19,7 +19,7 @@ export default defineConfig(({ mode }) => {
         alias: {
           '@': path.resolve(__dirname, '.'),
           '@/shared': path.resolve(__dirname, '../shared'),
-          '@errl-design-system': path.resolve(__dirname, '../all-components/errl-design-system/src'),
+          '@errl-design-system': path.resolve(__dirname, '../errl-design-system/src'),
         }
       }
     };

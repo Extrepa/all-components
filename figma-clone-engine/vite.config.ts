@@ -7,8 +7,9 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
+      'jszip': path.resolve(__dirname, 'node_modules/jszip'),
       '@/shared': path.resolve(__dirname, '../shared'),
-      '@errl-design-system': path.resolve(__dirname, '../all-components/errl-design-system/src'),
+      '@errl-design-system': path.resolve(__dirname, '../errl-design-system/src'),
     },
   },
 })
