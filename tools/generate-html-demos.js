@@ -13,10 +13,16 @@ function listHtmlFiles(dir) {
   const results = [];
 
   for (const entry of entries) {
+    if (entry.name.startsWith('._') || entry.name === '__MACOSX') {
+      continue;
+    }
     const fullPath = path.join(dir, entry.name);
     if (entry.isDirectory()) {
       results.push(...listHtmlFiles(fullPath));
     } else if (entry.isFile() && entry.name.toLowerCase().endsWith('.html')) {
+      if (entry.name === 'errl-html-demos.json') {
+        continue;
+      }
       results.push(fullPath);
     }
   }
@@ -40,6 +46,11 @@ function main() {
         name: buildDemoName(relative),
         path: relative,
       };
+    })
+    .filter((demo) => !demo.path.split('/').some((part) => part.startsWith('._')))
+    .filter((demo, index, arr) => {
+      const key = demo.path.toLowerCase();
+      return arr.findIndex((item) => item.path.toLowerCase() === key) === index;
     })
     .sort((a, b) => a.name.localeCompare(b.name));
 
