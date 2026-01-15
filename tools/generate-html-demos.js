@@ -37,20 +37,58 @@ function buildDemoName(relativePath) {
   return fileName.replace(/[-_]+/g, ' ').trim();
 }
 
+function getNameContext(relativePath) {
+  const base = relativePath.replace(/\\/g, '/').replace(/\.html$/i, '');
+  const parts = base.split('/').filter(Boolean);
+  if (parts.length === 0) return 'root';
+  if (parts.length === 1) return 'root';
+
+  const parent = parts[parts.length - 2];
+  const genericParents = new Set(['projects', 'demos', 'pages', 'examples', 'html', 'public', 'src']);
+
+  if (genericParents.has(parent) && parts.length >= 3) {
+    return parts[parts.length - 3];
+  }
+
+  return parent;
+}
+
 function main() {
   const htmlFiles = listHtmlFiles(DEMOS_DIR);
-  const demos = htmlFiles
+  const rawDemos = htmlFiles
     .map((filePath) => {
       const relative = path.relative(DEMOS_DIR, filePath).replace(/\\/g, '/');
       return {
         name: buildDemoName(relative),
         path: relative,
+        context: getNameContext(relative),
       };
     })
     .filter((demo) => !demo.path.split('/').some((part) => part.startsWith('._')))
     .filter((demo, index, arr) => {
       const key = demo.path.toLowerCase();
       return arr.findIndex((item) => item.path.toLowerCase() === key) === index;
+    });
+
+  const nameCounts = rawDemos.reduce((acc, demo) => {
+    const key = demo.name.toLowerCase();
+    acc.set(key, (acc.get(key) || 0) + 1);
+    return acc;
+  }, new Map());
+
+  const demos = rawDemos
+    .map((demo) => {
+      const key = demo.name.toLowerCase();
+      if (nameCounts.get(key) > 1) {
+        return {
+          name: `${demo.name} - ${demo.context}`,
+          path: demo.path,
+        };
+      }
+      return {
+        name: demo.name,
+        path: demo.path,
+      };
     })
     .sort((a, b) => a.name.localeCompare(b.name));
 

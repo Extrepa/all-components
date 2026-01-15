@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-01-15T05:44:06.566Z",
+  "generatedAt": "2026-01-15T07:15:44.402Z",
   "count": 105,
   "demos": [
     {
@@ -7,11 +7,11 @@
       "path": "project-overviews/ai-studio-gallery-overview.html"
     },
     {
-      "name": "chromatic flow",
+      "name": "chromatic flow - NexusPortfolio",
       "path": "NexusPortfolio/projects/chromatic-flow.html"
     },
     {
-      "name": "Chromatic Flow",
+      "name": "Chromatic Flow - root",
       "path": "Chromatic-Flow.html"
     },
     {
@@ -19,27 +19,27 @@
       "path": "project-overviews/component-vault-overview.html"
     },
     {
-      "name": "errl",
+      "name": "errl - chroma-bloom-button",
       "path": "Errl_Snippet_Pack_Supercharged/Errl_Snippet_Pack_Supercharged/chroma-bloom-button/errl.html"
     },
     {
-      "name": "errl",
+      "name": "errl - iridescent-goo-card",
       "path": "Errl_Snippet_Pack_Supercharged/Errl_Snippet_Pack_Supercharged/iridescent-goo-card/errl.html"
     },
     {
-      "name": "errl",
+      "name": "errl - liquid-crystal-text",
       "path": "Errl_Snippet_Pack_Supercharged/Errl_Snippet_Pack_Supercharged/liquid-crystal-text/errl.html"
     },
     {
-      "name": "errl",
+      "name": "errl - orbit-knots-canvas",
       "path": "Errl_Snippet_Pack_Supercharged/Errl_Snippet_Pack_Supercharged/orbit-knots-canvas/errl.html"
     },
     {
-      "name": "errl",
+      "name": "errl - quantum-slime-halo",
       "path": "Errl_Snippet_Pack_Supercharged/Errl_Snippet_Pack_Supercharged/quantum-slime-halo/errl.html"
     },
     {
-      "name": "errl",
+      "name": "errl - temporal-kaleido-rings",
       "path": "Errl_Snippet_Pack_Supercharged/Errl_Snippet_Pack_Supercharged/temporal-kaleido-rings/errl.html"
     },
     {
@@ -163,35 +163,35 @@
       "path": "ProjectStarters/projects/glsl/hypnotic.html"
     },
     {
-      "name": "index",
+      "name": "index - Errl_Snippet_Pack_Supercharged",
       "path": "Errl_Snippet_Pack_Supercharged/Errl_Snippet_Pack_Supercharged/index.html"
     },
     {
-      "name": "index",
+      "name": "index - NexusPortfolio",
       "path": "NexusPortfolio/index.html"
     },
     {
-      "name": "index",
+      "name": "index - ProjectStarters",
       "path": "ProjectStarters/index.html"
     },
     {
-      "name": "index",
+      "name": "index - VJPortfolio",
       "path": "VJPortfolio/index.html"
     },
     {
-      "name": "infinite zoom",
+      "name": "infinite zoom - NexusPortfolio",
       "path": "NexusPortfolio/projects/infinite-zoom.html"
     },
     {
-      "name": "Infinite Zoom",
+      "name": "Infinite Zoom - root",
       "path": "Infinite-Zoom.html"
     },
     {
-      "name": "kaleidoscope singularity",
+      "name": "kaleidoscope singularity - NexusPortfolio",
       "path": "NexusPortfolio/projects/kaleidoscope-singularity.html"
     },
     {
-      "name": "Kaleidoscope Singularity",
+      "name": "Kaleidoscope Singularity - root",
       "path": "Kaleidoscope-Singularity.html"
     },
     {
@@ -203,15 +203,15 @@
       "path": "project-overviews/liquid-light-show-simulator-overview.html"
     },
     {
-      "name": "menger void",
-      "path": "NexusPortfolio/projects/menger-void.html"
-    },
-    {
-      "name": "menger void",
+      "name": "menger void - glsl",
       "path": "ProjectStarters/projects/glsl/menger-void.html"
     },
     {
-      "name": "Menger Void",
+      "name": "menger void - NexusPortfolio",
+      "path": "NexusPortfolio/projects/menger-void.html"
+    },
+    {
+      "name": "Menger Void - root",
       "path": "Menger-Void.html"
     },
     {
@@ -223,27 +223,27 @@
       "path": "ProjectStarters/projects/glsl/metal-cymatics-2.html"
     },
     {
-      "name": "minimal",
+      "name": "minimal - chroma-bloom-button",
       "path": "Errl_Snippet_Pack_Supercharged/Errl_Snippet_Pack_Supercharged/chroma-bloom-button/minimal.html"
     },
     {
-      "name": "minimal",
+      "name": "minimal - iridescent-goo-card",
       "path": "Errl_Snippet_Pack_Supercharged/Errl_Snippet_Pack_Supercharged/iridescent-goo-card/minimal.html"
     },
     {
-      "name": "minimal",
+      "name": "minimal - liquid-crystal-text",
       "path": "Errl_Snippet_Pack_Supercharged/Errl_Snippet_Pack_Supercharged/liquid-crystal-text/minimal.html"
     },
     {
-      "name": "minimal",
+      "name": "minimal - orbit-knots-canvas",
       "path": "Errl_Snippet_Pack_Supercharged/Errl_Snippet_Pack_Supercharged/orbit-knots-canvas/minimal.html"
     },
     {
-      "name": "minimal",
+      "name": "minimal - quantum-slime-halo",
       "path": "Errl_Snippet_Pack_Supercharged/Errl_Snippet_Pack_Supercharged/quantum-slime-halo/minimal.html"
     },
     {
-      "name": "minimal",
+      "name": "minimal - temporal-kaleido-rings",
       "path": "Errl_Snippet_Pack_Supercharged/Errl_Snippet_Pack_Supercharged/temporal-kaleido-rings/minimal.html"
     },
     {
@@ -323,35 +323,35 @@
       "path": "project-overviews/psychedelic-liquid-light-show-overview.html"
     },
     {
-      "name": "remix",
+      "name": "remix - chroma-bloom-button",
       "path": "Errl_Snippet_Pack_Supercharged/Errl_Snippet_Pack_Supercharged/chroma-bloom-button/remix.html"
     },
     {
-      "name": "remix",
+      "name": "remix - iridescent-goo-card",
       "path": "Errl_Snippet_Pack_Supercharged/Errl_Snippet_Pack_Supercharged/iridescent-goo-card/remix.html"
     },
     {
-      "name": "remix",
+      "name": "remix - liquid-crystal-text",
       "path": "Errl_Snippet_Pack_Supercharged/Errl_Snippet_Pack_Supercharged/liquid-crystal-text/remix.html"
     },
     {
-      "name": "remix",
+      "name": "remix - orbit-knots-canvas",
       "path": "Errl_Snippet_Pack_Supercharged/Errl_Snippet_Pack_Supercharged/orbit-knots-canvas/remix.html"
     },
     {
-      "name": "remix",
+      "name": "remix - quantum-slime-halo",
       "path": "Errl_Snippet_Pack_Supercharged/Errl_Snippet_Pack_Supercharged/quantum-slime-halo/remix.html"
     },
     {
-      "name": "remix",
+      "name": "remix - temporal-kaleido-rings",
       "path": "Errl_Snippet_Pack_Supercharged/Errl_Snippet_Pack_Supercharged/temporal-kaleido-rings/remix.html"
     },
     {
-      "name": "rgb tracer",
+      "name": "rgb tracer - NexusPortfolio",
       "path": "NexusPortfolio/projects/rgb-tracer.html"
     },
     {
-      "name": "rgb tracer",
+      "name": "rgb tracer - root",
       "path": "rgb-tracer.html"
     },
     {
@@ -379,27 +379,27 @@
       "path": "project-overviews/VJPortfolio-overview.html"
     },
     {
-      "name": "VJsynthlab",
+      "name": "VJsynthlab - VJPortfolio",
       "path": "VJPortfolio/projects/VJsynthlab.html"
     },
     {
-      "name": "VJsynthlab",
+      "name": "VJsynthlab - VJsynthmixer",
       "path": "VJsynthmixer/VJsynthlab.html"
     },
     {
-      "name": "VJsynthmixer 2",
+      "name": "VJsynthmixer 2 - VJPortfolio",
       "path": "VJPortfolio/projects/VJsynthmixer_2.html"
     },
     {
-      "name": "VJsynthmixer 2",
+      "name": "VJsynthmixer 2 - VJsynthmixer",
       "path": "VJsynthmixer/VJsynthmixer_2.html"
     },
     {
-      "name": "VJsynthmixer 3",
+      "name": "VJsynthmixer 3 - VJPortfolio",
       "path": "VJPortfolio/projects/VJsynthmixer_3.html"
     },
     {
-      "name": "VJsynthmixer 3",
+      "name": "VJsynthmixer 3 - VJsynthmixer",
       "path": "VJsynthmixer/VJsynthmixer_3.html"
     },
     {
@@ -407,19 +407,19 @@
       "path": "VJsynthmixer/VJsynthmixer_4.html"
     },
     {
-      "name": "VJsynthmixer 5",
+      "name": "VJsynthmixer 5 - VJPortfolio",
       "path": "VJPortfolio/projects/VJsynthmixer_5.html"
     },
     {
-      "name": "VJsynthmixer 5",
+      "name": "VJsynthmixer 5 - VJsynthmixer",
       "path": "VJsynthmixer/VJsynthmixer_5.html"
     },
     {
-      "name": "VJsynthmixer 6",
+      "name": "VJsynthmixer 6 - VJPortfolio",
       "path": "VJPortfolio/projects/VJsynthmixer_6.html"
     },
     {
-      "name": "VJsynthmixer 6",
+      "name": "VJsynthmixer 6 - VJsynthmixer",
       "path": "VJsynthmixer/VJsynthmixer_6.html"
     }
   ]
